@@ -35,6 +35,9 @@ proguard/
 # Android Studio captures folder
 captures/
 
+# Android Studio
+*.iml
+.idea
 ### Android Patch ###
 gen-external-apklibs
 

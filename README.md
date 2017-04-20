@@ -1,2 +1,3 @@
-# KSYMediaEditorKit_Android
-金山云短视频AndroidSDK
+# MediaEditor
+
+基于KSYStreamerSDK实现短视频录制的功能。
