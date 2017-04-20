@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:background="#88000000"
+             android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/compose_preview_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <SurfaceView
+            android:id="@+id/compose_preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"/>
+        <TextView
+            android:id="@+id/file_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="45px"
+            android:layout_alignParentLeft="true"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/compose_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/state_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminateDrawable="@drawable/composing"
+            android:indeterminateDuration="1000"
+            android:indeterminateOnly="true"/>
+        <TextView
+            android:id="@+id/progress_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="#e85932"
+            android:textSize="25px"/>
+
+        <TextView
+            android:id="@+id/state_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/compose_file"
+            android:layout_marginTop="10dp"
+            android:textColor="#e85932"
+            android:textSize="50px"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@id/state_progress"/>
+    </RelativeLayout>
+
+</LinearLayout>

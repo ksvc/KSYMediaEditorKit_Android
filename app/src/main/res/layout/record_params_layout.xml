@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:background="#00000000"
+              android:orientation="vertical">
+
+    <RadioGroup
+        android:id="@+id/resolution_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/r360p"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="360P"/>
+
+        <RadioButton
+            android:id="@+id/r480p"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="480P"/>
+
+        <RadioButton
+            android:id="@+id/r540p"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="540P"/>
+
+        <RadioButton
+            android:id="@+id/r720p"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="720P"/>
+    </RadioGroup>
+
+    <RadioGroup
+        android:id="@+id/encode_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/resolution_group"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/encode_h264"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="H264" />
+
+        <RadioButton
+            android:id="@+id/encode_h265"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="H265" />
+    </RadioGroup>
+
+    <RadioGroup
+        android:id="@+id/encode_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/encode_type"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/encode_hw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="硬编" />
+
+        <RadioButton
+            android:id="@+id/encode_sw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="软编" />
+    </RadioGroup>
+
+    <LinearLayout
+        android:id="@+id/frameRate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/encode_group">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="采集帧率"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:id="@+id/frameRatePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="15"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/videoBitrate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/frameRate"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="视频码率"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/videoBitratePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="800" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/audioBitrate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/videoBitrate"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="音频码率"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/audioBitratePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="48" />
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/preview_params_confim"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:text="确定"/>
+
+</LinearLayout>

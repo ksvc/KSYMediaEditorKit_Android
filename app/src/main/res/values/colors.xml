@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="font_color_35">#368ca8</color>
+    <color name="transparent1">#7fffffff</color><!--透明白色 -->
+    <color name="transparent">#00000000</color>
+</resources>

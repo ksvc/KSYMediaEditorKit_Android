@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/preview_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <android.opengl.GLSurfaceView
+            android:id="@+id/edit_preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"/>
+        <ImageView
+            android:id="@+id/click_to_pause"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginBottom="3dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/play_state"/>
+
+        <ImageView
+            android:id="@+id/click_to_mute"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginBottom="3dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/mute_state"/>
+    </RelativeLayout>
+
+    <include
+        android:id="@+id/edit_bar_bottom"
+        layout="@layout/edit_bottombar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom">
+    </include>
+</LinearLayout>

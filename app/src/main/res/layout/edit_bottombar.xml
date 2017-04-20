@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#616060">
+
+    <RelativeLayout
+        android:id="@+id/edit_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/click_to_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/back"/>
+
+        <LinearLayout
+            android:id="@+id/edit_choose"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@id/click_to_back"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/click_to_filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="滤镜"
+                android:textColor="@drawable/edit_title_choose"
+                android:textSize="18dp"
+                />
+
+            <TextView
+                android:id="@+id/click_to_watermark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="水印"
+                android:textColor="@drawable/edit_title_choose"
+                android:textSize="18dp"/>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/click_to_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/next"
+            android:paddingRight="5dp"/>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:layout_below="@+id/edit_layout"
+        android:background="#FF000000"
+        />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_layout"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="10dp">
+
+        <include
+            android:id="@+id/beauty_choose"
+            layout="@layout/beauty_choose"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            />
+
+        <include
+            android:id="@+id/watermark_choose"
+            layout="@layout/watermark_choose"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"/>
+    </FrameLayout>
+
+</RelativeLayout>
