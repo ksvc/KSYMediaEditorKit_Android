@@ -54,7 +54,7 @@ dependencies {
 
 ## 1.7 功能点详细说明
 - SDK鉴权（TODO）
-- 消息及错误回调（TODO）
+- [状态和错误回调](https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/Info&Error_Listener)
 - KS3文件上传服务（TODO）
 
 
