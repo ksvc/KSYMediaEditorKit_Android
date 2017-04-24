@@ -74,11 +74,12 @@ public class RecordActivity extends Activity implements
     public final static String VIDEO_RESOLUTION = "video_resolution";
     public final static String ENCODE_TYPE = "encode_type";
     public final static String ENCODE_METHOD = "encode_method";
+    public final static String ENCODE_PROFILE = "encode_profile";
 
     public static void startActivity(Context context, int frameRate,
                                      int videoBitrate, int audioBitrate,
                                      int videoResolution,
-                                     int encodeType, int encodeMethod) {
+                                     int encodeType, int encodeMethod, int encodeProfile) {
         Intent intent = new Intent(context, RecordActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
@@ -88,6 +89,7 @@ public class RecordActivity extends Activity implements
         intent.putExtra(VIDEO_RESOLUTION, videoResolution);
         intent.putExtra(ENCODE_TYPE, encodeType);
         intent.putExtra(ENCODE_METHOD, encodeMethod);
+        intent.putExtra(ENCODE_PROFILE, encodeProfile);
         context.startActivity(intent);
     }
 
@@ -175,6 +177,9 @@ public class RecordActivity extends Activity implements
             int encode_method = bundle.getInt(ENCODE_METHOD);
             mKSYRecordKit.setEncodeMethod(encode_method);
 
+            int encodeProfile = bundle.getInt(ENCODE_PROFILE);
+            mKSYRecordKit.setVideoEncodeProfile(encodeProfile);
+
             mKSYRecordKit.setRotateDegrees(0);
         }
         mKSYRecordKit.setDisplayPreview(mCameraPreviewView);
@@ -194,7 +199,7 @@ public class RecordActivity extends Activity implements
         super.onResume();
 
         mKSYRecordKit.setDisplayPreview(mCameraPreviewView);
-        if(mNeedStartCameraPreview) {
+        if (mNeedStartCameraPreview) {
             mKSYRecordKit.startCameraPreview();
             mNeedStartCameraPreview = false;
         }
@@ -205,7 +210,7 @@ public class RecordActivity extends Activity implements
     public void onPause() {
         super.onPause();
         mKSYRecordKit.onPause();
-        if(mKSYRecordKit.getPreviewWidth() > 0 && mKSYRecordKit.getPreviewHeight() > 0) {
+        if (mKSYRecordKit.getPreviewWidth() > 0 && mKSYRecordKit.getPreviewHeight() > 0) {
             mKSYRecordKit.setOffscreenPreview(mKSYRecordKit.getPreviewWidth(),
                     mKSYRecordKit.getPreviewHeight());
         }

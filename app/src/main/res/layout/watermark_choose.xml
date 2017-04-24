@@ -3,25 +3,11 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical">
-
-    <CheckBox
-        android:id="@+id/watermark_timer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_marginLeft="10dp"
-        android:background="#11123456"
-        android:checked="false"
-        android:text="时间水印"
-        android:textSize="16sp">
-    </CheckBox>
-
     <CheckBox
         android:id="@+id/watermark_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
-        android:layout_marginTop="5dp"
         android:layout_marginLeft="10dp"
         android:background="#11123456"
         android:checked="false"
