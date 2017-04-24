@@ -34,6 +34,14 @@ License说明请见[wiki][license]
 ### 1.2.2 付费
 短视频SDK本身可以免费使用，但是涉及的云存储上传、在线播放等云服务需要收费，具体费用请参考[金山云官网][ksyun]
 
+## 2. SDK集成
+
+### 2.1 系统框图
+
+<img src="https://raw.githubusercontent.com/wiki/ksvc/KSYMediaEditorKit_Android/images/shortVideo.png" width = "708" height = "499.5" alt="图片名称" align=center />
+
+### 2.2 集成说明
+具体集成步骤请阅读[wiki][wiki]
 
 ## 2. 商务合作
 demo中鉴权只能Demo使用
