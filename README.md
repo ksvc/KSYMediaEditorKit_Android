@@ -1,4 +1,5 @@
-# KSYMediaEditor_Android
+# # 金山云短视频编辑SDK KSYMediaEditorKit
+
 关键名词解释：
 - 视频录制：采集摄像头及麦克风音视频数据，通过编码合成等过程最终生成一个本地的mp4文件  
 - 视频预览编辑：对指定视频播放的同时添加滤镜、水印并预览显示添加后的效果  
@@ -7,7 +8,8 @@
 - SDK鉴权：取得SDK的使用权
 
 ## 1 功能介绍
-短视频SDK支持功能：
+[KSYMediaEditorKit][KSYMediaEditorKit]是一款由金山云提供的的短视频编辑SDK，当前支持以下功能：
+
 * [x] 短视频录制
 * [x] 短视频文件导入，支持mp4/3gp/mov
 * [x] 录制或导入视频预览编辑
@@ -23,15 +25,15 @@
 
 
 ## 1.2 关于费用
-短视频SDK是一款免费SDK，录制和编辑功能免费提供。
+[KSYMediaEditorKit][KSYMediaEditorKit]短视频SDK是一款免费SDK，录制和编辑功能都免费提供，可以用于商业集成和使用。
 
 License说明请见[wiki][license]
 
 ### 1.2.1 鉴权
-使用SDK合成功能前需要注册金山云帐号，SDK需要使用开发者帐号鉴权。请[在此注册][ksyun]开发者帐号。
+使用[KSYMediaEditorKit][KSYMediaEditorKit]前需要注册金山云帐号，SDK需要使用开发者帐号鉴权。请[在此注册][ksyun]开发者帐号。
 
 ### 1.2.2 付费
-短视频SDK本身可以免费使用，但是涉及的云存储上传、在线播放等云服务需要收费，具体费用请参考[金山云官网][ksyun]
+[KSYMediaEditorKit][KSYMediaEditorKit]可以免费使用，但是涉及的云存储上传、在线播放等云服务需要收费，具体费用请参考[金山云官网][ksyun]
 
 ## 2. SDK集成
 
@@ -55,9 +57,7 @@ demo中鉴权只能Demo使用
 [ksyun]:https://v.ksyun.com
 [license]:https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/license
 [wiki]:https://github.com/ksvc/KSYMediaEditorKit_Android/wiki
-
-
-
+[KSYMediaEditorKit]:https://github.com/ksvc/KSYMediaEditorKit_Android
 
 
 
