@@ -22,8 +22,17 @@
 - 最低支持版本为Android 4.4 (API level 19)
 - 支持的cpu架构：armv7, arm64, x86
 
+
 ## 1.2 关于费用
-短视频SDK是一款付费SDK，SDK的录制和编辑功能免费提供，但是使用SDK合成功能前需要进行SDK鉴权，具体收费方式，请联系金山云商务  
+短视频SDK是一款免费SDK，录制和编辑功能免费提供。
+
+License说明请见[wiki][license]
+
+### 1.2.1 鉴权
+使用SDK合成功能前需要注册金山云帐号，SDK需要使用开发者帐号鉴权。请[在此注册][ksyun]开发者帐号。
+
+### 1.2.2 付费
+短视频SDK本身可以免费使用，但是涉及的云存储上传、在线播放等云服务需要收费，具体费用请参考[金山云官网][ksyun]
 
 ## 1.3 集成说明 
 App通过直接集成libksyssv.jar来使用短视频功能，但要完全使用SDK的功能，还需要依赖以下库：
@@ -117,7 +126,9 @@ demo中鉴权只能Demo使用
 - QQ讨论群：574179720
 - Issues: <https://github.com/ksvc/KSYMediaEditorKit_Android/issues>
 
-
+[ksyun]:https://v.ksyun.com
+[license]:https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/license
+[wiki]:https://github.com/ksvc/KSYMediaEditorKit_Android/wiki
 
 
 
