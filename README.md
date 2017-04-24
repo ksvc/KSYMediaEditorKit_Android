@@ -7,7 +7,6 @@
 - SDK鉴权：取得SDK的使用权
 
 ## 1.0 功能介绍
-短视频SDK基于金山Android[融合库SDK](https://github.com/ksvc/KSYLive_Android)
 短视频SDK支持功能：
 * [x] 短视频SDK鉴权
 * [x] 短视频录制
