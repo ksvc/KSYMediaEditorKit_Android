@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 public class ShortVideoActivity extends Activity {
     private static String TAG = "ShortVideoActivity";
-    public static String AUTH_SERVER_URI = "http://10.64.7.106:8321/Auth";//the uri of your appServer
+    public static String AUTH_SERVER_URI = "http://ksvs-demo.ks-live.com:8321/Auth";//the uri of your appServer
     //view
     private Button mAuthButton;
     private Button mRecordButton;
@@ -59,7 +59,7 @@ public class ShortVideoActivity extends Activity {
             mMainHandler = null;
         }
 
-        if(mAuthTask != null) {
+        if (mAuthTask != null) {
             mAuthTask.cancel(true);
             mAuthTask.release();
             mAuthTask = null;
@@ -100,10 +100,12 @@ public class ShortVideoActivity extends Activity {
                         if (result == 0) {
                             String authInfo = data.getString("Authorization");
                             String date = data.getString("x-amz-date");
-
+                            //初始化鉴权信息
                             AuthInfoManager.getInstance().setAuthInfo(getApplicationContext(),
                                     authInfo, date);
+                            //添加鉴权结果回调接口(不是必须)
                             AuthInfoManager.getInstance().addAuthResultListener(mCheckAuthResultListener);
+                            //开始向KSServer申请鉴权
                             AuthInfoManager.getInstance().checkAuth();
                         } else {
                             //
@@ -118,7 +120,7 @@ public class ShortVideoActivity extends Activity {
                 }
             }
         };
-        //1:input:packagename, output: AK、SK、sign、clentid
+        //开启异步任务，向AppServer请求鉴权信息
         mAuthTask = new HttpRequestTask(mAuthResponse);
         mAuthTask.execute(AUTH_SERVER_URI + "?Pkg=" + getApplicationContext().getPackageName());
     }
@@ -157,7 +159,7 @@ public class ShortVideoActivity extends Activity {
                     RecordActivity.startActivity(getApplicationContext(),
                             config.previewFps, config.videoBitrate,
                             config.audioBitrate, config.previewResolution, config.encodeType,
-                            config.encodeMethod);
+                            config.encodeMethod, config.encodeProfile);
                 }
 
             }

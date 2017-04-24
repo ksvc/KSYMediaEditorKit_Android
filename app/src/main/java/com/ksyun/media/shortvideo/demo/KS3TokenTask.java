@@ -19,12 +19,12 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 /**
- * Created by zanxiaofei on 17/4/13.
+ * get ks3 token on 17/4/13.
  */
 
 public class KS3TokenTask {
     private static String TAG = "KS3TokenTask";
-    public static final String TOKEN_SERVER_URL = "http://10.64.7.106:8980/api/upload/ks3/sig";
+    public static final String TOKEN_SERVER_URL = "http://ksvs-demo.ks-live.com:8720/api/upload/ks3/sig";
     //Get ks3 Token
     private static final String TYPE = "type";
     private static final String MD5 = "md5";

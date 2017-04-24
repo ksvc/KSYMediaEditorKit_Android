@@ -15,14 +15,13 @@
             android:id="@+id/r360p"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="true"
             android:text="360P"/>
 
         <RadioButton
             android:id="@+id/r480p"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="false"
+            android:checked="true"
             android:text="480P"/>
 
         <RadioButton
@@ -86,6 +85,36 @@
             android:text="软编" />
     </RadioGroup>
 
+    <RadioGroup
+        android:id="@+id/encode_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/encode_group"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/encode_profile_low_power"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="低功耗" />
+
+        <RadioButton
+            android:id="@+id/encode_profile_balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="平衡" />
+
+        <RadioButton
+            android:id="@+id/encode_profile_high_perf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="高性能" />
+    </RadioGroup>
+
     <LinearLayout
         android:id="@+id/frameRate"
         android:layout_width="match_parent"
@@ -102,7 +131,7 @@
             android:id="@+id/frameRatePicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="15"/>
+            android:text="20"/>
     </LinearLayout>
 
     <LinearLayout
@@ -122,7 +151,7 @@
             android:id="@+id/videoBitratePicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="800" />
+            android:text="1000" />
     </LinearLayout>
 
     <LinearLayout
@@ -142,7 +171,7 @@
             android:id="@+id/audioBitratePicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="48" />
+            android:text="64" />
     </LinearLayout>
 
 

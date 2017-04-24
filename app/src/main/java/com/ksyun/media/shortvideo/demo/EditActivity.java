@@ -26,7 +26,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -67,7 +66,7 @@ import java.util.TimerTask;
 public class EditActivity extends Activity implements
         ActivityCompat.OnRequestPermissionsResultCallback {
     private static String TAG = "EditActivity";
-    private static String FILEURL_SERVER = "http://10.64.7.106:8980/api/upload/ks3/signurl";
+    private static String FILEURL_SERVER = "http://ksvs-demo.ks-live.com:8720/api/upload/ks3/signurl";
 
     private GLSurfaceView mEditPreviewView;
     private RelativeLayout mPreviewLayout;
@@ -78,7 +77,6 @@ public class EditActivity extends Activity implements
     private ImageView mPauseView;
     private TextView mFilterView;
     private TextView mWaterMarkView;
-    private CheckBox mWaterMarkTimeView;
     private CheckBox mWaterMartLogoView;
     private View mFilterLayout;
     private View mWatermarkLayout;
@@ -98,7 +96,7 @@ public class EditActivity extends Activity implements
 
     public final static String SRC_URL = "srcurl";
 
-    private String mLogoPath = "file:///sdcard/test.png";
+    private String mLogoPath = "assets://KSYLogo/logo.png";//"file:///sdcard/test.png";
 
     private KSYEditKit mEditKit;
     private boolean mComposeFinished = false;
@@ -182,8 +180,6 @@ public class EditActivity extends Activity implements
         mWatermarkLayout = findViewById(R.id.watermark_choose);
         mWaterMarkView = (TextView) findViewById(R.id.click_to_watermark);
         mWaterMarkView.setOnClickListener(mButtonObserver);
-        mWaterMarkTimeView = (CheckBox) findViewById(R.id.watermark_timer);
-        mWaterMarkTimeView.setOnCheckedChangeListener(mCheckBoxObserver);
         mWaterMartLogoView = (CheckBox) findViewById(R.id.watermark_logo);
         mWaterMartLogoView.setOnCheckedChangeListener(mCheckBoxObserver);
 
@@ -212,7 +208,6 @@ public class EditActivity extends Activity implements
         super.onResume();
         mPaused = false;
         mEditKit.onResume();
-        showWaterMark();
         if (mComposeAlertDialog != null && mComposeAlertDialog.mNeedResumePlay) {
             mComposeAlertDialog.startPreview();
         }
@@ -223,7 +218,6 @@ public class EditActivity extends Activity implements
         super.onPause();
         mPaused = true;
         mEditKit.onPause();
-        hideWaterMark();
     }
 
     @Override
@@ -244,8 +238,11 @@ public class EditActivity extends Activity implements
             mEditKit.onResume();
             mNeedResume = false;
         }
+        //设置预览的音量
         mEditKit.setVolume(0.4f);
+        //设置是否循环预览
         mEditKit.setLooping(true);
+        //开启预览
         mEditKit.startEditPreview();
     }
 
@@ -273,14 +270,6 @@ public class EditActivity extends Activity implements
         }
     }
 
-    private void onWaterMarkTimeClick(boolean isCheck) {
-        if (isCheck) {
-            mEditKit.showWaterMarkTime(0.03f, 0.01f, 0.35f, Color.WHITE, 1.0f);
-        } else {
-            mEditKit.hideWaterMarkTime();
-        }
-    }
-
     private void onWaterMarkLogoClick(boolean isCheck) {
         if (isCheck) {
             mEditKit.showWaterMarkLogo(mLogoPath, 0.08f, 0.04f, 0.20f, 0, 0.8f);
@@ -293,14 +282,10 @@ public class EditActivity extends Activity implements
         if (mWaterMartLogoView.isChecked()) {
             mEditKit.showWaterMarkLogo(mLogoPath, 0.08f, 0.04f, 0.20f, 0, 0.8f);
         }
-        if (mWaterMarkTimeView.isChecked()) {
-            mEditKit.showWaterMarkTime(0.03f, 0.01f, 0.35f, Color.WHITE, 1.0f);
-        }
     }
 
     private void hideWaterMark() {
         mEditKit.hideWaterMarkLogo();
-        mEditKit.hideWaterMarkTime();
     }
 
     private void onMuteClick() {
@@ -330,6 +315,7 @@ public class EditActivity extends Activity implements
     private ComposeAlertDialog mComposeAlertDialog;
 
     private void onNextClick() {
+        //配置合成参数
         final ShortVideoConfigDialog configDialog = new ShortVideoConfigDialog(this,
                 ShortVideoConfigDialog
                         .SHORTVIDEOCONFIG_TYPE_COMPOSE);
@@ -340,19 +326,21 @@ public class EditActivity extends Activity implements
             public void onDismiss(DialogInterface dialogInterface) {
                 ShortVideoConfigDialog.ShortVideoConfig config = configDialog.getShortVideoConfig();
                 if (config != null) {
+                    //配置合成参数
                     mEditKit.setVideoFps(config.previewFps);
-                    mEditKit.setTargetResolution(config.previewResolution);
-                    mEditKit.setEncodeMethod(config.encodeMethod);
                     mEditKit.setVideoCodecId(config.encodeType);
                     mEditKit.setAudioKBitrate(config.audioBitrate);
                     mEditKit.setVideoKBitrate(config.videoBitrate);
+                    //关闭上一次合成窗口
                     if (mComposeAlertDialog != null) {
                         mComposeAlertDialog.closeDialog();
                     }
 
                     mComposeAlertDialog = new ComposeAlertDialog(EditActivity.this, R.style.dialog);
+                    //设置合成路径
                     String composeUrl = "/sdcard/" + System.currentTimeMillis() + ".mp4";
                     Log.d(TAG, "compose Url:" + composeUrl);
+                    //开始合成
                     mEditKit.startCompose(composeUrl);
                 }
 
@@ -413,7 +401,7 @@ public class EditActivity extends Activity implements
                     mComposeAlertDialog.composeFinished(msgs[0]);
                     mComposeFinished = true;
                 }
-
+                //上传必要信息：bucket,objectkey，及PutObjectResponseHandler上传过程回调
                 mCurObjectKey = getPackageName() + "/" + System.currentTimeMillis() + ".mp4";
                 KS3ClientWrap.KS3UploadInfo bucketInfo = new KS3ClientWrap.KS3UploadInfo
                         ("ksvsdemo", mCurObjectKey, mPutObjectResponseHandler);
@@ -510,9 +498,6 @@ public class EditActivity extends Activity implements
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             switch (buttonView.getId()) {
-                case R.id.watermark_timer:
-                    onWaterMarkTimeClick(isChecked);
-                    break;
                 case R.id.watermark_logo:
                     onWaterMarkLogoClick(isChecked);
                     break;
@@ -755,24 +740,28 @@ public class EditActivity extends Activity implements
                         mPlayurlGetTask = new HttpRequestTask(new HttpRequestTask.HttpResponseListener() {
                             @Override
                             public void onHttpResponse(int responseCode, String response) {
-                                try {
-                                    JSONObject data = new JSONObject(response);
+                                if (responseCode == 200) {
+                                    if (!TextUtils.isEmpty(response)) {
+                                        try {
+                                            JSONObject data = new JSONObject(response);
 
-                                    if (data.getInt("errno") == 0) {
-                                        String url = data.getString("presigned_url");
-                                        if (!url.contains("http")) {
-                                            url = "http://" + url;
+                                            if (data.getInt("errno") == 0) {
+                                                String url = data.getString("presigned_url");
+                                                if (!url.contains("http")) {
+                                                    url = "http://" + url;
+                                                }
+                                                mFilePath = url;
+                                                Log.e(TAG, "play url:" + mFilePath);
+                                                EditActivity.this.mComposeAlertDialog.startPreview();
+                                            }
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                            //播放合成后的视频
+                                            EditActivity.this.mComposeAlertDialog.startPreview();
                                         }
-                                        mFilePath = url;
-                                        Log.e(TAG, "play url:" + mFilePath);
-                                        EditActivity.this.mComposeAlertDialog.startPreview();
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    //播放合成后的视频
-                                    EditActivity.this.mComposeAlertDialog.startPreview();
-                                }
 
+                                    }
+                                }
                             }
                         });
 
