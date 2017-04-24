@@ -28,6 +28,7 @@
 
 ## 1.3 集成说明 
 App通过直接集成libksyssv.jar来使用短视频功能，但要完全使用SDK的功能，还需要依赖以下库：
+
 - 金山云Android融合库SDK，Demo中app/libs目录下面包含了融合库的jar和so，详细介绍参考[融合库SDK](https://github.com/ksvc/KSYLive_Android)    
 > 当前版本暂时不支持使用jcenter来依赖融合库
 
