@@ -24,7 +24,8 @@
 - 支持的cpu架构：armv7, arm64, x86
 
 ## 1.2 关于费用
-短视频SDK是一款付费SDK，SDK的录制和编辑功能免费提供，但是使用SDK合成功能前需要进行SDK鉴权，具体收费方式，请联系金山云商务  
+短视频SDK是一款付费SDK，SDK的录制和编辑功能免费提供，但是使用SDK合成功能前需要进行SDK鉴权，具体收费方式，请联系金山云商务。
+License说明请见[wiki](https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/license)
 
 ## 1.3 集成说明 
 App通过直接集成libksyssv.jar来使用短视频功能，但要完全使用SDK的功能，还需要依赖以下库：
