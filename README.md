@@ -43,11 +43,11 @@ License说明请见[wiki][license]
 ### 2.2 集成说明
 具体集成步骤请阅读[wiki][wiki]
 
-## 2. 商务合作
+## 3. 商务合作
 demo中鉴权只能Demo使用
 正式上线需要申请金山云账号，请联系金山云商务。
 
-## 3. 反馈与建议
+## 4. 反馈与建议
 - 主页：[金山云](http://www.ksyun.com/)
 - 邮箱：<zengfanping@kingsoft.com>
 - QQ讨论群：574179720
