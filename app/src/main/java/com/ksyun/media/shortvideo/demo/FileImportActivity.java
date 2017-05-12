@@ -252,8 +252,6 @@ public class FileImportActivity extends Activity implements
         @Override
         public void onCompletion(IMediaPlayer mp) {
             Log.d(TAG, "mediaplayer onCompletion");
-            stopPlay();
-            startPlay(mFilePath);
         }
     };
 
@@ -306,6 +304,7 @@ public class FileImportActivity extends Activity implements
         mFilePath = path;
 
         mMediaPlayer.shouldAutoPlay(false);
+        mMediaPlayer.setLooping(true);
         mMediaPlayer.setOnCompletionListener(mOnCompletionListener);
         mMediaPlayer.setOnPreparedListener(mOnPreparedListener);
         mMediaPlayer.setOnInfoListener(mOnInfoListener);

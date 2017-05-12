@@ -8,6 +8,10 @@ import com.ksyun.media.shortvideo.demo.filter.DemoFilter;
 import com.ksyun.media.shortvideo.demo.filter.DemoFilter2;
 import com.ksyun.media.shortvideo.demo.filter.DemoFilter3;
 import com.ksyun.media.shortvideo.demo.filter.DemoFilter4;
+import com.ksyun.media.shortvideo.demo.videorange.HorizontalListView;
+import com.ksyun.media.shortvideo.demo.videorange.VideoRangeSeekBar;
+import com.ksyun.media.shortvideo.demo.videorange.VideoThumbnailAdapter;
+import com.ksyun.media.shortvideo.demo.videorange.VideoThumbnailInfo;
 import com.ksyun.media.shortvideo.utils.KS3ClientWrap;
 import com.ksyun.media.shortvideo.kit.KSYEditKit;
 import com.ksyun.media.shortvideo.utils.ShortVideoConstants;
@@ -28,6 +32,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.AppCompatSpinner;
@@ -36,6 +41,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -54,6 +60,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Timer;
@@ -77,9 +84,11 @@ public class EditActivity extends Activity implements
     private ImageView mPauseView;
     private TextView mFilterView;
     private TextView mWaterMarkView;
+    private TextView mVideoChooseView;
     private CheckBox mWaterMartLogoView;
     private View mFilterLayout;
     private View mWatermarkLayout;
+    private View mVideoRangeLayout;
     private AppCompatSpinner mBeautySpinner;
     private LinearLayout mBeautyGrindLayout;
     private TextView mGrindText;
@@ -102,10 +111,23 @@ public class EditActivity extends Activity implements
     private boolean mComposeFinished = false;
     private KS3TokenTask mTokenTask;
     private String mCurObjectKey;
+    private Handler mMainHandler;
 
     private boolean mPaused = false;
     private boolean mNeedResume = false;
 
+    //for video range
+    private HorizontalListView mVideoThumbnailList;
+    private VideoRangeSeekBar mVideoRangeSeekBar;
+    private VideoThumbnailAdapter mVideoThumbnailAdapter;
+    private static final int LONG_VIDEO_MAX_LEN = 300000;
+    private int mMaxClipSpanMs = LONG_VIDEO_MAX_LEN;  //默认的最大裁剪时长
+    private float mHLVOffsetX = 0.0f;
+    private long mEditPreviewDuration;
+    private TextView mVideoRangeStart;
+    private TextView mVideoRange;
+    private TextView mVideoRangeEnd;
+    private float mLastX = 0;
 
     public static void startActivity(Context context, String srcurl) {
         Intent intent = new Intent(context, EditActivity.class);
@@ -183,12 +205,16 @@ public class EditActivity extends Activity implements
         mWaterMartLogoView = (CheckBox) findViewById(R.id.watermark_logo);
         mWaterMartLogoView.setOnCheckedChangeListener(mCheckBoxObserver);
 
+        mVideoRangeLayout = findViewById(R.id.video_range_choose);
+        mVideoChooseView = (TextView) findViewById(R.id.click_to_video_range);
+        mVideoChooseView.setOnClickListener(mButtonObserver);
 
         mBackView = (ImageView) findViewById(R.id.click_to_back);
         mBackView.setOnClickListener(mButtonObserver);
         mNextView = (ImageView) findViewById(R.id.click_to_next);
         mNextView.setOnClickListener(mButtonObserver);
 
+        mMainHandler = new Handler();
         mEditKit = new KSYEditKit(this);
         mEditKit.setDisplayPreview(mEditPreviewView);
         mEditKit.setOnErrorListener(mOnErrorListener);
@@ -200,7 +226,7 @@ public class EditActivity extends Activity implements
             mEditKit.setEditPreviewUrl(url);
         }
         initBeautyUI();
-
+        initVideoRange();
         startEditPreview();
     }
 
@@ -223,6 +249,10 @@ public class EditActivity extends Activity implements
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (mMainHandler != null) {
+            mMainHandler.removeCallbacksAndMessages(null);
+            mMainHandler = null;
+        }
         mPutObjectResponseHandler = null;
 
         if (mComposeAlertDialog != null) {
@@ -234,10 +264,6 @@ public class EditActivity extends Activity implements
     }
 
     private void startEditPreview() {
-        if(mNeedResume) {
-            mEditKit.onResume();
-            mNeedResume = false;
-        }
         //设置预览的音量
         mEditKit.setVolume(0.4f);
         //设置是否循环预览
@@ -246,18 +272,15 @@ public class EditActivity extends Activity implements
         mEditKit.startEditPreview();
     }
 
-    private void stopEditPreview() {
-        mNeedResume = true;
-        mEditKit.stopEditPreview();
-        mEditKit.onPause();
-    }
-
     private void onFilterClick() {
         if (mFilterLayout.getVisibility() == View.INVISIBLE) {
             mFilterLayout.setVisibility(View.VISIBLE);
             mFilterView.setActivated(true);
+
             mWaterMarkView.setActivated(false);
             mWatermarkLayout.setVisibility(View.INVISIBLE);
+            mVideoRangeLayout.setVisibility(View.INVISIBLE);
+            mVideoChooseView.setActivated(false);
         }
     }
 
@@ -265,8 +288,23 @@ public class EditActivity extends Activity implements
         if (mWatermarkLayout.getVisibility() == View.INVISIBLE) {
             mWatermarkLayout.setVisibility(View.VISIBLE);
             mWaterMarkView.setActivated(true);
+
             mFilterView.setActivated(false);
             mFilterLayout.setVisibility(View.INVISIBLE);
+            mVideoRangeLayout.setVisibility(View.INVISIBLE);
+            mVideoChooseView.setActivated(false);
+        }
+    }
+
+    private void onVideoRangeClick() {
+        if (mVideoRangeLayout.getVisibility() == View.INVISIBLE) {
+            mVideoRangeLayout.setVisibility(View.VISIBLE);
+            mVideoChooseView.setActivated(true);
+
+            mFilterView.setActivated(false);
+            mFilterLayout.setVisibility(View.INVISIBLE);
+            mWaterMarkView.setActivated(false);
+            mWatermarkLayout.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -276,16 +314,6 @@ public class EditActivity extends Activity implements
         } else {
             mEditKit.hideWaterMarkLogo();
         }
-    }
-
-    private void showWaterMark() {
-        if (mWaterMartLogoView.isChecked()) {
-            mEditKit.showWaterMarkLogo(mLogoPath, 0.08f, 0.04f, 0.20f, 0, 0.8f);
-        }
-    }
-
-    private void hideWaterMark() {
-        mEditKit.hideWaterMarkLogo();
     }
 
     private void onMuteClick() {
@@ -327,8 +355,10 @@ public class EditActivity extends Activity implements
                 ShortVideoConfigDialog.ShortVideoConfig config = configDialog.getShortVideoConfig();
                 if (config != null) {
                     //配置合成参数
-                    mEditKit.setVideoFps(config.previewFps);
+                    mEditKit.setTargetResolution(config.resolution);
+                    mEditKit.setVideoFps(config.fps);
                     mEditKit.setVideoCodecId(config.encodeType);
+                    mEditKit.setVideoEncodeProfile(config.encodeProfile);
                     mEditKit.setAudioKBitrate(config.audioBitrate);
                     mEditKit.setVideoKBitrate(config.videoBitrate);
                     //关闭上一次合成窗口
@@ -338,7 +368,13 @@ public class EditActivity extends Activity implements
 
                     mComposeAlertDialog = new ComposeAlertDialog(EditActivity.this, R.style.dialog);
                     //设置合成路径
-                    String composeUrl = "/sdcard/" + System.currentTimeMillis() + ".mp4";
+                    String fileFolder = "/sdcard/ksy_sv_compose_test";
+                    File file = new File(fileFolder);
+                    if (!file.exists()) {
+                        file.mkdir();
+                    }
+
+                    String composeUrl = fileFolder + "/" + System.currentTimeMillis() + ".mp4";
                     Log.d(TAG, "compose Url:" + composeUrl);
                     //开始合成
                     mEditKit.startCompose(composeUrl);
@@ -363,7 +399,7 @@ public class EditActivity extends Activity implements
                             "Compose Failed:" + type, Toast.LENGTH_LONG).show();
                     if (mComposeAlertDialog != null) {
                         mComposeAlertDialog.closeDialog();
-                        EditActivity.this.startEditPreview();
+                        mEditKit.resumeEditPreview();
                     }
                     break;
                 case ShortVideoConstants.SHORTVIDEO_ERROR_SDK_AUTHFAILED:
@@ -375,6 +411,9 @@ public class EditActivity extends Activity implements
                     Log.d(TAG, "ks3 upload token error, upload to ks3 failed");
                     Toast.makeText(EditActivity.this,
                             "Auth failed can't start upload:" + type, Toast.LENGTH_LONG).show();
+                    if (mComposeAlertDialog != null) {
+                        mComposeAlertDialog.uploadFinished(false);
+                    }
                     break;
 
 
@@ -385,38 +424,50 @@ public class EditActivity extends Activity implements
     private KSYEditKit.OnInfoListener mOnInfoListener = new KSYEditKit.OnInfoListener() {
         @Override
         public Object onInfo(int type, String... msgs) {
-            if (type == ShortVideoConstants.SHORTVIDEO_COMPOSE_START) {
-                Log.d(TAG, "compose start");
-                stopEditPreview();
-                mBeautySpinner.setSelection(0);
-                if (mComposeAlertDialog != null) {
-                    mComposeAlertDialog.setCancelable(false);
-                    mComposeAlertDialog.show();
-                    mComposeAlertDialog.composeStarted();
-                }
-                return null;
-            } else if (type == ShortVideoConstants.SHORTVIDEO_COMPOSE_FINISHED) {
-                Log.d(TAG, "compose finished");
-                if (mComposeAlertDialog != null) {
-                    mComposeAlertDialog.composeFinished(msgs[0]);
-                    mComposeFinished = true;
-                }
-                //上传必要信息：bucket,objectkey，及PutObjectResponseHandler上传过程回调
-                mCurObjectKey = getPackageName() + "/" + System.currentTimeMillis() + ".mp4";
-                KS3ClientWrap.KS3UploadInfo bucketInfo = new KS3ClientWrap.KS3UploadInfo
-                        ("ksvsdemo", mCurObjectKey, mPutObjectResponseHandler);
-                return bucketInfo;
-            } else if (type == ShortVideoConstants.SHORTVIDEO_GET_KS3AUTH) {
-                if (msgs.length == 6) {
-                    if (mTokenTask == null) {
-                        mTokenTask = new KS3TokenTask(getApplicationContext());
+            Log.d(TAG, "on info:" + type);
+            switch (type) {
+                case ShortVideoConstants.SHORTVIDEO_EDIT_PREPARED:
+                    mEditPreviewDuration = mEditKit.getEditDuration();
+                    initSeekBar();
+                    initThumbnailAdapter();
+                    break;
+                case ShortVideoConstants.SHORTVIDEO_COMPOSE_START: {
+                    mEditKit.pauseEditPreview();
+                    mBeautySpinner.setSelection(0);
+                    if (mComposeAlertDialog != null) {
+                        mComposeAlertDialog.setCancelable(false);
+                        mComposeAlertDialog.show();
+                        mComposeAlertDialog.composeStarted();
                     }
-
-                    return mTokenTask.requsetTokenToAppServer(msgs[0], msgs[1],
-                            msgs[2], msgs[3], msgs[4], msgs[5]);
-                } else {
                     return null;
                 }
+                case ShortVideoConstants.SHORTVIDEO_COMPOSE_FINISHED: {
+                    if (mComposeAlertDialog != null) {
+                        mComposeAlertDialog.composeFinished(msgs[0]);
+                        mComposeFinished = true;
+                    }
+                    //上传必要信息：bucket,objectkey，及PutObjectResponseHandler上传过程回调
+                    mCurObjectKey = getPackageName() + "/" + System.currentTimeMillis() + ".mp4";
+                    KS3ClientWrap.KS3UploadInfo bucketInfo = new KS3ClientWrap.KS3UploadInfo
+                            ("ksvsdemo", mCurObjectKey, mPutObjectResponseHandler);
+                    return bucketInfo;
+                }
+                case ShortVideoConstants.SHORTVIDEO_COMPOSE_ABORTED:
+                    break;
+                case ShortVideoConstants.SHORTVIDEO_GET_KS3AUTH: {
+                    if (msgs.length == 6) {
+                        if (mTokenTask == null) {
+                            mTokenTask = new KS3TokenTask(getApplicationContext());
+                        }
+
+                        return mTokenTask.requsetTokenToAppServer(msgs[0], msgs[1],
+                                msgs[2], msgs[3], msgs[4], msgs[5]);
+                    } else {
+                        return null;
+                    }
+                }
+                default:
+                    return null;
             }
             return null;
         }
@@ -475,6 +526,9 @@ public class EditActivity extends Activity implements
                 case R.id.click_to_watermark:
                     onWatermarkClick();
                     break;
+                case R.id.click_to_video_range:
+                    onVideoRangeClick();
+                    break;
                 case R.id.click_to_back:
                     onBackoffClick();
                     break;
@@ -506,6 +560,273 @@ public class EditActivity extends Activity implements
             }
         }
     }
+
+    /**********************************video range****************************************/
+    /**
+     * init video range ui
+     */
+    private void initVideoRange() {
+        mVideoRangeStart = (TextView) findViewById(R.id.range_start);  //裁剪开始位置
+        mVideoRange = (TextView) findViewById(R.id.range);    //裁剪时长
+        mVideoRangeEnd = (TextView) findViewById(R.id.range_end);  //裁剪结束位置
+
+        //裁剪bar
+        mVideoRangeSeekBar = (VideoRangeSeekBar) findViewById(R.id.seekbar);
+        mVideoRangeSeekBar.setOnVideoMaskScrollListener(mVideoMaskScrollListener);
+        mVideoRangeSeekBar.setOnRangeBarChangeListener(onRangeBarChangeListener);
+
+        //缩略图显示
+        mVideoThumbnailList = (HorizontalListView) findViewById(R.id.hlistview);
+        mVideoThumbnailList.setOnScrollListener(mVideoThumbnailScrollListener);
+    }
+
+    /**
+     * init video seek range
+     */
+    private void initSeekBar() {
+        long durationMS = mEditKit.getEditDuration();
+        float durationInSec = durationMS * 1.0f / 1000;
+        if (durationMS > mMaxClipSpanMs) {
+            mVideoRangeSeekBar.setMaxRange(mMaxClipSpanMs * 1.0f / 1000);
+        } else {
+            mVideoRangeSeekBar.setMaxRange(durationInSec);
+        }
+
+        mVideoRangeSeekBar.setMinRange(1.0f);
+
+        if (durationInSec > 300.0f) {
+            mVideoRangeSeekBar.setRange(0.0f, 300.0f);
+        } else {
+            mVideoRangeSeekBar.setRange(0.0f, durationInSec);
+        }
+    }
+
+    /**
+     * init video thumbnail
+     */
+    private void initThumbnailAdapter() {
+        float picWidth;  //每个thumbnail显示的宽度
+        if (mVideoRangeSeekBar == null) {
+            picWidth = 60;
+        } else {
+            picWidth = mVideoRangeSeekBar.getFrameWidth();
+        }
+        long durationMS = mEditKit.getEditDuration();
+
+        //list区域需要显示的item个数
+        int totalFrame;
+        //比最大裁剪时长大的视频,每长mMaxClipSpanMs长度,则增加8个thumbnail
+        //比最大裁剪时长小的视频,最多显示8个thumbnail
+        if (durationMS > mMaxClipSpanMs) {
+            totalFrame = (int) (durationMS * 8) / mMaxClipSpanMs;
+        } else {
+            totalFrame = Math.min((int) durationMS / 1000, 8);
+        }
+
+        int mm = totalFrame;
+
+        //若不是整数s，增加一个thumbnail
+        int left = (int) durationMS % 1000;
+        if (left != 0) {
+            totalFrame++;
+        }
+
+        // add start，mask区域，不显示thumbnail
+        totalFrame++;
+
+        boolean hasEnd = false;
+        if (totalFrame > 9) {
+            // add end
+            totalFrame++;
+            hasEnd = true;
+        }
+
+        VideoThumbnailInfo[] listData = new VideoThumbnailInfo[totalFrame];
+        for (int i = 0; i < totalFrame; i++) {
+            listData[i] = new VideoThumbnailInfo();
+            if (durationMS > mMaxClipSpanMs) {
+                listData[i].mCurrentTime = (durationMS / 1000) * (i - 1) / mm;
+            } else {
+                listData[i].mCurrentTime = (durationMS / 1000) * (i - 1) / 8;
+            }
+
+            if (i == 0 && mVideoRangeSeekBar != null) {
+                listData[i].mType = VideoThumbnailInfo.TYPE_START;
+                listData[i].mWidth = (int) mVideoRangeSeekBar.getMaskWidth();
+            } else if (i == totalFrame - 1 && hasEnd && mVideoRangeSeekBar != null) {
+                listData[i].mType = VideoThumbnailInfo.TYPE_END;
+                listData[i].mWidth = (int) mVideoRangeSeekBar.getMaskWidth();
+            } else if ((i == totalFrame - 1 && !hasEnd && left != 0)   //非整秒数部分
+                    || (i == totalFrame - 2 && hasEnd && left != 0)) {
+                listData[i].mType = VideoThumbnailInfo.TYPE_NORMAL;
+                listData[i].mWidth = (int) ((left * 1.0f / 1000.0f) * picWidth);
+            } else {
+                listData[i].mType = VideoThumbnailInfo.TYPE_NORMAL;
+                listData[i].mWidth = (int) picWidth;
+            }
+        }
+
+        mVideoThumbnailAdapter = new VideoThumbnailAdapter(this, listData, mEditKit);
+        mVideoThumbnailList.setAdapter(mVideoThumbnailAdapter);
+    }
+
+    VideoRangeSeekBar.OnRangeBarChangeListener onRangeBarChangeListener = new VideoRangeSeekBar.OnRangeBarChangeListener() {
+
+        @Override
+        public void onIndexChangeListener(VideoRangeSeekBar rangeBar,
+                                          float rangeStart, float rangeEnd, final int change, boolean toEnd) {
+
+            float toLen = (mVideoRangeSeekBar.getRangeEnd() + mHLVOffsetX) * 1000;
+            if (toEnd && toLen >= mMaxClipSpanMs && mMaxClipSpanMs > 0 && toLen <= mEditPreviewDuration) {
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(EditActivity.this, "视频总长不能超过" + mMaxClipSpanMs / 1000 + "秒 " +
+                                "T_T", Toast.LENGTH_LONG);
+                    }
+                });
+            }
+
+            mMainHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (mHLVOffsetX >= 7.5f && mHLVOffsetX <= 8.5f
+                            && !mVideoRangeSeekBar.isTouching()) {
+                        mHLVOffsetX = 8.0f;
+                        mVideoRangeSeekBar.setRange(mVideoRangeSeekBar.getRangeStart(),
+                                mVideoRangeSeekBar.getRangeStart() + mHLVOffsetX);
+                    }
+                    setRangeTextView(mHLVOffsetX);
+                    if (change == VideoRangeSeekBar.OnRangeBarChangeListener.LEFT_CHANGE) {
+                        seekToPreview(mVideoRangeSeekBar.getRangeStart() + mHLVOffsetX);
+                    } else if (change == VideoRangeSeekBar.OnRangeBarChangeListener.RIGHT_CHANGE) {
+                        seekToPreview(mVideoRangeSeekBar.getRangeEnd() + mHLVOffsetX);
+                        mMainHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                seekToPreview(mVideoRangeSeekBar.getRangeStart() + mHLVOffsetX);
+                            }
+                        }, 500);
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void onActionUp() {
+            rangeLoopPreview();
+        }
+    };
+
+    /**
+     * loop preview duraing range
+     */
+    private void rangeLoopPreview() {
+        long startTime = (long) ((mVideoRangeSeekBar.getRangeStart() + mHLVOffsetX) * 1000);
+        long endTime = (long) ((mVideoRangeSeekBar.getRangeEnd() + mHLVOffsetX) * 1000);
+        mEditKit.setEditPreviewRanges(startTime, endTime);
+    }
+
+    /**
+     * seek to preview
+     *
+     * @param second
+     */
+    private void seekToPreview(float second) {
+        if (mVideoRangeSeekBar != null) {
+            mVideoRangeSeekBar.setIndicatorVisible(false);
+        }
+
+        long seekTo = (long) (second * 1000);
+        if (seekTo > mEditPreviewDuration) {
+            seekTo = mEditPreviewDuration;
+        }
+
+        if (seekTo < 0) {
+            seekTo = 0;
+        }
+
+        Log.d(TAG, "seekto:" + seekTo);
+        mEditKit.seekEditPreview(seekTo);
+
+        if (mVideoRangeSeekBar != null) {
+            mVideoRangeSeekBar.setIndicatorOffsetSec((mEditKit.getEditPreviewCurrentPosition() * 1.0f - mHLVOffsetX * 1000) /
+                    1000);
+        }
+
+        Log.d(TAG, "seek currentpostion:" + mEditKit.getEditPreviewCurrentPosition());
+    }
+
+    private void setRangeTextView(float offset) {
+        Log.d(TAG, "setRangeTextView offset:" + offset);
+        Log.d(TAG, "setRangeTextView:" + mVideoRangeSeekBar.getRangeStart() + ","
+                + mVideoRangeSeekBar.getRangeEnd());
+        mVideoRangeStart.setText(formatTimeStr(mVideoRangeSeekBar.getRangeStart() + offset));
+        mVideoRangeEnd.setText(formatTimeStr(mVideoRangeSeekBar.getRangeEnd() + offset));
+
+
+        mVideoRange.setText(formatTimeStr2(((int) (10 * mVideoRangeSeekBar.getRangeEnd()))
+                - (int) (10 * mVideoRangeSeekBar.getRangeStart())));
+    }
+
+    private String formatTimeStr2(int s) {
+        int second = s / 10;
+        int left = s % 10;
+
+        return String.format("%d.%d", second, left);
+    }
+
+    private String formatTimeStr(float s) {
+        int minute = ((int) s) / 60;
+        int second = ((int) s) % 60;
+        int left = ((int) (s * 10)) % 10;
+
+        return String.format("%02d:%02d.%d", minute, second, left);
+    }
+
+    VideoRangeSeekBar.OnVideoMaskScrollListener mVideoMaskScrollListener = new VideoRangeSeekBar.OnVideoMaskScrollListener() {
+
+        @Override
+        public void onVideoMaskScrollListener(VideoRangeSeekBar rangeBar,
+                                              MotionEvent event) {
+            mVideoThumbnailList.dispatchTouchEvent(event);
+        }
+    };
+
+    HorizontalListView.OnScrollListener mVideoThumbnailScrollListener = new HorizontalListView.OnScrollListener() {
+
+        @Override
+        public void onScroll(final int currentX) {
+            final String msg = String.format("currentXX: %d", currentX);
+            Log.d(TAG, msg);
+
+            mMainHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Log.d(TAG, "currentX:" + currentX);
+                    mHLVOffsetX = mVideoRangeSeekBar.getRange(currentX);
+
+                    if (mEditPreviewDuration > mMaxClipSpanMs) {
+                        if ((mVideoRangeSeekBar.getRangeEnd() + mHLVOffsetX) * 1000 >= mEditPreviewDuration) {
+                            mHLVOffsetX = (mEditPreviewDuration / 1000 - mVideoRangeSeekBar.getRangeEnd());
+                        }
+                    }
+
+                    setRangeTextView(mHLVOffsetX);
+
+                    if (mLastX != mVideoRangeSeekBar.getRangeStart() + mHLVOffsetX) {
+                        rangeLoopPreview();
+                        mLastX = mVideoRangeSeekBar.getRangeStart() + mHLVOffsetX;
+                    }
+                }
+            });
+        }
+    };
+
+    /***********************************
+     * video range end
+     *****************************************/
 
     private void initBeautyUI() {
         String[] items = new String[]{"DISABLE", "BEAUTY_SOFT", "SKIN_WHITEN", "BEAUTY_ILLUSION",
@@ -640,6 +961,7 @@ public class EditActivity extends Activity implements
         private String mFilePath = null;
         private HttpRequestTask mPlayurlGetTask;
         public boolean mNeedResumePlay = false;
+        private AlertDialog mConfimDialog;
 
         private Timer mTimer;
 
@@ -673,24 +995,42 @@ public class EditActivity extends Activity implements
             mSurfaceHolder.addCallback(mSurfaceCallback);
         }
 
-
         @Override
         public boolean onKeyDown(int keyCode, KeyEvent event) {
             switch (keyCode) {
                 case KeyEvent.KEYCODE_BACK:
                     if (!mComposeFinished) {
-                        mEditKit.abort();
-                    }
+                        mConfimDialog = new AlertDialog.Builder(EditActivity.this).setCancelable
+                                (true)
+                                .setTitle("中止合成?")
+                                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
 
-                    closeDialog();
-                    EditActivity.this.startEditPreview();
+                                    @Override
+                                    public void onClick(DialogInterface arg0, int arg1) {
+                                        mConfimDialog = null;
+                                    }
+                                })
+                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface arg0, int arg1) {
+                                        if (!mComposeFinished) {
+                                            mEditKit.stopCompose();
+                                            mComposeFinished = false;
+                                            closeDialog();
+                                            mEditKit.resumeEditPreview();
+                                        }
+                                        mConfimDialog = null;
+                                    }
+                                }).show();
+                    } else {
+                        closeDialog();
+                        mEditKit.resumeEditPreview();
+                    }
                     break;
                 default:
                     break;
             }
             return false;
-
-
         }
 
         public void composeStarted() {
@@ -708,6 +1048,17 @@ public class EditActivity extends Activity implements
         }
 
         public void composeFinished(String path) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mConfimDialog != null) {
+                        mConfimDialog.dismiss();
+                        mConfimDialog = null;
+                    }
+                    mStateTextView.setText("上传鉴权中");
+                }
+            });
+
             mFilePath = path;
             startPreview();
 
@@ -885,8 +1236,6 @@ public class EditActivity extends Activity implements
             @Override
             public void onCompletion(IMediaPlayer mp) {
                 Log.d(TAG, "mediaplayer onCompletion");
-                stopPlay();
-                startPlay(mFilePath);
             }
         };
 
@@ -927,6 +1276,7 @@ public class EditActivity extends Activity implements
         }
 
         private void startPlay(String path) {
+            mMediaPlayer.setLooping(true);
             mMediaPlayer.shouldAutoPlay(false);
             mMediaPlayer.setOnCompletionListener(mOnCompletionListener);
             mMediaPlayer.setOnPreparedListener(mOnPreparedListener);

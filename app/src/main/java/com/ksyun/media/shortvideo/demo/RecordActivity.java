@@ -1,7 +1,17 @@
 package com.ksyun.media.shortvideo.demo;
 
+import com.ksyun.media.player.IMediaPlayer;
+import com.ksyun.media.shortvideo.demo.filter.DemoFilter;
+import com.ksyun.media.shortvideo.demo.filter.DemoFilter2;
+import com.ksyun.media.shortvideo.demo.filter.DemoFilter3;
+import com.ksyun.media.shortvideo.demo.filter.DemoFilter4;
 import com.ksyun.media.shortvideo.kit.KSYRecordKit;
 import com.ksyun.media.streamer.capture.CameraCapture;
+import com.ksyun.media.streamer.capture.camera.CameraTouchHelper;
+import com.ksyun.media.streamer.filter.imgtex.ImgBeautyProFilter;
+import com.ksyun.media.streamer.filter.imgtex.ImgBeautyToneCurveFilter;
+import com.ksyun.media.streamer.filter.imgtex.ImgFilterBase;
+import com.ksyun.media.streamer.filter.imgtex.ImgTexFilterMgt;
 import com.ksyun.media.streamer.kit.KSYStreamer;
 import com.ksyun.media.streamer.kit.StreamerConstants;
 import com.ksyun.media.streamer.logstats.StatsLogReport;
@@ -20,18 +30,28 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.widget.AppCompatSeekBar;
+import android.support.v7.widget.AppCompatSpinner;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.Chronometer;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Record ShortVideo
@@ -42,6 +62,8 @@ public class RecordActivity extends Activity implements
     private static String TAG = "RecordActivity";
 
     private GLSurfaceView mCameraPreviewView;
+    //private TextureView mCameraPreviewView;
+    private CameraHintView mCameraHintView;
     private Chronometer mChronometer;
     private View mSwitchCameraView;
     private View mFlashView;
@@ -51,21 +73,38 @@ public class RecordActivity extends Activity implements
     private ImageView mBackView;
     private ImageView mNextView;
     private CheckBox mFrontMirrorCheckBox;
+    private CheckBox mMicAudioView;
+    private CheckBox mBgmMusicView;
+    private CheckBox mBeautyCheckBox;
+    private AppCompatSeekBar mMicAudioVolumeSeekBar;
+    private AppCompatSeekBar mBgmVolumeSeekBar;
+
+    private View mBeautyChooseView;
+    private AppCompatSpinner mBeautySpinner;
+    private LinearLayout mBeautyGrindLayout;
+    private TextView mGrindText;
+    private AppCompatSeekBar mGrindSeekBar;
+    private LinearLayout mBeautyWhitenLayout;
+    private TextView mWhitenText;
+    private AppCompatSeekBar mWhitenSeekBar;
+    private LinearLayout mBeautyRuddyLayout;
+    private TextView mRuddyText;
+    private AppCompatSeekBar mRuddySeekBar;
 
     private ButtonObserver mObserverButton;
     private RecordActivity.CheckBoxObserver mCheckBoxObserver;
+    private SeekBarChangedObserver mSeekBarChangedObsesrver;
 
     private KSYRecordKit mKSYRecordKit;
     private Handler mMainHandler;
 
     private boolean mIsFileRecording = false;
     private boolean mIsFlashOpened = false;
-    private String mRecordUrl = "/sdcard/rec_test.mp4";
-    private boolean mNeedStartCameraPreview = false;
+    private String mRecordUrl;
 
     private boolean mHWEncoderUnsupported;
     private boolean mSWEncoderUnsupported;
-
+    private String mBgmPath = "/sdcard/test.mp3";
     private final static int PERMISSION_REQUEST_CAMERA_AUDIOREC = 1;
 
     public final static String FRAME_RATE = "framerate";
@@ -110,7 +149,6 @@ public class RecordActivity extends Activity implements
         //init UI
         //录制预览部分宽高1:1比例显示（用户可以按照自己的需求处理）
         //just PORTRAIT
-        //TODO LANDSCAPE
         WindowManager windowManager = (WindowManager) getApplication().
                 getSystemService(getApplication().WINDOW_SERVICE);
 
@@ -119,8 +157,10 @@ public class RecordActivity extends Activity implements
 
         mObserverButton = new ButtonObserver();
         mCheckBoxObserver = new CheckBoxObserver();
+        mSeekBarChangedObsesrver = new SeekBarChangedObserver();
         mSwitchCameraView = findViewById(R.id.switch_cam);
         mSwitchCameraView.setOnClickListener(mObserverButton);
+        mCameraHintView = (CameraHintView) findViewById(R.id.camera_hint);
         mFlashView = findViewById(R.id.flash);
         mFlashView.setOnClickListener(mObserverButton);
         mPreviewLayout = (RelativeLayout) findViewById(R.id.preview_layout);
@@ -128,6 +168,19 @@ public class RecordActivity extends Activity implements
         mCameraPreviewView = (GLSurfaceView) findViewById(R.id.camera_preview);
         mFrontMirrorCheckBox = (CheckBox) findViewById(R.id.record_front_mirror);
         mFrontMirrorCheckBox.setOnCheckedChangeListener(mCheckBoxObserver);
+        mBgmMusicView = (CheckBox) findViewById(R.id.record_bgm);
+        mBgmMusicView.setOnCheckedChangeListener(mCheckBoxObserver);
+        mMicAudioView = (CheckBox) findViewById(R.id.record_mic_audio);
+        mMicAudioView.setOnCheckedChangeListener(mCheckBoxObserver);
+        mMicAudioVolumeSeekBar = (AppCompatSeekBar) findViewById(R.id.record_mic_audio_volume);
+        mMicAudioVolumeSeekBar.setOnSeekBarChangeListener(mSeekBarChangedObsesrver);
+        mBgmVolumeSeekBar = (AppCompatSeekBar) findViewById(R.id.record_music_audio_volume);
+        mBgmVolumeSeekBar.setOnSeekBarChangeListener(mSeekBarChangedObsesrver);
+        if (!mBgmMusicView.isChecked()) {
+            mBgmVolumeSeekBar.setEnabled(false);
+        }
+        mBeautyCheckBox = (CheckBox) findViewById(R.id.record_beauty);
+        mBeautyCheckBox.setOnCheckedChangeListener(mCheckBoxObserver);
         mChronometer = (Chronometer) findViewById(R.id.chronometer);
         mRecordView = (ImageView) findViewById(R.id.click_to_record);
         mRecordView.getDrawable().setLevel(1);
@@ -137,13 +190,29 @@ public class RecordActivity extends Activity implements
         mNextView = (ImageView) findViewById(R.id.click_to_next);
         mNextView.setOnClickListener(mObserverButton);
 
+        int width = screenWidth;
+        int height = screenWidth;
+
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(screenWidth,
-                screenWidth);
+                height);
         mPreviewLayout.setLayoutParams(params);
 
         params = new LinearLayout.LayoutParams(screenWidth,
-                screenHeight - screenWidth);
+                screenHeight - height);
         mBarBottomLayout.setLayoutParams(params);
+
+        mBeautyChooseView = findViewById(R.id.record_beauty_choose);
+        mBeautySpinner = (AppCompatSpinner) findViewById(R.id.beauty_spin);
+        mBeautyGrindLayout = (LinearLayout) findViewById(R.id.beauty_grind);
+        mGrindText = (TextView) findViewById(R.id.grind_text);
+        mGrindSeekBar = (AppCompatSeekBar) findViewById(R.id.grind_seek_bar);
+        mBeautyWhitenLayout = (LinearLayout) findViewById(R.id.beauty_whiten);
+        mWhitenText = (TextView) findViewById(R.id.whiten_text);
+        mWhitenSeekBar = (AppCompatSeekBar) findViewById(R.id.whiten_seek_bar);
+        mBeautyRuddyLayout = (LinearLayout) findViewById(R.id.beauty_ruddy);
+        mRuddyText = (TextView) findViewById(R.id.ruddy_text);
+        mRuddySeekBar = (AppCompatSeekBar) findViewById(R.id.ruddy_seek_bar);
+        initBeautyUI();
 
         //init
         mMainHandler = new Handler();
@@ -190,8 +259,25 @@ public class RecordActivity extends Activity implements
         mKSYRecordKit.setOnInfoListener(mOnInfoListener);
         mKSYRecordKit.setOnErrorListener(mOnErrorListener);
         mKSYRecordKit.setOnLogEventListener(mOnLogEventListener);
-        mKSYRecordKit.setScallingMode(KSYRecordKit.SCALING_MODE_CENTER_CROP);
+
+        // touch focus and zoom support
+        CameraTouchHelper cameraTouchHelper = new CameraTouchHelper();
+        cameraTouchHelper.setCameraCapture(mKSYRecordKit.getCameraCapture());
+        mCameraPreviewView.setOnTouchListener(cameraTouchHelper);
+        // set CameraHintView to show focus rect and zoom ratio
+        cameraTouchHelper.setCameraHintView(mCameraHintView);
+
         startCameraPreviewWithPermCheck();
+
+        if (!mMicAudioView.isChecked()) {
+            mMicAudioVolumeSeekBar.setEnabled(false);
+        } else {
+            mMicAudioVolumeSeekBar.setProgress((int) mKSYRecordKit.getVoiceVolume() * 100);
+        }
+    }
+
+    private int align(int val, int align) {
+        return (val + align - 1) / align * align;
     }
 
     @Override
@@ -199,20 +285,19 @@ public class RecordActivity extends Activity implements
         super.onResume();
 
         mKSYRecordKit.setDisplayPreview(mCameraPreviewView);
-        if (mNeedStartCameraPreview) {
-            mKSYRecordKit.startCameraPreview();
-            mNeedStartCameraPreview = false;
-        }
         mKSYRecordKit.onResume();
+        mCameraHintView.hideAll();
+
+        // camera may be occupied by other app in background
+        startCameraPreviewWithPermCheck();
     }
 
     @Override
     public void onPause() {
         super.onPause();
         mKSYRecordKit.onPause();
-        if (mKSYRecordKit.getPreviewWidth() > 0 && mKSYRecordKit.getPreviewHeight() > 0) {
-            mKSYRecordKit.setOffscreenPreview(mKSYRecordKit.getPreviewWidth(),
-                    mKSYRecordKit.getPreviewHeight());
+        if (!mKSYRecordKit.isRecording() && !mKSYRecordKit.isFileRecording()) {
+            mKSYRecordKit.stopCameraPreview();
         }
     }
 
@@ -242,8 +327,15 @@ public class RecordActivity extends Activity implements
 
     //start recording to a local file
     private void startRecord() {
-        mRecordUrl = "/sdcard/rec_test" + System.currentTimeMillis() + ".mp4";
+        String fileFolder = "/sdcard/ksy_sv_rec_test";
+        File file = new File(fileFolder);
+        if (!file.exists()) {
+            file.mkdir();
+        }
+        mRecordUrl = fileFolder + "/" + System.currentTimeMillis() + ".mp4";
         Log.d(TAG, "record url:" + mRecordUrl);
+        float val = mMicAudioVolumeSeekBar.getProgress() / 100.f;
+        mKSYRecordKit.setVoiceVolume(val);
         mKSYRecordKit.startRecord(mRecordUrl);
         mIsFileRecording = true;
     }
@@ -368,19 +460,14 @@ public class RecordActivity extends Activity implements
                     break;
             }
             switch (what) {
-                case StreamerConstants.KSY_STREAMER_CAMERA_ERROR_UNKNOWN:
-                case StreamerConstants.KSY_STREAMER_CAMERA_ERROR_START_FAILED:
                 case StreamerConstants.KSY_STREAMER_AUDIO_RECORDER_ERROR_START_FAILED:
                 case StreamerConstants.KSY_STREAMER_AUDIO_RECORDER_ERROR_UNKNOWN:
                     break;
+                case StreamerConstants.KSY_STREAMER_CAMERA_ERROR_UNKNOWN:
+                case StreamerConstants.KSY_STREAMER_CAMERA_ERROR_START_FAILED:
+                case StreamerConstants.KSY_STREAMER_CAMERA_ERROR_EVICTED:
                 case StreamerConstants.KSY_STREAMER_CAMERA_ERROR_SERVER_DIED:
                     mKSYRecordKit.stopCameraPreview();
-                    mMainHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            startCameraPreviewWithPermCheck();
-                        }
-                    }, 5000);
                     break;
                 case StreamerConstants.KSY_STREAMER_FILE_PUBLISHER_CLOSE_FAILED:
                 case StreamerConstants.KSY_STREAMER_FILE_PUBLISHER_ERROR_UNKNOWN:
@@ -448,11 +535,129 @@ public class RecordActivity extends Activity implements
 
     private void onNextClick() {
         stopRecord();
-        mKSYRecordKit.stopCameraPreview();
-        mNeedStartCameraPreview = true;
+        if (mKSYRecordKit.getAudioPlayerCapture().getMediaPlayer().isPlaying()) {
+            mKSYRecordKit.getAudioPlayerCapture().stop();
+        }
         mRecordView.getDrawable().setLevel(1);
 
         EditActivity.startActivity(getApplicationContext(), mRecordUrl);
+    }
+
+    private void initBeautyUI() {
+        String[] items = new String[]{"DISABLE", "BEAUTY_SOFT", "SKIN_WHITEN", "BEAUTY_ILLUSION",
+                "BEAUTY_DENOISE", "BEAUTY_SMOOTH", "BEAUTY_PRO", "DEMO_FILTER", "GROUP_FILTER",
+                "ToneCurve", "复古", "胶片"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, items);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mBeautySpinner.setAdapter(adapter);
+        mBeautySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                TextView textView = ((TextView) parent.getChildAt(0));
+                if (textView != null) {
+                    textView.setTextColor(getResources().getColor(R.color.font_color_35));
+                }
+                if (position == 0) {
+                    mKSYRecordKit.getImgTexFilterMgt().setFilter((ImgFilterBase) null);
+                } else if (position <= 5) {
+                    mKSYRecordKit.getImgTexFilterMgt().setFilter(
+                            mKSYRecordKit.getGLRender(), position + 15);
+                } else if (position == 6) {
+                    mKSYRecordKit.getImgTexFilterMgt().setFilter(mKSYRecordKit.getGLRender(),
+                            ImgTexFilterMgt.KSY_FILTER_BEAUTY_PRO);
+                } else if (position == 7) {
+                    mKSYRecordKit.getImgTexFilterMgt().setFilter(
+                            new DemoFilter(mKSYRecordKit.getGLRender()));
+                } else if (position == 8) {
+                    List<ImgFilterBase> groupFilter = new LinkedList<>();
+                    groupFilter.add(new DemoFilter2(mKSYRecordKit.getGLRender()));
+                    groupFilter.add(new DemoFilter3(mKSYRecordKit.getGLRender()));
+                    groupFilter.add(new DemoFilter4(mKSYRecordKit.getGLRender()));
+                    mKSYRecordKit.getImgTexFilterMgt().setFilter(groupFilter);
+                } else if (position == 9) {
+                    ImgBeautyToneCurveFilter acvFilter = new ImgBeautyToneCurveFilter(mKSYRecordKit.getGLRender());
+                    acvFilter.setFromCurveFileInputStream(
+                            RecordActivity.this.getResources().openRawResource(R.raw.tone_cuver_sample));
+
+                    mKSYRecordKit.getImgTexFilterMgt().setFilter(acvFilter);
+                } else if (position == 10) {
+                    ImgBeautyToneCurveFilter acvFilter = new ImgBeautyToneCurveFilter(mKSYRecordKit
+                            .getGLRender());
+                    acvFilter.setFromCurveFileInputStream(
+                            RecordActivity.this.getResources().openRawResource(R.raw.fugu));
+
+                    mKSYRecordKit.getImgTexFilterMgt().setFilter(acvFilter);
+                } else if (position == 11) {
+                    ImgBeautyToneCurveFilter acvFilter = new ImgBeautyToneCurveFilter(mKSYRecordKit
+                            .getGLRender());
+                    acvFilter.setFromCurveFileInputStream(
+                            RecordActivity.this.getResources().openRawResource(R.raw.jiaopian));
+
+                    mKSYRecordKit.getImgTexFilterMgt().setFilter(acvFilter);
+                }
+                List<ImgFilterBase> filters = mKSYRecordKit.getImgTexFilterMgt().getFilter();
+                if (filters != null && !filters.isEmpty()) {
+                    final ImgFilterBase filter = filters.get(0);
+                    mBeautyGrindLayout.setVisibility(filter.isGrindRatioSupported() ?
+                            View.VISIBLE : View.GONE);
+                    mBeautyWhitenLayout.setVisibility(filter.isWhitenRatioSupported() ?
+                            View.VISIBLE : View.GONE);
+                    mBeautyRuddyLayout.setVisibility(filter.isRuddyRatioSupported() ?
+                            View.VISIBLE : View.GONE);
+                    SeekBar.OnSeekBarChangeListener seekBarChangeListener =
+                            new SeekBar.OnSeekBarChangeListener() {
+                                @Override
+                                public void onProgressChanged(SeekBar seekBar, int progress,
+                                                              boolean fromUser) {
+                                    if (!fromUser) {
+                                        return;
+                                    }
+                                    float val = progress / 100.f;
+                                    if (seekBar == mGrindSeekBar) {
+                                        filter.setGrindRatio(val);
+                                    } else if (seekBar == mWhitenSeekBar) {
+                                        filter.setWhitenRatio(val);
+                                    } else if (seekBar == mRuddySeekBar) {
+                                        if (filter instanceof ImgBeautyProFilter) {
+                                            val = progress / 50.f - 1.0f;
+                                        }
+                                        filter.setRuddyRatio(val);
+                                    }
+                                }
+
+                                @Override
+                                public void onStartTrackingTouch(SeekBar seekBar) {
+                                }
+
+                                @Override
+                                public void onStopTrackingTouch(SeekBar seekBar) {
+                                }
+                            };
+                    mGrindSeekBar.setOnSeekBarChangeListener(seekBarChangeListener);
+                    mWhitenSeekBar.setOnSeekBarChangeListener(seekBarChangeListener);
+                    mRuddySeekBar.setOnSeekBarChangeListener(seekBarChangeListener);
+                    mGrindSeekBar.setProgress((int) (filter.getGrindRatio() * 100));
+                    mWhitenSeekBar.setProgress((int) (filter.getWhitenRatio() * 100));
+                    int ruddyVal = (int) (filter.getRuddyRatio() * 100);
+                    if (filter instanceof ImgBeautyProFilter) {
+                        ruddyVal = (int) (filter.getRuddyRatio() * 50 + 50);
+                    }
+                    mRuddySeekBar.setProgress(ruddyVal);
+                } else {
+                    mBeautyGrindLayout.setVisibility(View.GONE);
+                    mBeautyWhitenLayout.setVisibility(View.GONE);
+                    mBeautyRuddyLayout.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // do nothing
+            }
+        });
+        mBeautySpinner.setPopupBackgroundResource(R.color.transparent1);
+        mBeautySpinner.setSelection(4);
     }
 
     private class ButtonObserver implements View.OnClickListener {
@@ -484,6 +689,57 @@ public class RecordActivity extends Activity implements
         mKSYRecordKit.setFrontCameraMirror(isChecked);
     }
 
+    private void onBeautyChecked(boolean isChecked) {
+        if (mKSYRecordKit.getVideoEncodeMethod() == StreamerConstants.ENCODE_METHOD_SOFTWARE_COMPAT) {
+            mKSYRecordKit.getImgTexFilterMgt().setFilter(mKSYRecordKit.getGLRender(), isChecked ?
+                    ImgTexFilterMgt.KSY_FILTER_BEAUTY_DENOISE :
+                    ImgTexFilterMgt.KSY_FILTER_BEAUTY_DISABLE);
+            mKSYRecordKit.setEnableImgBufBeauty(isChecked);
+        } else {
+            mBeautyChooseView.setVisibility(isChecked ? View.VISIBLE : View.INVISIBLE);
+        }
+    }
+
+    private void onBgmChecked(boolean isChecked) {
+        if (isChecked) {
+            mKSYRecordKit.getAudioPlayerCapture().setOnCompletionListener(
+                    new IMediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(IMediaPlayer iMediaPlayer) {
+                            Log.d(TAG, "End of the currently playing music");
+                        }
+                    });
+            mKSYRecordKit.getAudioPlayerCapture().setOnErrorListener(
+                    new IMediaPlayer.OnErrorListener() {
+                        @Override
+                        public boolean onError(IMediaPlayer iMediaPlayer, int what, int extra) {
+                            Log.e(TAG, "OnErrorListener, Error:" + what + ", extra:" + extra);
+                            return false;
+                        }
+                    });
+            mKSYRecordKit.getAudioPlayerCapture().setVolume(0.4f);
+            mKSYRecordKit.setEnableAudioMix(true);
+            mKSYRecordKit.startBgm(mBgmPath, true);
+
+            mBgmVolumeSeekBar.setProgress((int) (0.4f * 100));
+            mBgmVolumeSeekBar.setEnabled(true);
+        } else {
+            mKSYRecordKit.stopBgm();
+            mBgmVolumeSeekBar.setEnabled(false);
+        }
+    }
+
+    private void onMicAudioChecked(boolean isChecked) {
+        mKSYRecordKit.setUseDummyAudioCapture(!isChecked);
+        if (isChecked) {
+            mMicAudioVolumeSeekBar.setEnabled(true);
+            mMicAudioVolumeSeekBar.setProgress((int) (mKSYRecordKit.getVoiceVolume() * 100));
+        } else {
+            mMicAudioVolumeSeekBar.setEnabled(false);
+        }
+    }
+
+
     private class CheckBoxObserver implements CompoundButton.OnCheckedChangeListener {
 
         @Override
@@ -492,12 +748,53 @@ public class RecordActivity extends Activity implements
                 case R.id.record_front_mirror:
                     onFrontMirrorChecked(isChecked);
                     break;
+                case R.id.record_beauty:
+                    onBeautyChecked(isChecked);
+                    break;
+                case R.id.record_mic_audio:
+                    onMicAudioChecked(isChecked);
+                    break;
+                case R.id.record_bgm:
+                    onBgmChecked(isChecked);
+                    break;
                 default:
                     break;
             }
         }
     }
 
+    private class SeekBarChangedObserver implements SeekBar.OnSeekBarChangeListener {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+            if (!fromUser) {
+                return;
+
+            }
+            float val = progress / 100.f;
+            switch (seekBar.getId()) {
+                case R.id.record_mic_audio_volume:
+                    mKSYRecordKit.setVoiceVolume(val);
+                    break;
+                case R.id.record_music_audio_volume:
+                    mKSYRecordKit.getAudioPlayerCapture().getMediaPlayer().setVolume(val, val);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+
+        }
+
+    }
 
     private void startCameraPreviewWithPermCheck() {
         int cameraPerm = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);

@@ -157,8 +157,8 @@ public class ShortVideoActivity extends Activity {
                 ShortVideoConfigDialog.ShortVideoConfig config = configDialog.getShortVideoConfig();
                 if (config != null) {
                     RecordActivity.startActivity(getApplicationContext(),
-                            config.previewFps, config.videoBitrate,
-                            config.audioBitrate, config.previewResolution, config.encodeType,
+                            config.fps, config.videoBitrate,
+                            config.audioBitrate, config.resolution, config.encodeType,
                             config.encodeMethod, config.encodeProfile);
                 }
 

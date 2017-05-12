@@ -43,6 +43,15 @@
                 android:text="水印"
                 android:textColor="@drawable/edit_title_choose"
                 android:textSize="18dp"/>
+
+            <TextView
+                android:id="@+id/click_to_video_range"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="裁剪"
+                android:textColor="@drawable/edit_title_choose"
+                android:textSize="18dp"/>
         </LinearLayout>
 
         <ImageView
@@ -80,6 +89,13 @@
         <include
             android:id="@+id/watermark_choose"
             layout="@layout/watermark_choose"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"/>
+
+        <include
+            android:id="@+id/video_range_choose"
+            layout="@layout/video_range_choose"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="invisible"/>
