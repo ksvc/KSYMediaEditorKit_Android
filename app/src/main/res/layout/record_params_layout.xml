@@ -4,12 +4,19 @@
               android:layout_height="wrap_content"
               android:background="#00000000"
               android:orientation="vertical">
+    <TextView
+        android:id="@+id/config_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="20dp"/>
 
     <RadioGroup
         android:id="@+id/resolution_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
 
         <RadioButton
             android:id="@+id/r360p"
@@ -97,14 +104,14 @@
             android:id="@+id/encode_profile_low_power"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="true"
+            android:checked="false"
             android:text="低功耗" />
 
         <RadioButton
             android:id="@+id/encode_profile_balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="false"
+            android:checked="true"
             android:text="平衡" />
 
         <RadioButton

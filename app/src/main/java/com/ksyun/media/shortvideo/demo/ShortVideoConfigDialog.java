@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 /**
  * Config recorder or compose params
@@ -39,6 +40,7 @@ public class ShortVideoConfigDialog extends Dialog {
     private RadioButton mProfileHighPerfButton;
     private EditText mVideoBitRateEditText;
     private EditText mAudioBitRateEditText;
+    private TextView mConfigTitle;
 
     private ShortVideoConfig mShortVideoConfig;
     private int mConfigType = SHORTVIDEOCONFIG_TYPE_RECORD;
@@ -53,6 +55,7 @@ public class ShortVideoConfigDialog extends Dialog {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.record_params_layout);
+        mConfigTitle = (TextView) findViewById(R.id.config_title);
         mFrameRateEditText = (EditText) findViewById(R.id.frameRatePicker);
         mFrameRateEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
         mVideoBitRateEditText = (EditText) findViewById(R.id.videoBitratePicker);
@@ -74,8 +77,10 @@ public class ShortVideoConfigDialog extends Dialog {
         mProfileHighPerfButton = (RadioButton) findViewById(R.id.encode_profile_high_perf);
 
         if (mConfigType == SHORTVIDEOCONFIG_TYPE_COMPOSE) {
-            mResGroup.setVisibility(View.GONE);
             mEncodeGroup.setVisibility(View.GONE);
+            mConfigTitle.setText("合成参数配置");
+        } else if(mConfigType == SHORTVIDEOCONFIG_TYPE_RECORD) {
+            mConfigTitle.setText("录制参数配置");
         }
 
         Button mConfimButton = (Button) findViewById(R.id.preview_params_confim);
@@ -84,7 +89,7 @@ public class ShortVideoConfigDialog extends Dialog {
             public void onClick(View v) {
                 mShortVideoConfig = new ShortVideoConfig();
                 if (!TextUtils.isEmpty(mFrameRateEditText.getText().toString())) {
-                    mShortVideoConfig.previewFps = Integer.parseInt(mFrameRateEditText.getText()
+                    mShortVideoConfig.fps = Integer.parseInt(mFrameRateEditText.getText()
                             .toString());
                 }
 
@@ -102,13 +107,13 @@ public class ShortVideoConfigDialog extends Dialog {
 
                 if (mResGroup.getVisibility() == View.VISIBLE) {
                     if (mRes360Button.isChecked()) {
-                        mShortVideoConfig.previewResolution = StreamerConstants.VIDEO_RESOLUTION_360P;
+                        mShortVideoConfig.resolution = StreamerConstants.VIDEO_RESOLUTION_360P;
                     } else if (mRes480Button.isChecked()) {
-                        mShortVideoConfig.previewResolution = StreamerConstants.VIDEO_RESOLUTION_480P;
+                        mShortVideoConfig.resolution = StreamerConstants.VIDEO_RESOLUTION_480P;
                     } else if (mRes540Button.isChecked()) {
-                        mShortVideoConfig.previewResolution = StreamerConstants.VIDEO_RESOLUTION_540P;
+                        mShortVideoConfig.resolution = StreamerConstants.VIDEO_RESOLUTION_540P;
                     } else {
-                        mShortVideoConfig.previewResolution = StreamerConstants.VIDEO_RESOLUTION_720P;
+                        mShortVideoConfig.resolution = StreamerConstants.VIDEO_RESOLUTION_720P;
                     }
                 }
 
@@ -157,8 +162,8 @@ public class ShortVideoConfigDialog extends Dialog {
     }
 
     public class ShortVideoConfig {
-        public int previewFps;   //摄像头预览的采集帧率
-        public int previewResolution;  //摄像头预览的分辨率
+        public int fps;
+        public int resolution;
         public int videoBitrate;
         public int audioBitrate;
         public int encodeType;

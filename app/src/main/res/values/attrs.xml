@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="VideoRangeSeekBar">
+        <attr name="gradientWidth" format="dimension" />
+        <attr name="thumbBandHeight" format="dimension" />
+        <attr name="thumbWidth" format="dimension" />
+        <attr name="indicatorWidth" format="dimension" />
+        
+        <attr name="leftThumbNormal" format="reference" />
+        <attr name="leftThumbPress" format="reference" />
+        <attr name="rightThumbNormal" format="reference" />
+        <attr name="rightThumbPress" format="reference" />
+        <attr name="leftGradient" format="reference" />
+        <attr name="rightGradient" format="reference" />
+        <attr name="videoClipMask" format="reference" />
+        <attr name="indicatorImage" format="reference" />
+    </declare-styleable>
+    
+    
+    <!-- Defines the custom XML attributes supported for a HorizontalListView -->
+    <declare-styleable name="HorizontalListView">
+        <attr name="dividerWidth" format="dimension" />
+        <attr name="android:divider" />
+        <attr name="android:requiresFadingEdge" />
+        <attr name="android:fadingEdgeLength" />
+    </declare-styleable>
+</resources>
