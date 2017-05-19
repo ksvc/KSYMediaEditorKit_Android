@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="贴纸类型："
+            android:textColor="@color/font_color_35"
+            android:textSize="16sp"/>
+
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/sticker_spin"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_marginLeft="28dp"
+            android:text="none"
+            android:textSize="14sp">
+        </android.support.v7.widget.AppCompatSpinner>
+    </LinearLayout>
+</LinearLayout>
