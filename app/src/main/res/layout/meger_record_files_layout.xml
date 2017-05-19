@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:background="@color/transparent">
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_centerInParent="true"
+        android:indeterminateDrawable="@drawable/composing"
+        android:indeterminateDuration="1000"
+        android:indeterminateOnly="true"/>
+    <!--<TextView-->
+        <!--android:id="@+id/progress_text"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:textColor="#e85932"-->
+        <!--android:text="处理中"-->
+        <!--android:textSize="25px"/>-->
+
+</RelativeLayout>

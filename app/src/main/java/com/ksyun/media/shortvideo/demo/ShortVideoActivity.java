@@ -122,7 +122,9 @@ public class ShortVideoActivity extends Activity {
         };
         //开启异步任务，向AppServer请求鉴权信息
         mAuthTask = new HttpRequestTask(mAuthResponse);
-        mAuthTask.execute(AUTH_SERVER_URI + "?Pkg=" + getApplicationContext().getPackageName());
+        String url = AUTH_SERVER_URI + "?Pkg=" + getApplicationContext().getPackageName();
+        Log.d(TAG, "auth url:" + url);
+        mAuthTask.execute(url);
     }
 
     private AuthInfoManager.CheckAuthResultListener mCheckAuthResultListener = new AuthInfoManager

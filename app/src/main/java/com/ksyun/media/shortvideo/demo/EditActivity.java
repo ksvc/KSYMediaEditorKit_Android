@@ -85,10 +85,16 @@ public class EditActivity extends Activity implements
     private TextView mFilterView;
     private TextView mWaterMarkView;
     private TextView mVideoChooseView;
+    private TextView mAudioView;
     private CheckBox mWaterMartLogoView;
+    private CheckBox mOriginAudioView;
+    private CheckBox mBgmMusicView;
+    private AppCompatSeekBar mOriginAudioVolumeSeekBar;
+    private AppCompatSeekBar mBgmVolumeSeekBar;
     private View mFilterLayout;
     private View mWatermarkLayout;
     private View mVideoRangeLayout;
+    private View mAudioEditLayout;
     private AppCompatSpinner mBeautySpinner;
     private LinearLayout mBeautyGrindLayout;
     private TextView mGrindText;
@@ -102,10 +108,12 @@ public class EditActivity extends Activity implements
 
     private ButtonObserver mButtonObserver;
     private CheckBoxObserver mCheckBoxObserver;
+    private SeekBarChangedObserver mSeekBarChangedObsesrver;
 
     public final static String SRC_URL = "srcurl";
 
     private String mLogoPath = "assets://KSYLogo/logo.png";//"file:///sdcard/test.png";
+    private String mBgmPath = "/sdcard/test.mp3";
 
     private KSYEditKit mEditKit;
     private boolean mComposeFinished = false;
@@ -163,6 +171,7 @@ public class EditActivity extends Activity implements
 
         mButtonObserver = new EditActivity.ButtonObserver();
         mCheckBoxObserver = new EditActivity.CheckBoxObserver();
+        mSeekBarChangedObsesrver = new EditActivity.SeekBarChangedObserver();
         mEditPreviewView = (GLSurfaceView) findViewById(R.id.edit_preview);
         mPreviewLayout = (RelativeLayout) findViewById(R.id.preview_layout);
         mBarBottomLayout = (RelativeLayout) findViewById(R.id.edit_bar_bottom);
@@ -208,6 +217,25 @@ public class EditActivity extends Activity implements
         mVideoRangeLayout = findViewById(R.id.video_range_choose);
         mVideoChooseView = (TextView) findViewById(R.id.click_to_video_range);
         mVideoChooseView.setOnClickListener(mButtonObserver);
+
+        mAudioView = (TextView) findViewById(R.id.click_to_audio);
+        mAudioView.setOnClickListener(mButtonObserver);
+        mAudioEditLayout = findViewById(R.id.audio_choose);
+        mOriginAudioView = (CheckBox) findViewById(R.id.origin_audio);
+        mOriginAudioView.setOnCheckedChangeListener(mCheckBoxObserver);
+        mBgmMusicView = (CheckBox) findViewById(R.id.music_audio);
+        mBgmMusicView.setOnCheckedChangeListener(mCheckBoxObserver);
+        mOriginAudioVolumeSeekBar = (AppCompatSeekBar) findViewById(R.id.origin_audio_volume);
+        mOriginAudioVolumeSeekBar.setOnSeekBarChangeListener(mSeekBarChangedObsesrver);
+        mBgmVolumeSeekBar = (AppCompatSeekBar) findViewById(R.id.music_audio_volume);
+        mBgmVolumeSeekBar.setOnSeekBarChangeListener(mSeekBarChangedObsesrver);
+        if (!mBgmMusicView.isChecked()) {
+            mBgmVolumeSeekBar.setEnabled(false);
+        }
+
+        if (!mOriginAudioView.isChecked()) {
+            mOriginAudioVolumeSeekBar.setEnabled(false);
+        }
 
         mBackView = (ImageView) findViewById(R.id.click_to_back);
         mBackView.setOnClickListener(mButtonObserver);
@@ -270,6 +298,8 @@ public class EditActivity extends Activity implements
         mEditKit.setLooping(true);
         //开启预览
         mEditKit.startEditPreview();
+
+        mOriginAudioVolumeSeekBar.setProgress((int) (mEditKit.getOriginAudioVolume() * 100));
     }
 
     private void onFilterClick() {
@@ -281,6 +311,8 @@ public class EditActivity extends Activity implements
             mWatermarkLayout.setVisibility(View.INVISIBLE);
             mVideoRangeLayout.setVisibility(View.INVISIBLE);
             mVideoChooseView.setActivated(false);
+            mAudioEditLayout.setVisibility(View.INVISIBLE);
+            mAudioView.setActivated(false);
         }
     }
 
@@ -293,6 +325,8 @@ public class EditActivity extends Activity implements
             mFilterLayout.setVisibility(View.INVISIBLE);
             mVideoRangeLayout.setVisibility(View.INVISIBLE);
             mVideoChooseView.setActivated(false);
+            mAudioEditLayout.setVisibility(View.INVISIBLE);
+            mAudioView.setActivated(false);
         }
     }
 
@@ -305,6 +339,23 @@ public class EditActivity extends Activity implements
             mFilterLayout.setVisibility(View.INVISIBLE);
             mWaterMarkView.setActivated(false);
             mWatermarkLayout.setVisibility(View.INVISIBLE);
+            mAudioEditLayout.setVisibility(View.INVISIBLE);
+            mAudioView.setActivated(false);
+        }
+    }
+
+    private void onAudioEditClick() {
+        if (mAudioEditLayout.getVisibility() == View.INVISIBLE) {
+            mAudioEditLayout.setVisibility(View.VISIBLE);
+            mAudioView.setActivated(true);
+
+            mFilterView.setActivated(false);
+            mFilterLayout.setVisibility(View.INVISIBLE);
+            mWaterMarkView.setActivated(false);
+            mWatermarkLayout.setVisibility(View.INVISIBLE);
+            mVideoRangeLayout.setVisibility(View.INVISIBLE);
+            mVideoChooseView.setActivated(false);
+
         }
     }
 
@@ -314,6 +365,22 @@ public class EditActivity extends Activity implements
         } else {
             mEditKit.hideWaterMarkLogo();
         }
+    }
+
+    private void onOriginAudioClick(boolean isCheck) {
+        mEditKit.enableOriginAudio(isCheck);
+
+        mOriginAudioVolumeSeekBar.setEnabled(isCheck);
+    }
+
+    private void onBgmMusicClick(boolean isCheck) {
+        if (!isCheck) {
+            mEditKit.changeBgmMusic(null);
+        } else {
+            mEditKit.changeBgmMusic(mBgmPath);
+            mBgmVolumeSeekBar.setProgress((int) (mEditKit.getBgmMusicVolume() * 100));
+        }
+        mBgmVolumeSeekBar.setEnabled(isCheck);
     }
 
     private void onMuteClick() {
@@ -399,7 +466,7 @@ public class EditActivity extends Activity implements
                             "Compose Failed:" + type, Toast.LENGTH_LONG).show();
                     if (mComposeAlertDialog != null) {
                         mComposeAlertDialog.closeDialog();
-                        mEditKit.resumeEditPreview();
+                        resumeEditPreview();
                     }
                     break;
                 case ShortVideoConstants.SHORTVIDEO_ERROR_SDK_AUTHFAILED:
@@ -529,6 +596,9 @@ public class EditActivity extends Activity implements
                 case R.id.click_to_video_range:
                     onVideoRangeClick();
                     break;
+                case R.id.click_to_audio:
+                    onAudioEditClick();
+                    break;
                 case R.id.click_to_back:
                     onBackoffClick();
                     break;
@@ -555,9 +625,46 @@ public class EditActivity extends Activity implements
                 case R.id.watermark_logo:
                     onWaterMarkLogoClick(isChecked);
                     break;
+                case R.id.music_audio:
+                    onBgmMusicClick(isChecked);
+                    break;
+                case R.id.origin_audio:
+                    onOriginAudioClick(isChecked);
+                    break;
                 default:
                     break;
             }
+        }
+    }
+
+    private class SeekBarChangedObserver implements SeekBar.OnSeekBarChangeListener {
+
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            if (!fromUser) {
+                return;
+            }
+            float val = progress / 100.f;
+            switch (seekBar.getId()) {
+                case R.id.origin_audio_volume:
+                    mEditKit.setOriginAudioVolume(val);
+                    break;
+                case R.id.music_audio_volume:
+                    mEditKit.setBgmMusicVolume(val);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+
         }
     }
 
@@ -626,10 +733,11 @@ public class EditActivity extends Activity implements
         int mm = totalFrame;
 
         //若不是整数s，增加一个thumbnail
-        int left = (int) durationMS % 1000;
-        if (left != 0) {
-            totalFrame++;
-        }
+        int left = 0;  //不增加非整数倍的thumbnail，否则裁剪区域显示不全
+//        int left = (int) durationMS % 1000;
+//        if (left != 0) {
+//            totalFrame++;
+//        }
 
         // add start，mask区域，不显示thumbnail
         totalFrame++;
@@ -698,17 +806,18 @@ public class EditActivity extends Activity implements
                                 mVideoRangeSeekBar.getRangeStart() + mHLVOffsetX);
                     }
                     setRangeTextView(mHLVOffsetX);
-                    if (change == VideoRangeSeekBar.OnRangeBarChangeListener.LEFT_CHANGE) {
-                        seekToPreview(mVideoRangeSeekBar.getRangeStart() + mHLVOffsetX);
-                    } else if (change == VideoRangeSeekBar.OnRangeBarChangeListener.RIGHT_CHANGE) {
-                        seekToPreview(mVideoRangeSeekBar.getRangeEnd() + mHLVOffsetX);
-                        mMainHandler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                seekToPreview(mVideoRangeSeekBar.getRangeStart() + mHLVOffsetX);
-                            }
-                        }, 500);
-                    }
+                    //seek bug
+//                    if (change == VideoRangeSeekBar.OnRangeBarChangeListener.LEFT_CHANGE) {
+//                        seekToPreview(mVideoRangeSeekBar.getRangeStart() + mHLVOffsetX);
+//                    } else if (change == VideoRangeSeekBar.OnRangeBarChangeListener.RIGHT_CHANGE) {
+//                        seekToPreview(mVideoRangeSeekBar.getRangeEnd() + mHLVOffsetX);
+//                        mMainHandler.postDelayed(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                seekToPreview(mVideoRangeSeekBar.getRangeStart() + mHLVOffsetX);
+//                            }
+//                        }, 500);
+//                    }
                 }
             });
         }
@@ -725,6 +834,7 @@ public class EditActivity extends Activity implements
     private void rangeLoopPreview() {
         long startTime = (long) ((mVideoRangeSeekBar.getRangeStart() + mHLVOffsetX) * 1000);
         long endTime = (long) ((mVideoRangeSeekBar.getRangeEnd() + mHLVOffsetX) * 1000);
+
         mEditKit.setEditPreviewRanges(startTime, endTime);
     }
 
@@ -764,7 +874,6 @@ public class EditActivity extends Activity implements
                 + mVideoRangeSeekBar.getRangeEnd());
         mVideoRangeStart.setText(formatTimeStr(mVideoRangeSeekBar.getRangeStart() + offset));
         mVideoRangeEnd.setText(formatTimeStr(mVideoRangeSeekBar.getRangeEnd() + offset));
-
 
         mVideoRange.setText(formatTimeStr2(((int) (10 * mVideoRangeSeekBar.getRangeEnd()))
                 - (int) (10 * mVideoRangeSeekBar.getRangeStart())));
@@ -945,6 +1054,10 @@ public class EditActivity extends Activity implements
         mBeautySpinner.setSelection(4);
     }
 
+    private void resumeEditPreview() {
+        mEditKit.resumeEditPreview();
+    }
+
     private class ComposeAlertDialog extends AlertDialog {
         private RelativeLayout mProgressLayout;
         private RelativeLayout mComposePreviewLayout;
@@ -1017,14 +1130,14 @@ public class EditActivity extends Activity implements
                                             mEditKit.stopCompose();
                                             mComposeFinished = false;
                                             closeDialog();
-                                            mEditKit.resumeEditPreview();
+                                            resumeEditPreview();
                                         }
                                         mConfimDialog = null;
                                     }
                                 }).show();
                     } else {
                         closeDialog();
-                        mEditKit.resumeEditPreview();
+                        resumeEditPreview();
                     }
                     break;
                 default:
