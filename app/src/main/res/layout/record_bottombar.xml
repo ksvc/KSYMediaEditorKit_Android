@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="#616060">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#616060">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginTop="5dp"
             android:orientation="horizontal">
+
             <CheckBox
                 android:id="@+id/record_front_mirror"
                 android:layout_width="0dp"
@@ -27,6 +30,7 @@
                 android:layout_weight="1"
                 android:text="美颜"
                 android:checked="false"/>
+
             <CheckBox
                 android:id="@+id/record_bgm"
                 android:layout_width="0dp"
@@ -41,6 +45,26 @@
                 android:layout_weight="1"
                 android:text="麦克风"
                 android:checked="true"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <CheckBox
+                android:id="@+id/record_watermark"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="水印"
+                android:checked="false"/>
+            <CheckBox
+                android:id="@+id/record_dynamic_sticker"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="贴纸"
+                android:checked="false"/>
         </LinearLayout>
 
         <LinearLayout
@@ -91,35 +115,65 @@
         </LinearLayout>
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/click_to_record"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/record_state"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true">
-    </ImageView>
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/click_to_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/back"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_alignLeft="@id/click_to_record"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="15dp"/>
+        <FrameLayout
+            android:id="@+id/progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="@color/record_progress_pause">
 
-    <ImageView
-        android:id="@+id/click_to_next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/next"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_alignRight="@id/click_to_record"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="15dp"
-        android:visibility="invisible"/>
+            <com.ksyun.media.shortvideo.demo.recordclip.RecordProgressView
+                android:id="@+id/record_progress"
+                android:layout_width="match_parent"
+                android:layout_height="16dp"/>
+        </FrameLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="20dp">
+
+            <ImageView
+                android:id="@+id/click_to_record"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/record_state">
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/click_to_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/click_to_record"
+                android:layout_alignParentLeft="true"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/record_back_state"/>
+
+            <ImageView
+                android:id="@+id/click_to_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignRight="@id/click_to_record"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/next"
+                android:visibility="invisible"/>
+        </RelativeLayout>
+        >
+    </LinearLayout>
+
 </RelativeLayout>

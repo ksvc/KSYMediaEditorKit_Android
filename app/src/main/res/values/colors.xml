@@ -4,4 +4,10 @@
     <color name="transparent1">#7fffffff</color><!--透明白色 -->
     <color name="transparent2">#616060</color><!--透明白色 -->
     <color name="transparent">#00000000</color>
+
+    <color name="record_progress_black">#2c2c2c</color>
+    <color name="record_progress_bg">#2c2c2c</color>
+    <color name="record_progress_blue">#368ca8</color>
+    <color name="record_progress_pause">#2c2c2c</color>
+    <color name="record_progress_red">#e85932</color>
 </resources>

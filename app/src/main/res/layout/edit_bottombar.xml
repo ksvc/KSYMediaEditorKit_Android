@@ -52,6 +52,15 @@
                 android:text="裁剪"
                 android:textColor="@drawable/edit_title_choose"
                 android:textSize="18dp"/>
+
+            <TextView
+                android:id="@+id/click_to_audio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="配乐"
+                android:textColor="@drawable/edit_title_choose"
+                android:textSize="18dp"/>
         </LinearLayout>
 
         <ImageView
@@ -74,8 +83,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/edit_layout"
         android:layout_alignParentLeft="true"
+        android:layout_below="@+id/edit_layout"
         android:layout_marginTop="10dp">
 
         <include
@@ -99,6 +108,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="invisible"/>
+
+        <include
+            android:id="@+id/audio_choose"
+            layout="@layout/edit_audio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"/>
+
     </FrameLayout>
 
 </RelativeLayout>

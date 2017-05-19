@@ -5,6 +5,8 @@ import com.ksyun.media.shortvideo.demo.filter.DemoFilter;
 import com.ksyun.media.shortvideo.demo.filter.DemoFilter2;
 import com.ksyun.media.shortvideo.demo.filter.DemoFilter3;
 import com.ksyun.media.shortvideo.demo.filter.DemoFilter4;
+import com.ksyun.media.shortvideo.demo.recordclip.RecordProgressController;
+import com.ksyun.media.shortvideo.demo.filter.ImgFaceunityFilter;
 import com.ksyun.media.shortvideo.kit.KSYRecordKit;
 import com.ksyun.media.streamer.capture.CameraCapture;
 import com.ksyun.media.streamer.capture.camera.CameraTouchHelper;
@@ -18,6 +20,7 @@ import com.ksyun.media.streamer.logstats.StatsLogReport;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -61,6 +64,9 @@ public class RecordActivity extends Activity implements
         ActivityCompat.OnRequestPermissionsResultCallback {
     private static String TAG = "RecordActivity";
 
+    public static final int MAX_DURATION = 1 * 60 * 1000;
+    public static final int MIN_DURATION = 5 * 1000;
+
     private GLSurfaceView mCameraPreviewView;
     //private TextureView mCameraPreviewView;
     private CameraHintView mCameraHintView;
@@ -76,6 +82,8 @@ public class RecordActivity extends Activity implements
     private CheckBox mMicAudioView;
     private CheckBox mBgmMusicView;
     private CheckBox mBeautyCheckBox;
+    private CheckBox mWaterMarkCheckBox;
+    private CheckBox mStickerCheckBox;
     private AppCompatSeekBar mMicAudioVolumeSeekBar;
     private AppCompatSeekBar mBgmVolumeSeekBar;
 
@@ -91,6 +99,13 @@ public class RecordActivity extends Activity implements
     private TextView mRuddyText;
     private AppCompatSeekBar mRuddySeekBar;
 
+    //record progress
+    private RecordProgressController mRecordProgressCtl;
+
+    private View mStickerChooseview;
+    private AppCompatSpinner mStickerSpinner;
+    private ImgFaceunityFilter mImgFaceunityFilter;
+
     private ButtonObserver mObserverButton;
     private RecordActivity.CheckBoxObserver mCheckBoxObserver;
     private SeekBarChangedObserver mSeekBarChangedObsesrver;
@@ -101,6 +116,8 @@ public class RecordActivity extends Activity implements
     private boolean mIsFileRecording = false;
     private boolean mIsFlashOpened = false;
     private String mRecordUrl;
+
+    private String mLogoPath = "assets://KSYLogo/logo.png";
 
     private boolean mHWEncoderUnsupported;
     private boolean mSWEncoderUnsupported;
@@ -170,6 +187,8 @@ public class RecordActivity extends Activity implements
         mFrontMirrorCheckBox.setOnCheckedChangeListener(mCheckBoxObserver);
         mBgmMusicView = (CheckBox) findViewById(R.id.record_bgm);
         mBgmMusicView.setOnCheckedChangeListener(mCheckBoxObserver);
+        mWaterMarkCheckBox = (CheckBox) findViewById(R.id.record_watermark);
+        mWaterMarkCheckBox.setOnCheckedChangeListener(mCheckBoxObserver);
         mMicAudioView = (CheckBox) findViewById(R.id.record_mic_audio);
         mMicAudioView.setOnCheckedChangeListener(mCheckBoxObserver);
         mMicAudioVolumeSeekBar = (AppCompatSeekBar) findViewById(R.id.record_mic_audio_volume);
@@ -181,6 +200,8 @@ public class RecordActivity extends Activity implements
         }
         mBeautyCheckBox = (CheckBox) findViewById(R.id.record_beauty);
         mBeautyCheckBox.setOnCheckedChangeListener(mCheckBoxObserver);
+        mStickerCheckBox = (CheckBox) findViewById(R.id.record_dynamic_sticker);
+        mStickerCheckBox.setOnCheckedChangeListener(mCheckBoxObserver);
         mChronometer = (Chronometer) findViewById(R.id.chronometer);
         mRecordView = (ImageView) findViewById(R.id.click_to_record);
         mRecordView.getDrawable().setLevel(1);
@@ -213,6 +234,16 @@ public class RecordActivity extends Activity implements
         mRuddyText = (TextView) findViewById(R.id.ruddy_text);
         mRuddySeekBar = (AppCompatSeekBar) findViewById(R.id.ruddy_seek_bar);
         initBeautyUI();
+
+        mStickerChooseview = findViewById(R.id.record_sticker_choose);
+        mStickerSpinner = (AppCompatSpinner) findViewById(R.id.sticker_spin);
+        initStickerUI();
+
+        mRecordProgressCtl = new RecordProgressController(mBarBottomLayout);
+        mRecordProgressCtl.setRecordingLengthChangedListener(mRecordLengthChangedListener);
+        mRecordProgressCtl.start();
+        mBackView.getDrawable().setLevel(1);
+        mBackView.setSelected(false);
 
         //init
         mMainHandler = new Handler();
@@ -309,6 +340,9 @@ public class RecordActivity extends Activity implements
             mMainHandler = null;
         }
 
+        mRecordProgressCtl.stop();
+        mRecordProgressCtl.setRecordingLengthChangedListener(null);
+        mRecordProgressCtl.release();
         mKSYRecordKit.setOnLogEventListener(null);
         mKSYRecordKit.release();
     }
@@ -338,10 +372,48 @@ public class RecordActivity extends Activity implements
         mKSYRecordKit.setVoiceVolume(val);
         mKSYRecordKit.startRecord(mRecordUrl);
         mIsFileRecording = true;
+        mRecordView.getDrawable().setLevel(2);
     }
 
-    private void stopRecord() {
-        mKSYRecordKit.stopRecord();
+    private void stopRecord(boolean finished) {
+        //录制完成进入编辑
+        //若录制文件大于1则需要触发文件合成
+        if (finished) {
+            if (mKSYRecordKit.getRecordedFilesCount() > 1) {
+                String fileFolder = getRecordFileFolder();
+                //合成文件路径
+                final String outFile = fileFolder + "/" + "merger_" + System.currentTimeMillis() + ".mp4";
+                //合成过程为异步，需要block下一步处理
+                final MegerFilesAlertDialog dialog = new MegerFilesAlertDialog(this, R.style.dialog);
+                dialog.setCancelable(false);
+                dialog.show();
+                mKSYRecordKit.stopRecord(outFile, new KSYRecordKit.MegerFilesFinishedListener() {
+                    @Override
+                    public void onFinished() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                dialog.dismiss();
+                                mRecordUrl = outFile;
+                                EditActivity.startActivity(getApplicationContext(), mRecordUrl);
+                            }
+                        });
+                    }
+                });
+            } else {
+                mKSYRecordKit.stopRecord();
+                EditActivity.startActivity(getApplicationContext(), mRecordUrl);
+            }
+
+        } else {
+            //普通录制停止
+            mKSYRecordKit.stopRecord();
+        }
+        //更新进度显示
+        mRecordProgressCtl.stopRecording();
+        mRecordView.getDrawable().setLevel(1);
+        updateDeleteView();
+
         mIsFileRecording = false;
         stopChronometer();
     }
@@ -350,6 +422,7 @@ public class RecordActivity extends Activity implements
         if (mIsFileRecording) {
             return;
         }
+
         mChronometer.setBase(SystemClock.elapsedRealtime());
         mChronometer.stop();
     }
@@ -371,19 +444,14 @@ public class RecordActivity extends Activity implements
                     Log.d(TAG, "KSY_STREAMER_CAMERA_INIT_DONE");
                     setCameraAntiBanding50Hz();
                     break;
+                case StreamerConstants.KSY_STREAMER_CAMERA_FACEING_CHANGED:
+                    updateFaceunitParams();
+                    break;
                 case StreamerConstants.KSY_STREAMER_OPEN_FILE_SUCCESS:
                     Log.d(TAG, "KSY_STREAMER_OPEN_FILE_SUCCESS");
                     mChronometer.setBase(SystemClock.elapsedRealtime());
                     mChronometer.start();
-                    mMainHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (mNextView != null) {
-                                mNextView.setVisibility(View.VISIBLE);
-                            }
-                        }
-                    }, 5000);
-
+                    mRecordProgressCtl.startRecording();
                     break;
                 default:
                     Log.d(TAG, "OnInfo: " + what + " msg1: " + msg1 + " msg2: " + msg2);
@@ -474,12 +542,14 @@ public class RecordActivity extends Activity implements
                 case StreamerConstants.KSY_STREAMER_FILE_PUBLISHER_OPEN_FAILED:
                 case StreamerConstants.KSY_STREAMER_FILE_PUBLISHER_FORMAT_NOT_SUPPORTED:
                 case StreamerConstants.KSY_STREAMER_FILE_PUBLISHER_WRITE_FAILED:
-                    stopRecord();
+                    stopRecord(false);
+                    rollBackClipForError();
                     break;
                 case StreamerConstants.KSY_STREAMER_VIDEO_ENCODER_ERROR_UNSUPPORTED:
                 case StreamerConstants.KSY_STREAMER_VIDEO_ENCODER_ERROR_UNKNOWN: {
                     handleEncodeError();
-                    stopRecord();
+                    stopRecord(false);
+                    rollBackClipForError();
                     mMainHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -517,30 +587,45 @@ public class RecordActivity extends Activity implements
     }
 
     private void onBackoffClick() {
-        mChronometer.stop();
-        mIsFileRecording = false;
-        RecordActivity.this.finish();
+        if (mKSYRecordKit.getRecordedFilesCount() >= 1) {
+            if (!mBackView.isSelected()) {
+                mBackView.setSelected(true);
+
+                mRecordProgressCtl.setLastClipPending();
+            } else {
+                mBackView.setSelected(false);
+                if (mIsFileRecording) {
+                    stopRecord(false);
+                }
+                //删除录制文件
+                mKSYRecordKit.deleteRecordFile(mKSYRecordKit.getLastRecordedFiles());
+                mRecordProgressCtl.rollback();
+                updateDeleteView();
+                mRecordView.setEnabled(true);
+            }
+        } else {
+            mChronometer.stop();
+            mIsFileRecording = false;
+            RecordActivity.this.finish();
+        }
     }
 
     private void onRecordClick() {
         if (mIsFileRecording) {
-            stopRecord();
-            mRecordView.getDrawable().setLevel(1);
+            stopRecord(false);
         } else {
-            mNextView.setVisibility(View.GONE);
             startRecord();
-            mRecordView.getDrawable().setLevel(2);
         }
+        clearBackoff();
     }
 
     private void onNextClick() {
-        stopRecord();
-        if (mKSYRecordKit.getAudioPlayerCapture().getMediaPlayer().isPlaying()) {
-            mKSYRecordKit.getAudioPlayerCapture().stop();
-        }
+        clearBackoff();
         mRecordView.getDrawable().setLevel(1);
-
-        EditActivity.startActivity(getApplicationContext(), mRecordUrl);
+        stopRecord(true);
+        if (mBgmMusicView.isChecked()) {
+            mBgmMusicView.setChecked(false);
+        }
     }
 
     private void initBeautyUI() {
@@ -660,6 +745,78 @@ public class RecordActivity extends Activity implements
         mBeautySpinner.setSelection(4);
     }
 
+    private void onStickerChecked(boolean isChecked) {
+        if (isChecked) {
+            initFaceunity();
+            mKSYRecordKit.getCameraCapture().mImgBufSrcPin.connect(mImgFaceunityFilter.getBufSinkPin());
+            mStickerChooseview.setVisibility(View.VISIBLE);
+        } else {
+            mStickerChooseview.setVisibility(View.INVISIBLE);
+            if (mImgFaceunityFilter != null) {
+                mKSYRecordKit.getCameraCapture().mImgBufSrcPin.disconnect(mImgFaceunityFilter.getBufSinkPin(),
+                        false);
+                mImgFaceunityFilter.setPropType(-1);
+            }
+        }
+    }
+
+    private void initStickerUI() {
+        String[] items = new String[]{"DISABLE", "BEAGLEDOG", "COLORCROWN", "DEER",
+                "HAPPYRABBI", "HARTSHORN", "ITEM0204", "ITEM0208",
+                "ITEM0210", "ITEM0501", "MOOD", "PRINCESSCROWN", "TIARA", "YELLOWEAR"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, items);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mStickerSpinner.setAdapter(adapter);
+        mStickerSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                TextView textView = ((TextView) parent.getChildAt(0));
+                if (textView != null) {
+                    textView.setTextColor(getResources().getColor(R.color.font_color_35));
+                }
+                if (position == 0) {
+                    //disable
+                    if (mImgFaceunityFilter != null) {
+                        mImgFaceunityFilter.setPropType(-1);
+                    }
+                } else {
+                    mImgFaceunityFilter.setPropType(position - 1);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // do nothing
+            }
+        });
+        mStickerSpinner.setPopupBackgroundResource(R.color.transparent1);
+        mStickerSpinner.setSelection(0);
+    }
+
+    private void initFaceunity() {
+        if (mImgFaceunityFilter == null) {
+            //add faceunity filter
+            mImgFaceunityFilter = new ImgFaceunityFilter(this, mKSYRecordKit.getGLRender());
+            mKSYRecordKit.getImgTexFilterMgt().setExtraFilter(mImgFaceunityFilter);
+        }
+
+        updateFaceunitParams();
+    }
+
+    private void updateFaceunitParams() {
+        if (mImgFaceunityFilter != null) {
+            mImgFaceunityFilter.setTargetSize(mKSYRecordKit.getTargetWidth(),
+                    mKSYRecordKit.getTargetHeight());
+
+            if (mKSYRecordKit.isFrontCamera()) {
+                mImgFaceunityFilter.setMirror(true);
+            } else {
+                mImgFaceunityFilter.setMirror(false);
+            }
+        }
+    }
+
     private class ButtonObserver implements View.OnClickListener {
         @Override
         public void onClick(View view) {
@@ -702,21 +859,6 @@ public class RecordActivity extends Activity implements
 
     private void onBgmChecked(boolean isChecked) {
         if (isChecked) {
-            mKSYRecordKit.getAudioPlayerCapture().setOnCompletionListener(
-                    new IMediaPlayer.OnCompletionListener() {
-                        @Override
-                        public void onCompletion(IMediaPlayer iMediaPlayer) {
-                            Log.d(TAG, "End of the currently playing music");
-                        }
-                    });
-            mKSYRecordKit.getAudioPlayerCapture().setOnErrorListener(
-                    new IMediaPlayer.OnErrorListener() {
-                        @Override
-                        public boolean onError(IMediaPlayer iMediaPlayer, int what, int extra) {
-                            Log.e(TAG, "OnErrorListener, Error:" + what + ", extra:" + extra);
-                            return false;
-                        }
-                    });
             mKSYRecordKit.getAudioPlayerCapture().setVolume(0.4f);
             mKSYRecordKit.setEnableAudioMix(true);
             mKSYRecordKit.startBgm(mBgmPath, true);
@@ -739,6 +881,15 @@ public class RecordActivity extends Activity implements
         }
     }
 
+    private void onWaterMarkChecked(boolean isChecked) {
+        if (isChecked) {
+            mKSYRecordKit.showWaterMarkLogo(mLogoPath, 0.08f, 0.04f, 0.20f, 0, 0.8f);
+        } else {
+            mKSYRecordKit.hideWaterMarkLogo();
+        }
+
+    }
+
 
     private class CheckBoxObserver implements CompoundButton.OnCheckedChangeListener {
 
@@ -756,6 +907,12 @@ public class RecordActivity extends Activity implements
                     break;
                 case R.id.record_bgm:
                     onBgmChecked(isChecked);
+                    break;
+                case R.id.record_watermark:
+                    onWaterMarkChecked(isChecked);
+                    break;
+                case R.id.record_dynamic_sticker:
+                    onStickerChecked(isChecked);
                     break;
                 default:
                     break;
@@ -834,5 +991,81 @@ public class RecordActivity extends Activity implements
                 break;
             }
         }
+    }
+
+    private void updateDeleteView() {
+        if (mKSYRecordKit.getRecordedFilesCount() >= 1) {
+            mBackView.getDrawable().setLevel(2);
+        } else {
+            mBackView.getDrawable().setLevel(1);
+        }
+    }
+
+    private boolean clearBackoff() {
+        if (mBackView.isSelected()) {
+            mBackView.setSelected(false);
+            mRecordProgressCtl.setLastClipNormal();
+            return true;
+        }
+        return false;
+    }
+
+    private void rollBackClipForError() {
+        int clipCount = mRecordProgressCtl.getClipListSize();
+        int fileCount = mKSYRecordKit.getRecordedFilesCount();
+        if (clipCount > fileCount) {
+            int diff = clipCount - fileCount;
+            for (int i = 0; i < diff; i++) {
+                mRecordProgressCtl.rollback();
+            }
+        }
+    }
+
+    private RecordProgressController.RecordingLengthChangedListener mRecordLengthChangedListener =
+            new RecordProgressController.RecordingLengthChangedListener() {
+                @Override
+                public void passMinPoint(boolean pass) {
+                    if (pass) {
+                        mNextView.setVisibility(View.VISIBLE);
+                    } else {
+                        mNextView.setVisibility(View.GONE);
+                    }
+                }
+
+                @Override
+                public void passMaxPoint() {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            stopRecord(false);
+                            mRecordView.getDrawable().setLevel(1);
+                            mRecordView.setEnabled(false);
+                            Toast.makeText(RecordActivity.this, "录制结束，请继续操作",
+                                    Toast
+                                            .LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            };
+
+    private class MegerFilesAlertDialog extends AlertDialog {
+
+        protected MegerFilesAlertDialog(Context context, int themID) {
+            super(context, themID);
+        }
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            setContentView(R.layout.meger_record_files_layout);
+        }
+    }
+
+    private String getRecordFileFolder() {
+        String fileFolder = "/sdcard/ksy_sv_rec_test";
+        File file = new File(fileFolder);
+        if (!file.exists()) {
+            file.mkdir();
+        }
+        return fileFolder;
     }
 }
