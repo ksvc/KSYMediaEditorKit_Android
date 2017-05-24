@@ -19,6 +19,8 @@
 * [x] 编辑文件合成，支持Mediacodec、H.264、H.265编码
 * [x] 合成文件上传KS3
 * [x] 上传后文件预览播放 
+* [x] 贴纸 
+* [x] 文字编辑(Coming soon)
 
 ## 1.1 运行环境  
 - 最低支持版本为Android 4.4 (API level 19)
