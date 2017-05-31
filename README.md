@@ -1,6 +1,6 @@
 # 金山云短视频编辑SDK KSYMediaEditorKit
 
-<img src="https://ks3-cn-beijing.ksyun.com/ksy.vcloud.sdk/Android/short_video/liantu-13.png" width = "300" height = "300" alt="图片名称" align=center /> 
+<img src="https://ks3-cn-beijing.ksyun.com/ksy.vcloud.sdk/Android/short_video/liantu-13.png" width = "150" height = "150" alt="图片名称" align=center /> 
 
 关键名词解释：
 - 视频录制：采集摄像头及麦克风音视频数据，通过编码合成等过程最终生成一个本地的mp4文件  
