@@ -61,6 +61,15 @@
                 android:text="配乐"
                 android:textColor="@drawable/edit_title_choose"
                 android:textSize="18dp"/>
+
+            <TextView
+                android:id="@+id/click_to_sticker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="贴纸"
+                android:textColor="@drawable/edit_title_choose"
+                android:textSize="18dp"/>
         </LinearLayout>
 
         <ImageView
@@ -112,6 +121,13 @@
         <include
             android:id="@+id/audio_choose"
             layout="@layout/edit_audio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"/>
+
+        <include
+            android:id="@+id/sticker_choose"
+            layout="@layout/edit_sticker_choose"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="invisible"/>

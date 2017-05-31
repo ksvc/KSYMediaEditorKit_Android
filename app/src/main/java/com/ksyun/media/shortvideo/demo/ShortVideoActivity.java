@@ -88,10 +88,12 @@ public class ShortVideoActivity extends Activity {
     }
 
     private void onAuthClick() {
+        mAuthButton.setEnabled(false);
         mAuthResponse = new HttpRequestTask.HttpResponseListener() {
             @Override
             public void onHttpResponse(int responseCode, String response) {
                 //params response
+                boolean authResult = false;
                 if (responseCode == 200) {
                     try {
                         JSONObject temp = new JSONObject(response);
@@ -107,23 +109,36 @@ public class ShortVideoActivity extends Activity {
                             AuthInfoManager.getInstance().addAuthResultListener(mCheckAuthResultListener);
                             //开始向KSServer申请鉴权
                             AuthInfoManager.getInstance().checkAuth();
+                            authResult = true;
                         } else {
-                            //
-                            Log.e(TAG, "get auth failed from appserver");
+                            Log.e(TAG, "get auth failed from app server RetCode:" + result);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        Log.e(TAG, "get auth failed from appserver");
+                        Log.e(TAG, "get auth failed from app server json parse failed");
                     }
                 } else {
-                    Log.e(TAG, "get auth failed from appserver");
+                    Log.e(TAG, "get auth failed from app server responseCode:" + responseCode);
                 }
+
+                final boolean finalAuthResult = authResult;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(!finalAuthResult) {
+                            Toast.makeText(ShortVideoActivity.this, "get auth failed from app " +
+                                    "server", Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                        mAuthButton.setEnabled(true);
+                    }
+                });
             }
         };
         //开启异步任务，向AppServer请求鉴权信息
         mAuthTask = new HttpRequestTask(mAuthResponse);
         String url = AUTH_SERVER_URI + "?Pkg=" + getApplicationContext().getPackageName();
-        Log.d(TAG, "auth url:" + url);
+        Log.d(TAG, "request auth:" + url);
         mAuthTask.execute(url);
     }
 

@@ -160,7 +160,7 @@ public class RecordActivity extends Activity implements
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        //默认设置为横屏，当前暂时只支持横屏，后期完善
+        //默认设置为竖屏，当前暂时只支持竖屏，后期完善
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         //init UI
