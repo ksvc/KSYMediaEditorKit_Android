@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#ffffff">
+        <TextView
+            android:id="@+id/video_range_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="选择贴纸查看预览效果"
+            android:textColor="#000000"
+            android:textSize="20dp"
+            android:layout_gravity="center"/>
+    </FrameLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/stickers_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="45dp"
+        android:layout_gravity="center_vertical"
+        android:overScrollMode="never"
+        android:scrollbars="none"/>
+
+    <ImageView
+        android:id="@+id/click_to_delete_stickers"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/close_effect"/>
+
+</LinearLayout>

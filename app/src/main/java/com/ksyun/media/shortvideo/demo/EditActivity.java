@@ -8,6 +8,7 @@ import com.ksyun.media.shortvideo.demo.filter.DemoFilter;
 import com.ksyun.media.shortvideo.demo.filter.DemoFilter2;
 import com.ksyun.media.shortvideo.demo.filter.DemoFilter3;
 import com.ksyun.media.shortvideo.demo.filter.DemoFilter4;
+import com.ksyun.media.shortvideo.demo.sticker.StickerAdapter;
 import com.ksyun.media.shortvideo.demo.videorange.HorizontalListView;
 import com.ksyun.media.shortvideo.demo.videorange.VideoRangeSeekBar;
 import com.ksyun.media.shortvideo.demo.videorange.VideoThumbnailAdapter;
@@ -15,6 +16,8 @@ import com.ksyun.media.shortvideo.demo.videorange.VideoThumbnailInfo;
 import com.ksyun.media.shortvideo.utils.KS3ClientWrap;
 import com.ksyun.media.shortvideo.kit.KSYEditKit;
 import com.ksyun.media.shortvideo.utils.ShortVideoConstants;
+import com.ksyun.media.shortvideo.view.StickerHelpBoxInfo;
+import com.ksyun.media.shortvideo.view.KSYStickerView;
 import com.ksyun.media.streamer.filter.imgtex.ImgBeautyProFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgBeautyToneCurveFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgFilterBase;
@@ -30,12 +33,19 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.AppCompatSpinner;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
@@ -61,8 +71,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -75,12 +89,16 @@ public class EditActivity extends Activity implements
     private static String TAG = "EditActivity";
     private static String FILEURL_SERVER = "http://ksvs-demo.ks-live.com:8720/api/upload/ks3/signurl";
 
+    private static int INDEX_FILTER = 1;
+    private static int INDEX_WATERMARKK = 2;
+    private static int INDEX_VIDEORANGE = 3;
+    private static int INDEX_AUDIO = 4;
+    private static int INDEX_STICKER = 5;
     private GLSurfaceView mEditPreviewView;
     private RelativeLayout mPreviewLayout;
     private RelativeLayout mBarBottomLayout;
     private ImageView mBackView;
     private ImageView mNextView;
-    private ImageView mMuteView;
     private ImageView mPauseView;
     private TextView mFilterView;
     private TextView mWaterMarkView;
@@ -95,6 +113,7 @@ public class EditActivity extends Activity implements
     private View mWatermarkLayout;
     private View mVideoRangeLayout;
     private View mAudioEditLayout;
+    private View mStickerLayout;
     private AppCompatSpinner mBeautySpinner;
     private LinearLayout mBeautyGrindLayout;
     private TextView mGrindText;
@@ -105,6 +124,15 @@ public class EditActivity extends Activity implements
     private LinearLayout mBeautyRuddyLayout;
     private TextView mRuddyText;
     private AppCompatSeekBar mRuddySeekBar;
+    private TextView mStickerTextView;
+    private View mRemoveStickers;
+    private RecyclerView mStickerList;// 贴图素材列表
+    private KSYStickerView mKSYStickerView;  //贴纸预览区域
+    private StickerAdapter mStickerAdapter;// 贴图列表适配器
+    private Bitmap mStickerDeleteBitmap;  //贴纸辅助区域的删除按钮
+    private Bitmap mStickerRotateBitmap;  //贴纸辅助区域的旋转按钮
+    private StickerHelpBoxInfo mStickerHelpBoxInfo;  //贴纸辅助区域的画笔
+    private Map<Integer, BottomViewInfo> mBottomViews = new HashMap<>();
 
     private ButtonObserver mButtonObserver;
     private CheckBoxObserver mCheckBoxObserver;
@@ -114,6 +142,7 @@ public class EditActivity extends Activity implements
 
     private String mLogoPath = "assets://KSYLogo/logo.png";//"file:///sdcard/test.png";
     private String mBgmPath = "/sdcard/test.mp3";
+    private String mStickerPath = "Stickers";  //贴纸加载地址默认在Assets目录，如果修改加载地址需要修改StickerAdapter的图片加载
 
     private KSYEditKit mEditKit;
     private boolean mComposeFinished = false;
@@ -162,7 +191,6 @@ public class EditActivity extends Activity implements
         //init UI
         //录制预览部分宽高1:1比例显示（用户可以按照自己的需求处理）
         //just PORTRAIT
-        //TODO LANDSCAPE
         WindowManager windowManager = (WindowManager) getApplication().
                 getSystemService(getApplication().WINDOW_SERVICE);
 
@@ -176,17 +204,16 @@ public class EditActivity extends Activity implements
         mPreviewLayout = (RelativeLayout) findViewById(R.id.preview_layout);
         mBarBottomLayout = (RelativeLayout) findViewById(R.id.edit_bar_bottom);
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(screenWidth,
-                screenWidth);
+        int width  = screenWidth;
+        int height = screenWidth;
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width,
+                height);
         mPreviewLayout.setLayoutParams(params);
 
         params = new LinearLayout.LayoutParams(screenWidth,
-                screenHeight - screenWidth);
+                screenHeight - height);
         mBarBottomLayout.setLayoutParams(params);
 
-        mMuteView = (ImageView) findViewById(R.id.click_to_mute);
-        mMuteView.setOnClickListener(mButtonObserver);
-        mMuteView.getDrawable().setLevel(2);
         mPauseView = (ImageView) findViewById(R.id.click_to_pause);
         mPauseView.setOnClickListener(mButtonObserver);
         mPauseView.getDrawable().setLevel(2);
@@ -196,6 +223,8 @@ public class EditActivity extends Activity implements
         mFilterView.setOnClickListener(mButtonObserver);
         mFilterView.setActivated(true);
         mFilterLayout.setVisibility(View.VISIBLE);
+        BottomViewInfo filterView = new BottomViewInfo(mFilterView, mFilterLayout);
+        mBottomViews.put(INDEX_FILTER, filterView);
 
         mBeautySpinner = (AppCompatSpinner) findViewById(R.id.beauty_spin);
         mBeautyGrindLayout = (LinearLayout) findViewById(R.id.beauty_grind);
@@ -213,10 +242,14 @@ public class EditActivity extends Activity implements
         mWaterMarkView.setOnClickListener(mButtonObserver);
         mWaterMartLogoView = (CheckBox) findViewById(R.id.watermark_logo);
         mWaterMartLogoView.setOnCheckedChangeListener(mCheckBoxObserver);
+        BottomViewInfo watermarkView = new BottomViewInfo(mWaterMarkView, mWatermarkLayout);
+        mBottomViews.put(INDEX_WATERMARKK, watermarkView);
 
         mVideoRangeLayout = findViewById(R.id.video_range_choose);
         mVideoChooseView = (TextView) findViewById(R.id.click_to_video_range);
         mVideoChooseView.setOnClickListener(mButtonObserver);
+        BottomViewInfo videoRangeView = new BottomViewInfo(mVideoChooseView, mVideoRangeLayout);
+        mBottomViews.put(INDEX_VIDEORANGE, videoRangeView);
 
         mAudioView = (TextView) findViewById(R.id.click_to_audio);
         mAudioView.setOnClickListener(mButtonObserver);
@@ -236,6 +269,26 @@ public class EditActivity extends Activity implements
         if (!mOriginAudioView.isChecked()) {
             mOriginAudioVolumeSeekBar.setEnabled(false);
         }
+        BottomViewInfo audioView = new BottomViewInfo(mAudioView, mAudioEditLayout);
+        mBottomViews.put(INDEX_AUDIO, audioView);
+
+        mStickerLayout = findViewById(R.id.sticker_choose);
+        mStickerTextView = (TextView) findViewById(R.id.click_to_sticker);
+        mStickerTextView.setOnClickListener(mButtonObserver);
+        BottomViewInfo stickerView = new BottomViewInfo(mStickerTextView, mStickerLayout);
+        mBottomViews.put(INDEX_STICKER, stickerView);
+        mRemoveStickers = findViewById(R.id.click_to_delete_stickers);
+        mRemoveStickers.setOnClickListener(mButtonObserver);
+        mKSYStickerView = (KSYStickerView) findViewById(R.id.sticker_panel);
+        mStickerList = (RecyclerView) findViewById(R.id.stickers_list);
+        LinearLayoutManager stickerListLayoutManager = new LinearLayoutManager(
+                this);
+        stickerListLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mStickerList.setLayoutManager(stickerListLayoutManager);
+        mStickerAdapter = new StickerAdapter(this);
+        mStickerList.setAdapter(mStickerAdapter);
+        mStickerAdapter.addStickerImages(mStickerPath);
+        mStickerAdapter.setOnStickerItemClick(mOnStickerItemClick);
 
         mBackView = (ImageView) findViewById(R.id.click_to_back);
         mBackView.setOnClickListener(mButtonObserver);
@@ -247,6 +300,7 @@ public class EditActivity extends Activity implements
         mEditKit.setDisplayPreview(mEditPreviewView);
         mEditKit.setOnErrorListener(mOnErrorListener);
         mEditKit.setOnInfoListener(mOnInfoListener);
+        mEditKit.addStickerView(mKSYStickerView);
 
         Bundle bundle = getIntent().getExtras();
         String url = bundle.getString(SRC_URL);
@@ -303,60 +357,97 @@ public class EditActivity extends Activity implements
     }
 
     private void onFilterClick() {
-        if (mFilterLayout.getVisibility() == View.INVISIBLE) {
-            mFilterLayout.setVisibility(View.VISIBLE);
-            mFilterView.setActivated(true);
-
-            mWaterMarkView.setActivated(false);
-            mWatermarkLayout.setVisibility(View.INVISIBLE);
-            mVideoRangeLayout.setVisibility(View.INVISIBLE);
-            mVideoChooseView.setActivated(false);
-            mAudioEditLayout.setVisibility(View.INVISIBLE);
-            mAudioView.setActivated(false);
+        BottomViewInfo filterView = mBottomViews.get(INDEX_FILTER);
+        if(!filterView.isVisible()) {
+            filterView.setVisible(true);
+            hideOtherViews(INDEX_FILTER);
         }
     }
 
     private void onWatermarkClick() {
-        if (mWatermarkLayout.getVisibility() == View.INVISIBLE) {
-            mWatermarkLayout.setVisibility(View.VISIBLE);
-            mWaterMarkView.setActivated(true);
-
-            mFilterView.setActivated(false);
-            mFilterLayout.setVisibility(View.INVISIBLE);
-            mVideoRangeLayout.setVisibility(View.INVISIBLE);
-            mVideoChooseView.setActivated(false);
-            mAudioEditLayout.setVisibility(View.INVISIBLE);
-            mAudioView.setActivated(false);
+        BottomViewInfo waterMarkView = mBottomViews.get(INDEX_WATERMARKK);
+        if(!waterMarkView.isVisible()) {
+            waterMarkView.setVisible(true);
+            hideOtherViews(INDEX_WATERMARKK);
         }
     }
 
     private void onVideoRangeClick() {
-        if (mVideoRangeLayout.getVisibility() == View.INVISIBLE) {
-            mVideoRangeLayout.setVisibility(View.VISIBLE);
-            mVideoChooseView.setActivated(true);
-
-            mFilterView.setActivated(false);
-            mFilterLayout.setVisibility(View.INVISIBLE);
-            mWaterMarkView.setActivated(false);
-            mWatermarkLayout.setVisibility(View.INVISIBLE);
-            mAudioEditLayout.setVisibility(View.INVISIBLE);
-            mAudioView.setActivated(false);
+        BottomViewInfo videoRangeView = mBottomViews.get(INDEX_VIDEORANGE);
+        if(!videoRangeView.isVisible()) {
+            videoRangeView.setVisible(true);
+            hideOtherViews(INDEX_VIDEORANGE);
         }
     }
 
     private void onAudioEditClick() {
-        if (mAudioEditLayout.getVisibility() == View.INVISIBLE) {
-            mAudioEditLayout.setVisibility(View.VISIBLE);
-            mAudioView.setActivated(true);
+        BottomViewInfo audioiew = mBottomViews.get(INDEX_AUDIO);
+        if(!audioiew.isVisible()) {
+            audioiew.setVisible(true);
+            hideOtherViews(INDEX_AUDIO);
+        }
+    }
 
-            mFilterView.setActivated(false);
-            mFilterLayout.setVisibility(View.INVISIBLE);
-            mWaterMarkView.setActivated(false);
-            mWatermarkLayout.setVisibility(View.INVISIBLE);
-            mVideoRangeLayout.setVisibility(View.INVISIBLE);
-            mVideoChooseView.setActivated(false);
+    private void onStickerClick() {
+        BottomViewInfo stickerView = mBottomViews.get(INDEX_STICKER);
+        if(!stickerView.isVisible()) {
+            mKSYStickerView.setVisibility(View.VISIBLE);
+            stickerView.setVisible(true);
+            hideOtherViews(INDEX_STICKER);
+        }
+    }
+
+    private void onDeleteStickers() {
+        mKSYStickerView.removeStickers();
+    }
+
+    private StickerAdapter.OnStickerItemClick mOnStickerItemClick = new StickerAdapter.OnStickerItemClick() {
+        @Override
+        public void selectedStickerItem(String path) {
+            if(mStickerDeleteBitmap == null) {
+                mStickerDeleteBitmap = BitmapFactory.decodeResource(getResources(),
+                        R.drawable.sticker_delete);
+            }
+
+            if(mStickerRotateBitmap == null) {
+                mStickerRotateBitmap = BitmapFactory.decodeResource(getResources(),
+                        R.drawable.sticker_rotate);
+            }
+
+            if(mStickerHelpBoxInfo == null) {
+                mStickerHelpBoxInfo = new StickerHelpBoxInfo();
+                mStickerHelpBoxInfo.deleteBit = mStickerDeleteBitmap;
+                mStickerHelpBoxInfo.rotateBit = mStickerRotateBitmap;
+                Paint helpBoxPaint = new Paint();
+                helpBoxPaint.setColor(Color.BLACK);
+                helpBoxPaint.setStyle(Paint.Style.STROKE);
+                helpBoxPaint.setAntiAlias(true);
+                helpBoxPaint.setStrokeWidth(4);
+                mStickerHelpBoxInfo.helpBoxPaint = helpBoxPaint;
+            }
+
+            mKSYStickerView.addSticker(getImageFromAssetsFile(path), mStickerHelpBoxInfo);
 
         }
+    };
+
+    /**
+     * 从Assert文件夹中读取位图数据
+     *
+     * @param fileName
+     * @return
+     */
+    private Bitmap getImageFromAssetsFile(String fileName) {
+        Bitmap image = null;
+        AssetManager am = getResources().getAssets();
+        try {
+            InputStream is = am.open(fileName);
+            image = BitmapFactory.decodeStream(is);
+            is.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return image;
     }
 
     private void onWaterMarkLogoClick(boolean isCheck) {
@@ -381,16 +472,6 @@ public class EditActivity extends Activity implements
             mBgmVolumeSeekBar.setProgress((int) (mEditKit.getBgmMusicVolume() * 100));
         }
         mBgmVolumeSeekBar.setEnabled(isCheck);
-    }
-
-    private void onMuteClick() {
-        if (mMuteView.getDrawable().getLevel() == 2) {
-            mEditKit.setMuteAudio(true);
-            mMuteView.getDrawable().setLevel(1);
-        } else {
-            mEditKit.setMuteAudio(false);
-            mMuteView.getDrawable().setLevel(2);
-        }
     }
 
     private void onPauseClick() {
@@ -599,17 +680,20 @@ public class EditActivity extends Activity implements
                 case R.id.click_to_audio:
                     onAudioEditClick();
                     break;
+                case R.id.click_to_sticker:
+                    onStickerClick();
+                    break;
                 case R.id.click_to_back:
                     onBackoffClick();
                     break;
                 case R.id.click_to_next:
                     onNextClick();
                     break;
-                case R.id.click_to_mute:
-                    onMuteClick();
-                    break;
                 case R.id.click_to_pause:
                     onPauseClick();
+                    break;
+                case R.id.click_to_delete_stickers:
+                    onDeleteStickers();
                     break;
                 default:
                     break;
@@ -1428,4 +1512,35 @@ public class EditActivity extends Activity implements
         }
     }
 
+    private void hideOtherViews(int showIndex) {
+        for (Integer id : mBottomViews.keySet()) {
+            if(id != showIndex) {
+                BottomViewInfo item = mBottomViews.get(id);
+                item.setVisible(false);
+            }
+        }
+    }
+
+    public class BottomViewInfo {
+        public TextView titleView;
+        public View container;
+        public BottomViewInfo(TextView titleView, View container) {
+            this.titleView = titleView;
+            this.container = container;
+        }
+
+        public boolean isVisible() {
+            return container.getVisibility() == View.VISIBLE;
+        }
+
+        public void setVisible(boolean visible) {
+            if(visible) {
+                container.setVisibility(View.VISIBLE);
+                titleView.setActivated(true);
+            } else {
+                container.setVisibility(View.INVISIBLE);
+                titleView.setActivated(false);
+            }
+        }
+    }
 }
