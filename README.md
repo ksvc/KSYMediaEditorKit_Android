@@ -25,6 +25,7 @@
 * [x] 静态贴纸 
 * [x] 断点续拍
 * [x] 文字编辑(Coming soon)
+* [x] 变声变调(Coming soon)
 
 ## 1.1 运行环境  
 - 最低支持版本为Android 4.4 (API level 19)
