@@ -39,7 +39,17 @@
 License说明请见[wiki][license]
 
 ### 1.2.1 鉴权
-使用[KSYMediaEditorKit][KSYMediaEditorKit]前需要注册金山云帐号，SDK需要使用开发者帐号鉴权。请[在此注册][ksyun]开发者帐号。
+#### 1.2.1.1 SDK鉴权
+使用[KSYMediaEditorKit短视频编辑SDK][KSYMediaEditorKit]前需要注册金山云帐号，SDK需要使用开发者帐号鉴权。请[在此注册][ksyun]开发者帐号。
+
+SDK鉴权本身不会引入付费。
+
+#### 1.2.1.2 KS3鉴权
+使用[KSYMediaEditorKit短视频编辑SDK][KSYMediaEditorKit]将合成的短视频上传至[ks3][ks3]存储时，需要满足ks3的鉴权要求。
+
+如果您的APP不使用[金山云的对象存储服务][ks3]或者使用其他家云存储提供的存储或者CDN服务，上传阶段置null即可。
+
+如果使用[金山云对象存储][ks3]需要开通商务帐号（涉及付费业务），请直接联系金山云商务。
 
 ### 1.2.2 付费
 [KSYMediaEditorKit][KSYMediaEditorKit]可以免费使用，但是涉及的云存储上传、在线播放等云服务需要收费，具体费用请参考[金山云官网][ksyun]
@@ -69,7 +79,7 @@ Demo中的鉴权只能Demo使用
 [license]:https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/license
 [wiki]:https://github.com/ksvc/KSYMediaEditorKit_Android/wiki
 [KSYMediaEditorKit]:https://github.com/ksvc/KSYMediaEditorKit_Android
-
+[ks3]:https://docs.ksyun.com/read/latest/30/_book/index.html
 
 
 
