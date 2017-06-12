@@ -144,6 +144,8 @@
   <a href="../../../../../com/ksyun/media/shortvideo/kit/package-summary.html">com.ksyun.media.shortvideo.kit</a></li>
     <li class="selected api apilevel-">
   <a href="../../../../../com/ksyun/media/shortvideo/utils/package-summary.html">com.ksyun.media.shortvideo.utils</a></li>
+    <li class="api apilevel-">
+  <a href="../../../../../com/ksyun/media/shortvideo/view/package-summary.html">com.ksyun.media.shortvideo.view</a></li>
               </ul><br/>
             </div> <!-- end packages -->
           </div> <!-- end resize-packages -->
@@ -360,8 +362,8 @@ Summary:
     
     <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">int</td>
-        <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/utils/ShortVideoConstants.html#SHORTVIDEO_COMPOSE_FINISHED">SHORTVIDEO_COMPOSE_FINISHED</a></td>
-        <td class="jd-descrcol" width="100%">compose finish<br/>
+        <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/utils/ShortVideoConstants.html#SHORTVIDEO_COMPOSE_ABORTED">SHORTVIDEO_COMPOSE_ABORTED</a></td>
+        <td class="jd-descrcol" width="100%">compose aborted<br/>
  notify by
  <code><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.OnInfoListener.html">KSYEditKit.OnInfoListener</a></code>
 </td>
@@ -370,10 +372,28 @@ Summary:
     
     <tr class=" api apilevel-" >
         <td class="jd-typecol">int</td>
+        <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/utils/ShortVideoConstants.html#SHORTVIDEO_COMPOSE_FINISHED">SHORTVIDEO_COMPOSE_FINISHED</a></td>
+        <td class="jd-descrcol" width="100%">compose finish<br/>
+ notify by
+ <code><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.OnInfoListener.html">KSYEditKit.OnInfoListener</a></code>
+</td>
+    </tr>
+    
+    
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">int</td>
         <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/utils/ShortVideoConstants.html#SHORTVIDEO_COMPOSE_START">SHORTVIDEO_COMPOSE_START</a></td>
         <td class="jd-descrcol" width="100%">compose start<br/>
  notify by
  <code><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.OnInfoListener.html">KSYEditKit.OnInfoListener</a></code>
+</td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">int</td>
+        <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/utils/ShortVideoConstants.html#SHORTVIDEO_EDIT_PREPARED">SHORTVIDEO_EDIT_PREPARED</a></td>
+        <td class="jd-descrcol" width="100%">edit play prepared
 </td>
     </tr>
     
@@ -761,6 +781,49 @@ From class
 
 
 
+<a id="SHORTVIDEO_COMPOSE_ABORTED"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        int
+      </span>
+        SHORTVIDEO_COMPOSE_ABORTED
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>compose aborted<br/>
+ notify by
+ <code><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.OnInfoListener.html">KSYEditKit.OnInfoListener</a></code>
+</p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                4
+                (0x00000004)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
 <a id="SHORTVIDEO_COMPOSE_FINISHED"></a>
 
 <div class="jd-details api apilevel-"> 
@@ -793,8 +856,8 @@ From class
         <span class="jd-tagtitle">Constant Value: </span>
         <span>
             
-                2
-                (0x00000002)
+                3
+                (0x00000003)
             
         </span>
         </div>
@@ -829,6 +892,47 @@ From class
   <div class="jd-tagdata jd-tagdescr"><p>compose start<br/>
  notify by
  <code><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.OnInfoListener.html">KSYEditKit.OnInfoListener</a></code>
+</p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                2
+                (0x00000002)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<a id="SHORTVIDEO_EDIT_PREPARED"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        int
+      </span>
+        SHORTVIDEO_EDIT_PREPARED
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>edit play prepared
 </p></div>
 
     
@@ -1225,8 +1329,8 @@ From class
         <span class="jd-tagtitle">Constant Value: </span>
         <span>
             
-                3
-                (0x00000003)
+                5
+                (0x00000005)
             
         </span>
         </div>
@@ -1265,7 +1369,7 @@ From class
         <span class="jd-tagtitle">Constant Value: </span>
         <span>
             
-                "0.1.0"
+                "0.4.2"
             
         </span>
         </div>
