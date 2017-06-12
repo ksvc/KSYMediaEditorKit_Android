@@ -39,6 +39,10 @@
 License说明请见[wiki][license]
 
 ### 1.2.1 鉴权
+短视频SDK涉及两个鉴权，区别如下：
+* SDK鉴权免费，但是是必需的
+* KS3鉴权涉及费用，但是是可选择不用的
+
 #### 1.2.1.1 SDK鉴权
 使用[KSYMediaEditorKit短视频编辑SDK][KSYMediaEditorKit]前需要注册金山云帐号，SDK需要使用开发者帐号鉴权。请[在此注册][ksyun]开发者帐号。
 
@@ -79,11 +83,4 @@ Demo中的鉴权只能Demo使用
 [license]:https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/license
 [wiki]:https://github.com/ksvc/KSYMediaEditorKit_Android/wiki
 [KSYMediaEditorKit]:https://github.com/ksvc/KSYMediaEditorKit_Android
-[ks3]:https://docs.ksyun.com/read/latest/30/_book/index.html
-
-
-
-
-
-
-
+[ks3]:https://www.ksyun.com/proservice/storage_service
