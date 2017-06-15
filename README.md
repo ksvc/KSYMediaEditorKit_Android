@@ -48,6 +48,18 @@ License说明请见[wiki][license]
 
 SDK鉴权本身不会引入付费。
 
+
+为了开始开发用于SDK鉴权所需要的鉴权串，提供了服务器端鉴权需要的代码：
+
+* 服务器鉴权代码--JAVA版本
+
+https://github.com/ksvc/KSYMediaEditorKit_iOS/tree/master/server/java/auth
+
+* 服务器鉴权代码--GO版本
+
+https://github.com/ksvc/KSYMediaEditorKit_iOS/tree/master/server/python/auth
+
+
 #### 1.2.1.2 KS3鉴权
 使用[KSYMediaEditorKit短视频编辑SDK][KSYMediaEditorKit]将合成的短视频上传至[ks3][ks3]存储时，需要满足ks3的鉴权要求。
 
