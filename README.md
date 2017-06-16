@@ -80,7 +80,7 @@ https://github.com/ksvc/KSYMediaEditorKit_iOS/tree/master/server/python/auth
 具体集成步骤请阅读[wiki][wiki]
 
 ## 3. 商务合作
-Demo中的鉴权串等只能Demo使用  
+Demo中的鉴权串等只能供Demo使用  
 正式上线需要申请金山云账号，请联系金山云商务。
 
 ## 4. 反馈与建议
