@@ -3,14 +3,14 @@
 <img src="https://ks3-cn-beijing.ksyun.com/ksy.vcloud.sdk/Android/short_video/liantu-13.png" width = "150" height = "150" alt="图片名称" align=center /> 
 
 关键名词解释：
-- 视频录制：采集摄像头及麦克风音视频数据，通过编码合成等过程最终生成一个本地的mp4文件  
-- 视频预览编辑：对指定视频播放的同时添加滤镜、水印并预览显示添加后的效果  
-- 视频合成：对指定视频加入滤镜、水印等特效并输出mp4文件
+- 视频录制：采集摄像头及麦克风音视频数据，通过预处理、编码、复用等过程最终生成一个本地的mp4文件  
+- 视频预览编辑：对指定视频播放的同时添加音视频滤镜、水印同时提供处理后的音频和视频的预览 
+- 视频合成：对原始视频加入滤镜、水印等特效并输出mp4文件
 - KS3:金山云存储服务  
 - SDK鉴权：取得SDK的使用权
 
 ## 1 功能介绍
-[KSYMediaEditorKit][KSYMediaEditorKit]是一款由金山云提供的的短视频编辑SDK，当前支持以下功能：
+[KSYMediaEditorKit][KSYMediaEditorKit]是一款由金山云提供的的可以快速集成的短视频编辑SDK，当前支持以下功能：
 
 * [x] 短视频录制（录制支持：美颜滤镜、麦克风&配乐控制，麦克风&配乐音量控制、前置镜像、动态贴纸、水印）
 * [x] 短视频文件导入，支持mp4/3gp/mov
@@ -61,7 +61,7 @@ https://github.com/ksvc/KSYMediaEditorKit_iOS/tree/master/server/python/auth
 
 
 #### 1.2.1.2 KS3鉴权
-使用[KSYMediaEditorKit短视频编辑SDK][KSYMediaEditorKit]将合成的短视频上传至[ks3][ks3]存储时，需要满足ks3的鉴权要求。
+使用[KSYMediaEditorKit短视频编辑SDK][KSYMediaEditorKit]将合成的短视频上传至[ks3][ks3](金山云存储服务)存储时，需要满足ks3的鉴权要求。
 
 如果您的APP不使用[金山云的对象存储服务][ks3]或者使用其他家云存储提供的存储或者CDN服务，上传阶段置null即可。
 
@@ -80,7 +80,7 @@ https://github.com/ksvc/KSYMediaEditorKit_iOS/tree/master/server/python/auth
 具体集成步骤请阅读[wiki][wiki]
 
 ## 3. 商务合作
-Demo中的鉴权只能Demo使用  
+Demo中的鉴权串等只能Demo使用  
 正式上线需要申请金山云账号，请联系金山云商务。
 
 ## 4. 反馈与建议
