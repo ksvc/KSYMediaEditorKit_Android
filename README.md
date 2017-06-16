@@ -40,13 +40,13 @@ License说明请见[wiki][license]
 
 ### 1.2.1 鉴权
 短视频SDK涉及两个鉴权，区别如下：
-* SDK鉴权免费，但是是必需的
-* KS3(金山云存储服务)鉴权涉及费用，但是是可选择不用的
+* SDK鉴权免费，是必需的
+* KS3(金山云存储服务)鉴权涉及费用，可以选择不用
 
 #### 1.2.1.1 SDK鉴权
 使用[KSYMediaEditorKit短视频编辑SDK][KSYMediaEditorKit]前需要注册金山云帐号，SDK需要使用开发者帐号鉴权。请[在此注册][ksyun]开发者帐号。
 
-SDK鉴权本身不会引入付费。
+SDK鉴权本身不需要付费。
 
 
 为了开始开发用于SDK鉴权所需要的鉴权串，提供了服务器端鉴权需要的代码：
@@ -61,14 +61,14 @@ https://github.com/ksvc/KSYMediaEditorKit_iOS/tree/master/server/python/auth
 
 
 #### 1.2.1.2 KS3鉴权
-使用[KSYMediaEditorKit短视频编辑SDK][KSYMediaEditorKit]将合成的短视频上传至[ks3][ks3](金山云存储服务)存储时，需要满足ks3的鉴权要求。
+使用[KSYMediaEditorKit短视频编辑SDK][KSYMediaEditorKit]将合成的短视频上传至[KS3][KS3](金山云存储服务)存储时，需要满足KS3的鉴权要求。
 
-如果您的APP不使用[金山云的对象存储服务][ks3]或者使用其他家云存储提供的存储或者CDN服务，上传阶段置null即可。
+如果您的APP不使用[金山云的对象存储服务][KS3]或者使用其他家云存储提供的存储或者CDN服务，上传阶段置null即可。
 
-如果使用[金山云对象存储][ks3]需要开通商务帐号（涉及付费业务），请直接联系金山云商务。
+如果使用[金山云对象存储][KS3]需要开通商务帐号（涉及付费业务），请直接联系金山云商务。
 
 ### 1.2.2 付费
-[KSYMediaEditorKit][KSYMediaEditorKit]可以免费使用，但是涉及的云存储上传、在线播放等云服务(可选)需要收费，具体费用请参考[金山云官网][ksyun]
+[KSYMediaEditorKit][KSYMediaEditorKit]可以免费使用，但是涉及的云存储上传、在线播放等云服务(可选)收费，具体费用请参考[金山云官网][ksyun]
 
 ## 2. SDK集成
 
