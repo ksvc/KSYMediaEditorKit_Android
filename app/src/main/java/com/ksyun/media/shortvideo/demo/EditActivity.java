@@ -8,6 +8,7 @@ import com.ksyun.media.shortvideo.demo.filter.DemoFilter;
 import com.ksyun.media.shortvideo.demo.filter.DemoFilter2;
 import com.ksyun.media.shortvideo.demo.filter.DemoFilter3;
 import com.ksyun.media.shortvideo.demo.filter.DemoFilter4;
+import com.ksyun.media.shortvideo.demo.sticker.ColorPicker;
 import com.ksyun.media.shortvideo.demo.sticker.StickerAdapter;
 import com.ksyun.media.shortvideo.demo.videorange.HorizontalListView;
 import com.ksyun.media.shortvideo.demo.videorange.VideoRangeSeekBar;
@@ -16,8 +17,12 @@ import com.ksyun.media.shortvideo.demo.videorange.VideoThumbnailInfo;
 import com.ksyun.media.shortvideo.utils.KS3ClientWrap;
 import com.ksyun.media.shortvideo.kit.KSYEditKit;
 import com.ksyun.media.shortvideo.utils.ShortVideoConstants;
+import com.ksyun.media.shortvideo.view.KSYTextView;
 import com.ksyun.media.shortvideo.view.StickerHelpBoxInfo;
 import com.ksyun.media.shortvideo.view.KSYStickerView;
+import com.ksyun.media.streamer.filter.audio.AudioFilterBase;
+import com.ksyun.media.streamer.filter.audio.AudioReverbFilter;
+import com.ksyun.media.streamer.filter.audio.KSYAudioEffectFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgBeautyProFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgBeautyToneCurveFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgFilterBase;
@@ -46,7 +51,10 @@ import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextPaint;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
@@ -58,10 +66,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -88,6 +99,7 @@ public class EditActivity extends Activity implements
         ActivityCompat.OnRequestPermissionsResultCallback {
     private static String TAG = "EditActivity";
     private static String FILEURL_SERVER = "http://ksvs-demo.ks-live.com:8720/api/upload/ks3/signurl";
+    private static int AUDIO_FILTER_DISABLE = 0;
 
     private static int INDEX_FILTER = 1;
     private static int INDEX_WATERMARKK = 2;
@@ -133,6 +145,19 @@ public class EditActivity extends Activity implements
     private Bitmap mStickerRotateBitmap;  //贴纸辅助区域的旋转按钮
     private StickerHelpBoxInfo mStickerHelpBoxInfo;  //贴纸辅助区域的画笔
     private Map<Integer, BottomViewInfo> mBottomViews = new HashMap<>();
+    private EditText mTextInput;  //字幕输入框
+    private ImageView mTextColorSelect; //字母颜色选择
+    private KSYTextView mTextView;  //字幕预览显示
+    private ColorPicker mColorPicker;  //字体颜色选择
+    private InputMethodManager mInputMethodManager;
+    private RecyclerView mTextStickerList;
+    private StickerAdapter mTextStickerAdapter;
+
+    private AppCompatSpinner mAudioEffectSpinner;  //变声
+    private AppCompatSpinner mAudioReverbSpinner;  //混响
+
+    private int mAudioEffectType = AUDIO_FILTER_DISABLE;
+    private int mAudioReverbType = AUDIO_FILTER_DISABLE;
 
     private ButtonObserver mButtonObserver;
     private CheckBoxObserver mCheckBoxObserver;
@@ -143,6 +168,7 @@ public class EditActivity extends Activity implements
     private String mLogoPath = "assets://KSYLogo/logo.png";//"file:///sdcard/test.png";
     private String mBgmPath = "/sdcard/test.mp3";
     private String mStickerPath = "Stickers";  //贴纸加载地址默认在Assets目录，如果修改加载地址需要修改StickerAdapter的图片加载
+    private String mTextStickerPath = "TextStickers";
 
     private KSYEditKit mEditKit;
     private boolean mComposeFinished = false;
@@ -151,7 +177,6 @@ public class EditActivity extends Activity implements
     private Handler mMainHandler;
 
     private boolean mPaused = false;
-    private boolean mNeedResume = false;
 
     //for video range
     private HorizontalListView mVideoThumbnailList;
@@ -204,7 +229,7 @@ public class EditActivity extends Activity implements
         mPreviewLayout = (RelativeLayout) findViewById(R.id.preview_layout);
         mBarBottomLayout = (RelativeLayout) findViewById(R.id.edit_bar_bottom);
 
-        int width  = screenWidth;
+        int width = screenWidth;
         int height = screenWidth;
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width,
                 height);
@@ -280,6 +305,7 @@ public class EditActivity extends Activity implements
         mRemoveStickers = findViewById(R.id.click_to_delete_stickers);
         mRemoveStickers.setOnClickListener(mButtonObserver);
         mKSYStickerView = (KSYStickerView) findViewById(R.id.sticker_panel);
+        //初始化贴纸选择List
         mStickerList = (RecyclerView) findViewById(R.id.stickers_list);
         LinearLayoutManager stickerListLayoutManager = new LinearLayoutManager(
                 this);
@@ -287,8 +313,44 @@ public class EditActivity extends Activity implements
         mStickerList.setLayoutManager(stickerListLayoutManager);
         mStickerAdapter = new StickerAdapter(this);
         mStickerList.setAdapter(mStickerAdapter);
+        //Adapter中设置贴纸的路径，默认支持的是assets目录下面的，其它目录需要自行修改Adapter
         mStickerAdapter.addStickerImages(mStickerPath);
+        //添加Item选择事件用于添加贴纸
         mStickerAdapter.setOnStickerItemClick(mOnStickerItemClick);
+
+        mTextView = (KSYTextView) findViewById(R.id.text_panel);
+        mTextInput = (EditText) findViewById(R.id.text_input);
+        mTextInput.addTextChangedListener(mTextInputChangedListener);
+        mTextColorSelect = (ImageView) findViewById(R.id.text_color);
+        initStickerHelpBox();
+        mTextStickerList = (RecyclerView) findViewById(R.id.text_stickers_list);
+        LinearLayoutManager textstickerListLayoutManager = new LinearLayoutManager(
+                this);
+        textstickerListLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mTextStickerList.setLayoutManager(textstickerListLayoutManager);
+        mTextStickerAdapter = new StickerAdapter(this);
+        mTextStickerList.setAdapter(mTextStickerAdapter);
+        mTextStickerAdapter.addStickerImages(mTextStickerPath);
+        mTextStickerAdapter.setOnStickerItemClick(mOnTextStickerItemClick);
+
+        KSYTextView.DrawTextParams textParams = new KSYTextView.DrawTextParams();
+        textParams.textPaint = new TextPaint();
+        textParams.textPaint.setTextSize(mTextView.getTextSize());
+        textParams.textPaint.setColor(Color.WHITE);
+        textParams.textPaint.setTextAlign(Paint.Align.LEFT);
+        textParams.textPaint.setStyle(Paint.Style.FILL);
+        textParams.textPaint.setAntiAlias(true);
+        textParams.autoNewLine = true;
+        textParams.bitmap = null;
+        mTextView.initView(textParams, mStickerHelpBoxInfo,
+                mTextInput);
+        mTextView.setTextRectSelected(mTextRectSelected);
+        mColorPicker = new ColorPicker(this, 255, 255, 255);
+        mTextColorSelect.setOnClickListener(mButtonObserver);
+
+        mAudioEffectSpinner = (AppCompatSpinner) findViewById(R.id.origin_audio_effect);
+        mAudioReverbSpinner = (AppCompatSpinner) findViewById(R.id.origin_audio_reverb);
+        initAudioFilterUI();
 
         mBackView = (ImageView) findViewById(R.id.click_to_back);
         mBackView.setOnClickListener(mButtonObserver);
@@ -301,6 +363,7 @@ public class EditActivity extends Activity implements
         mEditKit.setOnErrorListener(mOnErrorListener);
         mEditKit.setOnInfoListener(mOnInfoListener);
         mEditKit.addStickerView(mKSYStickerView);
+        mEditKit.addTextStickerView(mTextView);
 
         Bundle bundle = getIntent().getExtras();
         String url = bundle.getString(SRC_URL);
@@ -310,6 +373,9 @@ public class EditActivity extends Activity implements
         initBeautyUI();
         initVideoRange();
         startEditPreview();
+
+        mInputMethodManager = (InputMethodManager) this.getSystemService(Context
+                .INPUT_METHOD_SERVICE);
     }
 
     public void onResume() {
@@ -341,6 +407,7 @@ public class EditActivity extends Activity implements
             mComposeAlertDialog.closeDialog();
             mComposeAlertDialog = null;
         }
+        mTextView.setTextRectSelected(null);
         mEditKit.stopEditPreview();
         mEditKit.release();
     }
@@ -358,7 +425,7 @@ public class EditActivity extends Activity implements
 
     private void onFilterClick() {
         BottomViewInfo filterView = mBottomViews.get(INDEX_FILTER);
-        if(!filterView.isVisible()) {
+        if (!filterView.isVisible()) {
             filterView.setVisible(true);
             hideOtherViews(INDEX_FILTER);
         }
@@ -366,15 +433,16 @@ public class EditActivity extends Activity implements
 
     private void onWatermarkClick() {
         BottomViewInfo waterMarkView = mBottomViews.get(INDEX_WATERMARKK);
-        if(!waterMarkView.isVisible()) {
+        if (!waterMarkView.isVisible()) {
             waterMarkView.setVisible(true);
+            mTextView.setVisibility(View.VISIBLE);
             hideOtherViews(INDEX_WATERMARKK);
         }
     }
 
     private void onVideoRangeClick() {
         BottomViewInfo videoRangeView = mBottomViews.get(INDEX_VIDEORANGE);
-        if(!videoRangeView.isVisible()) {
+        if (!videoRangeView.isVisible()) {
             videoRangeView.setVisible(true);
             hideOtherViews(INDEX_VIDEORANGE);
         }
@@ -382,7 +450,7 @@ public class EditActivity extends Activity implements
 
     private void onAudioEditClick() {
         BottomViewInfo audioiew = mBottomViews.get(INDEX_AUDIO);
-        if(!audioiew.isVisible()) {
+        if (!audioiew.isVisible()) {
             audioiew.setVisible(true);
             hideOtherViews(INDEX_AUDIO);
         }
@@ -390,11 +458,33 @@ public class EditActivity extends Activity implements
 
     private void onStickerClick() {
         BottomViewInfo stickerView = mBottomViews.get(INDEX_STICKER);
-        if(!stickerView.isVisible()) {
+        if (!stickerView.isVisible()) {
             mKSYStickerView.setVisibility(View.VISIBLE);
             stickerView.setVisible(true);
             hideOtherViews(INDEX_STICKER);
         }
+    }
+
+    private void onTextColorSelected() {
+        mColorPicker.show();
+        Button okColor = (Button) mColorPicker.findViewById(R.id.okColorButton);
+        okColor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeTextColor(mColorPicker.getColor());
+                mColorPicker.dismiss();
+            }
+        });
+    }
+
+    /**
+     * 修改字体颜色
+     *
+     * @param newColor
+     */
+    private void changeTextColor(int newColor) {
+        mTextColorSelect.setBackgroundColor(newColor);
+        mTextView.setTextColor(newColor);
     }
 
     private void onDeleteStickers() {
@@ -404,30 +494,80 @@ public class EditActivity extends Activity implements
     private StickerAdapter.OnStickerItemClick mOnStickerItemClick = new StickerAdapter.OnStickerItemClick() {
         @Override
         public void selectedStickerItem(String path) {
-            if(mStickerDeleteBitmap == null) {
+            //辅助区域的删除按钮
+            if (mStickerDeleteBitmap == null) {
                 mStickerDeleteBitmap = BitmapFactory.decodeResource(getResources(),
                         R.drawable.sticker_delete);
             }
 
-            if(mStickerRotateBitmap == null) {
+            //辅助区域的旋转按钮
+            if (mStickerRotateBitmap == null) {
                 mStickerRotateBitmap = BitmapFactory.decodeResource(getResources(),
                         R.drawable.sticker_rotate);
             }
 
-            if(mStickerHelpBoxInfo == null) {
+            //辅助区域信息
+            if (mStickerHelpBoxInfo == null) {
                 mStickerHelpBoxInfo = new StickerHelpBoxInfo();
-                mStickerHelpBoxInfo.deleteBit = mStickerDeleteBitmap;
-                mStickerHelpBoxInfo.rotateBit = mStickerRotateBitmap;
+                mStickerHelpBoxInfo.deleteBit = mStickerDeleteBitmap;  //删除按钮
+                mStickerHelpBoxInfo.rotateBit = mStickerRotateBitmap;  //旋转按钮
+                //辅助区域画笔
                 Paint helpBoxPaint = new Paint();
                 helpBoxPaint.setColor(Color.BLACK);
                 helpBoxPaint.setStyle(Paint.Style.STROKE);
-                helpBoxPaint.setAntiAlias(true);
-                helpBoxPaint.setStrokeWidth(4);
+                helpBoxPaint.setAntiAlias(true);  //抗锯齿
+                helpBoxPaint.setStrokeWidth(4);     //宽度
                 mStickerHelpBoxInfo.helpBoxPaint = helpBoxPaint;
             }
 
             mKSYStickerView.addSticker(getImageFromAssetsFile(path), mStickerHelpBoxInfo);
 
+        }
+    };
+
+    private StickerAdapter.OnStickerItemClick mOnTextStickerItemClick = new StickerAdapter
+            .OnStickerItemClick() {
+        @Override
+        public void selectedStickerItem(String path) {
+            KSYTextView.DrawTextParams textParams = new KSYTextView.DrawTextParams();
+            textParams.textPaint = null;
+            textParams.autoNewLine = false;
+            if(path.contains("3")) {
+                textParams.text_left_padding = 40;
+                textParams.text_right_padding = 41 ;
+                textParams.text_top_padding = 82;
+                textParams.text_bottom_padding = 28;
+            }
+            if(path.contains("1")) {
+                textParams.text_left_padding = 33;
+                textParams.text_right_padding = 35;
+                textParams.text_top_padding = 61;
+                textParams.text_bottom_padding = 69;
+            }
+
+            if(path.contains("2")) {
+                textParams.text_left_padding = 185;
+                textParams.text_right_padding = 27;
+                textParams.text_top_padding = 81;
+                textParams.text_bottom_padding = 18;
+            }
+
+            if(path.contains("4")) {
+                textParams.text_left_padding = 42;
+                textParams.text_right_padding = 108;
+                textParams.text_top_padding = 43;
+                textParams.text_bottom_padding = 24;
+            }
+
+            if(path.contains("5")) {
+                textParams.text_left_padding = 105;
+                textParams.text_right_padding = 104;
+                textParams.text_top_padding = 89;
+                textParams.text_bottom_padding = 66;
+            }
+            textParams.bitmap = getImageFromAssetsFile(path);
+
+            mTextView.updateTextParams(textParams);
         }
     };
 
@@ -459,9 +599,12 @@ public class EditActivity extends Activity implements
     }
 
     private void onOriginAudioClick(boolean isCheck) {
+        //是否删除原始音频
         mEditKit.enableOriginAudio(isCheck);
 
         mOriginAudioVolumeSeekBar.setEnabled(isCheck);
+        mAudioEffectSpinner.setEnabled(isCheck);
+        mAudioReverbSpinner.setEnabled(isCheck);
     }
 
     private void onBgmMusicClick(boolean isCheck) {
@@ -590,6 +733,8 @@ public class EditActivity extends Activity implements
                     return null;
                 }
                 case ShortVideoConstants.SHORTVIDEO_COMPOSE_FINISHED: {
+                    mAudioReverbSpinner.setSelection(0);
+                    mAudioEffectSpinner.setSelection(0);
                     if (mComposeAlertDialog != null) {
                         mComposeAlertDialog.composeFinished(msgs[0]);
                         mComposeFinished = true;
@@ -694,6 +839,9 @@ public class EditActivity extends Activity implements
                     break;
                 case R.id.click_to_delete_stickers:
                     onDeleteStickers();
+                    break;
+                case  R.id.text_color:
+                    onTextColorSelected();
                     break;
                 default:
                     break;
@@ -811,47 +959,28 @@ public class EditActivity extends Activity implements
         if (durationMS > mMaxClipSpanMs) {
             totalFrame = (int) (durationMS * 8) / mMaxClipSpanMs;
         } else {
-            totalFrame = Math.min((int) durationMS / 1000, 8);
+            totalFrame = 10;
         }
 
         int mm = totalFrame;
-
-        //若不是整数s，增加一个thumbnail
-        int left = 0;  //不增加非整数倍的thumbnail，否则裁剪区域显示不全
-//        int left = (int) durationMS % 1000;
-//        if (left != 0) {
-//            totalFrame++;
-//        }
-
-        // add start，mask区域，不显示thumbnail
-        totalFrame++;
-
-        boolean hasEnd = false;
-        if (totalFrame > 9) {
-            // add end
-            totalFrame++;
-            hasEnd = true;
-        }
 
         VideoThumbnailInfo[] listData = new VideoThumbnailInfo[totalFrame];
         for (int i = 0; i < totalFrame; i++) {
             listData[i] = new VideoThumbnailInfo();
             if (durationMS > mMaxClipSpanMs) {
-                listData[i].mCurrentTime = (durationMS / 1000) * (i - 1) / mm;
+                listData[i].mCurrentTime = i * ((float) durationMS / 1000) * (1.0f / mm);
             } else {
-                listData[i].mCurrentTime = (durationMS / 1000) * (i - 1) / 8;
+                if (i > 0 && i < 9) {
+                    listData[i].mCurrentTime = (i - 1) * ((float) durationMS / 1000) * (1.0f / 8);
+                }
             }
 
             if (i == 0 && mVideoRangeSeekBar != null) {
                 listData[i].mType = VideoThumbnailInfo.TYPE_START;
                 listData[i].mWidth = (int) mVideoRangeSeekBar.getMaskWidth();
-            } else if (i == totalFrame - 1 && hasEnd && mVideoRangeSeekBar != null) {
+            } else if (i == totalFrame - 1 && mVideoRangeSeekBar != null) {
                 listData[i].mType = VideoThumbnailInfo.TYPE_END;
                 listData[i].mWidth = (int) mVideoRangeSeekBar.getMaskWidth();
-            } else if ((i == totalFrame - 1 && !hasEnd && left != 0)   //非整秒数部分
-                    || (i == totalFrame - 2 && hasEnd && left != 0)) {
-                listData[i].mType = VideoThumbnailInfo.TYPE_NORMAL;
-                listData[i].mWidth = (int) ((left * 1.0f / 1000.0f) * picWidth);
             } else {
                 listData[i].mType = VideoThumbnailInfo.TYPE_NORMAL;
                 listData[i].mWidth = (int) picWidth;
@@ -1135,7 +1264,128 @@ public class EditActivity extends Activity implements
             }
         });
         mBeautySpinner.setPopupBackgroundResource(R.color.transparent1);
-        mBeautySpinner.setSelection(4);
+        mBeautySpinner.setSelection(0);
+    }
+
+    private void initAudioFilterUI() {
+        //变声
+        String[] effectItems = new String[]{"DISABLE", "FEMALE", "MALE",
+                "HEROIC", "ROBOT"};
+        ArrayAdapter<String> effectAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, effectItems);
+        effectAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mAudioEffectSpinner.setAdapter(effectAdapter);
+        mAudioEffectSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long
+                    index) {
+                if (position == 0) {
+                    mAudioEffectType = AUDIO_FILTER_DISABLE;
+                } else {
+                    switch (position) {
+                        case 1:
+                            //萝莉
+                            mAudioEffectType = KSYAudioEffectFilter.AUDIO_EFFECT_TYPE_FEMALE;
+
+                            break;
+                        case 2:
+                            //大叔
+                            mAudioEffectType = KSYAudioEffectFilter.AUDIO_EFFECT_TYPE_MALE;
+                            break;
+                        case 3:
+                            //庄严
+                            mAudioEffectType = KSYAudioEffectFilter.AUDIO_EFFECT_TYPE_HEROIC;
+                            break;
+                        case 4:
+                            //机器人
+                            mAudioEffectType = KSYAudioEffectFilter.AUDIO_EFFECT_TYPE_ROBOT;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                addAudioFilter();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        mAudioEffectSpinner.setPopupBackgroundResource(R.color.transparent1);
+        mAudioEffectSpinner.setSelection(0);
+
+        //混响
+        String[] reverbItems = new String[]{"DISABLE", "RECORDING", "KTV",
+                "STAGE", "CONCERT"};
+
+        ArrayAdapter<String> reverbAdapter = new ArrayAdapter<String>(this, android.R.layout
+                .simple_spinner_item, reverbItems);
+        reverbAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mAudioReverbSpinner.setAdapter(reverbAdapter);
+        mAudioReverbSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long
+                    index) {
+
+                if (position == 0) {
+                    mAudioReverbType = AUDIO_FILTER_DISABLE;
+                } else {
+                    switch (position) {
+                        case 1:
+                            //录音棚
+                            mAudioReverbType = AudioReverbFilter.AUDIO_REVERB_LEVEL_1;
+                            break;
+                        case 2:
+                            //KTV
+                            mAudioReverbType = AudioReverbFilter.AUDIO_REVERB_LEVEL_2;
+                            break;
+                        case 3:
+                            //小舞台
+                            mAudioReverbType = AudioReverbFilter
+                                    .AUDIO_REVERB_LEVEL_3;
+                            break;
+                        case 4:
+                            //演唱会
+                            mAudioReverbType = AudioReverbFilter
+                                    .AUDIO_REVERB_LEVEL_4;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                addAudioFilter();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        mAudioReverbSpinner.setPopupBackgroundResource(R.color.transparent1);
+        mAudioReverbSpinner.setSelection(0);
+    }
+
+    private void addAudioFilter() {
+        KSYAudioEffectFilter effectFilter;
+        AudioReverbFilter reverbFilter;
+        List<AudioFilterBase> filters = new LinkedList<>();
+        if (mAudioEffectType != AUDIO_FILTER_DISABLE) {
+            effectFilter = new KSYAudioEffectFilter
+                    (mAudioEffectType);
+            filters.add(effectFilter);
+        }
+        if (mAudioReverbType != AUDIO_FILTER_DISABLE) {
+            reverbFilter = new AudioReverbFilter();
+            reverbFilter.setReverbLevel(mAudioReverbType);
+            filters.add(reverbFilter);
+        }
+        if (filters.size() > 0) {
+            mEditKit.getAudioFilterMgt().setFilter(filters);
+        } else {
+            mEditKit.getAudioFilterMgt().setFilter((AudioFilterBase) null);
+        }
     }
 
     private void resumeEditPreview() {
@@ -1514,16 +1764,76 @@ public class EditActivity extends Activity implements
 
     private void hideOtherViews(int showIndex) {
         for (Integer id : mBottomViews.keySet()) {
-            if(id != showIndex) {
+            if (id != showIndex) {
                 BottomViewInfo item = mBottomViews.get(id);
                 item.setVisible(false);
+            }
+            if(showIndex != INDEX_WATERMARKK) {
+                if(mInputMethodManager.isActive()) {
+                    mInputMethodManager.hideSoftInputFromWindow(mTextInput
+                                    .getWindowToken(),
+                            InputMethodManager.RESULT_UNCHANGED_SHOWN);
+                }
             }
         }
     }
 
+    private void initStickerHelpBox() {
+        if(mStickerDeleteBitmap == null) {
+            mStickerDeleteBitmap = BitmapFactory.decodeResource(getResources(),
+                    R.drawable.sticker_delete);
+        }
+
+        if(mStickerRotateBitmap == null) {
+            mStickerRotateBitmap = BitmapFactory.decodeResource(getResources(),
+                    R.drawable.sticker_rotate);
+        }
+
+        if(mStickerHelpBoxInfo == null) {
+            mStickerHelpBoxInfo = new StickerHelpBoxInfo();
+            mStickerHelpBoxInfo.deleteBit = mStickerDeleteBitmap;
+            mStickerHelpBoxInfo.rotateBit = mStickerRotateBitmap;
+            Paint helpBoxPaint = new Paint();
+            helpBoxPaint.setColor(Color.BLACK);
+            helpBoxPaint.setStyle(Paint.Style.STROKE);
+            helpBoxPaint.setAntiAlias(true);
+            helpBoxPaint.setStrokeWidth(4);
+            mStickerHelpBoxInfo.helpBoxPaint = helpBoxPaint;
+        }
+    }
+
+    private TextWatcher mTextInputChangedListener = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            String text = editable.toString().trim();
+            mTextView.setText(text);
+        }
+    };
+
+    public KSYTextView.OnTextRectSelected mTextRectSelected = new KSYTextView.OnTextRectSelected() {
+        @Override
+        public void textRectSelected() {
+            //显示输入框
+            onWatermarkClick();
+            mTextInput.requestFocus();
+            mInputMethodManager.showSoftInput(mTextInput, InputMethodManager.RESULT_SHOWN);
+        }
+    };
+
     public class BottomViewInfo {
         public TextView titleView;
         public View container;
+
         public BottomViewInfo(TextView titleView, View container) {
             this.titleView = titleView;
             this.container = container;
@@ -1534,7 +1844,7 @@ public class EditActivity extends Activity implements
         }
 
         public void setVisible(boolean visible) {
-            if(visible) {
+            if (visible) {
                 container.setVisibility(View.VISIBLE);
                 titleView.setActivated(true);
             } else {

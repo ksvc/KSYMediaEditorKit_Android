@@ -108,7 +108,7 @@ public class FileImportActivity extends Activity implements
         mBackView.setOnClickListener(mObserverButton);
         mNextView = (ImageView) findViewById(R.id.click_to_next);
         mNextView.setOnClickListener(mObserverButton);
-
+        mNextView.setEnabled(false);
         //play local file
         mSurfaceHolder = mVideoSurfaceView.getHolder();
         mSurfaceHolder.addCallback(mSurfaceCallback);
@@ -233,6 +233,7 @@ public class FileImportActivity extends Activity implements
                                 Toast.makeText(FileImportActivity.this,
                                         "File Selected: " + path, Toast.LENGTH_LONG).show();
                                 startPlay(path);
+                                mNextView.setEnabled(true);
                             } else {
                                 Toast.makeText(FileImportActivity.this,
                                         "Do not support this file, please select other File ", Toast

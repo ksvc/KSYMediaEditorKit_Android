@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#616060">
+
+    <RelativeLayout
+        android:id="@+id/beauty_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#919191">
+        <TextView
+            android:id="@+id/item_beauty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="美颜滤镜"
+            android:textSize="16sp"
+            android:textColor="@drawable/record_title_text" />
+        <TextView
+            android:id="@+id/item_dyn_sticker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/item_beauty"
+            android:padding="5dp"
+            android:text="动态贴纸"
+            android:textSize="16sp"
+            android:textColor="@drawable/record_title_text" />
+        <ImageView
+            android:id="@+id/item_beauty_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="3dp"
+            android:layout_marginRight="3dp"
+            android:src="@drawable/back"/>
+    </RelativeLayout>
+
+    <include
+        android:id="@+id/record_beauty_choose"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/beauty_choose"
+        android:layout_below="@+id/beauty_title"
+        android:layout_marginTop="20dp"/>
+    <include
+        android:id="@+id/record_sticker_choose"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/beauty_title"
+        android:layout_marginTop="20dp"
+        android:visibility="invisible"
+        layout="@layout/sticker_choose" />
+
+</RelativeLayout>

@@ -27,6 +27,10 @@ public class RecordProgressController {
     private List<RecordingStateChanged> mRecordStateChangedListeners;
     private RecordingLengthChangedListener mRecordingLengthChangedListener;
 
+    /**
+     *
+     * @param rootView  拍摄进度显示的父控件
+     */
     public RecordProgressController(View rootView) {
         mHandler = new Handler();
         mProgressView = (RecordProgressView) rootView.findViewById(R.id.record_progress);
@@ -140,7 +144,7 @@ public class RecordProgressController {
     }
 
     /**
-     * remove record file
+     * 删除最后一个录制的视频
      */
     public void rollback() {
         mIsRecording = false;
@@ -192,6 +196,10 @@ public class RecordProgressController {
         return mStartRecordingTime;
     }
 
+    /**
+     * 用于通知最短拍摄时长和最长拍摄时长
+     * @param listener
+     */
     public void setRecordingLengthChangedListener(RecordingLengthChangedListener listener) {
         mRecordingLengthChangedListener = listener;
     }
@@ -214,8 +222,8 @@ public class RecordProgressController {
     }
 
     public interface RecordingLengthChangedListener {
-        void passMinPoint(boolean pass);
+        void passMinPoint(boolean pass);  //拍摄超过了最短时长
 
-        void passMaxPoint();
+        void passMaxPoint();  //拍摄超过了最长时长
     }
 }

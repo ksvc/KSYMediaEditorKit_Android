@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="font_color_35">#368ca8</color>
+    <color name="font_color_35">#DC143C</color>
     <color name="transparent1">#7fffffff</color><!--透明白色 -->
     <color name="transparent2">#616060</color><!--透明白色 -->
     <color name="transparent">#00000000</color>
@@ -10,4 +10,11 @@
     <color name="record_progress_blue">#368ca8</color>
     <color name="record_progress_pause">#2c2c2c</color>
     <color name="record_progress_red">#e85932</color>
+
+    <color name="record_text_default">#ff000000</color>
+    <color name="record_text_selected">#DC143C</color>
+    <color name="record_title_white">#ffffff</color>
+    <color name="record_title_bg_default">#919191</color>
+    <color name="record_title_bg_selected">#616060</color>
+
 </resources>

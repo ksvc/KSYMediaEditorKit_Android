@@ -29,23 +29,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"/>
-
-        <include
-            android:id="@+id/record_beauty_choose"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:visibility="invisible"
-            layout="@layout/beauty_choose" />
-
-        <include
-            android:id="@+id/record_sticker_choose"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="bottom"
-            android:visibility="invisible"
-            layout="@layout/sticker_choose" />
     </RelativeLayout>
 
     <include
@@ -54,5 +37,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"/>
-    <!--</LinearLayout>-->
+
 </LinearLayout>

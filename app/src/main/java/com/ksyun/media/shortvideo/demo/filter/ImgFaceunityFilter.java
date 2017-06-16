@@ -274,14 +274,12 @@ public class ImgFaceunityFilter extends ImgFilterBase {
     }
 
     public void release() {
-        mSrcPin.disconnect(true);
         if (mOutTexture != ImgTexFrame.NO_TEXTURE) {
             mGLRender.getFboManager().unlock(mOutTexture);
             mOutTexture = ImgTexFrame.NO_TEXTURE;
         }
         mInputBufArray = null;
     }
-
 
     private void onGLContextReady() {
         try {
