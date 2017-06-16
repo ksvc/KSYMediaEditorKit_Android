@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -258,8 +259,7 @@ public class VideoRangeSeekBar extends View {
      */
     public float getFrameWidth() {
         float totalRange = mWidth - 2 * mGradientWidth;
-
-        return 1.0f / Math.min(MAX_RANGE, 8) * totalRange;
+        return 1.0f / 8 * totalRange;
     }
 
     public float getMaskWidth() {

@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -33,6 +34,8 @@ public class ShortVideoActivity extends Activity {
     //auth
     private HttpRequestTask mAuthTask;
     private HttpRequestTask.HttpResponseListener mAuthResponse;
+    private static int MAX_RETRY_COUNT = 3;
+    private int mRetryCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +76,7 @@ public class ShortVideoActivity extends Activity {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.auth:
+                    mRetryCount = 0;
                     onAuthClick();
                     break;
                 case R.id.record:
@@ -89,52 +93,67 @@ public class ShortVideoActivity extends Activity {
 
     private void onAuthClick() {
         mAuthButton.setEnabled(false);
-        mAuthResponse = new HttpRequestTask.HttpResponseListener() {
-            @Override
-            public void onHttpResponse(int responseCode, String response) {
-                //params response
-                boolean authResult = false;
-                if (responseCode == 200) {
-                    try {
-                        JSONObject temp = new JSONObject(response);
-                        JSONObject data = temp.getJSONObject("Data");
-                        int result = data.getInt("RetCode");
-                        if (result == 0) {
-                            String authInfo = data.getString("Authorization");
-                            String date = data.getString("x-amz-date");
-                            //初始化鉴权信息
-                            AuthInfoManager.getInstance().setAuthInfo(getApplicationContext(),
-                                    authInfo, date);
-                            //添加鉴权结果回调接口(不是必须)
-                            AuthInfoManager.getInstance().addAuthResultListener(mCheckAuthResultListener);
-                            //开始向KSServer申请鉴权
-                            AuthInfoManager.getInstance().checkAuth();
-                            authResult = true;
-                        } else {
-                            Log.e(TAG, "get auth failed from app server RetCode:" + result);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        Log.e(TAG, "get auth failed from app server json parse failed");
-                    }
-                } else {
-                    Log.e(TAG, "get auth failed from app server responseCode:" + responseCode);
-                }
 
-                final boolean finalAuthResult = authResult;
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(!finalAuthResult) {
-                            Toast.makeText(ShortVideoActivity.this, "get auth failed from app " +
-                                    "server", Toast.LENGTH_SHORT)
-                                    .show();
+        if (mAuthResponse == null) {
+            mAuthResponse = new HttpRequestTask.HttpResponseListener() {
+                @Override
+                public void onHttpResponse(int responseCode, String response) {
+                    //params response
+                    boolean authResult = false;
+                    if (responseCode == 200) {
+                        try {
+                            JSONObject temp = new JSONObject(response);
+                            JSONObject data = temp.getJSONObject("Data");
+                            int result = data.getInt("RetCode");
+                            if (result == 0) {
+                                String authInfo = data.getString("Authorization");
+                                String date = data.getString("x-amz-date");
+                                //初始化鉴权信息
+                                AuthInfoManager.getInstance().setAuthInfo(getApplicationContext(),
+                                        authInfo, date);
+                                //添加鉴权结果回调接口(不是必须)
+                                AuthInfoManager.getInstance().addAuthResultListener(mCheckAuthResultListener);
+                                //开始向KSServer申请鉴权
+                                AuthInfoManager.getInstance().checkAuth();
+                                authResult = true;
+                            } else {
+                                Log.e(TAG, "get auth failed from app server RetCode:" + result);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.e(TAG, "get auth failed from app server json parse failed");
                         }
-                        mAuthButton.setEnabled(true);
+                    } else {
+                        Log.e(TAG, "get auth failed from app server responseCode:" + responseCode);
                     }
-                });
-            }
-        };
+
+                    final boolean finalAuthResult = authResult;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (!finalAuthResult) {
+                                Toast.makeText(ShortVideoActivity.this, "get auth failed from app " +
+                                        "server", Toast.LENGTH_SHORT)
+                                        .show();
+                                if(mRetryCount < MAX_RETRY_COUNT) {
+                                    mRetryCount++;
+                                    onAuthClick();
+                                } else {
+                                    mAuthButton.setEnabled(true);
+                                }
+                            } else {
+                                mAuthButton.setEnabled(true);
+                            }
+                        }
+                    });
+                }
+            };
+        }
+
+        if (mAuthTask != null && mAuthTask.getStatus() != AsyncTask.Status.FINISHED) {
+            mAuthTask.cancel(true);
+            mAuthTask = null;
+        }
         //开启异步任务，向AppServer请求鉴权信息
         mAuthTask = new HttpRequestTask(mAuthResponse);
         String url = AUTH_SERVER_URI + "?Pkg=" + getApplicationContext().getPackageName();
