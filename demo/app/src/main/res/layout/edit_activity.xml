@@ -1,42 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/preview_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <android.opengl.GLSurfaceView
             android:id="@+id/edit_preview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentTop="true"/>
+            android:layout_alignParentTop="true" />
 
         <com.ksyun.media.shortvideo.view.KSYStickerView
             android:id="@+id/sticker_panel"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <com.ksyun.media.shortvideo.view.KSYTextView
             android:id="@+id/text_panel"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/click_to_pause"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginBottom="3dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:src="@drawable/play_state"/>
+            android:layout_marginBottom="3dp"
+            android:src="@drawable/play_state" />
+
+        <com.ksyun.media.shortvideo.demo.AudioSeekLayout
+            android:id="@+id/audioSeekLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/click_to_pause"
+            android:layout_marginBottom="10dp"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <include
@@ -44,6 +53,5 @@
         layout="@layout/edit_bottombar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom">
-    </include>
+        android:layout_gravity="bottom"/>
 </LinearLayout>

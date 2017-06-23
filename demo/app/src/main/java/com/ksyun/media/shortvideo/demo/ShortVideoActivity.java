@@ -23,18 +23,18 @@ public class ShortVideoActivity extends Activity {
     private static String TAG = "ShortVideoActivity";
     public static String AUTH_SERVER_URI = "http://ksvs-demo.ks-live.com:8321/Auth";//the uri of your appServer
     //view
-    private Button mAuthButton;
-    private Button mRecordButton;
-    private Button mImportFileButton;
+    private Button mAuthButton;    //SDK鉴权
+    private Button mRecordButton;  //进入录制短视频功能
+    private Button mImportFileButton; //导入本地视频用于进入短视频编辑
 
     private ButtonObserver mButtonObserver;
     private Handler mMainHandler;
 
     //config params
     //auth
-    private HttpRequestTask mAuthTask;
+    private HttpRequestTask mAuthTask;  //SDK鉴权异步任务
     private HttpRequestTask.HttpResponseListener mAuthResponse;
-    private static int MAX_RETRY_COUNT = 3;
+    private static int MAX_RETRY_COUNT = 3;  //若AKSK请求失败尝试3次
     private int mRetryCount = 0;
 
     @Override
@@ -91,6 +91,9 @@ public class ShortVideoActivity extends Activity {
         }
     }
 
+    /**
+     * SDK鉴权
+     */
     private void onAuthClick() {
         mAuthButton.setEnabled(false);
 
@@ -135,6 +138,7 @@ public class ShortVideoActivity extends Activity {
                                 Toast.makeText(ShortVideoActivity.this, "get auth failed from app " +
                                         "server", Toast.LENGTH_SHORT)
                                         .show();
+                                //鉴权失败，尝试3次
                                 if(mRetryCount < MAX_RETRY_COUNT) {
                                     mRetryCount++;
                                     onAuthClick();
@@ -192,6 +196,7 @@ public class ShortVideoActivity extends Activity {
             public void onDismiss(DialogInterface dialogInterface) {
                 ShortVideoConfigDialog.ShortVideoConfig config = configDialog.getShortVideoConfig();
                 if (config != null) {
+                    //启动短视频录制
                     RecordActivity.startActivity(getApplicationContext(),
                             config.fps, config.videoBitrate,
                             config.audioBitrate, config.resolution, config.encodeType,
@@ -203,6 +208,6 @@ public class ShortVideoActivity extends Activity {
     }
 
     private void onImportFileClick() {
-        FileImportActivity.startActivity(getApplicationContext(), "/sdcard/test.mp4");
+        FileImportActivity.startActivity(getApplicationContext());
     }
 }

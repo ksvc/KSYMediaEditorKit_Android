@@ -35,12 +35,10 @@ import android.opengl.GLSurfaceView;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.AppCompatSpinner;
@@ -48,7 +46,6 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -63,13 +60,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -128,7 +119,8 @@ public class RecordActivity extends Activity implements
     private ImageView mBeautyBack;
     private ImageView mBgmBack;
 
-    DownloadAndPlayTask mBgmLoadTask;
+    private DownloadAndHandleTask mBgmLoadTask;
+    private Thread mInitFaceunityThread;
 
     private AppCompatSeekBar mMicAudioVolumeSeekBar;
     private AppCompatSeekBar mBgmVolumeSeekBar;
@@ -186,7 +178,6 @@ public class RecordActivity extends Activity implements
     private String[] mBgmLoadPath = {"https://ks3-cn-beijing.ksyun.com/ksy.vcloud.sdk/ShortVideo/faded.mp3",
             "https://ks3-cn-beijing.ksyun.com/ksy.vcloud.sdk/ShortVideo/Hotel_California.mp3",
             "https://ks3-cn-beijing.ksyun.com/ksy.vcloud.sdk/ShortVideo/Immortals.mp3"};
-
     private final static int PERMISSION_REQUEST_CAMERA_AUDIOREC = 1;
 
     public final static String FRAME_RATE = "framerate";
@@ -369,7 +360,6 @@ public class RecordActivity extends Activity implements
         mKSYRecordKit.setOnLogEventListener(mOnLogEventListener);
         initBeautyUI();
         initStickerUI();
-        initFaceunity();
         initBgmUI();
         initBottomTitleUI();
         // touch focus and zoom support
@@ -407,6 +397,12 @@ public class RecordActivity extends Activity implements
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        onStickerChecked(true);
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         if (mMainHandler != null) {
@@ -416,11 +412,26 @@ public class RecordActivity extends Activity implements
         if (mBgmLoadTask != null && mBgmLoadTask.getStatus() == AsyncTask.Status.RUNNING) {
             mBgmLoadTask.cancel(true);
         }
+        if (mImgFaceunityFilter != null && mImgFaceunityFilter.getTask() != null &&
+                mImgFaceunityFilter.getTask().getStatus() == AsyncTask.Status.RUNNING) {
+            mImgFaceunityFilter.getTask().cancel(true);
+        }
         mRecordProgressCtl.stop();
         mRecordProgressCtl.setRecordingLengthChangedListener(null);
         mRecordProgressCtl.release();
         mKSYRecordKit.setOnLogEventListener(null);
         mKSYRecordKit.release();
+
+        if (mInitFaceunityThread != null) {
+            mInitFaceunityThread.interrupt();
+            try {
+                mInitFaceunityThread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                mInitFaceunityThread = null;
+            }
+        }
     }
 
     @Override
@@ -676,8 +687,7 @@ public class RecordActivity extends Activity implements
                 mBgmLayout.setVisibility(View.INVISIBLE);
             }
             mDefaultRecordBottomLayout.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             if (mKSYRecordKit.getRecordedFilesCount() >= 1) {
                 if (!mBackView.isSelected()) {
                     mBackView.setSelected(true);
@@ -901,14 +911,16 @@ public class RecordActivity extends Activity implements
 
     /*********************************Faceunity sticker begin***********************************/
     private void onStickerChecked(boolean isChecked) {
-        if (isChecked) {
-            //需要输入camera数据用于人脸识别
-            mKSYRecordKit.getCameraCapture().mImgBufSrcPin.connect(mImgFaceunityFilter.getBufSinkPin());
-        } else {
-            if (mImgFaceunityFilter != null) {
-                mKSYRecordKit.getCameraCapture().mImgBufSrcPin.disconnect(mImgFaceunityFilter.getBufSinkPin(),
-                        false);
-                mImgFaceunityFilter.setPropType(-1);
+        if(mImgFaceunityFilter != null) {
+            if (isChecked) {
+                //需要输入camera数据用于人脸识别
+                mKSYRecordKit.getCameraCapture().mImgBufSrcPin.connect(mImgFaceunityFilter.getBufSinkPin());
+            } else {
+                if (mImgFaceunityFilter != null) {
+                    mKSYRecordKit.getCameraCapture().mImgBufSrcPin.disconnect(mImgFaceunityFilter.getBufSinkPin(),
+                            false);
+                    mImgFaceunityFilter.setPropType(-1);
+                }
             }
         }
     }
@@ -918,8 +930,7 @@ public class RecordActivity extends Activity implements
      */
     private void initStickerUI() {
         String[] items = new String[]{"DISABLE", "BEAGLEDOG", "COLORCROWN", "DEER",
-                "HAPPYRABBI", "HARTSHORN", "ITEM0204", "ITEM0208",
-                "ITEM0210", "ITEM0501", "MOOD", "PRINCESSCROWN", "TIARA", "YELLOWEAR"};
+                "HAPPYRABBI", "HARTSHORN"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, items);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -995,13 +1006,19 @@ public class RecordActivity extends Activity implements
                 mKSYRecordKit.stopBgm();
                 mKSYRecordKit.setEnableAudioMix(true);
                 String fileName = mBgmLoadPath[index].substring(mBgmLoadPath[index].lastIndexOf('/'));
-                String filePath = getCacheDirectory(this) + fileName;
+                final String filePath = FileUtils.getCacheDirectory(getApplicationContext()) + fileName;
                 File file = new File(filePath);
                 if (!file.exists()) {
                     if (mBgmLoadTask != null && mBgmLoadTask.getStatus() == AsyncTask.Status.RUNNING) {
                         mBgmLoadTask.cancel(true);
                     }
-                    mBgmLoadTask = new DownloadAndPlayTask(filePath, mKSYRecordKit);
+                    DownloadAndHandleTask.DownloadListener listener = new DownloadAndHandleTask.DownloadListener() {
+                        @Override
+                        public void onCompleted() {
+                            mKSYRecordKit.startBgm(filePath, true);
+                        }
+                    };
+                    mBgmLoadTask = new DownloadAndHandleTask(filePath, listener);
                     mBgmLoadTask.execute(mBgmLoadPath[index]);
                 } else {
                     mKSYRecordKit.startBgm(filePath, true);
@@ -1248,7 +1265,19 @@ public class RecordActivity extends Activity implements
             mPreBeautyTitleIndex = index;
         }
         if (index == 1) {
-            onStickerChecked(true);
+            if (mInitFaceunityThread == null) {
+                mInitFaceunityThread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        initFaceunity();
+                        onStickerChecked(true);
+                    }
+                });
+                mInitFaceunityThread.start();
+            }
+            else {
+                onStickerChecked(true);
+            }
         }
     }
 
@@ -1495,23 +1524,6 @@ public class RecordActivity extends Activity implements
         return fileFolder;
     }
 
-    private String getCacheDirectory(Context context) {
-        String appCacheDir;
-        if (Environment.MEDIA_MOUNTED == Environment.getExternalStorageState()) {
-            appCacheDir = context.getExternalCacheDir().getAbsolutePath();
-            if (appCacheDir == null) {
-                appCacheDir = Environment.getExternalStorageDirectory() + "Android" + context.getPackageName() + "cache";
-            }
-            return appCacheDir;
-        } else {
-            appCacheDir = context.getCacheDir().getAbsolutePath();
-            if (appCacheDir == null) {
-                appCacheDir = "/data/data/" + context.getPackageName() + "/cache/";
-            }
-            return appCacheDir;
-        }
-    }
-
     public class BottomTitleViewInfo {
         private TextView titleView;
         private View relativeLayout;
@@ -1557,55 +1569,6 @@ public class RecordActivity extends Activity implements
             if (mBgmItemName != null) {
                 mBgmItemName.setActivated(isSelected);
             }
-        }
-    }
-
-    private class DownloadAndPlayTask extends AsyncTask<String, Integer, String> {
-
-        private String filePath;
-        private KSYRecordKit mKit;
-
-        public DownloadAndPlayTask(String path, KSYRecordKit kit) {
-            filePath = path;
-            mKit = kit;
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            try {
-                URL url = new URL(params[0]);
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
-                connection.setConnectTimeout(3000);
-                connection.connect();
-                if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                    return "Server returned HTTP " + connection.getResponseCode()
-                            + " " + connection.getResponseMessage();
-                }
-                InputStream in = new BufferedInputStream(connection.getInputStream());
-                OutputStream out = new FileOutputStream(filePath);
-                byte data[] = new byte[1024];
-                int count;
-                while ((count = in.read(data)) != -1) {
-                    if (isCancelled()) {
-                        in.close();
-                        out.close();
-                        return null;
-                    }
-                    out.write(data, 0, count);
-                }
-                in.close();
-                out.flush();
-                out.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            mKit.startBgm(filePath, true);
         }
     }
 

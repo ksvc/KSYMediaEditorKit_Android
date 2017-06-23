@@ -20,9 +20,12 @@ import java.io.File;
  */
 
 public class FileUtils {
-    /** TAG for log messages. */
+    /**
+     * TAG for log messages.
+     */
     static final String TAG = "FileUtils";
     private static final boolean DEBUG = false; // Set to true to enable logging
+
     /**
      * Get the Intent for selecting content to be used in an Intent Chooser.
      *
@@ -48,10 +51,10 @@ public class FileUtils {
      * represents a local file.
      *
      * @param context The context.
-     * @param uri The Uri to query.
+     * @param uri     The Uri to query.
+     * @author paulburke
      * @see #isLocal(String)
      * @see #getFile(Context, Uri)
-     * @author paulburke
      */
     public static String getPath(final Context context, final Uri uri) {
 
@@ -112,7 +115,7 @@ public class FileUtils {
                 }
 
                 final String selection = "_id=?";
-                final String[] selectionArgs = new String[] {
+                final String[] selectionArgs = new String[]{
                         split[1]
                 };
 
@@ -167,9 +170,9 @@ public class FileUtils {
      * Get the value of the data column for this Uri. This is useful for
      * MediaStore Uris, and other file-based ContentProviders.
      *
-     * @param context The context.
-     * @param uri The Uri to query.
-     * @param selection (Optional) Filter used in the query.
+     * @param context       The context.
+     * @param uri           The Uri to query.
+     * @param selection     (Optional) Filter used in the query.
      * @param selectionArgs (Optional) Selection arguments used in the query.
      * @return The value of the _data column, which is typically a file path.
      * @author paulburke
@@ -221,9 +224,9 @@ public class FileUtils {
      * Convert Uri into File, if possible.
      *
      * @return file A local file that the Uri was pointing to, or null if the
-     *         Uri is unsupported or pointed to a remote resource.
-     * @see #getPath(Context, Uri)
+     * Uri is unsupported or pointed to a remote resource.
      * @author paulburke
+     * @see #getPath(Context, Uri)
      */
     public static File getFile(Context context, Uri uri) {
         if (uri != null) {
@@ -271,7 +274,7 @@ public class FileUtils {
      *
      * @param uri
      * @return Extension including the dot("."); "" if there is no extension;
-     *         null if uri was null.
+     * null if uri was null.
      */
     public static String getExtension(String uri) {
         if (uri == null) {
@@ -284,6 +287,23 @@ public class FileUtils {
         } else {
             // No extension.
             return "";
+        }
+    }
+
+    public static String getCacheDirectory(Context context) {
+        String appCacheDir;
+        if (Environment.MEDIA_MOUNTED == Environment.getExternalStorageState()) {
+            appCacheDir = context.getExternalCacheDir().getAbsolutePath();
+            if (appCacheDir == null) {
+                appCacheDir = Environment.getExternalStorageDirectory() + "Android" + context.getPackageName() + "cache";
+            }
+            return appCacheDir;
+        } else {
+            appCacheDir = context.getCacheDir().getAbsolutePath();
+            if (appCacheDir == null) {
+                appCacheDir = "/data/data/" + context.getPackageName() + "/cache/";
+            }
+            return appCacheDir;
         }
     }
 }
