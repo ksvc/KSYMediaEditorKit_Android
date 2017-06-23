@@ -1,6 +1,8 @@
 package com.ksyun.media.shortvideo.demo.filter;
 
 import com.faceunity.wrapper.faceunity;
+import com.ksyun.media.shortvideo.demo.file.FileUtils;
+import com.ksyun.media.shortvideo.demo.DownloadAndHandleTask;
 import com.ksyun.media.streamer.filter.imgbuf.ImgBufScaleFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgFilterBase;
 import com.ksyun.media.streamer.framework.ImgBufFrame;
@@ -12,9 +14,12 @@ import com.ksyun.media.streamer.util.gles.GLRender;
 import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
+import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Log;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -30,22 +35,13 @@ public class ImgFaceunityFilter extends ImgFilterBase {
     private final static String VERSION = "1.0.2.1";
     private final static String FACEUNITY_INIT_FILE = "Faceunity/v3.mp3";
     private final static String FACEUNITY_BEAUTY_FILE = "Faceunity/face_beautification.mp3";
-
-    private final static String PROP_TYPE_BEAGLEDOG = "Faceunity/BeagleDog.mp3";
-    private final static String PROP_TYPE_COLORGROWN = "Faceunity/ColorCrown.mp3";
-    private final static String PROP_TYPE_DEER = "Faceunity/Deer.mp3";
-
-    private final static String PROP_TYPE_HAPPYRABBI = "Faceunity/HappyRabbi.mp3";
-    private final static String PROP_TYPE_HARTSHORN = "Faceunity/hartshorn.mp3";
-    private final static String PROP_TYPE_ITEM0204 = "Faceunity/item0204.mp3";
-    private final static String PROP_TYPE_ITEM0208 = "Faceunity/item0208.mp3";
-    private final static String PROP_TYPE_ITEM0210 = "Faceunity/item0210.mp3";
-    private final static String PROP_TYPE_ITEM0501 = "Faceunity/item0501.mp3";
-    private final static String PROP_TYPE_MOOD = "Faceunity/Mood.mp3";
-    private final static String PROP_TYPE_PINCESSCROWN = "Faceunity/PrincessCrown.mp3";
-    private final static String PROP_TYPE_TIARA = "Faceunity/tiara.mp3";
-    private final static String PROP_TYPE_YELLLOWEAR = "Faceunity/YellowEar.mp3";
-
+    
+    private final static String PROP_TYPE_BEAGLEDOG = "https://ks3-cn-beijing.ksyun.com/ksy.vcloud.sdk/ShortVideo/BeagleDog.mp3";
+    private final static String PROP_TYPE_COLORGROWN = "https://ks3-cn-beijing.ksyun.com/ksy.vcloud.sdk/ShortVideo/ColorCrown.mp3";
+    private final static String PROP_TYPE_DEER = "https://ks3-cn-beijing.ksyun.com/ksy.vcloud.sdk/ShortVideo/Deer.mp3";
+    private final static String PROP_TYPE_HAPPYRABBI = "https://ks3-cn-beijing.ksyun.com/ksy.vcloud.sdk/ShortVideo/HappyRabbi.mp3";
+    private final static String PROP_TYPE_HARTSHORN = "https://ks3-cn-beijing.ksyun.com/ksy.vcloud.sdk/ShortVideo/hartshorn.mp3";
+    
     private final static String GESTURE_TYPE_HEART = "Faceunity/heart.mp3";
 
     private final static String BEAUTY_TYPE_NATURE = "nature";
@@ -61,14 +57,6 @@ public class ImgFaceunityFilter extends ImgFilterBase {
             PROP_TYPE_DEER,
             PROP_TYPE_HAPPYRABBI,
             PROP_TYPE_HARTSHORN,
-            PROP_TYPE_ITEM0204,
-            PROP_TYPE_ITEM0208,
-            PROP_TYPE_ITEM0210,
-            PROP_TYPE_ITEM0501,
-            PROP_TYPE_MOOD,
-            PROP_TYPE_PINCESSCROWN,
-            PROP_TYPE_TIARA,
-            PROP_TYPE_YELLLOWEAR
     };
 
     private final static String[] GESTURES = {
@@ -115,6 +103,7 @@ public class ImgFaceunityFilter extends ImgFilterBase {
     private int mOutTexture = ImgTexFrame.NO_TEXTURE;
     private int mOutFrameBuffer = -1;
     private int[] mViewPort = new int[4];
+    private DownloadAndHandleTask mTask;
 
     public ImgFaceunityFilter(Context context, GLRender glRender) {
         mContext = context;
@@ -187,12 +176,32 @@ public class ImgFaceunityFilter extends ImgFilterBase {
      * @param index
      */
     public void setPropType(int index) {
-        if (index >= PROPS.length || index < 0) {
+        if (index > PROPS.length || index < 0) {
             mPropPath = null;
             return;
         }
+        String fileName = PROPS[index].substring(PROPS[index].lastIndexOf('/'));
+        final String filePath = FileUtils.getCacheDirectory(mContext) + fileName;
+        File file = new File(filePath);
+        if (!file.exists()) {
+            if (mTask != null && mTask.getStatus() == AsyncTask.Status.RUNNING) {
+                mTask.cancel(true);
+            }
+            DownloadAndHandleTask.DownloadListener listener = new DownloadAndHandleTask.DownloadListener() {
+                @Override
+                public void onCompleted() {
+                    mPropPath = filePath;
+                }
+            };
+            mTask = new DownloadAndHandleTask(filePath, listener);
+            mTask.execute(PROPS[index]);
+        } else {
+            mPropPath = filePath;
+        }
+    }
 
-        mPropPath = PROPS[index];
+    public DownloadAndHandleTask getTask() {
+        return mTask;
     }
 
     public void setGestureType(int index) {
@@ -441,8 +450,7 @@ public class ImgFaceunityFilter extends ImgFilterBase {
         //创建贴纸
         if (m_items[0] == 0) {
             try {
-                InputStream is = ImgFaceunityFilter.this.mContext.getAssets().open
-                        (mCurrentPropPath);
+                InputStream is = new FileInputStream(mCurrentPropPath);
                 byte[] item_data = new byte[is.available()];
                 is.read(item_data);
                 is.close();

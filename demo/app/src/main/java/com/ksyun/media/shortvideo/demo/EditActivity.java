@@ -27,7 +27,6 @@ import com.ksyun.media.streamer.filter.imgtex.ImgBeautyProFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgBeautyToneCurveFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgFilterBase;
 import com.ksyun.media.streamer.filter.imgtex.ImgTexFilterMgt;
-
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -84,6 +83,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -122,6 +122,7 @@ public class EditActivity extends Activity implements
     private AppCompatSeekBar mOriginAudioVolumeSeekBar;
     private AppCompatSeekBar mBgmVolumeSeekBar;
     private View mFilterLayout;
+    private View mSpeedLayout;
     private View mWatermarkLayout;
     private View mVideoRangeLayout;
     private View mAudioEditLayout;
@@ -152,9 +153,16 @@ public class EditActivity extends Activity implements
     private InputMethodManager mInputMethodManager;
     private RecyclerView mTextStickerList;
     private StickerAdapter mTextStickerAdapter;
-
     private AppCompatSpinner mAudioEffectSpinner;  //变声
     private AppCompatSpinner mAudioReverbSpinner;  //混响
+    private ImageView mSpeedDown; //减速
+    private ImageView mSpeedUp; //加速
+    private TextView mSpeedInfo; //速度信息
+
+    private boolean mFirstPlay = true;
+    private AudioSeekLayout.OnAudioSeekChecked mAudioSeekListener;
+    private float mAudioLength;  //背景音乐时长
+    private AudioSeekLayout mAudioSeekLayout;  //音频seek布局
 
     private int mAudioEffectType = AUDIO_FILTER_DISABLE;
     private int mAudioReverbType = AUDIO_FILTER_DISABLE;
@@ -221,7 +229,6 @@ public class EditActivity extends Activity implements
 
         int screenWidth = windowManager.getDefaultDisplay().getWidth();
         int screenHeight = windowManager.getDefaultDisplay().getHeight();
-
         mButtonObserver = new EditActivity.ButtonObserver();
         mCheckBoxObserver = new EditActivity.CheckBoxObserver();
         mSeekBarChangedObsesrver = new EditActivity.SeekBarChangedObserver();
@@ -244,6 +251,8 @@ public class EditActivity extends Activity implements
         mPauseView.getDrawable().setLevel(2);
 
         mFilterLayout = findViewById(R.id.beauty_choose);
+        mSpeedLayout = findViewById(R.id.speed_layout);
+        mSpeedLayout.setVisibility(View.VISIBLE);
         mFilterView = (TextView) findViewById(R.id.click_to_filter);
         mFilterView.setOnClickListener(mButtonObserver);
         mFilterView.setActivated(true);
@@ -279,6 +288,7 @@ public class EditActivity extends Activity implements
         mAudioView = (TextView) findViewById(R.id.click_to_audio);
         mAudioView.setOnClickListener(mButtonObserver);
         mAudioEditLayout = findViewById(R.id.audio_choose);
+        mAudioSeekLayout = (AudioSeekLayout) findViewById(R.id.audioSeekLayout);
         mOriginAudioView = (CheckBox) findViewById(R.id.origin_audio);
         mOriginAudioView.setOnCheckedChangeListener(mCheckBoxObserver);
         mBgmMusicView = (CheckBox) findViewById(R.id.music_audio);
@@ -348,9 +358,17 @@ public class EditActivity extends Activity implements
         mColorPicker = new ColorPicker(this, 255, 255, 255);
         mTextColorSelect.setOnClickListener(mButtonObserver);
 
+        //混响&变声
         mAudioEffectSpinner = (AppCompatSpinner) findViewById(R.id.origin_audio_effect);
         mAudioReverbSpinner = (AppCompatSpinner) findViewById(R.id.origin_audio_reverb);
         initAudioFilterUI();
+
+        //变速
+        mSpeedDown = (ImageView) findViewById(R.id.speed_down);
+        mSpeedDown.setOnClickListener(mButtonObserver);
+        mSpeedUp = (ImageView) findViewById(R.id.speed_up);
+        mSpeedUp.setOnClickListener(mButtonObserver);
+        mSpeedInfo = (TextView) findViewById(R.id.speed_info);
 
         mBackView = (ImageView) findViewById(R.id.click_to_back);
         mBackView.setOnClickListener(mButtonObserver);
@@ -365,6 +383,8 @@ public class EditActivity extends Activity implements
         mEditKit.addStickerView(mKSYStickerView);
         mEditKit.addTextStickerView(mTextView);
 
+        mSpeedInfo.setText(String.valueOf(mEditKit.getNomalSpeed()));
+
         Bundle bundle = getIntent().getExtras();
         String url = bundle.getString(SRC_URL);
         if (!TextUtils.isEmpty(url)) {
@@ -376,6 +396,26 @@ public class EditActivity extends Activity implements
 
         mInputMethodManager = (InputMethodManager) this.getSystemService(Context
                 .INPUT_METHOD_SERVICE);
+        mEditKit.getAudioPlayerCapture().setOnPreparedListener(new IMediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(IMediaPlayer iMediaPlayer) {
+                mAudioLength = iMediaPlayer.getDuration();
+                mAudioSeekListener = new AudioSeekLayout.OnAudioSeekChecked() {
+                    @Override
+                    public void onActionUp(long start, long end) {
+                        mEditKit.setBGMRanges(start,end);
+                    }
+                };
+                if (mAudioSeekLayout.getVisibility() != View.VISIBLE) {
+                    mAudioSeekLayout.setVisibility(View.VISIBLE);
+                    mAudioSeekLayout.setOnAudioSeekCheckedListener(mAudioSeekListener);
+                }
+                if (mFirstPlay) {
+                    mFirstPlay = false;
+                    mAudioSeekLayout.updateAudioSeekUI(mAudioLength,mEditPreviewDuration);
+                }
+            }
+        });
     }
 
     public void onResume() {
@@ -392,6 +432,12 @@ public class EditActivity extends Activity implements
         super.onPause();
         mPaused = true;
         mEditKit.onPause();
+        if(mInputMethodManager.isActive()) {
+            mInputMethodManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+            if (getCurrentFocus() != null) {
+                getCurrentFocus().clearFocus();
+            }
+        }
     }
 
     @Override
@@ -449,9 +495,9 @@ public class EditActivity extends Activity implements
     }
 
     private void onAudioEditClick() {
-        BottomViewInfo audioiew = mBottomViews.get(INDEX_AUDIO);
-        if (!audioiew.isVisible()) {
-            audioiew.setVisible(true);
+        BottomViewInfo audioView = mBottomViews.get(INDEX_AUDIO);
+        if (!audioView.isVisible()) {
+            audioView.setVisible(true);
             hideOtherViews(INDEX_AUDIO);
         }
     }
@@ -476,7 +522,7 @@ public class EditActivity extends Activity implements
             }
         });
     }
-
+    
     /**
      * 修改字体颜色
      *
@@ -532,34 +578,34 @@ public class EditActivity extends Activity implements
             KSYTextView.DrawTextParams textParams = new KSYTextView.DrawTextParams();
             textParams.textPaint = null;
             textParams.autoNewLine = false;
-            if(path.contains("3")) {
+            if (path.contains("3")) {
                 textParams.text_left_padding = 40;
-                textParams.text_right_padding = 41 ;
+                textParams.text_right_padding = 41;
                 textParams.text_top_padding = 82;
                 textParams.text_bottom_padding = 28;
             }
-            if(path.contains("1")) {
+            if (path.contains("1")) {
                 textParams.text_left_padding = 33;
                 textParams.text_right_padding = 35;
                 textParams.text_top_padding = 61;
                 textParams.text_bottom_padding = 69;
             }
 
-            if(path.contains("2")) {
+            if (path.contains("2")) {
                 textParams.text_left_padding = 185;
                 textParams.text_right_padding = 27;
                 textParams.text_top_padding = 81;
                 textParams.text_bottom_padding = 18;
             }
 
-            if(path.contains("4")) {
+            if (path.contains("4")) {
                 textParams.text_left_padding = 42;
                 textParams.text_right_padding = 108;
                 textParams.text_top_padding = 43;
                 textParams.text_bottom_padding = 24;
             }
 
-            if(path.contains("5")) {
+            if (path.contains("5")) {
                 textParams.text_left_padding = 105;
                 textParams.text_right_padding = 104;
                 textParams.text_top_padding = 89;
@@ -610,6 +656,9 @@ public class EditActivity extends Activity implements
     private void onBgmMusicClick(boolean isCheck) {
         if (!isCheck) {
             mEditKit.changeBgmMusic(null);
+            if (mAudioSeekLayout.getVisibility() == View.VISIBLE) {
+                mAudioSeekLayout.setVisibility(View.GONE);
+            }
         } else {
             mEditKit.changeBgmMusic(mBgmPath);
             mBgmVolumeSeekBar.setProgress((int) (mEditKit.getBgmMusicVolume() * 100));
@@ -625,6 +674,13 @@ public class EditActivity extends Activity implements
             mEditKit.pausePlay(false);
             mPauseView.getDrawable().setLevel(2);
         }
+    }
+
+    private void onSpeedClick(boolean plus) {
+        mEditKit.updateSpeed(plus);
+        DecimalFormat decimalFormat = new DecimalFormat(".0");
+        String text = decimalFormat.format(mEditKit.getSpeed());
+        mSpeedInfo.setText(text);
     }
 
     private void onBackoffClick() {
@@ -740,7 +796,7 @@ public class EditActivity extends Activity implements
                         mComposeFinished = true;
                     }
                     //上传必要信息：bucket,objectkey，及PutObjectResponseHandler上传过程回调
-                    mCurObjectKey = getPackageName() + "/" + System.currentTimeMillis() + ".mp4";
+                    mCurObjectKey = getPackageName() + "/" + System.currentTimeMillis();
                     KS3ClientWrap.KS3UploadInfo bucketInfo = new KS3ClientWrap.KS3UploadInfo
                             ("ksvsdemo", mCurObjectKey, mPutObjectResponseHandler);
                     return bucketInfo;
@@ -840,8 +896,14 @@ public class EditActivity extends Activity implements
                 case R.id.click_to_delete_stickers:
                     onDeleteStickers();
                     break;
-                case  R.id.text_color:
+                case R.id.text_color:
                     onTextColorSelected();
+                    break;
+                case R.id.speed_up:
+                    onSpeedClick(true);
+                    break;
+                case R.id.speed_down:
+                    onSpeedClick(false);
                     break;
                 default:
                     break;
@@ -1090,6 +1152,12 @@ public class EditActivity extends Activity implements
 
         mVideoRange.setText(formatTimeStr2(((int) (10 * mVideoRangeSeekBar.getRangeEnd()))
                 - (int) (10 * mVideoRangeSeekBar.getRangeStart())));
+    }
+
+    private String formatTimeStr3(float s) {
+        int minute = (int) (s / (1000 * 60));
+        int second = (int) ((s / 1000) % 60);
+        return String.format("%02d:%02d", minute, second);
     }
 
     private String formatTimeStr2(int s) {
@@ -1768,8 +1836,8 @@ public class EditActivity extends Activity implements
                 BottomViewInfo item = mBottomViews.get(id);
                 item.setVisible(false);
             }
-            if(showIndex != INDEX_WATERMARKK) {
-                if(mInputMethodManager.isActive()) {
+            if (showIndex != INDEX_WATERMARKK) {
+                if (mInputMethodManager.isActive()) {
                     mInputMethodManager.hideSoftInputFromWindow(mTextInput
                                     .getWindowToken(),
                             InputMethodManager.RESULT_UNCHANGED_SHOWN);
@@ -1779,17 +1847,17 @@ public class EditActivity extends Activity implements
     }
 
     private void initStickerHelpBox() {
-        if(mStickerDeleteBitmap == null) {
+        if (mStickerDeleteBitmap == null) {
             mStickerDeleteBitmap = BitmapFactory.decodeResource(getResources(),
                     R.drawable.sticker_delete);
         }
 
-        if(mStickerRotateBitmap == null) {
+        if (mStickerRotateBitmap == null) {
             mStickerRotateBitmap = BitmapFactory.decodeResource(getResources(),
                     R.drawable.sticker_rotate);
         }
 
-        if(mStickerHelpBoxInfo == null) {
+        if (mStickerHelpBoxInfo == null) {
             mStickerHelpBoxInfo = new StickerHelpBoxInfo();
             mStickerHelpBoxInfo.deleteBit = mStickerDeleteBitmap;
             mStickerHelpBoxInfo.rotateBit = mStickerRotateBitmap;

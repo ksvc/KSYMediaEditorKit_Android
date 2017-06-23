@@ -61,12 +61,9 @@ public class FileImportActivity extends Activity implements
     private Handler mMainHandler;
     private String mFilePath;
 
-    public final static String SRC_URL = "srcurl";
-
-    public static void startActivity(Context context, String url) {
+    public static void startActivity(Context context) {
         Intent intent = new Intent(context, FileImportActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(SRC_URL, url);
         context.startActivity(intent);
     }
 
@@ -82,7 +79,6 @@ public class FileImportActivity extends Activity implements
         //init UI
         //录制预览部分宽高1:1比例显示（用户可以按照自己的需求处理）
         //just PORTRAIT
-        //TODO LANDSCAPE
         WindowManager windowManager = (WindowManager) getApplication().
                 getSystemService(getApplication().WINDOW_SERVICE);
 
@@ -113,10 +109,6 @@ public class FileImportActivity extends Activity implements
         mSurfaceHolder = mVideoSurfaceView.getHolder();
         mSurfaceHolder.addCallback(mSurfaceCallback);
         getMediaPlayer();
-
-        Bundle bundle = getIntent().getExtras();
-        String url = bundle.getString(SRC_URL);
-        mFilePath = url;
     }
 
     @Override
@@ -186,6 +178,9 @@ public class FileImportActivity extends Activity implements
         }
     }
 
+    /**
+     * 读取磁盘权限检查
+     */
     private void checkPermisson() {
         int storagePer = ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -232,6 +227,7 @@ public class FileImportActivity extends Activity implements
 
                                 Toast.makeText(FileImportActivity.this,
                                         "File Selected: " + path, Toast.LENGTH_LONG).show();
+                                //播放导入的视频
                                 startPlay(path);
                                 mNextView.setEnabled(true);
                             } else {
