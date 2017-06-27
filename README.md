@@ -79,7 +79,7 @@ https://github.com/ksvc/KSYMediaEditorKit_iOS/tree/master/server/python/auth
 具体集成步骤请阅读[wiki][wiki]
 
 ## 3. demo试用
-请见[版本下载说明](https://github.com/ksvc/KSYMediaEditorKit_Android/release)。
+请见[版本下载说明](https://github.com/ksvc/KSYMediaEditorKit_Android/releases)。
 
 ## 4. 商务合作
 Demo中的鉴权串等只能供Demo使用,正式上线需要申请金山云账号，请联系金山云商务。
