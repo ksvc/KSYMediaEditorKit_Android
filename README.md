@@ -1,7 +1,5 @@
 # 金山云短视频编辑SDK KSYMediaEditorKit
 
-<img src="https://ks3-cn-beijing.ksyun.com/ksy.vcloud.sdk/Android/short_video/liantu-13-1.png" width = "150" height = "150" alt="图片名称" align=center /> 
-
 关键名词解释：
 - 视频录制：采集摄像头及麦克风音视频数据，通过预处理、编码、复用等过程最终生成一个本地的mp4文件  
 - 视频预览编辑：对指定视频播放的同时添加音视频滤镜、水印同时提供处理后的音频和视频的预览 
@@ -80,7 +78,10 @@ https://github.com/ksvc/KSYMediaEditorKit_iOS/tree/master/server/python/auth
 ### 2.2 集成说明
 具体集成步骤请阅读[wiki][wiki]
 
-## 3. 商务合作
+## 3. demo试用
+请见[版本下载说明](https://github.com/ksvc/KSYMediaEditorKit_Android/release)。
+
+## 4. 商务合作
 Demo中的鉴权串等只能供Demo使用,正式上线需要申请金山云账号，请联系金山云商务。
 
 ## 4. 反馈与建议
