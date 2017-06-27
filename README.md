@@ -84,7 +84,7 @@ https://github.com/ksvc/KSYMediaEditorKit_iOS/tree/master/server/python/auth
 ## 4. 商务合作
 Demo中的鉴权串等只能供Demo使用,正式上线需要申请金山云账号，请联系金山云商务。
 
-## 4. 反馈与建议
+## 5. 反馈与建议
 - 主页：[金山云](http://www.ksyun.com/)
 - 邮箱：<zengfanping@kingsoft.com>
 - QQ讨论群：574179720
