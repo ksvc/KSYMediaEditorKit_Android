@@ -10,22 +10,22 @@
 ## 1 功能介绍
 [KSYMediaEditorKit][KSYMediaEditorKit]是一款由金山云提供的的可以快速集成的短视频编辑SDK，当前支持以下功能：
 
-* [x] 短视频录制（支持美颜滤镜、麦克风&配乐控制，麦克风&配乐音量控制、前置镜像、动态贴纸、水印、背景音乐）
+* [x] [短视频录制](https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/Recorder_Config_Params)（支持[美颜](https://github.com/ksvc/KSYStreamer_Android/wiki/Video_Filter_Inner)[滤镜](https://github.com/ksvc/KSYStreamer_Android/wiki/style_filter)、[麦克风&配乐控制](https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/audio_config)，[麦克风&配乐音量控制](https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/audio_config)、[前置镜像](https://github.com/ksvc/KSYStreamer_Android/wiki/front_camera_mirror)、[动态贴纸](https://docs.ksyun.com/read/latest/142/_book/index.html)、[水印](https://github.com/ksvc/KSYStreamer_Android/wiki/WaterMark)）
 * [x] 短视频文件导入，支持mp4/3gp/mov
-* [x] 录制或导入视频预览编辑
-* [x] 编辑合成添加滤镜
-* [x] 编辑合成添加水印
-* [x] 编辑合成添加背景音乐
-* [x] 编辑合成视频时长裁剪
+* [x] 录制或导入视频预览[编辑](https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/Edit_Confi_Params)
+* [x] 编辑合成添加[滤镜](https://github.com/ksvc/KSYStreamer_Android/wiki/style_filter)
+* [x] 编辑合成添加[水印](https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/edit_watermark)
+* [x] 编辑合成添加[背景音乐](https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/audio_config)
+* [x] 编辑合成[视频时长裁剪](https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/video_range)
 * [x] 编辑文件合成，支持Mediacodec、H.264、H.265编码
 * [x] 合成文件上传KS3
 * [x] 上传后文件预览播放 
-* [x] 动态贴纸 
-* [x] 静态贴纸 
-* [x] 断点续拍
+* [x] 录制添加[动态贴纸](https://docs.ksyun.com/read/latest/142/_book/index.html) 
+* [x] 编辑添加[静态贴纸](https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/static_sticker) 
+* [x] 录制[断点续拍](https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/clip_record)
 * [x] 美颜、特效
-* [x] 字幕
-* [x] 变声变调
+* [x] 编辑添加[字幕](https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/TextSticker)
+* [x] 录制编辑[变声变调](https://github.com/ksvc/KSYStreamer_Android/wiki/Audio_Filter)
 
 ## 1.1 运行环境  
 - 最低支持版本为Android 4.4 (API level 19)
