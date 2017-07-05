@@ -17,7 +17,7 @@
 * [x] 编辑合成添加[水印](https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/edit_watermark)
 * [x] 编辑合成添加[背景音乐](https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/audio_config)
 * [x] 编辑合成[视频时长裁剪](https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/video_range)
-* [x] 编辑文件合成，支持Mediacodec、H.264、H.265编码
+* [x] 编辑文件合成，支持H.264、H.265、GIF编码
 * [x] 合成文件上传KS3
 * [x] 上传后文件预览播放 
 * [x] 录制添加[动态贴纸](https://docs.ksyun.com/read/latest/142/_book/index.html) 
