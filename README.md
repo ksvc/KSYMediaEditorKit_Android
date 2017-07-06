@@ -7,6 +7,10 @@
 - KS3:金山云存储服务  
 - SDK鉴权：取得SDK的使用权
 
+## 阅读对象
+本文档面向所有使用[金山云短视频SDK][KSYMediaEditorKit]的开发、测试人员等, 要求读者具有一定的Android编程开发经验，并且要求读者具备阅读[wiki][wiki]的习惯。
+
+
 ## 1 功能介绍
 [KSYMediaEditorKit][KSYMediaEditorKit]是一款由金山云提供的的可以快速集成的短视频编辑SDK，当前支持以下功能：
 
