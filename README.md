@@ -71,7 +71,14 @@ https://github.com/ksvc/KSYMediaEditorKit_iOS/tree/master/server/python/auth
 如果使用[金山云对象存储][KS3]需要开通商务帐号（涉及付费业务），请直接联系金山云商务。
 
 ### 1.2.2 付费
-[KSYMediaEditorKit][KSYMediaEditorKit]可以免费使用，但是涉及的云存储上传、在线播放等云服务(可选)收费，具体费用请参考[金山云官网][ksyun]
+
+[KSYMediaEditorKit][KSYMediaEditorKit]可以免费使用。涉及付费的包括：
+* 动态贴纸（可以不集成，如果需要集成需要向第三方供应商付费）
+* 云存储（可以不集成）
+* 点播CDN（可以不集成）
+
+涉及的云存储和CDN，具体费用请参考[金山云官网][ksyun]
+
 
 ## 2. SDK集成
 
