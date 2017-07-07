@@ -45,8 +45,8 @@ public class FileImportActivity extends Activity implements
     private final static int PERMISSION_REQUEST_STORAGE = 1;
     private static final int REQUEST_CODE = 6384;
 
-    private RelativeLayout mPreviewLayout;
-    private RelativeLayout mBarBottomLayout;
+    private RelativeLayout mPreviewLayout;  //上部预览布局
+    private RelativeLayout mBarBottomLayout;  //底部操作布局
     private ImageView mImportFileView;
     private TextView mFileDuration;
     private ImageView mBackView;
@@ -138,6 +138,9 @@ public class FileImportActivity extends Activity implements
         importFile();
     }
 
+    /**
+     * 开启系统文件夹选择文件
+     */
     private void importFile() {
         Intent target = FileUtils.createGetContentIntent();
         // Create the chooser Intent
@@ -208,6 +211,9 @@ public class FileImportActivity extends Activity implements
         }
     }
 
+    /**
+     * 从本地导入视频文件结果处理
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
@@ -290,6 +296,9 @@ public class FileImportActivity extends Activity implements
         }
     };
 
+    /**
+     * 获取播放器实例
+     */
     public KSYMediaPlayer getMediaPlayer() {
         if (mMediaPlayer == null) {
             mMediaPlayer = new KSYMediaPlayer.Builder(this.getApplicationContext()).build();
@@ -297,6 +306,9 @@ public class FileImportActivity extends Activity implements
         return mMediaPlayer;
     }
 
+    /**
+     * 开始播放，播放器注册监听事件；设置自动播放、循环播放等特性
+     */
     private void startPlay(String path) {
         mFilePath = path;
 
@@ -314,6 +326,9 @@ public class FileImportActivity extends Activity implements
         }
     }
 
+    /**
+     * 停止播放，需要给播放器监听事件置空然后停止播放
+     */
     private void stopPlay() {
         if (mMediaPlayer != null) {
             mMediaPlayer.setOnCompletionListener(null);
@@ -324,6 +339,9 @@ public class FileImportActivity extends Activity implements
         }
     }
 
+    /**
+     * 播放重置
+     */
     private void resetPlay() {
         if (mMediaPlayer != null) {
             mMediaPlayer.reset();
@@ -331,6 +349,9 @@ public class FileImportActivity extends Activity implements
         }
     }
 
+    /**
+     * 释放播放器资源
+     */
     private void releasePlay() {
         if (mMediaPlayer != null) {
             mMediaPlayer.release();
@@ -363,6 +384,9 @@ public class FileImportActivity extends Activity implements
         }
     };
 
+    /**
+     * 判断是否是所支持的MIME类型
+     */
     private boolean isSupportedMimeType(String mimeType) {
         for (int i = 0; i < SUPPORT_FILE_MIME_TYPE.length; i++) {
             if (mimeType.equals(SUPPORT_FILE_MIME_TYPE[i])) {
@@ -372,6 +396,9 @@ public class FileImportActivity extends Activity implements
         return false;
     }
 
+    /**
+     * 支持的MIME类型数组
+     */
     private String[] SUPPORT_FILE_MIME_TYPE = new String[]{
             "video/mp4",
             "video/ext-mp4",

@@ -112,8 +112,7 @@ public class ShortVideoActivity extends Activity {
                                 String authInfo = data.getString("Authorization");
                                 String date = data.getString("x-amz-date");
                                 //初始化鉴权信息
-                                AuthInfoManager.getInstance().setAuthInfo(getApplicationContext(),
-                                        authInfo, date);
+                                AuthInfoManager.getInstance().setAuthInfo(authInfo, date);
                                 //添加鉴权结果回调接口(不是必须)
                                 AuthInfoManager.getInstance().addAuthResultListener(mCheckAuthResultListener);
                                 //开始向KSServer申请鉴权
@@ -185,6 +184,9 @@ public class ShortVideoActivity extends Activity {
         }
     };
 
+    /**
+     * 开启录制参数编辑窗口
+     */
     private void onRecordClick() {
         //params config
         final ShortVideoConfigDialog configDialog = new ShortVideoConfigDialog(this,
@@ -207,6 +209,9 @@ public class ShortVideoActivity extends Activity {
         });
     }
 
+    /**
+     * 开启文件导入Activity
+     */
     private void onImportFileClick() {
         FileImportActivity.startActivity(getApplicationContext());
     }

@@ -8,6 +8,7 @@ import com.ksyun.media.shortvideo.demo.filter.DemoFilter4;
 import com.ksyun.media.shortvideo.demo.recordclip.RecordProgressController;
 import com.ksyun.media.shortvideo.demo.filter.ImgFaceunityFilter;
 import com.ksyun.media.shortvideo.kit.KSYRecordKit;
+import com.ksyun.media.shortvideo.utils.ProbeMediaInfoTools;
 import com.ksyun.media.streamer.capture.CameraCapture;
 import com.ksyun.media.streamer.capture.camera.CameraTouchHelper;
 import com.ksyun.media.streamer.filter.audio.AudioFilterBase;
@@ -75,15 +76,15 @@ public class RecordActivity extends Activity implements
     public static final int MAX_DURATION = 1 * 60 * 1000;  //最长拍摄时长
     public static final int MIN_DURATION = 5 * 1000;  //最短拍摄时长
     private static final int REQUEST_CODE = 10010;
-    private static final int AUDIO_FILTER_DISABLE = 0;
+    private static final int AUDIO_FILTER_DISABLE = 0;  //不使用音频滤镜的类型标志
 
-    private static final int INDEX_BEAUTY_TITLE_BASE = 0;
-    private static final int INDEX_BGM_TITLE_BASE = 10;
-    private static final int INDEX_BGM_ITEM_BASE = 0;
-    private static final int INDEX_SOUND_EFFECT_BASE = 10;
+    private static final int INDEX_BEAUTY_TITLE_BASE = 0;  //美颜标题在内容集合中的索引
+    private static final int INDEX_BGM_TITLE_BASE = 10;  //音乐标题在内容集合中的索引
+    private static final int INDEX_BGM_ITEM_BASE = 0;    //背景音乐选项在内容集合中的索引
+    private static final int INDEX_SOUND_EFFECT_BASE = 10;  //音效选项在内容集合中的索引
 
-    private int mAudioEffectType = AUDIO_FILTER_DISABLE;
-    private int mAudioReverbType = AUDIO_FILTER_DISABLE;
+    private int mAudioEffectType = AUDIO_FILTER_DISABLE;  //变声类型缓存变量
+    private int mAudioReverbType = AUDIO_FILTER_DISABLE;  //混响类型缓存变量
 
     private GLSurfaceView mCameraPreviewView;
     //private TextureView mCameraPreviewView;
@@ -156,12 +157,13 @@ public class RecordActivity extends Activity implements
     private boolean mIsFlashOpened = false;
     private String mRecordUrl;
 
-    private int mPitchValue = 0;
-    private int mPreBeautyTitleIndex = 0;
-    private int mPreBgmTitleIndex = 0;
-    private int mPreBgmItemIndex = 0;
-    private int mPreBgmEffectIndex = 0;
-    private int mPreBgmReverbIndex = 0;
+    private int mPitchValue = 0;  //音调值缓存变量
+    private int mPreBeautyTitleIndex = 0;  //记录上次选择的美颜标题索引
+    private int mPreBgmTitleIndex = 0;  //记录上次选择的背景音乐标题索引
+    private int mPreBgmItemIndex = 0;   //记录上次选择的背景音乐内容索引
+    private int mPreBgmEffectIndex = 0;  //记录上次选择的变声类型索引
+    private int mPreBgmReverbIndex = 0;  //记录上次选择的混响类型索引
+    //变声和混响类型数组常量
     private static final int[] SOUND_EFFECT_CONST = {KSYAudioEffectFilter.AUDIO_EFFECT_TYPE_MALE, KSYAudioEffectFilter.AUDIO_EFFECT_TYPE_FEMALE,
             KSYAudioEffectFilter.AUDIO_EFFECT_TYPE_HEROIC, KSYAudioEffectFilter.AUDIO_EFFECT_TYPE_ROBOT,
             AudioReverbFilter.AUDIO_REVERB_LEVEL_1, AudioReverbFilter.AUDIO_REVERB_LEVEL_3,
@@ -173,11 +175,13 @@ public class RecordActivity extends Activity implements
 
     private String mLogoPath = "assets://KSYLogo/logo.png";
 
-    private boolean mHWEncoderUnsupported;
-    private boolean mSWEncoderUnsupported;
+    private boolean mHWEncoderUnsupported;  //硬编支持标志位
+    private boolean mSWEncoderUnsupported;  //软编支持标志位
+    //背景音乐下载地址
     private String[] mBgmLoadPath = {"https://ks3-cn-beijing.ksyun.com/ksy.vcloud.sdk/ShortVideo/faded.mp3",
             "https://ks3-cn-beijing.ksyun.com/ksy.vcloud.sdk/ShortVideo/Hotel_California.mp3",
             "https://ks3-cn-beijing.ksyun.com/ksy.vcloud.sdk/ShortVideo/Immortals.mp3"};
+    //摄像头、麦克风请求授权的请求码
     private final static int PERMISSION_REQUEST_CAMERA_AUDIOREC = 1;
 
     public final static String FRAME_RATE = "framerate";
@@ -358,17 +362,17 @@ public class RecordActivity extends Activity implements
         mKSYRecordKit.setOnInfoListener(mOnInfoListener);
         mKSYRecordKit.setOnErrorListener(mOnErrorListener);
         mKSYRecordKit.setOnLogEventListener(mOnLogEventListener);
-        initBeautyUI();
-        initStickerUI();
-        initBgmUI();
-        initBottomTitleUI();
+        initBeautyUI();  //初始化美颜界面
+        initStickerUI();  //初始化动态贴纸界面
+        initBgmUI();  //初始化背景音乐界面
+        initBottomTitleUI(); //初始化底部标题
         // touch focus and zoom support
         CameraTouchHelper cameraTouchHelper = new CameraTouchHelper();
         cameraTouchHelper.setCameraCapture(mKSYRecordKit.getCameraCapture());
         mCameraPreviewView.setOnTouchListener(cameraTouchHelper);
         // set CameraHintView to show focus rect and zoom ratio
         cameraTouchHelper.setCameraHintView(mCameraHintView);
-        startCameraPreviewWithPermCheck();
+        startCameraPreviewWithPermCheck(); //请求授权，成功则开启预览
     }
 
     private int align(int val, int align) {
@@ -421,7 +425,7 @@ public class RecordActivity extends Activity implements
         mRecordProgressCtl.release();
         mKSYRecordKit.setOnLogEventListener(null);
         mKSYRecordKit.release();
-
+        //若Faceunity资源初始化线程存在则关闭
         if (mInitFaceunityThread != null) {
             mInitFaceunityThread.interrupt();
             try {
@@ -438,7 +442,7 @@ public class RecordActivity extends Activity implements
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
-                onBackoffClick();
+                onBackoffClick();  //覆盖系统返回键进行个性化处理
                 return true;
             default:
                 break;
@@ -486,6 +490,22 @@ public class RecordActivity extends Activity implements
                         public void run() {
                             dialog.dismiss();
                             mRecordUrl = filePath;
+                            //删除断点录制的所有视频
+                            //mKSYRecordKit.deleteAllFiles();
+                            //获取合成后视频的时长，thumbnail等 示例代码
+//                            ProbeMediaInfoTools probeMediaInfoTools = new ProbeMediaInfoTools();
+//                            probeMediaInfoTools.probeMediaInfo(mRecordUrl,
+//                                    new ProbeMediaInfoTools.ProbeMediaInfoListener() {
+//                                        @Override
+//                                        public void probeMediaInfoFinished(ProbeMediaInfoTools.MediaInfo info) {
+//                                            if (info != null) {
+//                                                Log.e(TAG, "url:" + info.url);
+//                                                Log.e(TAG, "duration:" + info.duration);
+//                                            }
+//                                        }
+//                                    });
+//                            //get thumbnail for first frame
+//                            probeMediaInfoTools.getVideoThumbnailAtTime(mKSYRecordKit.getLastRecordedFiles(), 0, 0, 0);
                             //合成结束启动编辑
                             EditActivity.startActivity(getApplicationContext(), mRecordUrl);
                         }
@@ -495,6 +515,20 @@ public class RecordActivity extends Activity implements
         } else {
             //普通录制停止
             mKSYRecordKit.stopRecord();
+            //获取当前录制视频时长，thumbnail 示例代码，可以仿照此写法获取任意一段视频的信息
+//            ProbeMediaInfoTools probeMediaInfoTools = new ProbeMediaInfoTools();
+//            probeMediaInfoTools.probeMediaInfo(mKSYRecordKit.getLastRecordedFiles(),
+//                    new ProbeMediaInfoTools.ProbeMediaInfoListener() {
+//                        @Override
+//                        public void probeMediaInfoFinished(ProbeMediaInfoTools.MediaInfo info) {
+//                            if (info != null) {
+//                                Log.e(TAG, "url:" + info.url);
+//                                Log.e(TAG, "duration:" + info.duration);
+//                            }
+//                        }
+//                    });
+//            //get thumbnail for first frame
+//            probeMediaInfoTools.getVideoThumbnailAtTime(mKSYRecordKit.getLastRecordedFiles(), 0, 0, 0);
         }
         //更新进度显示
         mRecordProgressCtl.stopRecording();
@@ -505,6 +539,9 @@ public class RecordActivity extends Activity implements
         stopChronometer();
     }
 
+    /**
+     * 停止录制计时
+     */
     private void stopChronometer() {
         if (mIsFileRecording) {
             return;
@@ -659,10 +696,16 @@ public class RecordActivity extends Activity implements
                 }
             };
 
+    /**
+     * 前后置摄像头切换
+     */
     private void onSwitchCamera() {
         mKSYRecordKit.switchCamera();
     }
 
+    /**
+     * 闪光灯开关处理
+     */
     private void onFlashClick() {
         if (mIsFlashOpened) {
             mKSYRecordKit.toggleTorch(false);
@@ -737,6 +780,9 @@ public class RecordActivity extends Activity implements
         stopRecord(true);
     }
 
+    /**
+     * 初始化背景音乐相关的UI界面
+     */
     private void initBgmUI() {
         int[] mBgmTitleId = {R.id.bgm_title_music, R.id.bgm_title_soundChange,
                 R.id.bgm_title_reverberation};
@@ -794,8 +840,8 @@ public class RecordActivity extends Activity implements
      */
     private void initBeautyUI() {
         String[] items = new String[]{"DISABLE", "BEAUTY_SOFT", "SKIN_WHITEN", "BEAUTY_ILLUSION",
-                "BEAUTY_DENOISE", "BEAUTY_SMOOTH", "BEAUTY_PRO", "DEMO_FILTER", "GROUP_FILTER",
-                "ToneCurve", "复古", "胶片"};
+                "BEAUTY_DENOISE", "BEAUTY_SMOOTH", "BEAUTY_PRO", "BEAUTY_PRO2", "BEAUTY_PRO3",
+                "BEAUTY_PRO4", "DEMO_FILTER", "GROUP_FILTER", "ToneCurve", "复古", "胶片"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, items);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -816,28 +862,37 @@ public class RecordActivity extends Activity implements
                     mKSYRecordKit.getImgTexFilterMgt().setFilter(mKSYRecordKit.getGLRender(),
                             ImgTexFilterMgt.KSY_FILTER_BEAUTY_PRO);
                 } else if (position == 7) {
+                    mKSYRecordKit.getImgTexFilterMgt().setFilter(mKSYRecordKit.getGLRender(),
+                            ImgTexFilterMgt.KSY_FILTER_BEAUTY_PRO2);
+                } else if (position == 8) {
+                    mKSYRecordKit.getImgTexFilterMgt().setFilter(mKSYRecordKit.getGLRender(),
+                            ImgTexFilterMgt.KSY_FILTER_BEAUTY_PRO3);
+                } else if (position == 9) {
+                    mKSYRecordKit.getImgTexFilterMgt().setFilter(mKSYRecordKit.getGLRender(),
+                            ImgTexFilterMgt.KSY_FILTER_BEAUTY_PRO4);
+                } else if (position == 10) {
                     mKSYRecordKit.getImgTexFilterMgt().setFilter(
                             new DemoFilter(mKSYRecordKit.getGLRender()));
-                } else if (position == 8) {
+                } else if (position == 11) {
                     List<ImgFilterBase> groupFilter = new LinkedList<>();
                     groupFilter.add(new DemoFilter2(mKSYRecordKit.getGLRender()));
                     groupFilter.add(new DemoFilter3(mKSYRecordKit.getGLRender()));
                     groupFilter.add(new DemoFilter4(mKSYRecordKit.getGLRender()));
                     mKSYRecordKit.getImgTexFilterMgt().setFilter(groupFilter);
-                } else if (position == 9) {
+                } else if (position == 12) {
                     ImgBeautyToneCurveFilter acvFilter = new ImgBeautyToneCurveFilter(mKSYRecordKit.getGLRender());
                     acvFilter.setFromCurveFileInputStream(
                             RecordActivity.this.getResources().openRawResource(R.raw.tone_cuver_sample));
 
                     mKSYRecordKit.getImgTexFilterMgt().setFilter(acvFilter);
-                } else if (position == 10) {
+                } else if (position == 13) {
                     ImgBeautyToneCurveFilter acvFilter = new ImgBeautyToneCurveFilter(mKSYRecordKit
                             .getGLRender());
                     acvFilter.setFromCurveFileInputStream(
                             RecordActivity.this.getResources().openRawResource(R.raw.fugu));
 
                     mKSYRecordKit.getImgTexFilterMgt().setFilter(acvFilter);
-                } else if (position == 11) {
+                } else if (position == 14) {
                     ImgBeautyToneCurveFilter acvFilter = new ImgBeautyToneCurveFilter(mKSYRecordKit
                             .getGLRender());
                     acvFilter.setFromCurveFileInputStream(
@@ -906,12 +961,12 @@ public class RecordActivity extends Activity implements
             }
         });
         mBeautySpinner.setPopupBackgroundResource(R.color.transparent1);
-        mBeautySpinner.setSelection(4);
+        mBeautySpinner.setSelection(0);
     }
 
     /*********************************Faceunity sticker begin***********************************/
     private void onStickerChecked(boolean isChecked) {
-        if(mImgFaceunityFilter != null) {
+        if (mImgFaceunityFilter != null) {
             if (isChecked) {
                 //需要输入camera数据用于人脸识别
                 mKSYRecordKit.getCameraCapture().mImgBufSrcPin.connect(mImgFaceunityFilter.getBufSinkPin());
@@ -993,6 +1048,9 @@ public class RecordActivity extends Activity implements
 
     /*********************************Faceunity sticker end***********************************/
 
+    /**
+     * 背景音乐点击事件处理，若本地存在从本地读取，若本地不存在开启异步任务从网络下载
+     */
     private void onBgmItemClick(int index) {
         clearPitchState();
         BgmItemViewHolder curHolder = mBgmEffectArray.get(INDEX_BGM_ITEM_BASE + index);
@@ -1031,16 +1089,19 @@ public class RecordActivity extends Activity implements
         }
     }
 
+    /**
+     * 音效点击事件处理
+     */
     private void onSoundEffectItemClick(int index) {
         BgmItemViewHolder curHolder = mBgmEffectArray.get(INDEX_SOUND_EFFECT_BASE + index);
         BgmItemViewHolder preHolder1 = mBgmEffectArray.get(INDEX_SOUND_EFFECT_BASE + mPreBgmEffectIndex);
         BgmItemViewHolder preHolder2 = mBgmEffectArray.get(INDEX_SOUND_EFFECT_BASE + mPreBgmReverbIndex);
         if (index == -1) {
             preHolder1.setBottomTextActivated(false);
-            mAudioEffectType = AUDIO_FILTER_DISABLE;
+            mAudioEffectType = AUDIO_FILTER_DISABLE;  //重置变声类型缓存变量
         } else if (index == -2) {
             preHolder2.setBottomTextActivated(false);
-            mAudioReverbType = AUDIO_FILTER_DISABLE;
+            mAudioReverbType = AUDIO_FILTER_DISABLE;  //重置混响类型缓存变量
         } else {
             if (index < 4) {
                 preHolder1.setBottomTextActivated(false);
@@ -1056,6 +1117,9 @@ public class RecordActivity extends Activity implements
         addAudioFilter();
     }
 
+    /**
+     * 添加音频滤镜，支持变声和混响同时生效
+     */
     private void addAudioFilter() {
         KSYAudioEffectFilter effectFilter;
         AudioReverbFilter reverbFilter;
@@ -1077,6 +1141,9 @@ public class RecordActivity extends Activity implements
         }
     }
 
+    /**
+     * 重置录制状态
+     */
     private void clearRecordState() {
         mBeautySpinner.setSelection(0);
         mStickerSpinner.setSelection(0);
@@ -1087,6 +1154,9 @@ public class RecordActivity extends Activity implements
         onSoundEffectItemClick(-2);
     }
 
+    /**
+     * 根据是否有背景音乐选中来设置相应的编辑控件是否可用
+     */
     private void setEnableBgmEdit(boolean enable) {
         if (mPitchMinus != null) {
             mPitchMinus.setEnabled(enable);
@@ -1212,6 +1282,9 @@ public class RecordActivity extends Activity implements
         }
     }
 
+    /**
+     * 清除音调状态，重置为'0'
+     */
     private void clearPitchState() {
         mPitchValue = 0;
         mPitchText.setText("0");
@@ -1220,6 +1293,9 @@ public class RecordActivity extends Activity implements
         mKSYRecordKit.getBGMAudioFilterMgt().setFilter(audioFilter);
     }
 
+    /**
+     * 背景音乐音调加减事件处理
+     */
     private void onPitchClick(int sign) {
         if (sign < 0) {
             if (mPitchValue > -3) {
@@ -1256,6 +1332,9 @@ public class RecordActivity extends Activity implements
         }
     }
 
+    /**
+     * 美颜标题点击事件处理
+     */
     private void onBeautyTitleClick(int index) {
         BottomTitleViewInfo curInfo = mRecordTitleArray.get(INDEX_BEAUTY_TITLE_BASE + index);
         BottomTitleViewInfo preInfo = mRecordTitleArray.get(INDEX_BEAUTY_TITLE_BASE + mPreBeautyTitleIndex);
@@ -1269,28 +1348,33 @@ public class RecordActivity extends Activity implements
                 mInitFaceunityThread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        initFaceunity();
+                        initFaceunity();  //开启线程初始化faceunity
                         onStickerChecked(true);
                     }
                 });
                 mInitFaceunityThread.start();
-            }
-            else {
+            } else {
                 onStickerChecked(true);
             }
         }
     }
 
+    /**
+     * 背景音乐标题的点击事件处理
+     */
     private void onBgmTitleClick(int index) {
         BottomTitleViewInfo curInfo = mRecordTitleArray.get(INDEX_BGM_TITLE_BASE + index);
         BottomTitleViewInfo preInfo = mRecordTitleArray.get(INDEX_BGM_TITLE_BASE + mPreBgmTitleIndex);
         if (index != mPreBgmTitleIndex) {
-            curInfo.setChosenState(true);
-            preInfo.setChosenState(false);
+            curInfo.setChosenState(true);  //打开选中的音效界面
+            preInfo.setChosenState(false);  //隐藏上次打开的音效界面
             mPreBgmTitleIndex = index;
         }
     }
 
+    /**
+     * 初始化底部美颜和背景音乐界面
+     */
     private void initBottomTitleUI() {
         BottomTitleViewInfo initBeautyInfo = mRecordTitleArray.get(INDEX_BEAUTY_TITLE_BASE + mPreBeautyTitleIndex);
         initBeautyInfo.setChosenState(true);
@@ -1298,6 +1382,9 @@ public class RecordActivity extends Activity implements
         initBgmInfo.setChosenState(true);
     }
 
+    /**
+     * 打开系统文件夹，导入音频文件作为背景音乐
+     */
     private void importMusicFile() {
         Intent target = FileUtils.createGetContentIntent();
         Intent intent = Intent.createChooser(target, "ksy_import_music_file");
@@ -1308,6 +1395,9 @@ public class RecordActivity extends Activity implements
         }
     }
 
+    /**
+     * 选中本地背景音乐后返回结果处理
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
@@ -1524,6 +1614,10 @@ public class RecordActivity extends Activity implements
         return fileFolder;
     }
 
+    /**
+     * 封装一个TextView和View，TextView用来显示标题，View代表相应的布局
+     * 提供setChosenState()方法用来统一设置选中（非选中）下各组件的状态
+     */
     public class BottomTitleViewInfo {
         private TextView titleView;
         private View relativeLayout;
@@ -1552,6 +1646,9 @@ public class RecordActivity extends Activity implements
         }
     }
 
+    /**
+     * 背景音乐和音效Item的封装类，ImageView用于可视化类型说明，TextView是图片下的文字说明
+     */
     public class BgmItemViewHolder {
         public ImageView mBgmItemImage;
         public TextView mBgmItemName;
