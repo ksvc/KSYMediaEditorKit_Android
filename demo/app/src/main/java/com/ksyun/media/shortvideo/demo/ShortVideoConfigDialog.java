@@ -31,6 +31,7 @@ public class ShortVideoConfigDialog extends Dialog {
     private RadioButton mRes540Button;
     private EditText mFrameRateEditText;
     private RadioButton mEncodeWithH265;
+    private RadioButton mEncodeWithGif;
     private RadioGroup mEncodeGroup;
     private RadioButton mSWButton;
     private RadioButton mHWButton;
@@ -68,6 +69,7 @@ public class ShortVideoConfigDialog extends Dialog {
         mRes480Button = (RadioButton) findViewById(R.id.r480p);
         mRes540Button = (RadioButton) findViewById(R.id.r540p);
         mEncodeWithH265 = (RadioButton) findViewById(R.id.encode_h265);
+        mEncodeWithGif = (RadioButton) findViewById(R.id.encode_gif);
         mEncodeGroup = (RadioGroup) findViewById(R.id.encode_group);
         mSWButton = (RadioButton) findViewById(R.id.encode_sw);
         mHWButton = (RadioButton) findViewById(R.id.encode_hw);
@@ -78,8 +80,10 @@ public class ShortVideoConfigDialog extends Dialog {
 
         if (mConfigType == SHORTVIDEOCONFIG_TYPE_COMPOSE) {
             mEncodeGroup.setVisibility(View.GONE);
+            mEncodeWithGif.setVisibility(View.VISIBLE);
             mConfigTitle.setText("合成参数配置");
         } else if(mConfigType == SHORTVIDEOCONFIG_TYPE_RECORD) {
+            mEncodeWithGif.setVisibility(View.GONE);
             mConfigTitle.setText("录制参数配置");
         }
 
@@ -119,6 +123,8 @@ public class ShortVideoConfigDialog extends Dialog {
 
                 if (mEncodeWithH265.isChecked()) {
                     mShortVideoConfig.encodeType = AVConst.CODEC_ID_HEVC;
+                } else if(mEncodeWithGif.isChecked()) {
+                    mShortVideoConfig.encodeType = AVConst.CODEC_ID_GIF;
                 } else {
                     mShortVideoConfig.encodeType = AVConst.CODEC_ID_AVC;
                 }

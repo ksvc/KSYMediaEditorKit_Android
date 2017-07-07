@@ -28,8 +28,9 @@ public class AudioSeekLayout extends LinearLayout {
     private int mWaveImageWidth;
     private int mWaveImageHeight;
     private int mCoverImageWidth;
-    private float mAudioLength = -1;
-    private float mVideoLength = -1;
+    private float mBgmLength = -1;
+    private float mPreviewLength = -1;
+    private long mStartTime = 0;
     private float mRate = .0f;
     private float mOriginX = .0f;  //触摸位置相对控件的位置
     private TextView mAudioStartTime;
@@ -79,13 +80,13 @@ public class AudioSeekLayout extends LinearLayout {
         mPaint.setXfermode(new PorterDuffXfermode(mode));
     }
 
-    public void updateAudioSeekUI(float a, float b) {
-        if (a == -1 || b == -1)
+    public void updateAudioSeekUI(float bgmLength, float previewLength) {
+        if (bgmLength == -1 || previewLength == -1)
             return;
-        mAudioLength = a;
-        mVideoLength = b;
-        if (mAudioLength != 0) {
-            mRate = mVideoLength / mAudioLength;
+        mBgmLength = bgmLength;
+        mPreviewLength = previewLength;
+        if (mBgmLength != 0) {
+            mRate = mPreviewLength / mBgmLength;
         }
         if (mRate > 1) {
             mRate = 1;
@@ -93,10 +94,11 @@ public class AudioSeekLayout extends LinearLayout {
         mCoverImageWidth = (int) (mWaveImageWidth * mRate);
         mCoverBmp = Bitmap.createBitmap(mCoverImageWidth, mWaveImageHeight, Bitmap.Config.ARGB_8888);
         mCoverBmp.eraseColor(Color.parseColor("#DC143C"));
-        mAudioEndTime.setText(formatTimeStr(mAudioLength));
-        updateAudioSeekUI(0);
+        mAudioEndTime.setText(formatTimeStr(mStartTime + mPreviewLength));
         final int minMarginLeft = (int) (12 * mScreenDensity);
         final int maxMarginLeft = (int) (mScreenWidth - mCoverImageWidth - 58 * mScreenDensity);
+        int offset = ((LayoutParams) mAudioSeekBar.getLayoutParams()).leftMargin - minMarginLeft;
+        updateAudioSeekUI(offset);
         mAudioSeekBar.setEnabled(true);
         mAudioSeekBar.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -116,18 +118,19 @@ public class AudioSeekLayout extends LinearLayout {
                         break;
                     case MotionEvent.ACTION_UP:
                         long startTime = 0;
-                        long endTime = (long) mAudioLength;
+                        long endTime = (long) mBgmLength;
                         if (mRate < 1) {
                             float rate = (event.getRawX() - mOriginX - minMarginLeft) / mWaveImageWidth;
-                            startTime = (long) (mAudioLength * rate);
+                            startTime = (long) (mBgmLength * rate);
                             if (startTime < 0)
                                 startTime = 0;
-                            endTime = startTime + (long) mVideoLength;
-                            if (endTime > mAudioLength) {
-                                endTime = (long) mAudioLength;
-                                startTime = endTime - (long) mVideoLength;
+                            endTime = startTime + (long) mPreviewLength;
+                            if (endTime > mBgmLength) {
+                                endTime = (long) mBgmLength;
+                                startTime = endTime - (long) mPreviewLength;
                             }
                         }
+                        mStartTime = startTime;
                         mAudioStartTime.setText(formatTimeStr(startTime));
                         mAudioEndTime.setText(formatTimeStr(endTime));
                         if (mListener != null) {

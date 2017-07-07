@@ -59,14 +59,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="H264" />
+            android:text="H.264" />
 
         <RadioButton
             android:id="@+id/encode_h265"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="false"
-            android:text="H265" />
+            android:text="H.265" />
+        <RadioButton
+            android:id="@+id/encode_gif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="GIF" />
     </RadioGroup>
 
     <RadioGroup
