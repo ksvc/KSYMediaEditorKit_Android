@@ -1,56 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#616060">
+    android:layout_height="match_parent">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/beauty_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="#919191">
-        <TextView
-            android:id="@+id/item_beauty"
-            android:layout_width="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#08080b"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:text="美颜滤镜"
-            android:textSize="16sp"
-            android:textColor="@drawable/record_title_text" />
-        <TextView
-            android:id="@+id/item_dyn_sticker"
-            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/item_beauty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="美颜"
+                android:textColor="@drawable/record_title_text"
+                android:textSize="16sp" />
+
+            <View
+                android:id="@+id/item_beauty_indicator"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/title_indicator_color" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/item_beauty"
-            android:padding="5dp"
-            android:text="动态贴纸"
-            android:textSize="16sp"
-            android:textColor="@drawable/record_title_text" />
-        <ImageView
-            android:id="@+id/item_beauty_back"
-            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/item_dyn_sticker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="动态特效"
+                android:textColor="@drawable/record_title_text"
+                android:textSize="16sp" />
+
+            <View
+                android:id="@+id/item_sticker_indicator"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/title_indicator_color" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="3dp"
-            android:layout_marginRight="3dp"
-            android:src="@drawable/back"/>
-    </RelativeLayout>
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/item_filter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="滤镜"
+                android:textColor="@drawable/record_title_text"
+                android:textSize="16sp" />
+
+            <View
+                android:id="@+id/item_filter_indicator"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/title_indicator_color" />
+        </LinearLayout>
+    </LinearLayout>
 
     <include
         android:id="@+id/record_beauty_choose"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         layout="@layout/beauty_choose"
-        android:layout_below="@+id/beauty_title"
-        android:layout_marginTop="20dp"/>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/beauty_title" />
+
     <include
         android:id="@+id/record_sticker_choose"
+        layout="@layout/sticker_choose"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/beauty_title"
-        android:layout_marginTop="20dp"
-        android:visibility="invisible"
-        layout="@layout/sticker_choose" />
+        android:layout_height="match_parent"
+        android:layout_above="@+id/beauty_title"
+        android:visibility="invisible" />
+
+    <include
+        android:id="@+id/record_filter_choose"
+        layout="@layout/filter_choose"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/beauty_title"
+        android:visibility="invisible" />
 
 </RelativeLayout>

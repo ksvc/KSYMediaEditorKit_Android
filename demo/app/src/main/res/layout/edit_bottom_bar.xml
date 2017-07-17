@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/edit_bottom_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:alpha="0.8"
+        android:background="#000000">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/edit_title_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/edit_bottom_title">
+
+        <include
+            android:id="@+id/beauty_choose"
+            layout="@layout/beauty_choose"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"/>
+
+        <include
+            android:id="@+id/edit_filter_choose"
+            layout="@layout/filter_choose"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible" />
+
+        <include
+            android:id="@+id/speed_layout"
+            layout="@layout/speed_change"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible" />
+
+        <include
+            android:id="@+id/audio_choose"
+            layout="@layout/bgm_item_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible" />
+
+        <include
+            android:id="@+id/edit_sound_change"
+            layout="@layout/bgm_sound_change"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible" />
+
+        <include
+            android:id="@+id/edit_reverb"
+            layout="@layout/bgm_reverberation"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible" />
+
+        <include
+            android:id="@+id/video_range_choose"
+            layout="@layout/video_range_choose"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible" />
+
+        <include
+            android:id="@+id/sticker_choose"
+            layout="@layout/edit_sticker_choose"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/subtitle_choose"
+            layout="@layout/subtitle_choose"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible" />
+    </FrameLayout>
+
+</RelativeLayout>

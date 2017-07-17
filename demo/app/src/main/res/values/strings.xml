@@ -11,7 +11,7 @@
 
     <string name="video_range_title_1">拖动两侧滑杆裁剪视频</string>
     <string name="video_range_title_2">裁剪后视频时长:</string>
-    
+
     <string name="app_name">KSYShortVideoDemo</string>
 
 </resources>

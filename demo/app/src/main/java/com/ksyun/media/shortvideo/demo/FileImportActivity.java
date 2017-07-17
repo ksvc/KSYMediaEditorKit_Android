@@ -2,9 +2,7 @@ package com.ksyun.media.shortvideo.demo;
 
 import com.ksyun.media.player.IMediaPlayer;
 import com.ksyun.media.player.KSYMediaPlayer;
-import com.ksyun.media.shortvideo.demo.file.FileUtils;
-
-import org.w3c.dom.Text;
+import com.ksyun.media.shortvideo.demo.util.FileUtils;
 
 import android.Manifest;
 import android.app.Activity;
