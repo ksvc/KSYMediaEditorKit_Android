@@ -16,10 +16,51 @@
 #   public *;
 #}
 
+-optimizationpasses 5
+-dontusemixedcaseclassnames
+-dontskipnonpubliclibraryclasses
+-dontpreverify
+-allowaccessmodification
+-verbose
+-optimizations !code/simplification/arithmetic,!field/*,field/propagation/value,!class/merging/*,!code/allocation/variable
+
+-ignorewarnings
+-keepattributes EnclosingMethod
+-keepattributes InnerClasses
+-dontoptimize
+
 -keep class com.ksyun.** {
   *;
 }
 
 -keep class com.ksy.statlibrary.** {
+  *;
+}
+
+-keep class com.ksyun.media.shortvideo.** {
+  *;
+}
+
+-keep class com.ksyun.media.kmcfilter.** {
+*;
+}
+
+-keep class com.sensetime.sensear.** {
+*;
+}
+
+-keep class com.sensetime.sensear.** {
+*;
+}
+
+-keep class com.googlecode.mp4parser.** {
+  *;
+}
+
+-keep class com.mp4parser.** {
+  *;
+}
+
+-keep class com.coremedia.iso.** {
   *;
 }

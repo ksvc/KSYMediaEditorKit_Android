@@ -1,33 +1,32 @@
 package com.ksyun.media.shortvideo.demo;
 
+import com.ksyun.media.shortvideo.demo.util.HttpRequestTask;
 import com.ksyun.media.shortvideo.utils.AuthInfoManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
- * entry activity for shortvideo
+ * 引导窗口页
  */
 
 public class ShortVideoActivity extends Activity {
     private static String TAG = "ShortVideoActivity";
     public static String AUTH_SERVER_URI = "http://ksvs-demo.ks-live.com:8321/Auth";//the uri of your appServer
     //view
-    private Button mAuthButton;    //SDK鉴权
-    private Button mRecordButton;  //进入录制短视频功能
-    private Button mImportFileButton; //导入本地视频用于进入短视频编辑
-
-    private ButtonObserver mButtonObserver;
+    private TextView mStart;
     private Handler mMainHandler;
 
     //config params
@@ -40,18 +39,20 @@ public class ShortVideoActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.short_video_activity);
-
-        mAuthButton = (Button) findViewById(R.id.auth);
-        mRecordButton = (Button) findViewById(R.id.record);
-        mImportFileButton = (Button) findViewById(R.id.import_file);
-
-        mButtonObserver = new ButtonObserver();
-        mAuthButton.setOnClickListener(mButtonObserver);
-        mRecordButton.setOnClickListener(mButtonObserver);
-        mImportFileButton.setOnClickListener(mButtonObserver);
-
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        mStart = (TextView) findViewById(R.id.tv_start_short_video);
+        mStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ShortVideoActivity.this, ConfigActivity.class);
+                startActivity(intent);
+            }
+        });
         mMainHandler = new Handler();
+        checkAuth();
     }
 
     @Override
@@ -71,31 +72,11 @@ public class ShortVideoActivity extends Activity {
         AuthInfoManager.getInstance().removeAuthResultListener(mCheckAuthResultListener);
     }
 
-    private class ButtonObserver implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            switch (view.getId()) {
-                case R.id.auth:
-                    mRetryCount = 0;
-                    onAuthClick();
-                    break;
-                case R.id.record:
-                    onRecordClick();
-                    break;
-                case R.id.import_file:
-                    onImportFileClick();
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
 
     /**
      * SDK鉴权
      */
-    private void onAuthClick() {
-        mAuthButton.setEnabled(false);
+    private void checkAuth() {
 
         if (mAuthResponse == null) {
             mAuthResponse = new HttpRequestTask.HttpResponseListener() {
@@ -138,14 +119,10 @@ public class ShortVideoActivity extends Activity {
                                         "server", Toast.LENGTH_SHORT)
                                         .show();
                                 //鉴权失败，尝试3次
-                                if(mRetryCount < MAX_RETRY_COUNT) {
+                                if (mRetryCount < MAX_RETRY_COUNT) {
                                     mRetryCount++;
-                                    onAuthClick();
-                                } else {
-                                    mAuthButton.setEnabled(true);
+                                    checkAuth();
                                 }
-                            } else {
-                                mAuthButton.setEnabled(true);
                             }
                         }
                     });
@@ -184,35 +161,4 @@ public class ShortVideoActivity extends Activity {
         }
     };
 
-    /**
-     * 开启录制参数编辑窗口
-     */
-    private void onRecordClick() {
-        //params config
-        final ShortVideoConfigDialog configDialog = new ShortVideoConfigDialog(this,
-                ShortVideoConfigDialog.SHORTVIDEOCONFIG_TYPE_RECORD);
-        configDialog.setCancelable(false);
-        configDialog.show();
-        configDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                ShortVideoConfigDialog.ShortVideoConfig config = configDialog.getShortVideoConfig();
-                if (config != null) {
-                    //启动短视频录制
-                    RecordActivity.startActivity(getApplicationContext(),
-                            config.fps, config.videoBitrate,
-                            config.audioBitrate, config.resolution, config.encodeType,
-                            config.encodeMethod, config.encodeProfile);
-                }
-
-            }
-        });
-    }
-
-    /**
-     * 开启文件导入Activity
-     */
-    private void onImportFileClick() {
-        FileImportActivity.startActivity(getApplicationContext());
-    }
 }

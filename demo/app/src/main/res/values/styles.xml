@@ -39,5 +39,8 @@
         <item name="android:backgroundDimEnabled">false</item><!--模糊-->
     </style>
 
-
+    <style name="MyEditText" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@android:color/darker_gray</item>
+        <item name="colorControlActivated">@android:color/holo_orange_dark</item>
+    </style>
 </resources>

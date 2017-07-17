@@ -1,30 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:alpha="0.8"
+    android:background="#07080B"
+    android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="#ffffff">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
         <TextView
             android:id="@+id/video_range_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            android:layout_gravity="center"
             android:text="@string/video_range_title_1"
-            android:textColor="#000000"
-            android:textSize="20dp"
-            android:layout_gravity="center"/>
+            android:textColor="#ffffff"
+            android:textSize="18dp" />
     </FrameLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
         android:orientation="vertical">
@@ -42,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:textColor="#999999"
-                android:textSize="15dp"/>
+                android:textSize="15dp" />
 
             <TextView
                 android:id="@+id/range"
@@ -50,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textColor="#999999"
-                android:textSize="20dp"/>
+                android:textSize="20dp" />
 
             <TextView
                 android:id="@+id/range_end"
@@ -58,21 +56,21 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:textColor="#999999"
-                android:textSize="15dp"/>
+                android:textSize="15dp" />
         </FrameLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="114dp"
             android:layout_alignParentBottom="true">
+
             <com.ksyun.media.shortvideo.demo.videorange.HorizontalListView
                 android:id="@+id/hlistview"
                 android:layout_width="match_parent"
                 android:layout_height="59dp"
-                android:requiresFadingEdge="horizontal"/>
+                android:requiresFadingEdge="horizontal" />
 
-            <com.ksyun.media.shortvideo.demo.videorange.VideoRangeSeekBar
-                xmlns:custom="http://schemas.android.com/apk/res-auto"
+            <com.ksyun.media.shortvideo.demo.videorange.VideoRangeSeekBar xmlns:custom="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/seekbar"
                 android:layout_width="match_parent"
                 android:layout_height="110dp"
@@ -80,7 +78,7 @@
                 custom:gradientWidth="20dp"
                 custom:indicatorWidth="4dp"
                 custom:thumbBandHeight="59dp"
-                custom:thumbWidth="20dp"/>
+                custom:thumbWidth="20dp" />
         </FrameLayout>
     </LinearLayout>
 

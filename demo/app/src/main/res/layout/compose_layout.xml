@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:background="#88000000"
-             android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:id="@+id/compose_preview_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:visibility="gone">
 
         <SurfaceView
@@ -16,55 +14,159 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentTop="true"/>
+            android:layout_alignParentTop="true"
+            android:visibility="gone"/>
         <WebView
             android:id="@+id/gif_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
-
-        </WebView>
-
-        <TextView
-            android:id="@+id/file_duration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="45px"
-            android:layout_alignParentLeft="true"/>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:visibility="gone"/>
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/compose_root"
+        android:id="@+id/cover_dialog"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="20dp"
+        android:background="#000000"
+        android:visibility="gone">
 
-        <ProgressBar
-            android:id="@+id/state_progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:indeterminateDrawable="@drawable/composing"
-            android:indeterminateDuration="1000"
-            android:indeterminateOnly="true"/>
-        <TextView
-            android:id="@+id/progress_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:textColor="#e85932"
-            android:textSize="25px"/>
+        <RelativeLayout
+            android:id="@+id/cover_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/cover_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:src="@drawable/record_back" />
+
+            <TextView
+                android:id="@+id/cover_complete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="#DC143C"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                android:text="发布"
+                android:textColor="#ffffff" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/cover_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/cover_title"
+            android:layout_above="@+id/seek_hint"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp" />
 
         <TextView
-            android:id="@+id/state_text"
+            android:id="@+id/seek_hint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/compose_file"
-            android:layout_marginTop="10dp"
-            android:textColor="#e85932"
-            android:textSize="50px"
+            android:layout_above="@+id/cover_seekBar"
+            android:layout_marginBottom="20dp"
             android:layout_centerHorizontal="true"
+            android:text="拖动选择封面"
+            android:textSize="18sp"
+            android:textColor="#ffffff" />
+
+        <android.support.v7.widget.AppCompatSeekBar
+            android:id="@+id/cover_seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_below="@id/state_progress"/>
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="50dp"
+            android:progressBackgroundTint="#9b9b9b"
+            android:progressTint="@color/font_color_35"
+            android:thumbTint="#ffffff"/>
     </RelativeLayout>
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/compose_root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <LinearLayout
+            android:layout_width="150dp"
+            android:layout_height="120dp"
+            android:gravity="center_horizontal"
+            android:alpha="0.8"
+            android:background="#07080B"
+            android:orientation="vertical">
+
+            <ProgressBar
+                android:id="@+id/state_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:indeterminateDrawable="@drawable/composing"
+                android:indeterminateDuration="1000"
+                android:indeterminateOnly="true" />
+            <TextView
+                android:id="@+id/state_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@id/state_progress"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="@string/compose_file"
+                android:textColor="#ffffff"
+                android:textSize="16sp" />
+            <TextView
+                android:id="@+id/progress_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="5dp"
+                android:textColor="#ffffff"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/system_state"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:gravity="center_horizontal"
+            android:alpha="0.8"
+            android:background="#07080B"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CPU占用："
+                    android:textSize="16sp"
+                    android:layout_gravity="left"
+                    android:textColor="#ffffff"/>
+                <TextView
+                    android:id="@+id/cpu_rate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="16sp"
+                    android:textColor="#ffffff"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

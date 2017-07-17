@@ -1,65 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:alpha="0.8"
+    android:background="#07080B"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="5dp"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="美颜类型："
-            android:textColor="@color/font_color_35"
-            android:textSize="16sp"/>
-
-        <android.support.v7.widget.AppCompatSpinner
-            android:id="@+id/beauty_spin"
-            android:layout_width="wrap_content"
-            android:layout_height="32dp"
-            android:layout_marginLeft="28dp"
-            android:text="none"
-            android:textSize="14sp">
-        </android.support.v7.widget.AppCompatSpinner>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/beauty_grind"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/grind_text"
-            android:layout_width="64dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="磨皮"
-            android:textColor="@color/font_color_35"
-            android:textSize="14sp"/>
-
-        <android.support.v7.widget.AppCompatSeekBar
-            android:id="@+id/grind_seek_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
-
-    <LinearLayout
+        android:layout_marginTop="10dp"
         android:id="@+id/beauty_whiten"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:gravity="center"
@@ -71,19 +23,51 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="美白"
-            android:textColor="@color/font_color_35"
-            android:textSize="14sp"/>
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
 
         <android.support.v7.widget.AppCompatSeekBar
             android:id="@+id/whiten_seek_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:progressBackgroundTint="#9b9b9b"
+            android:progressTint="@color/font_color_35"
+            android:thumbTint="#ffffff"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/beauty_grind"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/grind_text"
+            android:layout_width="64dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="磨皮"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
+
+        <android.support.v7.widget.AppCompatSeekBar
+            android:id="@+id/grind_seek_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:progressBackgroundTint="#9b9b9b"
+            android:progressTint="@color/font_color_35"
+            android:thumbTint="#ffffff"/>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/beauty_ruddy"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
@@ -96,55 +80,16 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="红润"
-            android:textColor="@color/font_color_35"
-            android:textSize="14sp"/>
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
 
         <android.support.v7.widget.AppCompatSeekBar
             android:id="@+id/ruddy_seek_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:progressBackgroundTint="#9b9b9b"
+            android:progressTint="@color/font_color_35"
+            android:thumbTint="#ffffff"/>
     </LinearLayout>
-
-    <RelativeLayout
-        android:id="@+id/speed_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:layout_marginLeft="20dp"
-        android:visibility="gone">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:text="变速"
-            android:textSize="14sp"/>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true">
-            <ImageView
-                android:id="@+id/speed_down"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/pitch_minus"/>
-            <TextView
-                android:id="@+id/speed_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="50dp"
-                android:text="1.0"
-                android:textColor="@color/font_color_35"
-                android:textSize="16sp"/>
-            <ImageView
-                android:id="@+id/speed_up"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="50dp"
-                android:src="@drawable/pitch_plus"/>
-        </LinearLayout>
-    </RelativeLayout>
 
 </LinearLayout>

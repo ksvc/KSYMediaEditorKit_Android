@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:clickable="false"
+    android:descendantFocusability="blocksDescendants"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingBottom="12dip"
+    android:paddingLeft="9dip"
+    android:paddingRight="9dip"
+    android:paddingTop="12dip">
+
+    <FrameLayout
+        android:layout_width="74dp"
+        android:layout_height="74dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/gimg_list_item"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerInParent="true" />
+
+            <ImageView
+                android:id="@+id/download_ind"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/download" />
+        </RelativeLayout>
+
+        <ProgressBar
+            android:id="@+id/process_download"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+        <com.ksyun.media.shortvideo.demo.kmc.CircleProgressBar
+            android:id="@+id/circle_progressbar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+    </FrameLayout>
+
+</LinearLayout>
