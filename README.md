@@ -100,6 +100,19 @@ https://github.com/ksvc/KSYMediaEditorKit_iOS/tree/master/server/python/auth
 Demo中的鉴权串等只能供Demo使用,正式上线需要申请金山云账号，请联系金山云商务。
 
 ## 5. 反馈与建议
+### 5.1 反馈模板  
+
+| 类型    | 描述|
+| :---: | :---:| 
+|SDK名称|KSYMediaEditorKit_android|
+| SDK版本 | v1.1.0|
+| 设备型号  | oppo r9s  |
+| OS版本  | Android 6.0.1 |
+| 问题描述  | 描述问题出现的现象  |
+| 操作描述  | 描述经过如何操作出现上述问题                     |
+| 额外附件   | 文本形式控制台log、crash报告、其他辅助信息（界面截屏或录像等） |
+
+### 5.2 联系方式
 - 主页：[金山云](http://www.ksyun.com/)
 - 邮箱：<zengfanping@kingsoft.com>
 - QQ讨论群：574179720
