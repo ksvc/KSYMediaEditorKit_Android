@@ -46,7 +46,7 @@
 
         <include
             android:id="@+id/audio_choose"
-            layout="@layout/bgm_item_layout"
+            layout="@layout/bgm_choose"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="invisible" />

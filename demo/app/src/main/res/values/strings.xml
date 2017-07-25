@@ -8,6 +8,7 @@
     <string name="upload_file_fail">上传失败</string>
     <string name="upload_file">文件上传中...</string>
     <string name="compose_file">文件合成中...</string>
+    <string name="get_file_url">获取上传视频中...</string>
 
     <string name="video_range_title_1">拖动两侧滑杆裁剪视频</string>
     <string name="video_range_title_2">裁剪后视频时长:</string>

@@ -1,14 +1,21 @@
 package com.ksyun.media.shortvideo.demo;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.ksyun.media.shortvideo.demo.util.FileUtils;
 import com.ksyun.media.streamer.encoder.VideoEncodeFormat;
 import com.ksyun.media.streamer.framework.AVConst;
 import com.ksyun.media.streamer.kit.StreamerConstants;
@@ -19,6 +26,10 @@ import com.ksyun.media.streamer.kit.StreamerConstants;
  * 编辑合成参数配置
  */
 public class ConfigActivity extends Activity {
+
+    private static final String TAG = "ConfigActivity";
+    private static final int REQUEST_CODE = 6384;
+    private static final String TITLE = "ksy_import_file";
 
     /*******录制参数配置示例******/
     private TextView mRecRes720p;
@@ -32,29 +43,14 @@ public class ConfigActivity extends Activity {
     private EditText mRecVideoBitrate;
     private EditText mRecAudioBitrate;
 
-    /*******编辑后合成参数配置示例******/
-    private TextView mOutRes480p;
-    private TextView mOutRes540p;
-    private TextView mOutEncodeWithH264;
-    private TextView mOutEncodeWithH265;
-    private TextView mOutForMP4;
-    private TextView mOutForGIF;
-    private TextView[] mOutProfileGroup;
-    private EditText mOutFrameRate;
-    private EditText mOutVideoBitrate;
-    private EditText mOutAudioBitrate;
-
     private ImageView mImport;  //从外部导入文件
     private ImageView mStartRecord;   //由此进入录制示例窗口
 
     private ConfigObserver mObserver;
     private static ShortVideoConfig mRecordConfig;  //录制参数配置
-    private static ShortVideoConfig mComposeConfig;  //编辑合成配置参数
 
     private static final int[] RECORD_PROFILE_ID = {R.id.record_config_low_power,
             R.id.record_config_balance, R.id.record_config_high_performance};
-    private static final int[] OUTPUT_PROFILE_ID = {R.id.output_config_low_power,
-            R.id.output_config_balance, R.id.output_config_high_performance};
     private static final int[] ENCODE_PROFILE_TYPE = {VideoEncodeFormat.ENCODE_PROFILE_LOW_POWER,
             VideoEncodeFormat.ENCODE_PROFILE_BALANCE, VideoEncodeFormat.ENCODE_PROFILE_HIGH_PERFORMANCE};
 
@@ -69,7 +65,6 @@ public class ConfigActivity extends Activity {
 
         mObserver = new ConfigObserver();
         mRecordConfig = new ShortVideoConfig();
-        mComposeConfig = new ShortVideoConfig();
 
         mRecRes720p = (TextView) findViewById(R.id.record_config_r720p);
         mRecRes720p.setOnClickListener(mObserver);
@@ -92,27 +87,6 @@ public class ConfigActivity extends Activity {
         mRecVideoBitrate = (EditText) findViewById(R.id.record_config_video_bitrate);
         mRecAudioBitrate = (EditText) findViewById(R.id.record_config_audio_bitrate);
 
-        mOutRes480p = (TextView) findViewById(R.id.output_config_r480p);
-        mOutRes480p.setOnClickListener(mObserver);
-        mOutRes540p = (TextView) findViewById(R.id.output_config_r540p);
-        mOutRes540p.setOnClickListener(mObserver);
-        mOutEncodeWithH264 = (TextView) findViewById(R.id.output_config_h264);
-        mOutEncodeWithH264.setOnClickListener(mObserver);
-        mOutEncodeWithH265 = (TextView) findViewById(R.id.output_config_h265);
-        mOutEncodeWithH265.setOnClickListener(mObserver);
-        mOutForMP4 = (TextView) findViewById(R.id.output_config_mp4);
-        mOutForMP4.setOnClickListener(mObserver);
-        mOutForGIF = (TextView) findViewById(R.id.output_config_gif);
-        mOutForGIF.setOnClickListener(mObserver);
-        mOutProfileGroup = new TextView[3];
-        for (int i = 0; i < mOutProfileGroup.length; i++) {
-            mOutProfileGroup[i] = (TextView) findViewById(OUTPUT_PROFILE_ID[i]);
-            mOutProfileGroup[i].setOnClickListener(mObserver);
-        }
-        mOutFrameRate = (EditText) findViewById(R.id.output_config_frameRate);
-        mOutVideoBitrate = (EditText) findViewById(R.id.output_config_video_bitrate);
-        mOutAudioBitrate = (EditText) findViewById(R.id.output_config_audio_bitrate);
-
         mImport = (ImageView) findViewById(R.id.config_import);
         mImport.setOnClickListener(mObserver);
         mStartRecord = (ImageView) findViewById(R.id.config_record);
@@ -124,11 +98,7 @@ public class ConfigActivity extends Activity {
         mRecRes720p.setActivated(true);
         mRecEncodeWithH264.setActivated(true);
         mRecEncodeByHW.setActivated(true);
-        mRecProfileGroup[1].setActivated(true);
-        mOutRes480p.setActivated(true);
-        mOutEncodeWithH264.setActivated(true);
-        mOutForMP4.setActivated(true);
-        mOutProfileGroup[1].setActivated(true);
+        mRecProfileGroup[0].setActivated(true);
     }
 
     private void onRecordEncodeProfileClick(int index) {
@@ -136,15 +106,6 @@ public class ConfigActivity extends Activity {
         for (int i = 0; i < mRecProfileGroup.length; i++) {
             if (i != index) {
                 mRecProfileGroup[i].setActivated(false);
-            }
-        }
-    }
-
-    private void onOutputEncodeProfileClick(int index) {
-        mOutProfileGroup[index].setActivated(true);
-        for (int i = 0; i < mOutProfileGroup.length; i++) {
-            if (i != index) {
-                mOutProfileGroup[i].setActivated(false);
             }
         }
     }
@@ -174,29 +135,6 @@ public class ConfigActivity extends Activity {
         mRecordConfig.fps = Integer.parseInt(mRecFrameRate.getText().toString());
         mRecordConfig.videoBitrate = Integer.parseInt(mRecVideoBitrate.getText().toString());
         mRecordConfig.audioBitrate = Integer.parseInt(mRecAudioBitrate.getText().toString());
-
-        if (mOutRes480p.isActivated()) {
-            mComposeConfig.resolution = StreamerConstants.VIDEO_RESOLUTION_480P;
-        } else if (mOutRes540p.isActivated()) {
-            mComposeConfig.resolution = StreamerConstants.VIDEO_RESOLUTION_540P;
-        }
-        if (mOutEncodeWithH264.isActivated()) {
-            mComposeConfig.encodeType = AVConst.CODEC_ID_AVC;
-        } else if (mOutEncodeWithH265.isActivated()) {
-            mComposeConfig.encodeType = AVConst.CODEC_ID_HEVC;
-        }
-        if (mOutForGIF.isActivated()) {
-            mComposeConfig.encodeType = AVConst.CODEC_ID_GIF;
-        }
-        for (int i = 0; i < mOutProfileGroup.length; i++) {
-            if (mOutProfileGroup[i].isActivated()) {
-                mComposeConfig.encodeProfile = ENCODE_PROFILE_TYPE[i];
-                break;
-            }
-        }
-        mComposeConfig.fps = Integer.parseInt(mOutFrameRate.getText().toString());
-        mComposeConfig.videoBitrate = Integer.parseInt(mOutVideoBitrate.getText().toString());
-        mComposeConfig.audioBitrate = Integer.parseInt(mOutAudioBitrate.getText().toString());
     }
 
     public class ConfigObserver implements View.OnClickListener {
@@ -236,49 +174,10 @@ public class ConfigActivity extends Activity {
                 case R.id.record_config_high_performance:
                     onRecordEncodeProfileClick(2);
                     break;
-                case R.id.output_config_r480p:
-                    mOutRes480p.setActivated(true);
-                    mOutRes540p.setActivated(false);
-                    break;
-                case R.id.output_config_r540p:
-                    mOutRes480p.setActivated(false);
-                    mOutRes540p.setActivated(true);
-                    break;
-                case R.id.output_config_h264:
-                    mOutEncodeWithH264.setActivated(true);
-                    mOutEncodeWithH265.setActivated(false);
-                    break;
-                case R.id.output_config_h265:
-                    mOutEncodeWithH264.setActivated(false);
-                    mOutEncodeWithH265.setActivated(true);
-                    break;
-                case R.id.output_config_mp4:
-                    mOutForMP4.setActivated(true);
-                    mOutForGIF.setActivated(false);
-                    mOutEncodeWithH264.setEnabled(true);
-                    mOutEncodeWithH265.setEnabled(true);
-                    break;
-                case R.id.output_config_gif:
-                    mOutForMP4.setActivated(false);
-                    mOutForGIF.setActivated(true);
-                    mOutEncodeWithH264.setActivated(false);
-                    mOutEncodeWithH265.setActivated(false);
-                    mOutEncodeWithH264.setEnabled(false);
-                    mOutEncodeWithH265.setEnabled(false);
-                    break;
-                case R.id.output_config_low_power:
-                    onOutputEncodeProfileClick(0);
-                    break;
-                case R.id.output_config_balance:
-                    onOutputEncodeProfileClick(1);
-                    break;
-                case R.id.output_config_high_performance:
-                    onOutputEncodeProfileClick(2);
-                    break;
                 case R.id.config_import:
                     confirmConfig();
                     //启动本地导入页面
-                    FileImportActivity.startActivity(getApplicationContext());
+                    onImportClick();
                     break;
                 case R.id.config_record:
                     confirmConfig();
@@ -292,21 +191,79 @@ public class ConfigActivity extends Activity {
         }
     }
 
+    private void onImportClick() {
+        Intent target = FileUtils.createGetContentIntent();
+        // Create the chooser Intent
+        Intent intent = Intent.createChooser(
+                target, TITLE);
+        try {
+            startActivityForResult(intent, REQUEST_CODE);
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 从本地导入视频文件结果处理
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_CODE:
+                // If the file selection was successful
+                if (resultCode == RESULT_OK) {
+                    if (data != null) {
+                        // Get the URI of the selected file
+                        final Uri uri = data.getData();
+                        Log.i(TAG, "Uri = " + uri.toString());
+                        try {
+                            // Get the file path from the URI
+                            final String path = FileUtils.getPath(this, uri);
+                            String mimeType = FileUtils.getMimeType(this, uri);
+
+                            if (!TextUtils.isEmpty(mimeType) && isSupportedMimeType(mimeType)) {
+
+                                Toast.makeText(ConfigActivity.this,
+                                        "File Selected: " + path, Toast.LENGTH_LONG).show();
+                                EditActivity.startActivity(getApplicationContext(), path);
+                            } else {
+                                Toast.makeText(ConfigActivity.this,
+                                        "Do not support this file, please select other File ", Toast
+                                                .LENGTH_LONG).show();
+                            }
+                        } catch (Exception e) {
+                            Log.e(TAG, "File select error:" + e);
+                        }
+                    }
+                }
+                break;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    /**
+     * 判断是否是所支持的MIME类型
+     */
+    private boolean isSupportedMimeType(String mimeType) {
+        for (int i = 0; i < SUPPORT_FILE_MIME_TYPE.length; i++) {
+            if (mimeType.equals(SUPPORT_FILE_MIME_TYPE[i])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 支持的MIME类型数组
+     */
+    private String[] SUPPORT_FILE_MIME_TYPE = new String[]{
+            "video/mp4",
+            "video/ext-mp4",
+            "video/3gpp",
+            "video/mov"
+    };
+
     public static ShortVideoConfig getRecordConfig() {
         return mRecordConfig;
-    }
-
-    public static ShortVideoConfig getComposeConfig() {
-        return mComposeConfig;
-    }
-
-    public class ShortVideoConfig {
-        public int fps;
-        public int resolution;
-        public int videoBitrate;
-        public int audioBitrate;
-        public int encodeType;
-        public int encodeMethod;
-        public int encodeProfile;
     }
 }

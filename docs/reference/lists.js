@@ -4,7 +4,7 @@ var DATA = [
       { id:2, label:"com.ksyun.media.shortvideo.kit.KSYEditKit.OnErrorListener", link:"com/ksyun/media/shortvideo/kit/KSYEditKit.OnErrorListener.html", type:"class" },
       { id:3, label:"com.ksyun.media.shortvideo.kit.KSYEditKit.OnInfoListener", link:"com/ksyun/media/shortvideo/kit/KSYEditKit.OnInfoListener.html", type:"class" },
       { id:4, label:"com.ksyun.media.shortvideo.kit.KSYRecordKit", link:"com/ksyun/media/shortvideo/kit/KSYRecordKit.html", type:"class" },
-      { id:5, label:"com.ksyun.media.shortvideo.kit.KSYRecordKit.MegerFilesFinishedListener", link:"com/ksyun/media/shortvideo/kit/KSYRecordKit.MegerFilesFinishedListener.html", type:"class" },
+      { id:5, label:"com.ksyun.media.shortvideo.kit.KSYRecordKit.MergeFilesFinishedListener", link:"com/ksyun/media/shortvideo/kit/KSYRecordKit.MergeFilesFinishedListener.html", type:"class" },
       { id:6, label:"com.ksyun.media.shortvideo.utils", link:"com/ksyun/media/shortvideo/utils/package-summary.html", type:"package" },
       { id:7, label:"com.ksyun.media.shortvideo.utils.AuthInfoManager", link:"com/ksyun/media/shortvideo/utils/AuthInfoManager.html", type:"class" },
       { id:8, label:"com.ksyun.media.shortvideo.utils.AuthInfoManager.AuthInfo", link:"com/ksyun/media/shortvideo/utils/AuthInfoManager.AuthInfo.html", type:"class" },
@@ -13,9 +13,15 @@ var DATA = [
       { id:11, label:"com.ksyun.media.shortvideo.utils.KS3ClientWrap.KS3AuthInfo", link:"com/ksyun/media/shortvideo/utils/KS3ClientWrap.KS3AuthInfo.html", type:"class" },
       { id:12, label:"com.ksyun.media.shortvideo.utils.KS3ClientWrap.KS3UploadInfo", link:"com/ksyun/media/shortvideo/utils/KS3ClientWrap.KS3UploadInfo.html", type:"class" },
       { id:13, label:"com.ksyun.media.shortvideo.utils.KS3ClientWrap.OnGetAuthInfoListener", link:"com/ksyun/media/shortvideo/utils/KS3ClientWrap.OnGetAuthInfoListener.html", type:"class" },
-      { id:14, label:"com.ksyun.media.shortvideo.utils.ShortVideoConstants", link:"com/ksyun/media/shortvideo/utils/ShortVideoConstants.html", type:"class" },
-      { id:15, label:"com.ksyun.media.shortvideo.view", link:"com/ksyun/media/shortvideo/view/package-summary.html", type:"package" },
-      { id:16, label:"com.ksyun.media.shortvideo.view.KSYStickerView", link:"com/ksyun/media/shortvideo/view/KSYStickerView.html", type:"class" },
-      { id:17, label:"com.ksyun.media.shortvideo.view.StickerHelpBoxInfo", link:"com/ksyun/media/shortvideo/view/StickerHelpBoxInfo.html", type:"class" }
+      { id:14, label:"com.ksyun.media.shortvideo.utils.ProbeMediaInfoTools", link:"com/ksyun/media/shortvideo/utils/ProbeMediaInfoTools.html", type:"class" },
+      { id:15, label:"com.ksyun.media.shortvideo.utils.ProbeMediaInfoTools.MediaInfo", link:"com/ksyun/media/shortvideo/utils/ProbeMediaInfoTools.MediaInfo.html", type:"class" },
+      { id:16, label:"com.ksyun.media.shortvideo.utils.ProbeMediaInfoTools.ProbeMediaInfoListener", link:"com/ksyun/media/shortvideo/utils/ProbeMediaInfoTools.ProbeMediaInfoListener.html", type:"class" },
+      { id:17, label:"com.ksyun.media.shortvideo.utils.ShortVideoConstants", link:"com/ksyun/media/shortvideo/utils/ShortVideoConstants.html", type:"class" },
+      { id:18, label:"com.ksyun.media.shortvideo.view", link:"com/ksyun/media/shortvideo/view/package-summary.html", type:"package" },
+      { id:19, label:"com.ksyun.media.shortvideo.view.KSYStickerView", link:"com/ksyun/media/shortvideo/view/KSYStickerView.html", type:"class" },
+      { id:20, label:"com.ksyun.media.shortvideo.view.KSYTextView", link:"com/ksyun/media/shortvideo/view/KSYTextView.html", type:"class" },
+      { id:21, label:"com.ksyun.media.shortvideo.view.KSYTextView.DrawTextParams", link:"com/ksyun/media/shortvideo/view/KSYTextView.DrawTextParams.html", type:"class" },
+      { id:22, label:"com.ksyun.media.shortvideo.view.KSYTextView.OnTextRectSelected", link:"com/ksyun/media/shortvideo/view/KSYTextView.OnTextRectSelected.html", type:"class" },
+      { id:23, label:"com.ksyun.media.shortvideo.view.StickerHelpBoxInfo", link:"com/ksyun/media/shortvideo/view/StickerHelpBoxInfo.html", type:"class" }
 
     ];

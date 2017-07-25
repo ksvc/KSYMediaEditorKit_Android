@@ -9,11 +9,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <ImageView
-            android:id="@+id/filter_image"
+            android:id="@+id/image_content"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"/>
         <ImageView
-            android:id="@+id/filter_image_border"
+            android:id="@+id/image_border"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/filter_border"
@@ -21,7 +22,7 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/filter_text"
+        android:id="@+id/title_text"
         android:layout_marginTop="10dp"
         android:gravity="center"
         android:layout_width="wrap_content"

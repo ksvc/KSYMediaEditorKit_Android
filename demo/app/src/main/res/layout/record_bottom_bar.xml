@@ -144,7 +144,7 @@
         android:id="@+id/item_bgm_select"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        layout="@layout/bgm_item_layout"
+        layout="@layout/bgm_choose"
         android:visibility="gone"/>
     <include
         android:id="@+id/item_sound_effect"
