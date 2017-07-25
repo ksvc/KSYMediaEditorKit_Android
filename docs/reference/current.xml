@@ -32,7 +32,7 @@
 <parameter name="view" type="com.ksyun.media.shortvideo.view.KSYStickerView">
 </parameter>
 </method>
-<method name="changeBgmMusic"
+<method name="addTextStickerView"
  return="void"
  abstract="false"
  native="false"
@@ -42,7 +42,7 @@
  deprecated="not deprecated"
  visibility="public"
 >
-<parameter name="path" type="java.lang.String">
+<parameter name="view" type="com.ksyun.media.shortvideo.view.KSYTextView">
 </parameter>
 </method>
 <method name="enableOriginAudio"
@@ -69,17 +69,6 @@
  visibility="public"
 >
 </method>
-<method name="getAudioMixer"
- return="AudioMixer"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
 <method name="getAudioPlayerCapture"
  return="AudioPlayerCapture"
  abstract="false"
@@ -91,7 +80,7 @@
  visibility="public"
 >
 </method>
-<method name="getBgmMusicVolume"
+<method name="getBgmVolume"
  return="float"
  abstract="false"
  native="false"
@@ -146,17 +135,6 @@
  visibility="public"
 >
 </method>
-<method name="getImageTexPreview"
- return="ImgTexPreview"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
 <method name="getImgTexFilterMgt"
  return="ImgTexFilterMgt"
  abstract="false"
@@ -190,6 +168,39 @@
  visibility="public"
 >
 </method>
+<method name="getMAXSpeed"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getMINSpeed"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getNomalSpeed"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
 <method name="getOriginAudioVolume"
  return="float"
  abstract="false"
@@ -203,6 +214,17 @@
 </method>
 <method name="getProgress"
  return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getSpeed"
+ return="float"
  abstract="false"
  native="false"
  synchronized="false"
@@ -242,17 +264,6 @@
 </method>
 <method name="hideWaterMarkLogo"
  return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="isAudioMuted"
- return="boolean"
  abstract="false"
  native="false"
  synchronized="false"
@@ -330,6 +341,19 @@
  visibility="public"
 >
 </method>
+<method name="seekBGM"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="seekto" type="long">
+</parameter>
+</method>
 <method name="seekEditPreview"
  return="void"
  abstract="false"
@@ -390,7 +414,22 @@
 <exception name="IllegalArgumentException" type="java.lang.IllegalArgumentException">
 </exception>
 </method>
-<method name="setBgmMusicVolume"
+<method name="setBGMRanges"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="startTime" type="long">
+</parameter>
+<parameter name="endTime" type="long">
+</parameter>
+</method>
+<method name="setBgmVolume"
  return="void"
  abstract="false"
  native="false"
@@ -528,6 +567,19 @@
 <parameter name="volume" type="float">
 </parameter>
 </method>
+<method name="setSpeed"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="speed" type="float">
+</parameter>
+</method>
 <method name="setTargetResolution"
  return="void"
  abstract="false"
@@ -652,19 +704,6 @@
 <exception name="IllegalArgumentException" type="java.lang.IllegalArgumentException">
 </exception>
 </method>
-<method name="setVolume"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="volume" type="float">
-</parameter>
-</method>
 <method name="showWaterMarkLogo"
  return="void"
  abstract="false"
@@ -686,6 +725,21 @@
 <parameter name="h" type="float">
 </parameter>
 <parameter name="alpha" type="float">
+</parameter>
+</method>
+<method name="startBgm"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="path" type="java.lang.String">
+</parameter>
+<parameter name="loop" type="boolean">
 </parameter>
 </method>
 <method name="startCompose"
@@ -714,6 +768,17 @@
 <exception name="IllegalArgumentException" type="java.lang.IllegalArgumentException">
 </exception>
 </method>
+<method name="stopBgm"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
 <method name="stopCompose"
  return="void"
  abstract="false"
@@ -735,6 +800,19 @@
  deprecated="not deprecated"
  visibility="public"
 >
+</method>
+<method name="updateSpeed"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="plus" type="boolean">
+</parameter>
 </method>
 </class>
 <interface name="KSYEditKit.OnErrorListener"
@@ -801,6 +879,30 @@
 <parameter name="context" type="Context">
 </parameter>
 </constructor>
+<method name="deleteAllFiles"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="true"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="deleteFileByIndex"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="true"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="index" type="int">
+</parameter>
+</method>
 <method name="deleteRecordFile"
  return="boolean"
  abstract="false"
@@ -849,7 +951,7 @@
 <parameter name="listener" type="OnErrorListener">
 </parameter>
 </method>
-<method name="setScallingMode"
+<method name="setOnInfoListener"
  return="void"
  abstract="false"
  native="false"
@@ -859,7 +961,7 @@
  deprecated="not deprecated"
  visibility="public"
 >
-<parameter name="mode" type="int">
+<parameter name="listener" type="OnInfoListener">
 </parameter>
 </method>
 <method name="startRecord"
@@ -879,7 +981,18 @@
  return="void"
  abstract="false"
  native="false"
- synchronized="true"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="stopRecord"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
  static="false"
  final="false"
  deprecated="not deprecated"
@@ -887,44 +1000,31 @@
 >
 <parameter name="outputFile" type="java.lang.String">
 </parameter>
-<parameter name="listener" type="com.ksyun.media.shortvideo.kit.KSYRecordKit.MegerFilesFinishedListener">
+<parameter name="listener" type="com.ksyun.media.shortvideo.kit.KSYRecordKit.MergeFilesFinishedListener">
 </parameter>
 </method>
-<field name="SCALING_MODE_BEST_FIT"
- type="int"
+<field name="mOnErrorListener"
+ type="KSYStreamer.OnErrorListener"
  transient="false"
  volatile="false"
- value="1"
- static="true"
- final="true"
+ static="false"
+ final="false"
  deprecated="not deprecated"
  visibility="public"
 >
 </field>
-<field name="SCALING_MODE_CENTER_CROP"
- type="int"
+<field name="mOnInfoListener"
+ type="KSYStreamer.OnInfoListener"
  transient="false"
  volatile="false"
- value="2"
- static="true"
- final="true"
- deprecated="not deprecated"
- visibility="public"
->
-</field>
-<field name="SCALING_MODE_FULL_FILL"
- type="int"
- transient="false"
- volatile="false"
- value="0"
- static="true"
- final="true"
+ static="false"
+ final="false"
  deprecated="not deprecated"
  visibility="public"
 >
 </field>
 </class>
-<interface name="KSYRecordKit.MegerFilesFinishedListener"
+<interface name="KSYRecordKit.MergeFilesFinishedListener"
  abstract="true"
  static="true"
  final="false"
@@ -941,6 +1041,8 @@
  deprecated="not deprecated"
  visibility="public"
 >
+<parameter name="filePath" type="java.lang.String">
+</parameter>
 </method>
 </interface>
 </package>
@@ -1034,8 +1136,6 @@
  deprecated="not deprecated"
  visibility="public"
 >
-<parameter name="context" type="Context">
-</parameter>
 <parameter name="auth" type="java.lang.String">
 </parameter>
 <parameter name="date" type="java.lang.String">
@@ -1306,6 +1406,175 @@
 </parameter>
 </method>
 </interface>
+<class name="ProbeMediaInfoTools"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="ProbeMediaInfoTools"
+ type="com.ksyun.media.shortvideo.utils.ProbeMediaInfoTools"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<method name="getVideoThumbnailAtTime"
+ return="Bitmap"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="url" type="java.lang.String">
+</parameter>
+<parameter name="seekTime" type="long">
+</parameter>
+<parameter name="width" type="int">
+</parameter>
+<parameter name="height" type="int">
+</parameter>
+</method>
+<method name="probeMediaInfo"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="url" type="java.lang.String">
+</parameter>
+<parameter name="listener" type="com.ksyun.media.shortvideo.utils.ProbeMediaInfoTools.ProbeMediaInfoListener">
+</parameter>
+</method>
+</class>
+<class name="ProbeMediaInfoTools.MediaInfo"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="MediaInfo"
+ type="com.ksyun.media.shortvideo.utils.ProbeMediaInfoTools.MediaInfo"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<field name="audioStreamNum"
+ type="int"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="audioStreams"
+ type="java.util.ArrayList"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="bitrate"
+ type="int"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="duration"
+ type="long"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="format"
+ type="KSYProbeMediaInfo.KSYMediaFormat"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="url"
+ type="java.lang.String"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="videoStreamNum"
+ type="int"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="videoStreams"
+ type="java.util.ArrayList"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<interface name="ProbeMediaInfoTools.ProbeMediaInfoListener"
+ abstract="true"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="probeMediaInfoFinished"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="info" type="com.ksyun.media.shortvideo.utils.ProbeMediaInfoTools.MediaInfo">
+</parameter>
+</method>
+</interface>
 <class name="ShortVideoConstants"
  extends="java.lang.Object"
  abstract="false"
@@ -1469,7 +1738,7 @@
  type="java.lang.String"
  transient="false"
  volatile="false"
- value="&quot;0.4.2&quot;"
+ value="&quot;1.0.4&quot;"
  static="true"
  final="true"
  deprecated="not deprecated"
@@ -1594,6 +1863,291 @@
 >
 </method>
 </class>
+<class name="KSYTextView"
+ extends="View"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="KSYTextView"
+ type="com.ksyun.media.shortvideo.view.KSYTextView"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="context" type="Context">
+</parameter>
+</constructor>
+<constructor name="KSYTextView"
+ type="com.ksyun.media.shortvideo.view.KSYTextView"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="context" type="Context">
+</parameter>
+<parameter name="attrs" type="AttributeSet">
+</parameter>
+</constructor>
+<constructor name="KSYTextView"
+ type="com.ksyun.media.shortvideo.view.KSYTextView"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="context" type="Context">
+</parameter>
+<parameter name="attrs" type="AttributeSet">
+</parameter>
+<parameter name="defStyleAttr" type="int">
+</parameter>
+</constructor>
+<method name="getTextSize"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="initView"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="params" type="com.ksyun.media.shortvideo.view.KSYTextView.DrawTextParams">
+</parameter>
+<parameter name="helpBoxInfo" type="com.ksyun.media.shortvideo.view.StickerHelpBoxInfo">
+</parameter>
+<parameter name="textView" type="EditText">
+</parameter>
+</method>
+<method name="onDraw"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+<parameter name="canvas" type="Canvas">
+</parameter>
+</method>
+<method name="onMeasure"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+<parameter name="widthMeasureSpec" type="int">
+</parameter>
+<parameter name="heightMeasureSpec" type="int">
+</parameter>
+</method>
+<method name="onTouchEvent"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="event" type="MotionEvent">
+</parameter>
+</method>
+<method name="setAutoNewLine"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="autoNewLine" type="boolean">
+</parameter>
+</method>
+<method name="setText"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="text" type="java.lang.String">
+</parameter>
+</method>
+<method name="setTextColor"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="newColor" type="int">
+</parameter>
+</method>
+<method name="setTextRectSelected"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="textRectSelected" type="com.ksyun.media.shortvideo.view.KSYTextView.OnTextRectSelected">
+</parameter>
+</method>
+<method name="updateTextParams"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="params" type="com.ksyun.media.shortvideo.view.KSYTextView.DrawTextParams">
+</parameter>
+</method>
+</class>
+<class name="KSYTextView.DrawTextParams"
+ extends="java.lang.Object"
+ abstract="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="DrawTextParams"
+ type="com.ksyun.media.shortvideo.view.KSYTextView.DrawTextParams"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<field name="autoNewLine"
+ type="boolean"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="bitmap"
+ type="Bitmap"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="textPaint"
+ type="TextPaint"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="text_bottom_padding"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="text_left_padding"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="text_right_padding"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="text_top_padding"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<interface name="KSYTextView.OnTextRectSelected"
+ abstract="true"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="textRectSelected"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+</interface>
 <class name="StickerHelpBoxInfo"
  extends="java.lang.Object"
  abstract="false"

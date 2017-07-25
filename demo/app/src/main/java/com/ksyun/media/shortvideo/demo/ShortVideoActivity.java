@@ -12,9 +12,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,8 +29,12 @@ import android.widget.Toast;
 public class ShortVideoActivity extends Activity {
     private static String TAG = "ShortVideoActivity";
     public static String AUTH_SERVER_URI = "http://ksvs-demo.ks-live.com:8321/Auth";//the uri of your appServer
+    public static final String COLOPHON_URL = "https://ks3-cn-beijing.ksyun.com/ksplayer/svod_change_log/dist/Android.html";
     //view
     private TextView mStart;
+    private View mColophon;
+    private WebView mWebView;
+    private View mDefaultView;
     private Handler mMainHandler;
 
     //config params
@@ -51,8 +59,47 @@ public class ShortVideoActivity extends Activity {
                 startActivity(intent);
             }
         });
+        mColophon = findViewById(R.id.colophon);
+        mDefaultView = findViewById(R.id.default_launch);
+        mWebView = (WebView) findViewById(R.id.webView);
+        mColophon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showWebView();
+            }
+        });
         mMainHandler = new Handler();
         checkAuth();
+    }
+
+    private void showWebView() {
+        mDefaultView.setVisibility(View.GONE);
+        mWebView.setVisibility(View.VISIBLE);
+        mWebView.loadUrl(COLOPHON_URL);
+        mWebView.setWebViewClient(new WebViewClient(){
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return true;
+            }
+        });
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                if (mWebView.getVisibility() == View.VISIBLE) {
+                    mWebView.setVisibility(View.GONE);
+                    mDefaultView.setVisibility(View.VISIBLE);
+                } else {
+                    ShortVideoActivity.this.finish();
+                }
+                return true;
+            default:
+                break;
+        }
+        return super.onKeyDown(keyCode,event);
     }
 
     @Override

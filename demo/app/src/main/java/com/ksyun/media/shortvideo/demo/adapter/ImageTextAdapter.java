@@ -39,7 +39,7 @@ public class ImageTextAdapter extends RecyclerView.Adapter<ImageTextAdapter.Filt
 
     @Override
     public FilterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.filter_item_view, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.image_text_view, parent, false);
         FilterViewHolder holder = new FilterViewHolder(view);
         return holder;
     }
@@ -82,9 +82,9 @@ public class ImageTextAdapter extends RecyclerView.Adapter<ImageTextAdapter.Filt
 
         public FilterViewHolder(View view) {
             super(view);
-            this.image = (ImageView) view.findViewById(R.id.filter_image);
-            this.border = (ImageView) view.findViewById(R.id.filter_image_border);
-            this.title = (TextView) view.findViewById(R.id.filter_text);
+            this.image = (ImageView) view.findViewById(R.id.image_content);
+            this.border = (ImageView) view.findViewById(R.id.image_border);
+            this.title = (TextView) view.findViewById(R.id.title_text);
         }
     }
 

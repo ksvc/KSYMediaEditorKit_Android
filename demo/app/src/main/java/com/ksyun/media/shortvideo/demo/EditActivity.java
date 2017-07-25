@@ -4,11 +4,14 @@ import com.ksyun.ks3.exception.Ks3Error;
 import com.ksyun.ks3.services.handler.PutObjectResponseHandler;
 import com.ksyun.media.player.IMediaPlayer;
 import com.ksyun.media.player.KSYMediaPlayer;
+import com.ksyun.media.shortvideo.demo.adapter.BgmSelectAdapter;
 import com.ksyun.media.shortvideo.demo.adapter.BottomTitleAdapter;
 import com.ksyun.media.shortvideo.demo.adapter.ImageTextAdapter;
+import com.ksyun.media.shortvideo.demo.adapter.SoundEffectAdapter;
 import com.ksyun.media.shortvideo.demo.audiorange.AudioSeekLayout;
 import com.ksyun.media.shortvideo.demo.sticker.ColorPicker;
 import com.ksyun.media.shortvideo.demo.sticker.StickerAdapter;
+import com.ksyun.media.shortvideo.demo.util.DataFactory;
 import com.ksyun.media.shortvideo.demo.util.HttpRequestTask;
 import com.ksyun.media.shortvideo.demo.util.KS3TokenTask;
 import com.ksyun.media.shortvideo.demo.util.SystemStateObtainUtil;
@@ -24,10 +27,16 @@ import com.ksyun.media.shortvideo.utils.ShortVideoConstants;
 import com.ksyun.media.shortvideo.view.KSYTextView;
 import com.ksyun.media.shortvideo.view.StickerHelpBoxInfo;
 import com.ksyun.media.shortvideo.view.KSYStickerView;
+import com.ksyun.media.streamer.encoder.VideoEncodeFormat;
+import com.ksyun.media.streamer.filter.audio.AudioFilterBase;
+import com.ksyun.media.streamer.filter.audio.AudioReverbFilter;
+import com.ksyun.media.streamer.filter.audio.KSYAudioEffectFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgBeautyProFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgBeautySpecialEffectsFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgFilterBase;
+import com.ksyun.media.streamer.filter.imgtex.ImgTexFilterBase;
 import com.ksyun.media.streamer.framework.AVConst;
+import com.ksyun.media.streamer.kit.StreamerConstants;
 
 import org.apache.http.Header;
 import org.json.JSONException;
@@ -35,6 +44,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -48,6 +58,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.AppCompatSeekBar;
@@ -59,6 +70,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -75,6 +87,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -82,11 +95,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -109,8 +125,9 @@ public class EditActivity extends Activity implements
         ActivityCompat.OnRequestPermissionsResultCallback {
     private static String TAG = "EditActivity";
     //获取ks3播放地址，仅供demo使用，不提供上线服务
-    private static String FILEURL_SERVER = "http://ksvs-demo.ks-live.com:8720/api/upload/ks3/signurl";
+    private static String FILE_URL_SERVER = "http://ksvs-demo.ks-live.com:8720/api/upload/ks3/signurl";
     private static final int REQUEST_CODE = 10010;
+    private static final int FILTER_DISABLE = 0;
 
     private static final int BEAUTY_LAYOUT_INDEX = 0;
     private static final int FILTER_LAYOUT_INDEX = 1;
@@ -140,12 +157,14 @@ public class EditActivity extends Activity implements
     private View mSoundChangeLayout;  //原始音频变声
     private View mReverbLayout;  //原始音频混响
     private View mSubtitleLayout;
+    private RecyclerView mBgmRecyclerView;
+    private RecyclerView mSoundChangeRecycler;
+    private RecyclerView mReverbRecycler;
     //滤镜
     private ImageView mFilterOriginImage;
     private ImageView mFilterBorder;
     private TextView mFilterOriginText;
     private RecyclerView mFilterRecyclerView;
-    private AudioFilterUIManager mAudioFilterUIManager;
     private View mStickerLayout;
     private View[] mBottomViewList;
 
@@ -185,11 +204,22 @@ public class EditActivity extends Activity implements
     private float mAudioLength;  //背景音乐时长
     private float mPreviewLength; //视频裁剪后的时长
     private AudioSeekLayout mAudioSeekLayout;  //音频seek布局
-
+    private PopupWindow mConfigWindow;
+    private ShortVideoConfig mComposeConfig; //输出视频参数配置
     private ButtonObserver mButtonObserver;
-    private SeekBarChangedObserver mSeekBarChangedObsesrver;
+    private SeekBarChangedObserver mSeekBarChangedObserver;
 
     public final static String SRC_URL = "srcurl";
+
+    private static final int AUDIO_FILTER_DISABLE = 0;  //不使用音频滤镜的类型标志
+    private int mAudioEffectType = AUDIO_FILTER_DISABLE;  //变声类型缓存变量
+    private int mAudioReverbType = AUDIO_FILTER_DISABLE;  //混响类型缓存变量
+    //变声类型数组常量
+    private static final int[] SOUND_CHANGE_TYPE = {KSYAudioEffectFilter.AUDIO_EFFECT_TYPE_MALE, KSYAudioEffectFilter.AUDIO_EFFECT_TYPE_FEMALE,
+            KSYAudioEffectFilter.AUDIO_EFFECT_TYPE_HEROIC, KSYAudioEffectFilter.AUDIO_EFFECT_TYPE_ROBOT};
+    //混响类型数组常量
+    private static final int[] REVERB_TYPE = {AudioReverbFilter.AUDIO_REVERB_LEVEL_1, AudioReverbFilter.AUDIO_REVERB_LEVEL_3,
+            AudioReverbFilter.AUDIO_REVERB_LEVEL_4, AudioReverbFilter.AUDIO_REVERB_LEVEL_2};
 
     private static final int BOTTOM_VIEW_NUM = 10;
     private String mLogoPath = "assets://KSYLogo/logo.png";
@@ -198,8 +228,26 @@ public class EditActivity extends Activity implements
 
     private KSYEditKit mEditKit; //编辑合成kit类
     private ImgBeautyProFilter mImgBeautyProFilter;  //美颜filter
+    private int mEffectFilterIndex = FILTER_DISABLE;  //滤镜filter type
 
     private boolean mComposeFinished = false;
+    /*******编辑后合成参数配置示例******/
+    private TextView mOutRes480p;
+    private TextView mOutRes540p;
+    private TextView mOutEncodeWithH264;
+    private TextView mOutEncodeWithH265;
+    private TextView mOutForMP4;
+    private TextView mOutForGIF;
+    private TextView[] mOutProfileGroup;
+    private EditText mOutFrameRate;
+    private EditText mOutVideoBitrate;
+    private EditText mOutAudioBitrate;
+    private TextView mOutputConfirm;
+    private static final int[] OUTPUT_PROFILE_ID = {R.id.output_config_low_power,
+            R.id.output_config_balance, R.id.output_config_high_performance};
+    private static final int[] ENCODE_PROFILE_TYPE = {VideoEncodeFormat.ENCODE_PROFILE_LOW_POWER,
+            VideoEncodeFormat.ENCODE_PROFILE_BALANCE, VideoEncodeFormat.ENCODE_PROFILE_HIGH_PERFORMANCE};
+
     //合成后文件上传ks3
     private KS3TokenTask mTokenTask;
     private String mCurObjectKey;
@@ -245,7 +293,7 @@ public class EditActivity extends Activity implements
 
         int screenHeight = getResources().getDisplayMetrics().heightPixels;
         mButtonObserver = new EditActivity.ButtonObserver();
-        mSeekBarChangedObsesrver = new EditActivity.SeekBarChangedObserver();
+        mSeekBarChangedObserver = new EditActivity.SeekBarChangedObserver();
         mEditPreviewView = (GLSurfaceView) findViewById(R.id.edit_preview);
         mBarBottomLayout = (RelativeLayout) findViewById(R.id.edit_bar_bottom);
 
@@ -283,9 +331,9 @@ public class EditActivity extends Activity implements
         mReverbLayout = findViewById(R.id.edit_reverb);
         mBottomViewList[REVERB_LAYOUT_INDEX] = mReverbLayout;
         mOriginAudioVolumeSeekBar = (AppCompatSeekBar) findViewById(R.id.record_mic_audio_volume);
-        mOriginAudioVolumeSeekBar.setOnSeekBarChangeListener(mSeekBarChangedObsesrver);
+        mOriginAudioVolumeSeekBar.setOnSeekBarChangeListener(mSeekBarChangedObserver);
         mBgmVolumeSeekBar = (AppCompatSeekBar) findViewById(R.id.record_music_audio_volume);
-        mBgmVolumeSeekBar.setOnSeekBarChangeListener(mSeekBarChangedObsesrver);
+        mBgmVolumeSeekBar.setOnSeekBarChangeListener(mSeekBarChangedObserver);
         mStickerLayout = findViewById(R.id.sticker_choose);
         mBottomViewList[STICKER_LAYOUT_INDEX] = mStickerLayout;
         mRemoveStickers = findViewById(R.id.click_to_delete_stickers);
@@ -361,19 +409,11 @@ public class EditActivity extends Activity implements
             mEditKit.setEditPreviewUrl(url);
         }
 
-        mAudioFilterUIManager = new AudioFilterUIManager(this, mAudioEditLayout, mSoundChangeLayout, mReverbLayout, mEditKit);
-        AudioFilterUIManager.OnBgmHandleListener listener = new AudioFilterUIManager.OnBgmHandleListener() {
-            @Override
-            public void onCancel() {
-                if (mAudioSeekLayout.getVisibility() == View.VISIBLE) {
-                    mAudioSeekLayout.setVisibility(View.INVISIBLE);
-                }
-            }
-        };
-        mAudioFilterUIManager.setOnBgmHandleListener(listener);
         initTitleRecycleView();
         initFilterUI();
         initVideoRange();
+        initBgmView();
+        initSoundEffectView();
         startEditPreview();
 
         mInputMethodManager = (InputMethodManager) this.getSystemService(Context
@@ -472,6 +512,19 @@ public class EditActivity extends Activity implements
     }
 
     /**
+     * 打开系统文件夹，导入音频文件作为背景音乐
+     */
+    private void importMusicFile() {
+        Intent target = com.ksyun.media.shortvideo.demo.util.FileUtils.createGetContentIntent();
+        Intent intent = Intent.createChooser(target, "ksy_import_music_file");
+        try {
+            startActivityForResult(intent, REQUEST_CODE);
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * 选中本地背景音乐后返回结果处理
      */
     @Override
@@ -480,6 +533,7 @@ public class EditActivity extends Activity implements
             case REQUEST_CODE:
                 // If the file selection was successful
                 if (resultCode == RESULT_OK) {
+                    mFirstPlay = true;
                     if (data != null) {
                         // Get the URI of the selected file
                         final Uri uri = data.getData();
@@ -488,7 +542,7 @@ public class EditActivity extends Activity implements
                             // Get the file path from the URI
                             final String path = com.ksyun.media.shortvideo.demo.util.FileUtils.getPath(this, uri);
                             mEditKit.startBgm(path, true);
-                            mAudioFilterUIManager.setEnableBgmEdit(true);
+                            setEnableBgmEdit(true);
                         } catch (Exception e) {
                             Log.e(TAG, "File select error:" + e);
                         }
@@ -752,16 +806,65 @@ public class EditActivity extends Activity implements
     }
 
     private void onNextClick() {
+        showPopupWindow();
+    }
+
+    private void showPopupWindow() {
+        View contentView = LayoutInflater.from(this).inflate(R.layout.config_popup_layout, null);
+        mConfigWindow = new PopupWindow(contentView,
+                WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, true);
+        mConfigWindow.setContentView(contentView);
+        mOutRes480p = (TextView) contentView.findViewById(R.id.output_config_r480p);
+        mOutRes480p.setOnClickListener(mButtonObserver);
+        mOutRes540p = (TextView) contentView.findViewById(R.id.output_config_r540p);
+        mOutRes540p.setOnClickListener(mButtonObserver);
+        mOutEncodeWithH264 = (TextView) contentView.findViewById(R.id.output_config_h264);
+        mOutEncodeWithH264.setOnClickListener(mButtonObserver);
+        mOutEncodeWithH265 = (TextView) contentView.findViewById(R.id.output_config_h265);
+        mOutEncodeWithH265.setOnClickListener(mButtonObserver);
+        mOutForMP4 = (TextView) contentView.findViewById(R.id.output_config_mp4);
+        mOutForMP4.setOnClickListener(mButtonObserver);
+        mOutForGIF = (TextView) contentView.findViewById(R.id.output_config_gif);
+        mOutForGIF.setOnClickListener(mButtonObserver);
+        mOutProfileGroup = new TextView[3];
+        for (int i = 0; i < mOutProfileGroup.length; i++) {
+            mOutProfileGroup[i] = (TextView) contentView.findViewById(OUTPUT_PROFILE_ID[i]);
+            mOutProfileGroup[i].setOnClickListener(mButtonObserver);
+        }
+        mOutFrameRate = (EditText) contentView.findViewById(R.id.output_config_frameRate);
+        mOutVideoBitrate = (EditText) contentView.findViewById(R.id.output_config_video_bitrate);
+        mOutAudioBitrate = (EditText) contentView.findViewById(R.id.output_config_audio_bitrate);
+        mComposeConfig = new ShortVideoConfig();
+        mOutputConfirm = (TextView) contentView.findViewById(R.id.output_confirm);
+        mOutputConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onOutputConfirmClick();
+            }
+        });
+        mOutRes480p.setActivated(true);
+        mOutEncodeWithH264.setActivated(true);
+        mOutForMP4.setActivated(true);
+        mOutProfileGroup[1].setActivated(true);
+        View rootView = LayoutInflater.from(this).inflate(R.layout.edit_activity, null);
+        mConfigWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+    }
+
+    private void onOutputConfirmClick() {
+        confirmConfig();
+        if (mConfigWindow.isShowing()) {
+            mConfigWindow.dismiss();
+        }
         //配置合成参数
-        ConfigActivity.ShortVideoConfig config = ConfigActivity.getComposeConfig();
-        if (config != null) {
+        if (mComposeConfig != null) {
             //配置合成参数
-            mEditKit.setTargetResolution(config.resolution);
-            mEditKit.setVideoFps(config.fps);
-            mEditKit.setVideoCodecId(config.encodeType);
-            mEditKit.setVideoEncodeProfile(config.encodeProfile);
-            mEditKit.setAudioKBitrate(config.audioBitrate);
-            mEditKit.setVideoKBitrate(config.videoBitrate);
+            mEditKit.setTargetResolution(mComposeConfig.resolution);
+            mEditKit.setVideoFps(mComposeConfig.fps);
+            mEditKit.setVideoCodecId(mComposeConfig.encodeType);
+            mEditKit.setVideoEncodeProfile(mComposeConfig.encodeProfile);
+            mEditKit.setAudioKBitrate(mComposeConfig.audioBitrate);
+            mEditKit.setVideoKBitrate(mComposeConfig.videoBitrate);
             //关闭上一次合成窗口
             if (mComposeAlertDialog != null) {
                 mComposeAlertDialog.closeDialog();
@@ -777,7 +880,7 @@ public class EditActivity extends Activity implements
 
             StringBuilder composeUrl = new StringBuilder(fileFolder).append("/").append(System
                     .currentTimeMillis());
-            if (config.encodeType == AVConst.CODEC_ID_GIF) {
+            if (mComposeConfig.encodeType == AVConst.CODEC_ID_GIF) {
                 composeUrl.append(".gif");
             } else {
                 composeUrl.append(".mp4");
@@ -787,6 +890,31 @@ public class EditActivity extends Activity implements
             mComposeFinished = false;
             mEditKit.startCompose(composeUrl.toString());
         }
+    }
+
+    private void confirmConfig() {
+        if (mOutRes480p.isActivated()) {
+            mComposeConfig.resolution = StreamerConstants.VIDEO_RESOLUTION_480P;
+        } else if (mOutRes540p.isActivated()) {
+            mComposeConfig.resolution = StreamerConstants.VIDEO_RESOLUTION_540P;
+        }
+        if (mOutEncodeWithH264.isActivated()) {
+            mComposeConfig.encodeType = AVConst.CODEC_ID_AVC;
+        } else if (mOutEncodeWithH265.isActivated()) {
+            mComposeConfig.encodeType = AVConst.CODEC_ID_HEVC;
+        }
+        if (mOutForGIF.isActivated()) {
+            mComposeConfig.encodeType = AVConst.CODEC_ID_GIF;
+        }
+        for (int i = 0; i < mOutProfileGroup.length; i++) {
+            if (mOutProfileGroup[i].isActivated()) {
+                mComposeConfig.encodeProfile = ENCODE_PROFILE_TYPE[i];
+                break;
+            }
+        }
+        mComposeConfig.fps = Integer.parseInt(mOutFrameRate.getText().toString());
+        mComposeConfig.videoBitrate = Integer.parseInt(mOutVideoBitrate.getText().toString());
+        mComposeConfig.audioBitrate = Integer.parseInt(mOutAudioBitrate.getText().toString());
     }
 
     private KSYEditKit.OnErrorListener mOnErrorListener = new KSYEditKit.OnErrorListener() {
@@ -858,7 +986,7 @@ public class EditActivity extends Activity implements
                 }
                 case ShortVideoConstants.SHORTVIDEO_COMPOSE_FINISHED: {
                     //合成结束需要置为null，再次预览时重新创建
-                    mImgBeautyProFilter = null;
+                    clearImgFilter();
                     if (mComposeAlertDialog != null && mComposeAlertDialog.isShowing()) {
                         mComposeAlertDialog.composeFinished(msgs[0]);
                         mComposeFinished = true;
@@ -981,8 +1109,56 @@ public class EditActivity extends Activity implements
                 case R.id.speed_down:
                     onSpeedClick(false);
                     break;
+                case R.id.output_config_r480p:
+                    mOutRes480p.setActivated(true);
+                    mOutRes540p.setActivated(false);
+                    break;
+                case R.id.output_config_r540p:
+                    mOutRes480p.setActivated(false);
+                    mOutRes540p.setActivated(true);
+                    break;
+                case R.id.output_config_h264:
+                    mOutEncodeWithH264.setActivated(true);
+                    mOutEncodeWithH265.setActivated(false);
+                    break;
+                case R.id.output_config_h265:
+                    mOutEncodeWithH264.setActivated(false);
+                    mOutEncodeWithH265.setActivated(true);
+                    break;
+                case R.id.output_config_mp4:
+                    mOutForMP4.setActivated(true);
+                    mOutForGIF.setActivated(false);
+                    mOutEncodeWithH264.setEnabled(true);
+                    mOutEncodeWithH265.setEnabled(true);
+                    break;
+                case R.id.output_config_gif:
+                    mOutForMP4.setActivated(false);
+                    mOutForGIF.setActivated(true);
+                    mOutEncodeWithH264.setActivated(false);
+                    mOutEncodeWithH265.setActivated(false);
+                    mOutEncodeWithH264.setEnabled(false);
+                    mOutEncodeWithH265.setEnabled(false);
+                    break;
+                case R.id.output_config_low_power:
+                    onOutputEncodeProfileClick(0);
+                    break;
+                case R.id.output_config_balance:
+                    onOutputEncodeProfileClick(1);
+                    break;
+                case R.id.output_config_high_performance:
+                    onOutputEncodeProfileClick(2);
+                    break;
                 default:
                     break;
+            }
+        }
+    }
+
+    private void onOutputEncodeProfileClick(int index) {
+        mOutProfileGroup[index].setActivated(true);
+        for (int i = 0; i < mOutProfileGroup.length; i++) {
+            if (i != index) {
+                mOutProfileGroup[i].setActivated(false);
             }
         }
     }
@@ -1316,6 +1492,40 @@ public class EditActivity extends Activity implements
         mTitleView.setAdapter(mTitleAdapter);
     }
 
+    private void clearImgFilter() {
+        mImgBeautyProFilter = null;
+        mEffectFilterIndex = FILTER_DISABLE;
+    }
+
+    private void addImgFilter() {
+        ImgBeautyProFilter proFilter;
+        ImgBeautySpecialEffectsFilter specialEffectsFilter;
+        List<ImgFilterBase> filters = new LinkedList<>();
+
+        if (mImgBeautyProFilter != null) {
+            proFilter = new ImgBeautyProFilter(mEditKit.getGLRender(), getApplicationContext());
+            proFilter.setGrindRatio(mImgBeautyProFilter.getGrindRatio());
+            proFilter.setRuddyRatio(mImgBeautyProFilter.getRuddyRatio());
+            proFilter.setWhitenRatio(mImgBeautyProFilter.getWhitenRatio());
+            mImgBeautyProFilter = proFilter;
+            filters.add(proFilter);
+        }
+
+        if (mEffectFilterIndex != FILTER_DISABLE) {
+            specialEffectsFilter = new ImgBeautySpecialEffectsFilter(mEditKit.getGLRender(),
+                    getApplicationContext(), mEffectFilterIndex);
+            filters.add(specialEffectsFilter);
+        }
+
+        if (filters.size() > 0) {
+
+            mEditKit.getImgTexFilterMgt().setFilter(filters);
+
+        } else {
+            mEditKit.getImgTexFilterMgt().setFilter((ImgTexFilterBase) null);
+        }
+    }
+
     private void setBeautyFilter() {
         if (mImgBeautyProFilter == null) {
             //Demo中当前演示该美颜被设置后，未演示取消，后续完善，更多美颜参考：
@@ -1323,8 +1533,13 @@ public class EditActivity extends Activity implements
             //注意：该filter只能被set一次，若调用用过mKSYRecordKit.getImgTexFilterMgt().setFilter(null)
             //后不能再使用该filter，需要重新new
             mImgBeautyProFilter = new ImgBeautyProFilter(mEditKit.getGLRender(), EditActivity.this);
-            mEditKit.getImgTexFilterMgt().setFilter(mImgBeautyProFilter);
+            addImgFilter();
         }
+    }
+
+    private void setEffectFilter(int type) {
+        mEffectFilterIndex = type;
+        addImgFilter();
     }
 
     private void initBeautyUI() {
@@ -1403,15 +1618,13 @@ public class EditActivity extends Activity implements
                 if (mFilterOriginText.isActivated()) {
                     changeOriginalImageState(false);
                 }
-                ImgBeautySpecialEffectsFilter filter = new ImgBeautySpecialEffectsFilter(mEditKit.getGLRender(),
-                        EditActivity.this, FILTER_TYPE[index]);
-                mEditKit.getImgTexFilterMgt().setFilter(filter);
+                setEffectFilter(FILTER_TYPE[index]);
             }
         };
         mFilterOriginImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mEditKit.getImgTexFilterMgt().setFilter((ImgFilterBase) null);
+                setEffectFilter(FILTER_DISABLE);
                 adapter.clear();
                 changeOriginalImageState(true);
             }
@@ -1434,6 +1647,123 @@ public class EditActivity extends Activity implements
         Log.d(TAG, "resumeEditPreview ");
         mEditKit.resumeEditPreview();
         initBeautyUI();
+        mFilterOriginImage.callOnClick();
+        initBeautyUI();
+        mFilterOriginImage.callOnClick();
+    }
+
+    private void initBgmView() {
+        List<BgmSelectAdapter.BgmData> list = DataFactory.getBgmData(getApplicationContext());
+        final BgmSelectAdapter adapter = new BgmSelectAdapter(this, list);
+        mBgmRecyclerView = (RecyclerView) findViewById(R.id.bgm_recycler);
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        manager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mBgmRecyclerView.setLayoutManager(manager);
+        setEnableBgmEdit(false);
+        BgmSelectAdapter.OnItemClickListener listener = new BgmSelectAdapter.OnItemClickListener() {
+            @Override
+            public void onCancel() {
+                mFirstPlay = true;
+                setEnableBgmEdit(false);
+                mEditKit.stopBgm();
+                mAudioSeekLayout.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onSelected(String path) {
+                mFirstPlay = true;
+                setEnableBgmEdit(true);
+                mEditKit.startBgm(path, true);
+            }
+
+            @Override
+            public void onImport() {
+                mFirstPlay = true;
+                importMusicFile();
+            }
+        };
+        adapter.setOnItemClickListener(listener);
+        mBgmRecyclerView.setAdapter(adapter);
+    }
+
+    /**
+     * 根据是否有背景音乐选中来设置相应的编辑控件是否可用
+     */
+    private void setEnableBgmEdit(boolean enable) {
+        if (mBgmVolumeSeekBar != null) {
+            mBgmVolumeSeekBar.setEnabled(enable);
+        }
+    }
+
+    private void initSoundEffectView() {
+        mSoundChangeRecycler = (RecyclerView) findViewById(R.id.sound_change_recycler);
+        mReverbRecycler = (RecyclerView) findViewById(R.id.reverb_recycler);
+        LinearLayoutManager soundChangeManager = new LinearLayoutManager(this);
+        soundChangeManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mSoundChangeRecycler.setLayoutManager(soundChangeManager);
+        LinearLayoutManager reverbManager = new LinearLayoutManager(this);
+        reverbManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mReverbRecycler.setLayoutManager(reverbManager);
+        List<SoundEffectAdapter.SoundEffectData> soundChangeData
+                = DataFactory.getSoundEffectData(getApplicationContext(), 0);
+        SoundEffectAdapter.OnItemClickListener soundChangeListener = new SoundEffectAdapter.OnItemClickListener() {
+            @Override
+            public void onCancel() {
+                mAudioEffectType = AUDIO_FILTER_DISABLE;
+                addAudioFilter();
+            }
+
+            @Override
+            public void onSelected(int index) {
+                mAudioEffectType = SOUND_CHANGE_TYPE[index - 1];
+                addAudioFilter();
+            }
+        };
+        SoundEffectAdapter soundChangeAdapter = new SoundEffectAdapter(this, soundChangeData);
+        soundChangeAdapter.setOnItemClickListener(soundChangeListener);
+        List<SoundEffectAdapter.SoundEffectData> reverbData
+                = DataFactory.getSoundEffectData(getApplicationContext(), 1);
+        SoundEffectAdapter.OnItemClickListener reverbListener = new SoundEffectAdapter.OnItemClickListener() {
+            @Override
+            public void onCancel() {
+                mAudioReverbType = AUDIO_FILTER_DISABLE;
+                addAudioFilter();
+            }
+
+            @Override
+            public void onSelected(int index) {
+                mAudioReverbType = REVERB_TYPE[index - 1];
+                addAudioFilter();
+            }
+        };
+        SoundEffectAdapter reverbAdapter = new SoundEffectAdapter(this, reverbData);
+        reverbAdapter.setOnItemClickListener(reverbListener);
+        mSoundChangeRecycler.setAdapter(soundChangeAdapter);
+        mReverbRecycler.setAdapter(reverbAdapter);
+    }
+
+    /**
+     * 添加音频滤镜，支持变声和混响同时生效
+     */
+    private void addAudioFilter() {
+        KSYAudioEffectFilter effectFilter;
+        AudioReverbFilter reverbFilter;
+        List<AudioFilterBase> filters = new LinkedList<>();
+        if (mAudioEffectType != AUDIO_FILTER_DISABLE) {
+            effectFilter = new KSYAudioEffectFilter
+                    (mAudioEffectType);
+            filters.add(effectFilter);
+        }
+        if (mAudioReverbType != AUDIO_FILTER_DISABLE) {
+            reverbFilter = new AudioReverbFilter();
+            reverbFilter.setReverbLevel(mAudioReverbType);
+            filters.add(reverbFilter);
+        }
+        if (filters.size() > 0) {
+            mEditKit.getAudioFilterMgt().setFilter(filters);
+        } else {
+            mEditKit.getAudioFilterMgt().setFilter((AudioFilterBase) null);
+        }
     }
 
     private class ComposeAlertDialog extends AlertDialog {
@@ -1450,6 +1780,8 @@ public class EditActivity extends Activity implements
         private TextView mCoverComplete;
         private ImageView mCoverImage;
         private AppCompatSeekBar mCoverSeekBar;
+        private ImageView mPreviewBack;
+        private ImageView mSaveToDCIM;
 
         private KSYMediaPlayer mMediaPlayer;
         private SurfaceView mVideoSurfaceView;
@@ -1556,7 +1888,21 @@ public class EditActivity extends Activity implements
             webSettings.setUseWideViewPort(true);
             webSettings.setLoadWithOverviewMode(true);
             webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-
+            mPreviewBack = (ImageView) findViewById(R.id.preview_back);
+            mPreviewBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(EditActivity.this, ConfigActivity.class);
+                    startActivity(intent);
+                }
+            });
+            mSaveToDCIM = (ImageView) findViewById(R.id.save_to_album);
+            mSaveToDCIM.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    saveFileToDCIM();
+                }
+            });
             getMediaPlayer();
             mSurfaceHolder = mVideoSurfaceView.getHolder();
             mSurfaceHolder.addCallback(mSurfaceCallback);
@@ -1592,6 +1938,10 @@ public class EditActivity extends Activity implements
                     } else {
                         closeDialog();
                         resumeEditPreview();
+                    }
+                    if (mComposePreviewLayout.getVisibility() == View.VISIBLE) {
+                        Intent intent = new Intent(EditActivity.this, ConfigActivity.class);
+                        startActivity(intent);
                     }
                     break;
                 default:
@@ -1686,9 +2036,9 @@ public class EditActivity extends Activity implements
                     if (mComposePreviewLayout.getVisibility() != View.VISIBLE) {
                         mComposePreviewLayout.setVisibility(View.VISIBLE);
                     }
-                    mProgressLayout.setVisibility(View.GONE);
                     mCoverSeekLayout.setVisibility(View.GONE);
                     if (success) {
+                        mProgressText.setVisibility(View.INVISIBLE);
                         mStateTextView.setVisibility(View.VISIBLE);
                         mStateTextView.setText(R.string.upload_file_success);
 
@@ -1725,8 +2075,8 @@ public class EditActivity extends Activity implements
                                 }
                             }
                         });
-
-                        mPlayurlGetTask.execute(FILEURL_SERVER + "?objkey=" + mCurObjectKey);
+                        mStateTextView.setText(R.string.get_file_url);
+                        mPlayurlGetTask.execute(FILE_URL_SERVER + "?objkey=" + mCurObjectKey);
                     } else {
                         mStateTextView.setVisibility(View.VISIBLE);
                         mStateTextView.setText(R.string.upload_file_fail);
@@ -1799,11 +2149,45 @@ public class EditActivity extends Activity implements
             EditActivity.this.mComposeAlertDialog = null;
         }
 
+        private void saveFileToDCIM() {
+            String srcPath = mLocalPath;
+            String desDir = Environment.getExternalStorageState().equalsIgnoreCase(Environment.MEDIA_MOUNTED)
+                    ? Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath()
+                    + "/Camera/" : Environment.getExternalStorageDirectory().getAbsolutePath() + "/KSYShortVideo";
+            String name = srcPath.substring(srcPath.lastIndexOf('/'));
+            String desPath = desDir + name;
+            File desFile = new File(desPath);
+            try {
+                File srcFile = new File(srcPath);
+                if (srcFile.exists() && !desFile.exists()) {
+                    InputStream is = new FileInputStream(srcPath);
+                    FileOutputStream fos = new FileOutputStream(desFile);
+                    byte[] buffer = new byte[1024];
+                    int length;
+                    while ((length = is.read(buffer)) != -1) {
+                        fos.write(buffer,0,length);
+                    }
+                    Toast.makeText(EditActivity.this,"文件保存成功",Toast.LENGTH_SHORT);
+                    is.close();
+                    fos.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            // 发送系统广播通知有图片更新
+            Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            Uri uri = Uri.fromFile(desFile);
+            intent.setData(uri);
+            sendBroadcast(intent);
+        }
+
         private void startPreview() {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    Log.d(TAG, "start compose file Preview:");
                     if (mFileMineType.equals(FileUtils.MINE_TYPE_GIF)) {
+                        mProgressLayout.setVisibility(View.GONE);
                         mGifView.setVisibility(View.VISIBLE);
                         mGifView.loadUrl("file://" + mLocalPath);
 //                        if (mFilePath.startsWith("http")) {
@@ -1819,10 +2203,7 @@ public class EditActivity extends Activity implements
                             return;
                         }
                         mNeedResumePlay = false;
-                        if (mFileMineType.equals(FileUtils.MINE_TYPE_MP4)) {
-                            Log.d(TAG, "start compose file Preview:");
-                            startPlay(mFilePath);
-                        }
+                        startPlay(mFilePath);
                     }
                 }
             });
@@ -1883,7 +2264,21 @@ public class EditActivity extends Activity implements
 
         private IMediaPlayer.OnInfoListener mOnInfoListener = new IMediaPlayer.OnInfoListener() {
             @Override
-            public boolean onInfo(IMediaPlayer iMediaPlayer, int i, int i1) {
+            public boolean onInfo(IMediaPlayer iMediaPlayer, int what, int extra) {
+                switch (what) {
+                    case KSYMediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START:
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(mComposeAlertDialog != null && mComposeAlertDialog.isShowing()) {
+                                    mProgressLayout.setVisibility(View.GONE);
+                                }
+                            }
+                        });
+                        break;
+                    default:
+                        break;
+                }
                 return false;
             }
         };

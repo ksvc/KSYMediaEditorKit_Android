@@ -1,11 +1,14 @@
 package com.ksyun.media.shortvideo.demo;
 
+import com.ksyun.media.shortvideo.demo.adapter.BgmSelectAdapter;
 import com.ksyun.media.shortvideo.demo.adapter.ImageTextAdapter;
-import com.ksyun.media.shortvideo.demo.util.DownloadAndHandleTask;
+import com.ksyun.media.shortvideo.demo.adapter.SoundEffectAdapter;
+import com.ksyun.media.shortvideo.demo.util.DataFactory;
 import com.ksyun.media.shortvideo.demo.util.FileUtils;
 import com.ksyun.media.shortvideo.demo.kmc.ApiHttpUrlConnection;
 import com.ksyun.media.shortvideo.demo.recordclip.RecordProgressController;
 import com.ksyun.media.shortvideo.demo.view.CameraHintView;
+import com.ksyun.media.shortvideo.demo.view.VerticalSeekBar;
 import com.ksyun.media.shortvideo.kit.KSYRecordKit;
 import com.ksyun.media.streamer.capture.CameraCapture;
 import com.ksyun.media.streamer.capture.camera.CameraTouchHelper;
@@ -15,6 +18,7 @@ import com.ksyun.media.streamer.filter.audio.KSYAudioEffectFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgBeautyProFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgBeautySpecialEffectsFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgFilterBase;
+import com.ksyun.media.streamer.filter.imgtex.ImgTexFilterBase;
 import com.ksyun.media.streamer.kit.KSYStreamer;
 import com.ksyun.media.streamer.kit.StreamerConstants;
 import com.ksyun.media.streamer.logstats.StatsLogReport;
@@ -33,7 +37,6 @@ import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.opengl.GLSurfaceView;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -54,7 +57,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Chronometer;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -99,11 +101,18 @@ public class RecordActivity extends Activity implements
 
     private static final int INDEX_BEAUTY_TITLE_BASE = 0;  //美颜标题在mRecordTitleArray中的启始位置索引
     private static final int INDEX_BGM_TITLE_BASE = 10;  //音乐标题在mRecordTitleArray中的启始位置索引
-    private static final int INDEX_BGM_ITEM_BASE = 0;    //背景音乐选项在mBgmEffectArray中的启始位置索引
-    private static final int INDEX_SOUND_EFFECT_BASE = 10;  //音效选项在mBgmEffectArray中的启始位置索引
 
     private int mAudioEffectType = AUDIO_FILTER_DISABLE;  //变声类型
     private int mAudioReverbType = AUDIO_FILTER_DISABLE;  //混响类型
+
+    //变声类型数组常量
+    private static final int[] SOUND_CHANGE_TYPE = {KSYAudioEffectFilter.AUDIO_EFFECT_TYPE_MALE, KSYAudioEffectFilter.AUDIO_EFFECT_TYPE_FEMALE,
+            KSYAudioEffectFilter.AUDIO_EFFECT_TYPE_HEROIC, KSYAudioEffectFilter.AUDIO_EFFECT_TYPE_ROBOT};
+    //混响类型数组常量
+    private static final int[] REVERB_TYPE = {AudioReverbFilter.AUDIO_REVERB_LEVEL_1, AudioReverbFilter.AUDIO_REVERB_LEVEL_3,
+            AudioReverbFilter.AUDIO_REVERB_LEVEL_4, AudioReverbFilter.AUDIO_REVERB_LEVEL_2};
+
+    private static final int FILTER_DISABLE = 0;
 
     private GLSurfaceView mCameraPreviewView;
     //private TextureView mCameraPreviewView;
@@ -111,6 +120,8 @@ public class RecordActivity extends Activity implements
     private Chronometer mChronometer;
     private View mSwitchCameraView;
     private View mFlashView;
+    private View mExposureView;
+    private VerticalSeekBar mExposureSeekBar;
     private RelativeLayout mBarBottomLayout;
     private ImageView mRecordView;
     private ImageView mBackView;
@@ -143,13 +154,12 @@ public class RecordActivity extends Activity implements
     private ImageView mPitchMinus;
     private ImageView mPitchPlus;
     private TextView mPitchText;
-    //背景音乐和音效布局
-    private ImageView mCancelBgm;
-    private ImageView mImportBgm;
-    private ImageView mCancelSoundChange;
-    private ImageView mCancelReverberation;
-
-    private DownloadAndHandleTask mBgmLoadTask;  //异步加载背景音乐
+    private RecyclerView mBgmRecyclerView;
+    private RecyclerView mSoundChangeRecycler;
+    private RecyclerView mReverbRecycler;
+    private BgmSelectAdapter mBgmAdapter;
+    private SoundEffectAdapter mSoundChangeAdapter;
+    private SoundEffectAdapter mReverbAdapter;
 
     private AppCompatSeekBar mMicAudioVolumeSeekBar;
     private AppCompatSeekBar mBgmVolumeSeekBar;
@@ -157,16 +167,10 @@ public class RecordActivity extends Activity implements
     //美颜
     private View mBeautyChooseView;
     //磨皮
-    private LinearLayout mBeautyGrindLayout;
-    private TextView mGrindText;
     private AppCompatSeekBar mGrindSeekBar;
     //美白
-    private LinearLayout mBeautyWhitenLayout;
-    private TextView mWhitenText;
     private AppCompatSeekBar mWhitenSeekBar;
     //红润
-    private LinearLayout mBeautyRuddyLayout;
-    private TextView mRuddyText;
     private AppCompatSeekBar mRuddySeekBar;
 
     private View mFilterChooseView;
@@ -174,20 +178,19 @@ public class RecordActivity extends Activity implements
     //断点拍摄进度控制
     private RecordProgressController mRecordProgressCtl;
 
-    private View mStickerChooseview;
+    private View mStickerChooseView;
 
     private ButtonObserver mObserverButton;
-    private BgmButtonObserver mBgmButtonObserver;
-    private SeekBarChangedObserver mSeekBarChangedObsesrver;
+    private SeekBarChangedObserver mSeekBarChangedObserver;
 
     //魔方贴纸
-    private boolean authorized = false;
+    private boolean mKMCAuthorized = false;
     private KMCArMaterial mMaterial = null;
     private List<MaterialInfoItem> mMaterialList = null;
     private Thread mKMCInitThread;
     private KMCFilter mKMCFilter;
-    private RecyclerView mRecyclerView = null;
-    private RecyclerViewAdapter mRecyclerViewAdapter = null;
+    private RecyclerView mKMCRecyclerView = null;
+    private RecyclerViewAdapter mKMCAdapter = null;
     private final static int MSG_LOAD_THUMB = 0;
     private final static int MSG_DOWNLOAD_SUCCESS = 1;
     private final static int MSG_START_DOWNLOAD = 2;
@@ -199,6 +202,7 @@ public class RecordActivity extends Activity implements
     //录制kit
     private KSYRecordKit mKSYRecordKit;
     private ImgBeautyProFilter mImgBeautyProFilter;  //美颜filter
+    private int mEffectFilterIndex = FILTER_DISABLE;  //滤镜filter type
 
     private Handler mMainHandler;
 
@@ -211,26 +215,14 @@ public class RecordActivity extends Activity implements
     private int mPitchValue = 0;  //音调值
     private int mPreBeautyTitleIndex = 0;  //记录上次选择的美颜标题索引
     private int mPreBgmTitleIndex = 0;  //记录上次选择的背景音乐标题索引
-    private int mPreBgmItemIndex = 0;   //记录上次选择的背景音乐内容索引
-    private int mPreBgmEffectIndex = 0;  //记录上次选择的变声类型索引
-    private int mPreBgmReverbIndex = 0;  //记录上次选择的混响类型索引
     private View mPreRecordConfigLayout;
-    //变声和混响类型数组常量
-    private static final int[] SOUND_EFFECT_CONST = {KSYAudioEffectFilter.AUDIO_EFFECT_TYPE_MALE, KSYAudioEffectFilter.AUDIO_EFFECT_TYPE_FEMALE,
-            KSYAudioEffectFilter.AUDIO_EFFECT_TYPE_HEROIC, KSYAudioEffectFilter.AUDIO_EFFECT_TYPE_ROBOT,
-            AudioReverbFilter.AUDIO_REVERB_LEVEL_1, AudioReverbFilter.AUDIO_REVERB_LEVEL_3,
-            AudioReverbFilter.AUDIO_REVERB_LEVEL_4, AudioReverbFilter.AUDIO_REVERB_LEVEL_2};
 
     //美颜、背景音乐标题和布局自定义内容集合
     private SparseArray<BottomTitleViewInfo> mRecordTitleArray = new SparseArray<>();
-    private SparseArray<BgmItemViewHolder> mBgmEffectArray = new SparseArray<>();
 
     private String mLogoPath = "assets://KSYLogo/logo.png";
 
-    //背景音乐下载地址
-    private String[] mBgmLoadPath = {"https://ks3-cn-beijing.ksyun.com/ksy.vcloud.sdk/ShortVideo/faded.mp3",
-            "https://ks3-cn-beijing.ksyun.com/ksy.vcloud.sdk/ShortVideo/Hotel_California.mp3",
-            "https://ks3-cn-beijing.ksyun.com/ksy.vcloud.sdk/ShortVideo/Immortals.mp3"};
+    private int mScreenHeight;
 
     public static void startActivity(Context context) {
         Intent intent = new Intent(context, RecordActivity.class);
@@ -253,15 +245,20 @@ public class RecordActivity extends Activity implements
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         //init UI
-        int screenHeight = getResources().getDisplayMetrics().heightPixels;
+        mScreenHeight = getResources().getDisplayMetrics().heightPixels;
         mObserverButton = new ButtonObserver();
-        mBgmButtonObserver = new BgmButtonObserver();
-        mSeekBarChangedObsesrver = new SeekBarChangedObserver();
+        mSeekBarChangedObserver = new SeekBarChangedObserver();
         mSwitchCameraView = findViewById(R.id.switch_cam);
         mSwitchCameraView.setOnClickListener(mObserverButton);
         mCameraHintView = (CameraHintView) findViewById(R.id.camera_hint);
         mFlashView = findViewById(R.id.flash);
         mFlashView.setOnClickListener(mObserverButton);
+        mExposureView = findViewById(R.id.exposure);
+        mExposureView.setOnClickListener(mObserverButton);
+        mExposureSeekBar = (VerticalSeekBar) findViewById(R.id.exposure_seekBar);
+        mExposureSeekBar.setProgress(50);
+        mExposureSeekBar.setSecondaryProgress(50);
+        mExposureSeekBar.setOnSeekBarChangeListener(getVerticalSeekListener());
         mBarBottomLayout = (RelativeLayout) findViewById(R.id.bar_bottom);
         mCameraPreviewView = (GLSurfaceView) findViewById(R.id.camera_preview);
         //美颜及背景音乐界面控件
@@ -286,9 +283,9 @@ public class RecordActivity extends Activity implements
         mWaterMarkView = (ImageView) findViewById(R.id.record_watermark);
         mWaterMarkView.setOnClickListener(mObserverButton);
         mMicAudioVolumeSeekBar = (AppCompatSeekBar) findViewById(R.id.record_mic_audio_volume);
-        mMicAudioVolumeSeekBar.setOnSeekBarChangeListener(mSeekBarChangedObsesrver);
+        mMicAudioVolumeSeekBar.setOnSeekBarChangeListener(mSeekBarChangedObserver);
         mBgmVolumeSeekBar = (AppCompatSeekBar) findViewById(R.id.record_music_audio_volume);
-        mBgmVolumeSeekBar.setOnSeekBarChangeListener(mSeekBarChangedObsesrver);
+        mBgmVolumeSeekBar.setOnSeekBarChangeListener(mSeekBarChangedObserver);
         mChronometer = (Chronometer) findViewById(R.id.chronometer);
         mRecordView = (ImageView) findViewById(R.id.click_to_record);
         mRecordView.getDrawable().setLevel(1);
@@ -299,7 +296,7 @@ public class RecordActivity extends Activity implements
         mNextView.setOnClickListener(mObserverButton);
 
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mBarBottomLayout.getLayoutParams();
-        params.height = screenHeight / 3;
+        params.height = mScreenHeight / 3;
         mBarBottomLayout.setLayoutParams(params);
 
         mBeautyChooseView = findViewById(R.id.record_beauty_choose);
@@ -307,19 +304,13 @@ public class RecordActivity extends Activity implements
                 mBeautyChooseView, mObserverButton);
         mBeautyInfo.setChosenState(true);
         mRecordTitleArray.put(INDEX_BEAUTY_TITLE_BASE, mBeautyInfo);
-        mBeautyGrindLayout = (LinearLayout) findViewById(R.id.beauty_grind);
-        mGrindText = (TextView) findViewById(R.id.grind_text);
         mGrindSeekBar = (AppCompatSeekBar) findViewById(R.id.grind_seek_bar);
-        mBeautyWhitenLayout = (LinearLayout) findViewById(R.id.beauty_whiten);
-        mWhitenText = (TextView) findViewById(R.id.whiten_text);
         mWhitenSeekBar = (AppCompatSeekBar) findViewById(R.id.whiten_seek_bar);
-        mBeautyRuddyLayout = (LinearLayout) findViewById(R.id.beauty_ruddy);
-        mRuddyText = (TextView) findViewById(R.id.ruddy_text);
         mRuddySeekBar = (AppCompatSeekBar) findViewById(R.id.ruddy_seek_bar);
 
-        mStickerChooseview = findViewById(R.id.record_sticker_choose);
+        mStickerChooseView = findViewById(R.id.record_sticker_choose);
         BottomTitleViewInfo mStickerInfo = new BottomTitleViewInfo(mDynSticker, mStickerIndicator,
-                mStickerChooseview, mObserverButton);
+                mStickerChooseView, mObserverButton);
         mRecordTitleArray.put(INDEX_BEAUTY_TITLE_BASE + 1, mStickerInfo);
         mFilterChooseView = findViewById(R.id.record_filter_choose);
         BottomTitleViewInfo mFilterInfo = new BottomTitleViewInfo(mFilter, mFilterIndicator,
@@ -378,8 +369,8 @@ public class RecordActivity extends Activity implements
         mKSYRecordKit.setOnLogEventListener(mOnLogEventListener);
         initStickerUI();  //初始化动态贴纸界面
         initFilterUI();
-        initBgmUI();  //初始化背景音乐界面
-        //initBottomTitleUI(); //初始化底部标题
+        initBgmView();  //初始化背景音乐界面
+        initSoundEffectView(); //初始化音效界面
         // touch focus and zoom support
         CameraTouchHelper cameraTouchHelper = new CameraTouchHelper();
         cameraTouchHelper.setCameraCapture(mKSYRecordKit.getCameraCapture());
@@ -423,9 +414,6 @@ public class RecordActivity extends Activity implements
             mMainHandler.removeCallbacksAndMessages(null);
             mMainHandler = null;
         }
-        if (mBgmLoadTask != null && mBgmLoadTask.getStatus() == AsyncTask.Status.RUNNING) {
-            mBgmLoadTask.cancel(true);
-        }
         mRecordProgressCtl.stop();
         mRecordProgressCtl.setRecordingLengthChangedListener(null);
         mRecordProgressCtl.release();
@@ -453,16 +441,21 @@ public class RecordActivity extends Activity implements
 
     //start recording to a local file
     private void startRecord() {
+        if(mIsFileRecording) {
+            // 上一次录制未停止完，不能开启下一次录制
+            return;
+        }
         String fileFolder = getRecordFileFolder();
         mRecordUrl = fileFolder + "/" + System.currentTimeMillis() + ".mp4";
         Log.d(TAG, "record url:" + mRecordUrl);
         float val = mMicAudioVolumeSeekBar.getProgress() / 100.f;
         mKSYRecordKit.setVoiceVolume(val);
         //设置录制文件的本地存储路径，并开始录制
-        mKSYRecordKit.startRecord(mRecordUrl);
-        mIsFileRecording = true;
-        //更新录制UI
-        mRecordView.getDrawable().setLevel(2);
+        if(mKSYRecordKit.startRecord(mRecordUrl)) {
+            mIsFileRecording = true;
+            //更新录制UI
+            mRecordView.getDrawable().setLevel(2);
+        }
     }
 
     /**
@@ -471,17 +464,23 @@ public class RecordActivity extends Activity implements
      * @param finished 代表是否结束断点拍摄
      */
     private void stopRecord(boolean finished) {
+        //停止录制接口为异步接口，sdk在停止结束后会发送
+        // StreamerConstants.KSY_STREAMER_FILE_RECORD_STOPPED消息
+        //下一次录制响应最好在接收到消息后再进行
+        mRecordView.setEnabled(false);
+
         //录制完成进入编辑
-        //若录制文件大于1则需要触发文件合成
+        //若录制文件大于1则需要在录制结束后触发文件合成
         if (finished) {
             String fileFolder = getRecordFileFolder();
             //合成文件路径
             String outFile = fileFolder + "/" + "merger_" + System.currentTimeMillis() + ".mp4";
             //合成过程为异步，需要block下一步处理
-            final MegerFilesAlertDialog dialog = new MegerFilesAlertDialog(this, R.style.dialog);
+            final MegerFilesAlertDialog dialog = new MegerFilesAlertDialog
+                    (RecordActivity.this, R.style.dialog);
             dialog.setCancelable(false);
             dialog.show();
-            mKSYRecordKit.stopRecord(outFile, new KSYRecordKit.MegerFilesFinishedListener() {
+            mKSYRecordKit.stopRecord(outFile, new KSYRecordKit.MergeFilesFinishedListener() {
                 @Override
                 public void onFinished(final String filePath) {
                     runOnUiThread(new Runnable() {
@@ -489,6 +488,7 @@ public class RecordActivity extends Activity implements
                         public void run() {
                             dialog.dismiss();
                             mRecordUrl = filePath;  //合成文件本地路径
+                            updateRecordUI();
                             //可以调用此接口在合成结束后，删除断点录制的所有视频
                             //mKSYRecordKit.deleteAllFiles();
 
@@ -507,6 +507,7 @@ public class RecordActivity extends Activity implements
 //                            //get thumbnail for first frame
 //                            probeMediaInfoTools.getVideoThumbnailAtTime(mKSYRecordKit.getLastRecordedFiles(), 0, 0, 0);
 
+
                             //合成结束启动编辑
                             EditActivity.startActivity(getApplicationContext(), mRecordUrl);
                         }
@@ -516,7 +517,9 @@ public class RecordActivity extends Activity implements
         } else {
             //普通录制停止
             mKSYRecordKit.stopRecord();
-            //获取当前录制视频时长，thumbnail 示例代码，可以仿照此写法获取任意一段视频的信息
+        }
+
+        //获取当前录制视频时长，thumbnail 示例代码，可以仿照此写法获取任意一段视频的信息
 //            ProbeMediaInfoTools probeMediaInfoTools = new ProbeMediaInfoTools();
 //            probeMediaInfoTools.probeMediaInfo(mKSYRecordKit.getLastRecordedFiles(),
 //                    new ProbeMediaInfoTools.ProbeMediaInfoListener() {
@@ -530,14 +533,6 @@ public class RecordActivity extends Activity implements
 //                    });
 //            //get thumbnail for first frame
 //            probeMediaInfoTools.getVideoThumbnailAtTime(mKSYRecordKit.getLastRecordedFiles(), 0, 0, 0);
-        }
-        //更新进度显示
-        mRecordProgressCtl.stopRecording();
-        mRecordView.getDrawable().setLevel(1);
-        updateDeleteView();
-
-        mIsFileRecording = false;
-        stopChronometer();
     }
 
     /**
@@ -577,12 +572,27 @@ public class RecordActivity extends Activity implements
                     mChronometer.start();
                     mRecordProgressCtl.startRecording();
                     break;
+                case StreamerConstants.KSY_STREAMER_FILE_RECORD_STOPPED:
+                    Log.d(TAG, "KSY_STREAMER_FILE_RECORD_STOPPED");
+                    //未停止结束，最好不要操作开始录制，否则在某些机型上容易造成录制开始失败的case
+                    mIsFileRecording = false;
+                    updateRecordUI();
+                    break;
                 default:
                     Log.d(TAG, "OnInfo: " + what + " msg1: " + msg1 + " msg2: " + msg2);
                     break;
             }
         }
     };
+
+    private void updateRecordUI() {
+        mRecordView.setEnabled(true);
+        //更新进度显示
+        mRecordProgressCtl.stopRecording();
+        mRecordView.getDrawable().setLevel(1);
+        updateDeleteView();
+        stopChronometer();
+    }
 
     /**
      * 不支持硬编的设备，fallback到软编
@@ -682,7 +692,7 @@ public class RecordActivity extends Activity implements
                         public void run() {
                             startRecord();
                         }
-                    }, 100);
+                    }, 3000);
                 }
                 break;
                 default:
@@ -716,6 +726,17 @@ public class RecordActivity extends Activity implements
         } else {
             mKSYRecordKit.toggleTorch(true);
             mIsFlashOpened = true;
+        }
+    }
+
+    /**
+     * 曝光度调节
+     */
+    private void onExposureClick() {
+        if (mExposureSeekBar.getVisibility() == View.VISIBLE) {
+            mExposureSeekBar.setVisibility(View.GONE);
+        } else {
+            mExposureSeekBar.setVisibility(View.VISIBLE);
         }
     }
 
@@ -781,10 +802,42 @@ public class RecordActivity extends Activity implements
         stopRecord(true);
     }
 
+    private VerticalSeekBar.OnSeekBarChangeListener getVerticalSeekListener() {
+        VerticalSeekBar.OnSeekBarChangeListener listener = new VerticalSeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(VerticalSeekBar seekBar, int progress, boolean fromUser) {
+                Camera.Parameters parameters = mKSYRecordKit.getCameraCapture().getCameraParameters();
+                if (parameters != null) {
+                    int minValue = parameters.getMinExposureCompensation();
+                    int maxValue = parameters.getMaxExposureCompensation();
+                    int range = 100 / (maxValue - minValue);
+                    parameters.setExposureCompensation(progress / range + minValue);
+                }
+                mKSYRecordKit.getCameraCapture().setCameraParameters(parameters);
+            }
+
+            @Override
+            public void onStartTrackingTouch(VerticalSeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(VerticalSeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean enable) {
+
+            }
+        };
+        return listener;
+    }
+
     /**
      * 初始化背景音乐相关的UI界面
      */
-    private void initBgmUI() {
+    private void initBgmView() {
         mKSYRecordKit.setEnableAudioMix(true);  //支持混音
         mPitchMinus = (ImageView) findViewById(R.id.pitch_minus);
         mPitchMinus.setOnClickListener(mObserverButton);
@@ -794,19 +847,6 @@ public class RecordActivity extends Activity implements
         mMicAudioVolumeSeekBar.setProgress((int) (mKSYRecordKit.getVoiceVolume() * 100));
         mBgmVolumeSeekBar.setProgress((int) (mKSYRecordKit.getVoiceVolume() * 100));
         setEnableBgmEdit(false);
-        mCancelBgm = (ImageView) findViewById(R.id.bgm_music_close);
-        mCancelBgm.setOnClickListener(mBgmButtonObserver);
-        mImportBgm = (ImageView) findViewById(R.id.bgm_music_import);
-        mImportBgm.setOnClickListener(mBgmButtonObserver);
-        int[] bgmItemImageId = {R.id.bgm_music_iv_faded, R.id.bgm_music_iv_hotel,
-                R.id.bgm_music_iv_immortals};
-        int[] bgmItemNameId = {R.id.bgm_music_tv_faded, R.id.bgm_music_tv_hotel,
-                R.id.bgm_music_tv_immortals};
-        for (int i = 0; i < bgmItemImageId.length; i++) {
-            BgmItemViewHolder holder = new BgmItemViewHolder((ImageView) findViewById(bgmItemImageId[i]),
-                    (TextView) findViewById(bgmItemNameId[i]), mBgmButtonObserver);
-            mBgmEffectArray.put(INDEX_BGM_ITEM_BASE + i, holder);
-        }
         mSoundChange = (TextView) findViewById(R.id.bgm_title_soundChange);
         mSoundChangeIndicator = findViewById(R.id.bgm_title_soundChange_indicator);
         mReverb = (TextView) findViewById(R.id.bgm_title_reverberation);
@@ -820,21 +860,127 @@ public class RecordActivity extends Activity implements
         BottomTitleViewInfo reverbInfo = new BottomTitleViewInfo(mReverb, mReverbIndicator,
                 mReverbLayout, mObserverButton);
         mRecordTitleArray.put(INDEX_BGM_TITLE_BASE + 1, reverbInfo);
-        mCancelSoundChange = (ImageView) findViewById(R.id.effect_iv_close);
-        mCancelSoundChange.setOnClickListener(mBgmButtonObserver);
-        mCancelReverberation = (ImageView) findViewById(R.id.reverberation_iv_close);
-        mCancelReverberation.setOnClickListener(mBgmButtonObserver);
-        int[] effectImageId = {R.id.effect_iv_uncle, R.id.effect_iv_lolita,
-                R.id.effect_iv_solemn, R.id.effect_iv_robot, R.id.effect_iv_studio,
-                R.id.effect_iv_woodWing, R.id.effect_iv_concert, R.id.effect_iv_ktv};
-        int[] effectNameId = {R.id.effect_tv_uncle, R.id.effect_tv_lolita,
-                R.id.effect_tv_solemn, R.id.effect_tv_robot, R.id.effect_tv_studio,
-                R.id.effect_tv_woodWing, R.id.effect_tv_concert, R.id.effect_tv_ktv};
-        for (int j = 0; j < effectImageId.length; j++) {
-            BgmItemViewHolder holder = new BgmItemViewHolder((ImageView) findViewById(effectImageId[j]),
-                    (TextView) findViewById(effectNameId[j]), mBgmButtonObserver);
-            mBgmEffectArray.put(INDEX_SOUND_EFFECT_BASE + j, holder);
+        List<BgmSelectAdapter.BgmData> list = DataFactory.getBgmData(getApplicationContext());
+        mBgmAdapter = new BgmSelectAdapter(this, list);
+        mBgmRecyclerView = (RecyclerView) findViewById(R.id.bgm_recycler);
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        manager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mBgmRecyclerView.setLayoutManager(manager);
+        setEnableBgmEdit(false);
+        BgmSelectAdapter.OnItemClickListener listener = new BgmSelectAdapter.OnItemClickListener() {
+            @Override
+            public void onCancel() {
+                setEnableBgmEdit(false);
+                clearPitchState();
+                mKSYRecordKit.stopBgm();
+            }
+
+            @Override
+            public void onSelected(String path) {
+                setEnableBgmEdit(true);
+                clearPitchState();
+                mKSYRecordKit.startBgm(path, true);
+            }
+
+            @Override
+            public void onImport() {
+                clearPitchState();
+                importMusicFile();
+            }
+        };
+        mBgmAdapter.setOnItemClickListener(listener);
+        mBgmRecyclerView.setAdapter(mBgmAdapter);
+    }
+
+    private void initSoundEffectView() {
+        mSoundChangeRecycler = (RecyclerView) findViewById(R.id.sound_change_recycler);
+        mReverbRecycler = (RecyclerView) findViewById(R.id.reverb_recycler);
+        LinearLayoutManager soundChangeManager = new LinearLayoutManager(this);
+        soundChangeManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mSoundChangeRecycler.setLayoutManager(soundChangeManager);
+        LinearLayoutManager reverbManager = new LinearLayoutManager(this);
+        reverbManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mReverbRecycler.setLayoutManager(reverbManager);
+        List<SoundEffectAdapter.SoundEffectData> soundChangeData
+                = DataFactory.getSoundEffectData(getApplicationContext(), 0);
+        SoundEffectAdapter.OnItemClickListener soundChangeListener = new SoundEffectAdapter.OnItemClickListener() {
+            @Override
+            public void onCancel() {
+                mAudioEffectType = AUDIO_FILTER_DISABLE;
+                addAudioFilter();
+            }
+
+            @Override
+            public void onSelected(int index) {
+                mAudioEffectType = SOUND_CHANGE_TYPE[index - 1];
+                addAudioFilter();
+            }
+        };
+        mSoundChangeAdapter = new SoundEffectAdapter(this, soundChangeData);
+        mSoundChangeAdapter.setOnItemClickListener(soundChangeListener);
+        List<SoundEffectAdapter.SoundEffectData> reverbData
+                = DataFactory.getSoundEffectData(getApplicationContext(), 1);
+        SoundEffectAdapter.OnItemClickListener reverbListener = new SoundEffectAdapter.OnItemClickListener() {
+            @Override
+            public void onCancel() {
+                mAudioReverbType = AUDIO_FILTER_DISABLE;
+                addAudioFilter();
+            }
+
+            @Override
+            public void onSelected(int index) {
+                mAudioReverbType = REVERB_TYPE[index - 1];
+                addAudioFilter();
+            }
+        };
+        mReverbAdapter = new SoundEffectAdapter(this, reverbData);
+        mReverbAdapter.setOnItemClickListener(reverbListener);
+        mSoundChangeRecycler.setAdapter(mSoundChangeAdapter);
+        mReverbRecycler.setAdapter(mReverbAdapter);
+    }
+
+    private void addImgFilter() {
+        ImgBeautyProFilter proFilter;
+        ImgBeautySpecialEffectsFilter specialEffectsFilter;
+        List<ImgFilterBase> filters = new LinkedList<>();
+
+        if (mImgBeautyProFilter != null) {
+            proFilter = new ImgBeautyProFilter(mKSYRecordKit.getGLRender(), getApplicationContext());
+            proFilter.setGrindRatio(mImgBeautyProFilter.getGrindRatio());
+            proFilter.setRuddyRatio(mImgBeautyProFilter.getRuddyRatio());
+            proFilter.setWhitenRatio(mImgBeautyProFilter.getWhitenRatio());
+            mImgBeautyProFilter = proFilter;
+            filters.add(proFilter);
         }
+
+        if (mEffectFilterIndex != FILTER_DISABLE) {
+            specialEffectsFilter = new ImgBeautySpecialEffectsFilter(mKSYRecordKit.getGLRender(),
+                    getApplicationContext(), mEffectFilterIndex);
+            filters.add(specialEffectsFilter);
+        }
+
+        if (filters.size() > 0) {
+            mKSYRecordKit.getImgTexFilterMgt().setFilter(filters);
+        } else {
+            mKSYRecordKit.getImgTexFilterMgt().setFilter((ImgTexFilterBase) null);
+        }
+    }
+
+    private void setBeautyFilter() {
+        if (mImgBeautyProFilter == null) {
+            //Demo中当前演示该美颜被设置后，未演示取消，后续完善，更多美颜参考：
+            //https://github.com/ksvc/KSYStreamer_Android/wiki/Video_Filter_Inner
+            //注意：该filter只能被set一次，若调用用过mKSYRecordKit.getImgTexFilterMgt().setFilter(null)
+            //后不能再使用该filter，需要重新new
+            mImgBeautyProFilter = new ImgBeautyProFilter(mKSYRecordKit.getGLRender(),
+                    RecordActivity.this);
+            addImgFilter();
+        }
+    }
+
+    private void setEffectFilter(int type) {
+        mEffectFilterIndex = type;
+        addImgFilter();
     }
 
     /**
@@ -871,15 +1017,14 @@ public class RecordActivity extends Activity implements
                 if (mFilterOriginText.isActivated()) {
                     changeOriginalImageState(false);
                 }
-                ImgBeautySpecialEffectsFilter filter = new ImgBeautySpecialEffectsFilter(mKSYRecordKit.getGLRender(),
-                        RecordActivity.this, FILTER_TYPE[index]);
-                mKSYRecordKit.getImgTexFilterMgt().setFilter(filter);
+
+                setEffectFilter(FILTER_TYPE[index]);
             }
         };
         mFilterOriginImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mKSYRecordKit.getImgTexFilterMgt().setFilter((ImgFilterBase) null);
+                setEffectFilter(FILTER_DISABLE);
                 adapter.clear();
                 changeOriginalImageState(true);
             }
@@ -903,14 +1048,7 @@ public class RecordActivity extends Activity implements
      */
     private void initBeautyUI() {
         if (mBeautyChooseView.getVisibility() == View.VISIBLE) {
-            if (mImgBeautyProFilter == null) {
-                //Demo中当前演示该美颜被设置后，未演示取消，后续完善，更多美颜参考：
-                //https://github.com/ksvc/KSYStreamer_Android/wiki/Video_Filter_Inner
-                //注意：该filter只能被set一次，若调用用过mKSYRecordKit.getImgTexFilterMgt().setFilter(null)
-                //后不能再使用该filter，需要重新new
-                mImgBeautyProFilter = new ImgBeautyProFilter(mKSYRecordKit.getGLRender(), RecordActivity.this);
-                mKSYRecordKit.getImgTexFilterMgt().setFilter(mImgBeautyProFilter);
-            }
+            setBeautyFilter();
 
             mGrindSeekBar.setProgress((int) (mImgBeautyProFilter.getGrindRatio() * 100));
             mWhitenSeekBar.setProgress((int) (mImgBeautyProFilter.getWhitenRatio() * 100));
@@ -951,74 +1089,6 @@ public class RecordActivity extends Activity implements
     }
 
     /**
-     * 背景音乐点击事件处理，若本地存在从本地读取，若本地不存在开启异步任务从网络下载
-     */
-    private void onBgmItemClick(int index) {
-        clearPitchState();
-        BgmItemViewHolder curHolder = mBgmEffectArray.get(INDEX_BGM_ITEM_BASE + index);
-        BgmItemViewHolder preHolder = mBgmEffectArray.get(INDEX_BGM_ITEM_BASE + mPreBgmItemIndex);
-        if (index == -1) {
-            mKSYRecordKit.stopBgm();
-            preHolder.setBottomTextActivated(false);
-            setEnableBgmEdit(false);
-        } else {
-            if (index < 3) {
-                mKSYRecordKit.stopBgm();
-                String fileName = mBgmLoadPath[index].substring(mBgmLoadPath[index].lastIndexOf('/'));
-                final String filePath = FileUtils.getCacheDirectory(getApplicationContext()) + fileName;
-                File file = new File(filePath);
-                if (!file.exists()) {
-                    if (mBgmLoadTask != null && mBgmLoadTask.getStatus() == AsyncTask.Status.RUNNING) {
-                        mBgmLoadTask.cancel(true);
-                    }
-                    DownloadAndHandleTask.DownloadListener listener = new DownloadAndHandleTask.DownloadListener() {
-                        @Override
-                        public void onCompleted() {
-                            mKSYRecordKit.startBgm(filePath, true);
-                        }
-                    };
-                    mBgmLoadTask = new DownloadAndHandleTask(filePath, listener);
-                    mBgmLoadTask.execute(mBgmLoadPath[index]);
-                } else {
-                    mKSYRecordKit.startBgm(filePath, true);
-                }
-            }
-            preHolder.setBottomTextActivated(false);
-            curHolder.setBottomTextActivated(true);
-            mPreBgmItemIndex = index;
-            setEnableBgmEdit(true);
-        }
-    }
-
-    /**
-     * 音效点击事件处理
-     */
-    private void onSoundEffectItemClick(int index) {
-        BgmItemViewHolder curHolder = mBgmEffectArray.get(INDEX_SOUND_EFFECT_BASE + index);
-        BgmItemViewHolder preHolder1 = mBgmEffectArray.get(INDEX_SOUND_EFFECT_BASE + mPreBgmEffectIndex);
-        BgmItemViewHolder preHolder2 = mBgmEffectArray.get(INDEX_SOUND_EFFECT_BASE + mPreBgmReverbIndex);
-        if (index == -1) {
-            preHolder1.setBottomTextActivated(false);
-            mAudioEffectType = AUDIO_FILTER_DISABLE;  //重置变声类型缓存变量
-        } else if (index == -2) {
-            preHolder2.setBottomTextActivated(false);
-            mAudioReverbType = AUDIO_FILTER_DISABLE;  //重置混响类型缓存变量
-        } else {
-            if (index < 4) {
-                preHolder1.setBottomTextActivated(false);
-                mPreBgmEffectIndex = index;
-                mAudioEffectType = SOUND_EFFECT_CONST[index];
-            } else {
-                preHolder2.setBottomTextActivated(false);
-                mPreBgmReverbIndex = index;
-                mAudioReverbType = SOUND_EFFECT_CONST[index];
-            }
-            curHolder.setBottomTextActivated(true);
-        }
-        addAudioFilter();
-    }
-
-    /**
      * 添加音频滤镜，支持变声和混响同时生效
      * https://github.com/ksvc/KSYStreamer_Android/wiki/Audio_Filter
      */
@@ -1048,9 +1118,28 @@ public class RecordActivity extends Activity implements
      */
     private void clearRecordState() {
         mKSYRecordKit.getImgTexFilterMgt().setFilter((ImgFilterBase) null);
-        onBgmItemClick(-1);
-        onSoundEffectItemClick(-1);
-        onSoundEffectItemClick(-2);
+        mImgBeautyProFilter = null;
+        mEffectFilterIndex = FILTER_DISABLE;
+        mFilterOriginImage.callOnClick();
+        mKSYRecordKit.getImgTexFilterMgt().setExtraFilter((ImgFilterBase)null);
+        if(mKMCAdapter != null) {
+            mKMCAdapter.setSelectIndex(-1);
+        }
+        addImgFilter();
+        if (mBgmAdapter != null) {
+            mBgmAdapter.clear();
+        }
+        if (mSoundChangeAdapter != null) {
+            mSoundChangeAdapter.clear();
+        }
+        if (mReverbAdapter != null) {
+            mReverbAdapter.clear();
+        }
+        mKSYRecordKit.stopBgm();
+        setEnableBgmEdit(false);
+        mAudioEffectType = AUDIO_FILTER_DISABLE;
+        mAudioReverbType = AUDIO_FILTER_DISABLE;
+        addAudioFilter();
     }
 
     /**
@@ -1068,60 +1157,6 @@ public class RecordActivity extends Activity implements
         }
     }
 
-    private class BgmButtonObserver implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.bgm_music_close:
-                    onBgmItemClick(-1);
-                    break;
-                case R.id.bgm_music_iv_faded:
-                    onBgmItemClick(0);
-                    break;
-                case R.id.bgm_music_iv_hotel:
-                    onBgmItemClick(1);
-                    break;
-                case R.id.bgm_music_iv_immortals:
-                    onBgmItemClick(2);
-                    break;
-                case R.id.bgm_music_import:
-                    onBgmItemClick(-1);
-                    importMusicFile();
-                    break;
-                case R.id.effect_iv_close:
-                    onSoundEffectItemClick(-1);
-                    break;
-                case R.id.effect_iv_uncle:
-                    onSoundEffectItemClick(0);
-                    break;
-                case R.id.effect_iv_lolita:
-                    onSoundEffectItemClick(1);
-                    break;
-                case R.id.effect_iv_solemn:
-                    onSoundEffectItemClick(2);
-                    break;
-                case R.id.effect_iv_robot:
-                    onSoundEffectItemClick(3);
-                    break;
-                case R.id.reverberation_iv_close:
-                    onSoundEffectItemClick(-2);
-                    break;
-                case R.id.effect_iv_studio:
-                    onSoundEffectItemClick(4);
-                    break;
-                case R.id.effect_iv_woodWing:
-                    onSoundEffectItemClick(5);
-                    break;
-                case R.id.effect_iv_concert:
-                    onSoundEffectItemClick(6);
-                    break;
-                case R.id.effect_iv_ktv:
-                    onSoundEffectItemClick(7);
-                    break;
-            }
-        }
-    }
-
     private class ButtonObserver implements View.OnClickListener {
         @Override
         public void onClick(View view) {
@@ -1131,6 +1166,9 @@ public class RecordActivity extends Activity implements
                     break;
                 case R.id.flash:
                     onFlashClick();
+                    break;
+                case R.id.exposure:
+                    onExposureClick();
                     break;
                 case R.id.click_to_record:
                     onRecordClick();
@@ -1471,7 +1509,7 @@ public class RecordActivity extends Activity implements
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
-            setContentView(R.layout.meger_record_files_layout);
+            setContentView(R.layout.merge_record_files_layout);
         }
     }
 
@@ -1520,41 +1558,18 @@ public class RecordActivity extends Activity implements
         }
     }
 
-    /**
-     * 背景音乐和音效Item的封装类，ImageView用于可视化类型说明，TextView是图片下的文字说明
-     */
-    public class BgmItemViewHolder {
-        public ImageView mBgmItemImage;
-        public TextView mBgmItemName;
-
-        public BgmItemViewHolder(ImageView iv, TextView tv,
-                                 View.OnClickListener onClickListener) {
-            this.mBgmItemImage = iv;
-            this.mBgmItemName = tv;
-            if (mBgmItemImage != null) {
-                mBgmItemImage.setOnClickListener(onClickListener);
-            }
-        }
-
-        public void setBottomTextActivated(boolean isSelected) {
-            if (mBgmItemName != null) {
-                mBgmItemName.setActivated(isSelected);
-            }
-        }
-    }
-
     /**************************魔方动态贴纸集成 begin**************************************/
     private void initStickerUI() {
-        mRecyclerView = (RecyclerView) findViewById(R.id.kmc_recycler_view);
+        mKMCRecyclerView = (RecyclerView) findViewById(R.id.kmc_recycler_view);
         //创建默认的线性LayoutManager
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.addItemDecoration(new SpacesItemDecoration(10));
+        mKMCRecyclerView.setLayoutManager(mLayoutManager);
+        mKMCRecyclerView.addItemDecoration(new SpacesItemDecoration(10));
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
-        mRecyclerView.setHasFixedSize(true);
+        mKMCRecyclerView.setHasFixedSize(true);
         //view state
-        mRecyclerView.setVisibility(View.INVISIBLE);
+        mKMCRecyclerView.setVisibility(View.INVISIBLE);
         mKMCInitThread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -1575,7 +1590,7 @@ public class RecordActivity extends Activity implements
             .AuthResultListener() {
         @Override
         public void onSuccess() {
-            authorized = true;
+            mKMCAuthorized = true;
 
             KMCAuthManager.getInstance().removeAuthResultListener(mCheckAuthResultListener);
             makeToast("鉴权成功，可以使用魔方贴纸功能");
@@ -1597,23 +1612,23 @@ public class RecordActivity extends Activity implements
                     initMaterialTabTypeView();
                     break;
                 case MSG_LOAD_THUMB:
-                    mRecyclerViewAdapter.setItemState(msg.arg2,
+                    mKMCAdapter.setItemState(msg.arg2,
                             RecyclerViewAdapter.STATE_DOWNLOADTHUMBNAIL);
                     updateListView(msg.arg2);
-                    mRecyclerViewAdapter.notifyDataSetChanged();
+                    mKMCAdapter.notifyDataSetChanged();
 
                     break;
                 case MSG_DOWNLOAD_SUCCESS:
-                    mRecyclerViewAdapter.setItemState(msg.arg1,
+                    mKMCAdapter.setItemState(msg.arg1,
                             RecyclerViewAdapter.STATE_DOWNLOADED);
                     updateListView(msg.arg1);
-                    mRecyclerViewAdapter.notifyDataSetChanged();
+                    mKMCAdapter.notifyDataSetChanged();
                     break;
                 case MSG_START_DOWNLOAD:
-                    mRecyclerViewAdapter.setItemState(msg.arg1,
+                    mKMCAdapter.setItemState(msg.arg1,
                             RecyclerViewAdapter.STATE_DOWNLOADING);
                     updateListView(msg.arg1);
-                    mRecyclerViewAdapter.notifyDataSetChanged();
+                    mKMCAdapter.notifyDataSetChanged();
                     break;
                 default:
                     Log.e(TAG, "Invalid message");
@@ -1627,7 +1642,7 @@ public class RecordActivity extends Activity implements
     }
 
     private void updateListView(int position) {
-        mRecyclerViewAdapter.updateItemView(position);
+        mKMCAdapter.updateItemView(position);
     }
 
     /**
@@ -1723,30 +1738,30 @@ public class RecordActivity extends Activity implements
     }
 
     private void showMaterialLists() {
-        if (authorized &&
+        if (mKMCAuthorized &&
                 mIsFirstFetchMaterialList) {
             startGetMaterialList();
             mIsFirstFetchMaterialList = false;
         }
-        mRecyclerView.setVisibility(View.VISIBLE);
+        mKMCRecyclerView.setVisibility(View.VISIBLE);
     }
 
     private void closeMaterialsShowLayer() {
-        if (mRecyclerViewAdapter != null) {
-            mRecyclerViewAdapter.notifyDataSetChanged();
+        if (mKMCAdapter != null) {
+            mKMCAdapter.notifyDataSetChanged();
         }
-        mRecyclerView.setVisibility(View.INVISIBLE);
+        mKMCRecyclerView.setVisibility(View.INVISIBLE);
     }
 
     private void updateKMCFilterView() {
-        if (!authorized) {
+        if (!mKMCAuthorized) {
             return;
         }
 
         showMaterialLists();
 
         initMaterialsRecyclerView();
-        mRecyclerViewAdapter.setSelectIndex(mMaterialIndex);
+        mKMCAdapter.setSelectIndex(mMaterialIndex);
     }
 
     private void initMaterialsRecyclerView() {
@@ -1755,12 +1770,12 @@ public class RecordActivity extends Activity implements
             return;
         }
 
-        mRecyclerViewAdapter = new RecyclerViewAdapter(mMaterialList,
+        mKMCAdapter = new RecyclerViewAdapter(mMaterialList,
                 getApplicationContext());
-        mRecyclerViewAdapter.setRecyclerView(mRecyclerView);
-        mRecyclerView.setAdapter(mRecyclerViewAdapter);
+        mKMCAdapter.setRecyclerView(mKMCRecyclerView);
+        mKMCRecyclerView.setAdapter(mKMCAdapter);
 
-        mRecyclerViewAdapter.setOnItemClickListener(new RecyclerViewAdapter.OnRecyclerViewListener() {
+        mKMCAdapter.setOnItemClickListener(new RecyclerViewAdapter.OnRecyclerViewListener() {
             @Override
             public boolean onItemLongClick(int position) {
                 onRecyclerViewItemClick(position);
@@ -1779,9 +1794,9 @@ public class RecordActivity extends Activity implements
 
         if (position == 0) {
             mMaterial = null;
-            mRecyclerViewAdapter.setSelectIndex(position);
+            mKMCAdapter.setSelectIndex(position);
             saveSelectedIndex(position);
-            mRecyclerViewAdapter.notifyDataSetChanged();
+            mKMCAdapter.notifyDataSetChanged();
             if (mKMCFilter != null) {
                 mKMCFilter.startShowingMaterial(null);
             }
@@ -1800,14 +1815,14 @@ public class RecordActivity extends Activity implements
             }
             mKMCFilter = new KMCFilter(getApplicationContext(),
                     mKSYRecordKit.getGLRender());
-            mKSYRecordKit.getImgTexFilterMgt().setFilter(mKMCFilter);
+            mKSYRecordKit.getImgTexFilterMgt().setExtraFilter(mKMCFilter);
             mKMCFilter.startShowingMaterial(mMaterial);
-            if (mRecyclerViewAdapter.getItemState(position) != MSG_DOWNLOAD_SUCCESS) {
+            if (mKMCAdapter.getItemState(position) != MSG_DOWNLOAD_SUCCESS) {
                 mHandler.sendMessage(mHandler.obtainMessage(MSG_DOWNLOAD_SUCCESS, position, 0));
             }
 
             saveSelectedIndex(position);
-            mRecyclerViewAdapter.setSelectIndex(position);
+            mKMCAdapter.setSelectIndex(position);
         } else {
             mHandler.sendMessage(mHandler.obtainMessage(MSG_START_DOWNLOAD, position, 0));
             KMCFilterManager.getInstance().

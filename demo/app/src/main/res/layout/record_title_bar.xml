@@ -20,6 +20,7 @@
         android:id="@+id/switch_cam"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:layout_alignParentRight="true"
         android:layout_gravity="center_vertical"
         android:layout_marginRight="10dp"
@@ -29,10 +30,22 @@
         android:id="@+id/flash"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="20dp"
         android:layout_gravity="center_vertical"
         android:layout_toLeftOf="@id/switch_cam"
         android:background="@drawable/record_flash_normal">
     </ImageView>
 
+    <ImageView
+        android:id="@+id/exposure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="20dp"
+        android:layout_gravity="center_vertical"
+        android:layout_toLeftOf="@id/flash"
+        android:background="@drawable/exposure">
+    </ImageView>
 
 </RelativeLayout>

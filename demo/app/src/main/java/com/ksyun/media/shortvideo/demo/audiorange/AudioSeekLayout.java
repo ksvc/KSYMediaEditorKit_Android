@@ -90,6 +90,14 @@ public class AudioSeekLayout extends LinearLayout {
         if (mBgmLength != 0) {
             mRate = mPreviewLength / mBgmLength;
         }
+        mStartTime = 0;
+        mAudioStartTime.setText(formatTimeStr(mStartTime));
+        final int minMarginLeft = (int) (12 * mScreenDensity);
+        //int offset = ((LayoutParams) mAudioSeekBar.getLayoutParams()).leftMargin - minMarginLeft;
+        LinearLayout.LayoutParams para = (LinearLayout.LayoutParams) mAudioSeekBar.getLayoutParams();
+        para.leftMargin = minMarginLeft;
+        mAudioSeekBar.setLayoutParams(para);
+        mAudioStartTime.setText(formatTimeStr(0));
         if (mRate > 1) {
             mRate = 1;
         }
@@ -101,10 +109,8 @@ public class AudioSeekLayout extends LinearLayout {
         } else {
             mAudioEndTime.setText(formatTimeStr(mBgmLength));
         }
-        final int minMarginLeft = (int) (12 * mScreenDensity);
         final int maxMarginLeft = (int) (mScreenWidth - mCoverImageWidth - 58 * mScreenDensity);
-        int offset = ((LayoutParams) mAudioSeekBar.getLayoutParams()).leftMargin - minMarginLeft;
-        updateAudioSeekUI(offset);
+        updateAudioSeekUI(0);
         mAudioSeekBar.setEnabled(true);
         mAudioSeekBar.setOnTouchListener(new View.OnTouchListener() {
             @Override
