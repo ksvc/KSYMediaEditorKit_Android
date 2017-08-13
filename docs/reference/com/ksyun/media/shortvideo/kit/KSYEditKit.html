@@ -164,6 +164,8 @@
       <ul>
           <li class="selected api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html">KSYEditKit</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRecordKit.html">KSYRecordKit</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRemuxKit.html">KSYRemuxKit</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYTranscodeKit.html">KSYTranscodeKit</a></li>
       </ul>
     </li>
               
@@ -228,6 +230,9 @@ Summary:
 
 
 
+
+  &#124; <a href="#lfields">Fields</a>
+  
 
 
 
@@ -393,6 +398,92 @@ Summary:
 
 
 
+<!-- =========== FIELD SUMMARY =========== -->
+<table id="lfields" class="jd-sumtable"><tr><th colspan="12">Fields</th></tr>
+
+
+    
+      <tr class="alt-color api apilevel-" >
+          <td class="jd-typecol">
+          public
+          static
+          
+          float</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#DEFAULT_SCALE">DEFAULT_SCALE</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class=" api apilevel-" >
+          <td class="jd-typecol">
+          public
+          static
+          
+          int</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#SCALE_TYPE_1_1">SCALE_TYPE_1_1</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class="alt-color api apilevel-" >
+          <td class="jd-typecol">
+          public
+          static
+          
+          int</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#SCALE_TYPE_3_4">SCALE_TYPE_3_4</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class=" api apilevel-" >
+          <td class="jd-typecol">
+          public
+          static
+          
+          int</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#SCALE_TYPE_9_16">SCALE_TYPE_9_16</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class="alt-color api apilevel-" >
+          <td class="jd-typecol">
+          public
+          static
+          final
+          int</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#SCALING_MODE_BEST_FIT">SCALING_MODE_BEST_FIT</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class=" api apilevel-" >
+          <td class="jd-typecol">
+          public
+          static
+          final
+          int</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#SCALING_MODE_CROP">SCALING_MODE_CROP</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class="alt-color api apilevel-" >
+          <td class="jd-typecol">
+          public
+          static
+          final
+          int</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#SCALING_MODE_FULL_FILL">SCALING_MODE_FULL_FILL</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+
+</table>
+
+
 
 
 
@@ -546,12 +637,12 @@ Summary:
             
             
             
-            long
+            float
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#getEditDuration()">getEditDuration</a></span>()
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#getCropScale()">getCropScale</a></span>()
         
-        <div class="jd-descrdiv">return valid value after <code><a href="../../../../../com/ksyun/media/shortvideo/utils/ShortVideoConstants.html#SHORTVIDEO_EDIT_PREPARED">SHORTVIDEO_EDIT_PREPARED</a></code></div>
+        <div class="jd-descrdiv">the max size for@return</div>
   
   </td></tr>
 
@@ -567,13 +658,31 @@ Summary:
             long
         </td>
         <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#getEditDuration()">getEditDuration</a></span>()
+        
+        <div class="jd-descrdiv">return valid value after <code><a href="../../../../../com/ksyun/media/shortvideo/utils/ShortVideoConstants.html#SHORTVIDEO_EDIT_PREPARED">SHORTVIDEO_EDIT_PREPARED</a></code></div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            long
+        </td>
+        <td class="jd-linkcol" width="100%">
         <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#getEditPreviewCurrentPosition()">getEditPreviewCurrentPosition</a></span>()
         
   </td></tr>
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -591,7 +700,7 @@ Summary:
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -609,7 +718,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -627,7 +736,7 @@ Summary:
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -641,6 +750,22 @@ Summary:
         
         <div class="jd-descrdiv">Get ImgTexMixer instance which could handle PIP related operations for preview.</div>
   
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            boolean
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#getIsLandscape()">getIsLandscape</a></span>()
+        
   </td></tr>
 
 
@@ -742,6 +867,22 @@ Summary:
             
             
             
+            RectF
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#getPreviewCropRect()">getPreviewCropRect</a></span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
             int
         </td>
         <td class="jd-linkcol" width="100%">
@@ -753,7 +894,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -771,7 +912,7 @@ Summary:
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -789,7 +930,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -807,7 +948,7 @@ Summary:
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -825,7 +966,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -844,7 +985,7 @@ Summary:
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -863,7 +1004,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -882,7 +1023,7 @@ Summary:
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -900,7 +1041,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -918,7 +1059,7 @@ Summary:
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -937,7 +1078,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -955,7 +1096,7 @@ Summary:
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -973,7 +1114,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -991,7 +1132,7 @@ Summary:
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1009,7 +1150,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1027,7 +1168,7 @@ Summary:
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1045,7 +1186,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1063,7 +1204,7 @@ Summary:
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1081,7 +1222,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1099,7 +1240,7 @@ Summary:
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1117,7 +1258,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1135,7 +1276,7 @@ Summary:
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1148,6 +1289,24 @@ Summary:
         <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setEncodeMethod(int)">setEncodeMethod</a></span>(int encodeMethod)
         
         <div class="jd-descrdiv">Set compose encode method for both video and audio.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setIFrameInterval(float)">setIFrameInterval</a></span>(float interval)
+        
+        <div class="jd-descrdiv">set I frame interval</div>
   
   </td></tr>
 
@@ -1220,6 +1379,76 @@ Summary:
         <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setOriginAudioVolume(float)">setOriginAudioVolume</a></span>(float volume)
         
         <div class="jd-descrdiv">Set mic volume.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setPreviewCrop(float, float, float, float)">setPreviewCrop</a></span>(float left, float top, float w, float h)
+        
+        <div class="jd-descrdiv">crop preview</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setScale(float)">setScale</a></span>(float scale)
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setScaleType(int)">setScaleType</a></span>(int type)
+        
+        <div class="jd-descrdiv">set crop type</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setScalingMode(int)">setScalingMode</a></span>(int mode)
+        
+        <div class="jd-descrdiv">set crop mode</div>
   
   </td></tr>
 
@@ -1326,6 +1555,27 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setVideoCrf(int)">setVideoCrf</a></span>(int crf)
+        
+        <div class="jd-descrdiv">set Constant Rate Factor
+ only effect on StreamerConstants#ENCODE_METHOD_HARDWARE
+ valid value: 0~51
+ default value: 24</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
         <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setVideoEncodeMethod(int)">setVideoEncodeMethod</a></span>(int encodeMethod)
         
         <div class="jd-descrdiv">Set compose encode method for video.</div>
@@ -1334,7 +1584,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1352,7 +1602,7 @@ Summary:
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1364,13 +1614,13 @@ Summary:
         <td class="jd-linkcol" width="100%">
         <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setVideoFps(float)">setVideoFps</a></span>(float fps)
         
-        <div class="jd-descrdiv">Sets compose video fps.</div>
+        <div class="jd-descrdiv">set compose video fps.</div>
   
   </td></tr>
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1389,7 +1639,7 @@ Summary:
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1407,7 +1657,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1425,7 +1675,7 @@ Summary:
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1443,7 +1693,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1462,7 +1712,7 @@ Summary:
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1480,7 +1730,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1499,7 +1749,7 @@ Summary:
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1518,7 +1768,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1777,6 +2027,223 @@ From class
 <!-- Fields -->
 
 
+<!-- ========= FIELD DETAIL ======== -->
+<h2>Fields</h2>
+
+
+
+
+<a id="DEFAULT_SCALE"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+         
+        float
+      </span>
+        DEFAULT_SCALE
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+    </div>
+</div>
+
+
+
+<a id="SCALE_TYPE_1_1"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+         
+        int
+      </span>
+        SCALE_TYPE_1_1
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+    </div>
+</div>
+
+
+
+<a id="SCALE_TYPE_3_4"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+         
+        int
+      </span>
+        SCALE_TYPE_3_4
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+    </div>
+</div>
+
+
+
+<a id="SCALE_TYPE_9_16"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+         
+        int
+      </span>
+        SCALE_TYPE_9_16
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+    </div>
+</div>
+
+
+
+<a id="SCALING_MODE_BEST_FIT"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        int
+      </span>
+        SCALING_MODE_BEST_FIT
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+    </div>
+</div>
+
+
+
+<a id="SCALING_MODE_CROP"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        int
+      </span>
+        SCALING_MODE_CROP
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+    </div>
+</div>
+
+
+
+<a id="SCALING_MODE_FULL_FILL"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        int
+      </span>
+        SCALING_MODE_FULL_FILL
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+    </div>
+</div>
+
+
+
+
 <!-- Public ctors -->
 
 
@@ -2032,6 +2499,42 @@ From class
 </div>
 
 
+<a id="getCropScale()"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        float
+      </span>
+      <span class="sympad">getCropScale</span>
+      <span class="normal">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>the max size for@return</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">See Also</h5>
+      <ul class="nolist"><li><code><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#SCALING_MODE_CROP">SCALING_MODE_CROP</a></code></li>
+      </ul>
+  </div>
+
+    </div>
+</div>
+
+
 <a id="getEditDuration()"></a>
 
 <div class="jd-details api apilevel-"> 
@@ -2243,6 +2746,37 @@ From class
 </div>
 
 
+<a id="getIsLandscape()"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        boolean
+      </span>
+      <span class="sympad">getIsLandscape</span>
+      <span class="normal">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
 <a id="getKS3ClientWrap()"></a>
 
 <div class="jd-details api apilevel-"> 
@@ -2398,6 +2932,37 @@ From class
       <ul class="nolist"><li>volume in 0~2.0f.
 </li></ul>
   </div>
+
+    </div>
+</div>
+
+
+<a id="getPreviewCropRect()"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        RectF
+      </span>
+      <span class="sympad">getPreviewCropRect</span>
+      <span class="normal">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
 
     </div>
 </div>
@@ -3277,8 +3842,49 @@ From class
   </div>
   <div class="jd-tagdata">
       <h5 class="jd-tagtitle">See Also</h5>
-      <ul class="nolist"><li>StreamerConstants#ENCODE_METHOD_SOFTWARE</li><li>StreamerConstants#ENCODE_METHOD_SOFTWARE_COMPAT</li><li>StreamerConstants#ENCODE_METHOD_HARDWARE</li>
+      <ul class="nolist"><li>StreamerConstants#ENCODE_METHOD_SOFTWARE</li><li>StreamerConstants#ENCODE_METHOD_HARDWARE</li>
       </ul>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="setIFrameInterval(float)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">setIFrameInterval</span>
+      <span class="normal">(float interval)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>set I frame interval</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>interval</th>
+          <td>I frame interval
+</td>
+        </tr>
+      </table>
   </div>
 
     </div>
@@ -3433,6 +4039,154 @@ From class
 </td>
         </tr>
       </table>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="setPreviewCrop(float, float, float, float)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">setPreviewCrop</span>
+      <span class="normal">(float left, float top, float w, float h)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>crop preview</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>left</th>
+          <td>The percentage of the video clipping to the left</td>
+        </tr>
+        <tr>
+          <th>top</th>
+          <td>The percentage of the video clipping to the top
+</td>
+        </tr>
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="setScale(float)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">setScale</span>
+      <span class="normal">(float scale)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+<a id="setScaleType(int)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">setScaleType</span>
+      <span class="normal">(int type)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>set crop type</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">See Also</h5>
+      <ul class="nolist"><li><code><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#SCALE_TYPE_9_16">SCALE_TYPE_9_16</a></code></li><li><code><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#SCALE_TYPE_3_4">SCALE_TYPE_3_4</a></code></li><li><code><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#SCALE_TYPE_1_1">SCALE_TYPE_1_1</a></code></li>
+      </ul>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="setScalingMode(int)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">setScalingMode</span>
+      <span class="normal">(int mode)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>set crop mode</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">See Also</h5>
+      <ul class="nolist"><li><code><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#SCALING_MODE_BEST_FIT">SCALING_MODE_BEST_FIT</a></code></li><li><code><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#SCALING_MODE_CROP">SCALING_MODE_CROP</a></code></li>
+      </ul>
   </div>
 
     </div>
@@ -3708,6 +4462,40 @@ From class
 </div>
 
 
+<a id="setVideoCrf(int)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">setVideoCrf</span>
+      <span class="normal">(int crf)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>set Constant Rate Factor
+ only effect on StreamerConstants#ENCODE_METHOD_HARDWARE
+ valid value: 0~51
+ default value: 24</p></div>
+
+    </div>
+</div>
+
+
 <a id="setVideoEncodeMethod(int)"></a>
 
 <div class="jd-details api apilevel-"> 
@@ -3763,7 +4551,7 @@ From class
   </div>
   <div class="jd-tagdata">
       <h5 class="jd-tagtitle">See Also</h5>
-      <ul class="nolist"><li>StreamerConstants#ENCODE_METHOD_SOFTWARE</li><li>StreamerConstants#ENCODE_METHOD_SOFTWARE_COMPAT</li><li>StreamerConstants#ENCODE_METHOD_HARDWARE</li>
+      <ul class="nolist"><li>StreamerConstants#ENCODE_METHOD_SOFTWARE</li><li>StreamerConstants#ENCODE_METHOD_HARDWARE</li>
       </ul>
   </div>
 
@@ -3844,7 +4632,7 @@ From class
       </div>
     <div class="jd-details-descr">
       
-  <div class="jd-tagdata jd-tagdescr"><p>Sets compose video fps.</p></div>
+  <div class="jd-tagdata jd-tagdescr"><p>set compose video fps.</p></div>
   <div class="jd-tagdata">
       <h5 class="jd-tagtitle">Parameters</h5>
       <table class="jd-tagtable">

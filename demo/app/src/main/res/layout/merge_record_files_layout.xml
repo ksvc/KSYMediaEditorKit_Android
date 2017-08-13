@@ -12,13 +12,13 @@
         android:indeterminateDrawable="@drawable/composing"
         android:indeterminateDuration="1000"
         android:indeterminateOnly="true"/>
-    <!--<TextView-->
-        <!--android:id="@+id/progress_text"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_centerInParent="true"-->
-        <!--android:textColor="#e85932"-->
-        <!--android:text="处理中"-->
-        <!--android:textSize="25px"/>-->
+    <TextView
+        android:id="@+id/progress_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textColor="#e85932"
+        android:textSize="25px"
+        android:visibility="gone"/>
 
 </RelativeLayout>

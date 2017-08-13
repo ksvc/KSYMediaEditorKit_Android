@@ -450,7 +450,7 @@ Summary:
             Bitmap
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/utils/ProbeMediaInfoTools.html#getVideoThumbnailAtTime(java.lang.String, long, int, int)">getVideoThumbnailAtTime</a></span>(String url, long seekTime, int width, int height)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/utils/ProbeMediaInfoTools.html#getVideoThumbnailAtTime(java.lang.String, long, int, int, boolean)">getVideoThumbnailAtTime</a></span>(String url, long seekTime, int width, int height, boolean accurate)
         
         <div class="jd-descrdiv">get thumbnail</div>
   
@@ -771,7 +771,7 @@ From class
 
 
 
-<a id="getVideoThumbnailAtTime(java.lang.String, long, int, int)"></a>
+<a id="getVideoThumbnailAtTime(java.lang.String, long, int, int, boolean)"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -784,7 +784,7 @@ From class
         Bitmap
       </span>
       <span class="sympad">getVideoThumbnailAtTime</span>
-      <span class="normal">(String url, long seekTime, int width, int height)</span>
+      <span class="normal">(String url, long seekTime, int width, int height, boolean accurate)</span>
     </h4>
       <div class="api-level">
         <div>
@@ -815,6 +815,10 @@ From class
         <tr>
           <th>height</th>
           <td>the height of thumbnail</td>
+        </tr>
+        <tr>
+          <th>accurate</th>
+          <td>是否精准截图, TRUE为精准截图，反之则否</td>
         </tr>
       </table>
   </div>

@@ -11,10 +11,11 @@
 
         <TextView
             android:id="@+id/bgm_start_time"
-            android:layout_width="35dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="00:00"
+            android:singleLine="true"
             android:textColor="#ffffff"
             android:textSize="13sp" />
 
@@ -27,9 +28,10 @@
 
         <TextView
             android:id="@+id/bgm_end_time"
-            android:layout_width="35dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:singleLine="true"
             android:text="00:30"
             android:textColor="#ffffff"
             android:textSize="13sp" />

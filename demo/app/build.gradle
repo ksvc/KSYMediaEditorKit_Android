@@ -7,8 +7,8 @@ android {
         applicationId "com.ksyun.media.shortvideo.demo"
         minSdkVersion 15
         targetSdkVersion 24
-        versionCode 104
-        versionName "1.0.4"
+        versionCode 112
+        versionName "1.1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     sourceSets {
@@ -24,12 +24,6 @@ android {
     }
 }
 
-repositories {
-    flatDir {
-        dirs 'libs'
-    }
-}
-
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:24.2.1'
@@ -39,9 +33,10 @@ dependencies {
     compile 'com.ksyun.ks3:ks3androidsdk:1.4.1'
     compile 'com.tencent.bugly:crashreport:latest.release'
     compile 'com.tencent.bugly:nativecrashreport:latest.release'
-    compile (name:'sensearsdk-release', ext: 'aar')
-    compile 'com.ksyun.media:libksylive-java:2.4.1'
-    compile 'com.ksyun.media:libksylive-arm64:2.4.1'
-    compile 'com.ksyun.media:libksylive-armv7a:2.4.1'
-    compile 'com.ksyun.media:libksylive-x86:2.4.1'
+    compile 'com.ksyun.mc:libkmcfilter_sensetime:1.0.4'
+    compile 'com.ksyun.mc:SenseTimeAR:1.0.4'
+    compile 'com.ksyun.media:libksysv-java:1.1.2.1'
+    compile 'com.ksyun.media:libksysv-arm64:1.1.2.1'
+    compile 'com.ksyun.media:libksysv-armv7a:1.1.2.1'
+    compile 'com.ksyun.media:libksysv-x86:1.1.2.1'
 }

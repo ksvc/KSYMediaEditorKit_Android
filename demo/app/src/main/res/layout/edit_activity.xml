@@ -1,51 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <android.opengl.GLSurfaceView
-        android:id="@+id/edit_preview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#000000">
+    <RelativeLayout
+        android:id="@+id/preview_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content">
 
-    <com.ksyun.media.shortvideo.view.KSYStickerView
-        android:id="@+id/sticker_panel"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center"
-        android:visibility="gone" />
+        <android.opengl.GLSurfaceView
+            android:id="@+id/edit_preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
-    <com.ksyun.media.shortvideo.view.KSYTextView
-        android:id="@+id/text_panel"
+        <com.ksyun.media.shortvideo.view.KSYStickerView
+            android:id="@+id/sticker_panel"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
 
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:visibility="gone" />
+        <com.ksyun.media.shortvideo.view.KSYTextView
+            android:id="@+id/text_panel"
 
-    <ImageView
-        android:id="@+id/click_to_pause"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="3dp"
-        android:src="@drawable/play_state" />
-    <ImageView
-        android:id="@+id/click_to_next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_margin="20dp"
-        android:src="@drawable/edit_complete"/>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:visibility="gone"/>
 
-    <com.ksyun.media.shortvideo.demo.audiorange.AudioSeekLayout
-        android:id="@+id/audioSeekLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/click_to_pause"
-        android:layout_marginTop="10dp"
+        <ImageView
+            android:id="@+id/click_to_pause"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="3dp"
+            android:src="@drawable/play_state"/>
 
-        android:visibility="gone" />
+        <ImageView
+            android:id="@+id/click_to_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_margin="20dp"
+            android:src="@drawable/edit_complete"/>
+
+        <com.ksyun.media.shortvideo.demo.audiorange.AudioSeekLayout
+            android:id="@+id/audioSeekLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/click_to_pause"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#919191"
+            android:layout_alignParentBottom="true"
+        />
+    </RelativeLayout>
 
     <include
         android:id="@+id/edit_bar_bottom"

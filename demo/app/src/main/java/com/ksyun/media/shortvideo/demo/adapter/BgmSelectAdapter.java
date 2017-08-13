@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,12 +24,13 @@ import java.util.List;
  * 背景音乐选择的适配器类
  */
 
-public class BgmSelectAdapter extends RecyclerView.Adapter<BgmSelectAdapter.MyViewHolder>{
+public class BgmSelectAdapter extends RecyclerView.Adapter<BgmSelectAdapter.MyViewHolder> {
     private Context mContext;
     private List<BgmData> mData;
     private DownloadAndHandleTask mBgmLoadTask;
     private MyViewHolder mPreHolder;
     private OnItemClickListener mListener;
+    private volatile String mCurrentFilePath;
     //背景音乐下载地址
     private String[] mBgmLoadPath = {"https://ks3-cn-beijing.ksyun.com/ksy.vcloud.sdk/ShortVideo/faded.mp3",
             "https://ks3-cn-beijing.ksyun.com/ksy.vcloud.sdk/ShortVideo/Hotel_California.mp3",
@@ -38,7 +40,9 @@ public class BgmSelectAdapter extends RecyclerView.Adapter<BgmSelectAdapter.MyVi
 
     public interface OnItemClickListener {
         void onCancel();
+
         void onSelected(String path);
+
         void onImport();
     }
 
@@ -46,14 +50,14 @@ public class BgmSelectAdapter extends RecyclerView.Adapter<BgmSelectAdapter.MyVi
         this.mListener = listener;
     }
 
-    public BgmSelectAdapter (Context context, List<BgmData> data) {
+    public BgmSelectAdapter(Context context, List<BgmData> data) {
         this.mContext = context;
         this.mData = data;
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.bgm_item_view,parent,false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.bgm_item_view, parent, false);
         MyViewHolder holder = new MyViewHolder(view);
         return holder;
     }
@@ -81,11 +85,13 @@ public class BgmSelectAdapter extends RecyclerView.Adapter<BgmSelectAdapter.MyVi
 
     public void onImageClick(final MyViewHolder holder, int index) {
         if (index == INDEX_CANCEL) {
+            mCurrentFilePath = null;
             clear();
             if (mListener != null) {
                 mListener.onCancel();
             }
         } else if (index == INDEX_IMPORT) {
+            mCurrentFilePath = null;
             clear();
             if (mListener != null) {
                 mListener.onImport();
@@ -98,16 +104,21 @@ public class BgmSelectAdapter extends RecyclerView.Adapter<BgmSelectAdapter.MyVi
             File file = new File(filePath);
             if (!file.exists()) {
                 if (mBgmLoadTask != null && mBgmLoadTask.getStatus() == AsyncTask.Status.RUNNING) {
+                    clear();
                     mBgmLoadTask.cancel(true);
                 }
                 DownloadAndHandleTask.DownloadListener listener = new DownloadAndHandleTask.DownloadListener() {
                     @Override
-                    public void onCompleted() {
+                    public void onCompleted(String downloadFilePath) {
                         holder.mDownload.setVisibility(View.GONE);
                         holder.mProgress.setVisibility(View.GONE);
-                        holder.setActivated(true);
-                        if (mListener != null) {
-                            mListener.onSelected(filePath);
+
+                        if (!TextUtils.isEmpty(mCurrentFilePath) && mCurrentFilePath.equals
+                                (downloadFilePath)) {
+                            holder.setActivated(true);
+                            if (mListener != null) {
+                                mListener.onSelected(mCurrentFilePath);
+                            }
                         }
                     }
                 };
@@ -122,7 +133,9 @@ public class BgmSelectAdapter extends RecyclerView.Adapter<BgmSelectAdapter.MyVi
                     mListener.onSelected(filePath);
                 }
             }
+            mCurrentFilePath = filePath;
         }
+
         mPreHolder = holder;
     }
 
@@ -143,7 +156,17 @@ public class BgmSelectAdapter extends RecyclerView.Adapter<BgmSelectAdapter.MyVi
 
     public void clear() {
         if (mPreHolder != null) {
+            mPreHolder.mDownload.setVisibility(View.GONE);
+            mPreHolder.mProgress.setVisibility(View.GONE);
             mPreHolder.setActivated(false);
+        }
+        clearTask();
+    }
+
+    public void clearTask() {
+        //同时取消下载任务
+        if (mBgmLoadTask != null && mBgmLoadTask.getStatus() == AsyncTask.Status.RUNNING) {
+            mBgmLoadTask.cancel(true);
         }
     }
 
@@ -153,6 +176,7 @@ public class BgmSelectAdapter extends RecyclerView.Adapter<BgmSelectAdapter.MyVi
         public ImageView mDownload;
         public ProgressBar mProgress;
         public TextView mText;
+
         public MyViewHolder(View view) {
             super(view);
             mContent = (ImageView) view.findViewById(R.id.bgm_image_content);
@@ -161,6 +185,7 @@ public class BgmSelectAdapter extends RecyclerView.Adapter<BgmSelectAdapter.MyVi
             mProgress = (ProgressBar) view.findViewById(R.id.download_progress);
             mText = (TextView) view.findViewById(R.id.bgm_name);
         }
+
         public void setActivated(boolean active) {
             if (active) {
                 mBorder.setVisibility(View.VISIBLE);

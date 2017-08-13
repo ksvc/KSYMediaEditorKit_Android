@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#000000"
+                tools:context="com.ksyun.media.shortvideo.demo.PublishActivity">
+
+    <RelativeLayout
+        android:id="@+id/compose_preview_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000000"
+        android:visibility="gone">
+
+        <SurfaceView
+            android:id="@+id/compose_preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:visibility="gone"/>
+
+        <WebView
+            android:id="@+id/gif_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="#000000"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:id="@+id/preview_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="20dp"
+            android:src="@drawable/record_back"/>
+
+        <ImageView
+            android:id="@+id/save_to_album"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_margin="20dp"
+            android:src="@drawable/save"/>
+
+        <TextView
+            android:id="@+id/save_toast"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="#DC143C"
+            android:textSize="16sp"
+            android:visibility="invisible"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/cover_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000000"
+        android:padding="20dp">
+
+        <RelativeLayout
+            android:id="@+id/cover_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/cover_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:src="@drawable/record_back"/>
+
+            <TextView
+                android:id="@+id/cover_complete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="#DC143C"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                android:text="发布"
+                android:textColor="#ffffff"/>
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/cover_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/seek_hint"
+            android:layout_below="@+id/cover_title"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"/>
+
+        <TextView
+            android:id="@+id/seek_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/cover_seekBar"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:text="拖动选择封面"
+            android:textColor="#ffffff"
+            android:textSize="18sp"/>
+
+        <android.support.v7.widget.AppCompatSeekBar
+            android:id="@+id/cover_seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="50dp"
+            android:progressBackgroundTint="#9b9b9b"
+            android:progressTint="@color/font_color_35"
+            android:thumbTint="#ffffff"/>
+    </RelativeLayout>
+</RelativeLayout>

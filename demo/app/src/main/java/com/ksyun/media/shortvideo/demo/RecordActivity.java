@@ -7,6 +7,7 @@ import com.ksyun.media.shortvideo.demo.util.DataFactory;
 import com.ksyun.media.shortvideo.demo.util.FileUtils;
 import com.ksyun.media.shortvideo.demo.kmc.ApiHttpUrlConnection;
 import com.ksyun.media.shortvideo.demo.recordclip.RecordProgressController;
+import com.ksyun.media.shortvideo.demo.util.ViewUtils;
 import com.ksyun.media.shortvideo.demo.view.CameraHintView;
 import com.ksyun.media.shortvideo.demo.view.VerticalSeekBar;
 import com.ksyun.media.shortvideo.kit.KSYRecordKit;
@@ -25,15 +26,16 @@ import com.ksyun.media.streamer.logstats.StatsLogReport;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.opengl.GLSurfaceView;
@@ -48,6 +50,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.Gravity;
@@ -121,7 +124,9 @@ public class RecordActivity extends Activity implements
     private View mSwitchCameraView;
     private View mFlashView;
     private View mExposureView;
+    private View mNoiseSuppressionView;
     private VerticalSeekBar mExposureSeekBar;
+    private VerticalSeekBar mNoiseSeekBar;
     private RelativeLayout mBarBottomLayout;
     private ImageView mRecordView;
     private ImageView mBackView;
@@ -255,10 +260,16 @@ public class RecordActivity extends Activity implements
         mFlashView.setOnClickListener(mObserverButton);
         mExposureView = findViewById(R.id.exposure);
         mExposureView.setOnClickListener(mObserverButton);
+        mNoiseSuppressionView = findViewById(R.id.noise_suppression);
+        mNoiseSuppressionView.setOnClickListener(mObserverButton);
         mExposureSeekBar = (VerticalSeekBar) findViewById(R.id.exposure_seekBar);
         mExposureSeekBar.setProgress(50);
         mExposureSeekBar.setSecondaryProgress(50);
         mExposureSeekBar.setOnSeekBarChangeListener(getVerticalSeekListener());
+        mNoiseSeekBar = (VerticalSeekBar) findViewById(R.id.noise_seekBar);
+        mNoiseSeekBar.setProgress(0);
+        mNoiseSeekBar.setSecondaryProgress(0);
+        mNoiseSeekBar.setOnSeekBarChangeListener(getVerticalSeekListener());
         mBarBottomLayout = (RelativeLayout) findViewById(R.id.bar_bottom);
         mCameraPreviewView = (GLSurfaceView) findViewById(R.id.camera_preview);
         //美颜及背景音乐界面控件
@@ -330,34 +341,41 @@ public class RecordActivity extends Activity implements
         mMainHandler = new Handler();
         mKSYRecordKit = new KSYRecordKit(this);
         //录制参数配置
-        int frameRate = ConfigActivity.getRecordConfig().fps;
+        ShortVideoConfig config;
+        if (ConfigActivity.getRecordConfig() != null) {
+            config = ConfigActivity.getRecordConfig();
+        } else {
+            config = new ShortVideoConfig();
+        }
+        float frameRate = config.fps;
         if (frameRate > 0) {
             mKSYRecordKit.setPreviewFps(frameRate);
             mKSYRecordKit.setTargetFps(frameRate);
         }
 
-        int videoBitrate = ConfigActivity.getRecordConfig().videoBitrate;
+        int videoBitrate = config.videoBitrate;
         if (videoBitrate > 0) {
             mKSYRecordKit.setVideoKBitrate(videoBitrate);
         }
 
-        int audioBitrate = ConfigActivity.getRecordConfig().audioBitrate;
+        int audioBitrate = config.audioBitrate;
         if (audioBitrate > 0) {
             mKSYRecordKit.setAudioKBitrate(audioBitrate);
         }
 
-        int videoResolution = ConfigActivity.getRecordConfig().resolution;
+        int videoResolution = config.resolution;
         mKSYRecordKit.setPreviewResolution(videoResolution);
         mKSYRecordKit.setTargetResolution(videoResolution);
 
-        int encode_type = ConfigActivity.getRecordConfig().encodeType;
+        int encode_type = config.encodeType;
         mKSYRecordKit.setVideoCodecId(encode_type);
 
-        int encode_method = ConfigActivity.getRecordConfig().encodeMethod;
+        int encode_method = config.encodeMethod;
         mKSYRecordKit.setEncodeMethod(encode_method);
 
-        int encodeProfile = ConfigActivity.getRecordConfig().encodeProfile;
+        int encodeProfile = config.encodeProfile;
         mKSYRecordKit.setVideoEncodeProfile(encodeProfile);
+
         //Demo仅展示竖屏，SDK支持横屏
         mKSYRecordKit.setRotateDegrees(0);
         mKSYRecordKit.setDisplayPreview(mCameraPreviewView);
@@ -414,6 +432,11 @@ public class RecordActivity extends Activity implements
             mMainHandler.removeCallbacksAndMessages(null);
             mMainHandler = null;
         }
+
+        mBgmAdapter.setOnItemClickListener(null);
+        mBgmAdapter.clearTask();
+        mKSYRecordKit.stopBgm();
+
         mRecordProgressCtl.stop();
         mRecordProgressCtl.setRecordingLengthChangedListener(null);
         mRecordProgressCtl.release();
@@ -441,7 +464,7 @@ public class RecordActivity extends Activity implements
 
     //start recording to a local file
     private void startRecord() {
-        if(mIsFileRecording) {
+        if (mIsFileRecording) {
             // 上一次录制未停止完，不能开启下一次录制
             return;
         }
@@ -451,7 +474,7 @@ public class RecordActivity extends Activity implements
         float val = mMicAudioVolumeSeekBar.getProgress() / 100.f;
         mKSYRecordKit.setVoiceVolume(val);
         //设置录制文件的本地存储路径，并开始录制
-        if(mKSYRecordKit.startRecord(mRecordUrl)) {
+        if (mKSYRecordKit.startRecord(mRecordUrl)) {
             mIsFileRecording = true;
             //更新录制UI
             mRecordView.getDrawable().setLevel(2);
@@ -740,6 +763,14 @@ public class RecordActivity extends Activity implements
         }
     }
 
+    private void onNoiseSuppresionClick() {
+        if (mNoiseSeekBar.getVisibility() == View.VISIBLE) {
+            mNoiseSeekBar.setVisibility(View.GONE);
+        } else {
+            mNoiseSeekBar.setVisibility(View.VISIBLE);
+        }
+    }
+
     /**
      * back按钮作为返回上一级和删除按钮
      * 当录制文件>=1时 作为删除按钮，否则作为返回上一级按钮
@@ -806,14 +837,35 @@ public class RecordActivity extends Activity implements
         VerticalSeekBar.OnSeekBarChangeListener listener = new VerticalSeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(VerticalSeekBar seekBar, int progress, boolean fromUser) {
-                Camera.Parameters parameters = mKSYRecordKit.getCameraCapture().getCameraParameters();
-                if (parameters != null) {
-                    int minValue = parameters.getMinExposureCompensation();
-                    int maxValue = parameters.getMaxExposureCompensation();
-                    int range = 100 / (maxValue - minValue);
-                    parameters.setExposureCompensation(progress / range + minValue);
+                if (seekBar == mExposureSeekBar) {
+                    Camera.Parameters parameters = mKSYRecordKit.getCameraCapture().getCameraParameters();
+                    if (parameters != null) {
+                        int minValue = parameters.getMinExposureCompensation();
+                        int maxValue = parameters.getMaxExposureCompensation();
+                        int range = 100 / (maxValue - minValue);
+                        parameters.setExposureCompensation(progress / range + minValue);
+                    }
+                    mKSYRecordKit.getCameraCapture().setCameraParameters(parameters);
                 }
-                mKSYRecordKit.getCameraCapture().setCameraParameters(parameters);
+                if (seekBar == mNoiseSeekBar) {
+                    if (progress == 0) {
+                        mKSYRecordKit.setEnableAudioNS(false);
+                    } else {
+                        mKSYRecordKit.setEnableAudioNS(true);
+                        int base = 100 / 4;
+                        int range = progress / base;
+                        if (range == 0) {
+                            mKSYRecordKit.setAudioNSLevel(StreamerConstants.AUDIO_NS_LEVEL_0);
+                        } else if (range == 1) {
+                            mKSYRecordKit.setAudioNSLevel(StreamerConstants.AUDIO_NS_LEVEL_1);
+                        } else if (range == 2) {
+                            mKSYRecordKit.setAudioNSLevel(StreamerConstants.AUDIO_NS_LEVEL_2);
+                        } else if (range >= 3) {
+                            mKSYRecordKit.setAudioNSLevel(StreamerConstants.AUDIO_NS_LEVEL_3);
+                        }
+                    }
+
+                }
             }
 
             @Override
@@ -845,7 +897,7 @@ public class RecordActivity extends Activity implements
         mPitchPlus.setOnClickListener(mObserverButton);
         mPitchText = (TextView) findViewById(R.id.pitch_text);
         mMicAudioVolumeSeekBar.setProgress((int) (mKSYRecordKit.getVoiceVolume() * 100));
-        mBgmVolumeSeekBar.setProgress((int) (mKSYRecordKit.getVoiceVolume() * 100));
+        mBgmVolumeSeekBar.setProgress((int) (mKSYRecordKit.getAudioPlayerCapture().getVolume() * 100));
         setEnableBgmEdit(false);
         mSoundChange = (TextView) findViewById(R.id.bgm_title_soundChange);
         mSoundChangeIndicator = findViewById(R.id.bgm_title_soundChange_indicator);
@@ -877,9 +929,11 @@ public class RecordActivity extends Activity implements
 
             @Override
             public void onSelected(String path) {
-                setEnableBgmEdit(true);
-                clearPitchState();
-                mKSYRecordKit.startBgm(path, true);
+                if(ViewUtils.isForeground(RecordActivity.this, RecordActivity.class.getName())) {
+                    setEnableBgmEdit(true);
+                    clearPitchState();
+                    mKSYRecordKit.startBgm(path, true);
+                }
             }
 
             @Override
@@ -988,20 +1042,21 @@ public class RecordActivity extends Activity implements
      * https://github.com/ksvc/KSYStreamer_Android/wiki/style_filter
      */
     private void initFilterUI() {
-        final String[] NAME_LIST = {"小清新", "靓丽", "甜美可人", "怀旧"};
-        final int[] IMAGE_ID = {R.drawable.filter_fresh, R.drawable.filter_beautiful,
-                R.drawable.filter_sweet, R.drawable.filter_old_photo};
+
         final int[] FILTER_TYPE = {ImgBeautySpecialEffectsFilter.KSY_SPECIAL_EFFECT_FRESHY,
                 ImgBeautySpecialEffectsFilter.KSY_SPECIAL_EFFECT_BEAUTY,
                 ImgBeautySpecialEffectsFilter.KSY_SPECIAL_EFFECT_SWEETY,
-                ImgBeautySpecialEffectsFilter.KSY_SPECIAL_EFFECT_SEPIA};
-        List<ImageTextAdapter.Data> filterData = new ArrayList<>();
-        for (int i = 0; i < NAME_LIST.length; i++) {
-            Drawable image = getResources().getDrawable(IMAGE_ID[i]);
-            String type = NAME_LIST[i];
-            ImageTextAdapter.Data data = new ImageTextAdapter.Data(image, type);
-            filterData.add(data);
-        }
+                ImgBeautySpecialEffectsFilter.KSY_SPECIAL_EFFECT_SEPIA,
+                ImgBeautySpecialEffectsFilter.KSY_SPECIAL_EFFECT_BLUE,
+                ImgBeautySpecialEffectsFilter.KSY_SPECIAL_EFFECT_NOSTALGIA,
+                ImgBeautySpecialEffectsFilter.KSY_SPECIAL_EFFECT_SAKURA,
+                ImgBeautySpecialEffectsFilter.KSY_SPECIAL_EFFECT_SAKURA_NIGHT,
+                ImgBeautySpecialEffectsFilter.KSY_SPECIAL_EFFECT_RUDDY_NIGHT,
+                ImgBeautySpecialEffectsFilter.KSY_SPECIAL_EFFECT_SUNSHINE_NIGHT,
+                ImgBeautySpecialEffectsFilter.KSY_SPECIAL_EFFECT_RUDDY,
+                ImgBeautySpecialEffectsFilter.KSY_SPECIAL_EFFECT_SUSHINE,
+                ImgBeautySpecialEffectsFilter.KSY_SPECIAL_EFFECT_NATURE};
+        List<ImageTextAdapter.Data> filterData = DataFactory.getImgFilterData(this);
         mFilterOriginImage = (ImageView) findViewById(R.id.iv_filter_origin);
         mFilterBorder = (ImageView) findViewById(R.id.iv_filter_border);
         mFilterOriginText = (TextView) findViewById(R.id.tv_filter_origin);
@@ -1117,12 +1172,13 @@ public class RecordActivity extends Activity implements
      * 重置录制状态
      */
     private void clearRecordState() {
+        mKSYRecordKit.stopBgm();
         mKSYRecordKit.getImgTexFilterMgt().setFilter((ImgFilterBase) null);
         mImgBeautyProFilter = null;
         mEffectFilterIndex = FILTER_DISABLE;
         mFilterOriginImage.callOnClick();
-        mKSYRecordKit.getImgTexFilterMgt().setExtraFilter((ImgFilterBase)null);
-        if(mKMCAdapter != null) {
+        mKSYRecordKit.getImgTexFilterMgt().setExtraFilter((ImgFilterBase) null);
+        if (mKMCAdapter != null) {
             mKMCAdapter.setSelectIndex(-1);
         }
         addImgFilter();
@@ -1135,11 +1191,12 @@ public class RecordActivity extends Activity implements
         if (mReverbAdapter != null) {
             mReverbAdapter.clear();
         }
-        mKSYRecordKit.stopBgm();
+
         setEnableBgmEdit(false);
         mAudioEffectType = AUDIO_FILTER_DISABLE;
         mAudioReverbType = AUDIO_FILTER_DISABLE;
         addAudioFilter();
+        clearPitchState();
     }
 
     /**
@@ -1169,6 +1226,9 @@ public class RecordActivity extends Activity implements
                     break;
                 case R.id.exposure:
                     onExposureClick();
+                    break;
+                case R.id.noise_suppression:
+                    onNoiseSuppresionClick();
                     break;
                 case R.id.click_to_record:
                     onRecordClick();

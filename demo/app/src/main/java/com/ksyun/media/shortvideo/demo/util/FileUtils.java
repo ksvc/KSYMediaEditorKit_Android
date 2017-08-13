@@ -35,6 +35,7 @@ public class FileUtils {
         intent.setType("*/*");
         // Only return URIs that can be opened with ContentResolver
         intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         return intent;
     }
 
