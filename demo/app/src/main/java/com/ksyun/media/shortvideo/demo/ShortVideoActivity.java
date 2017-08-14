@@ -1,6 +1,7 @@
 package com.ksyun.media.shortvideo.demo;
 
 import com.ksyun.media.shortvideo.demo.util.HttpRequestTask;
+import com.ksyun.media.shortvideo.kit.KSYEditKit;
 import com.ksyun.media.shortvideo.utils.AuthInfoManager;
 
 import org.json.JSONException;
@@ -16,7 +17,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
@@ -32,6 +32,7 @@ public class ShortVideoActivity extends Activity {
     public static final String COLOPHON_URL = "https://ks3-cn-beijing.ksyun.com/ksplayer/svod_change_log/dist/Android.html";
     //view
     private TextView mStart;
+    private TextView mVersion;
     private View mColophon;
     private WebView mWebView;
     private View mDefaultView;
@@ -59,6 +60,8 @@ public class ShortVideoActivity extends Activity {
                 startActivity(intent);
             }
         });
+        mVersion = (TextView) findViewById(R.id.sdk_version);
+        mVersion.setText("SDK V" + KSYEditKit.getVersion() + " 版本");
         mColophon = findViewById(R.id.colophon);
         mDefaultView = findViewById(R.id.default_launch);
         mWebView = (WebView) findViewById(R.id.webView);

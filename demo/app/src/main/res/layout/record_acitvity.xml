@@ -27,6 +27,19 @@
         android:thumbTint="#ffffff"
         android:visibility="gone"/>
 
+
+    <com.ksyun.media.shortvideo.demo.view.VerticalSeekBar
+        android:id="@+id/noise_seekBar"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="100dp"
+        android:progressBackgroundTint="#9b9b9b"
+        android:progressTint="@color/font_color_35"
+        android:thumbTint="#ffffff"
+        android:visibility="gone"/>
+
     <include
         android:id="@+id/actionbar"
         layout="@layout/record_title_bar"

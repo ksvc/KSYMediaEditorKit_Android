@@ -5,10 +5,20 @@ package com.ksyun.media.shortvideo.demo.util;
  */
 
 import android.os.Process;
+import android.util.Log;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.RandomAccessFile;
 
 public class SystemStateObtainUtil {
+    // 当前CPU频率获取路径
+    private static final String CUR_FREQ_PATH = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq";
+    // CPU最大频率获取路径
+    private static final String MAX_FREQ_PATH = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq";
+
     private volatile static SystemStateObtainUtil sInstance = null;
     private Long mLastCpuTime;
     private Long mLastAppCpuTime;
@@ -61,6 +71,39 @@ public class SystemStateObtainUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return sampleValue;
+        double freqRate = (double) getFreqValue(CUR_FREQ_PATH) / getFreqValue(MAX_FREQ_PATH);
+        return sampleValue * freqRate;
+    }
+
+    public int getFreqValue(String type) {
+        int value = 0;
+        FileReader fr = null;
+        BufferedReader br = null;
+        try {
+            fr = new FileReader(type);
+            br = new BufferedReader(fr);
+            String text = br.readLine();
+            value = Integer.parseInt(text.trim());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fr != null) {
+                try {
+                    fr.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return value;
     }
 }

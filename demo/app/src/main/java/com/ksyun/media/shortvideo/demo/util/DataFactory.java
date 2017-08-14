@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 
 import com.ksyun.media.shortvideo.demo.R;
 import com.ksyun.media.shortvideo.demo.adapter.BgmSelectAdapter;
+import com.ksyun.media.shortvideo.demo.adapter.ImageTextAdapter;
 import com.ksyun.media.shortvideo.demo.adapter.SoundEffectAdapter;
 
 import java.util.ArrayList;
@@ -18,6 +19,13 @@ public class DataFactory {
     private static final int MODE_SOUND_CHANGE = 0;
     private static final int MODE_REVERB = 1;
 
+    public static final String[] IMG_FILTER_NAME = {"小清新", "靓丽", "甜美可人", "怀旧", "蓝调", "老照片",
+            "樱花", "樱花(夜)", "红润(夜)", "阳光(夜)", "红润", "阳光", "自然"};
+    public static final int[] FILTER_IMAGE_ID = {R.drawable.filter_fresh, R.drawable.filter_beautiful,
+            R.drawable.filter_sweet, R.drawable.filter_sepia, R.drawable.filter_blue, R.drawable.filter_nostalgia,
+            R.drawable.filter_sakura, R.drawable.filter_sakura_night, R.drawable.filter_ruddy_night, R.drawable.filter_sunshine_night,
+            R.drawable.filter_ruddy, R.drawable.filter_sunshine, R.drawable.filter_nature};
+
     public static final String[] BGM_NAME = {"cancel", "Faded", "Hotel California", "Immortals", "import"};
     public static final int[] BGM_IMAGE_ID = {R.drawable.close, R.drawable.faded, R.drawable.hotel_california,
             R.drawable.immortals, R.drawable.add};
@@ -29,6 +37,17 @@ public class DataFactory {
     public static final String[] REVERB_NAME = {"cancel", "录音棚", "小舞台", "演唱会", "KTV"};
     public static final int[] REVERB_IMG_ID = {R.drawable.close, R.drawable.record_studio,
             R.drawable.woodwing, R.drawable.concert, R.drawable.ktv};
+
+    public static List<ImageTextAdapter.Data> getImgFilterData(Context context) {
+        List<ImageTextAdapter.Data> filterData = new ArrayList<>();
+        for (int i = 0; i < IMG_FILTER_NAME.length; i++) {
+            Drawable image = context.getResources().getDrawable(FILTER_IMAGE_ID[i]);
+            String type = IMG_FILTER_NAME[i];
+            ImageTextAdapter.Data data = new ImageTextAdapter.Data(image, type);
+            filterData.add(data);
+        }
+        return filterData;
+    }
 
     public static List<BgmSelectAdapter.BgmData> getBgmData(Context context) {
         List<BgmSelectAdapter.BgmData> dataList = new ArrayList<>();
@@ -47,14 +66,14 @@ public class DataFactory {
             for (int i = 0; i < SOUND_CHANGE_NAME.length; i++) {
                 Drawable image = context.getResources().getDrawable(SOUND_CHANGE_IMG_ID[i]);
                 String type = SOUND_CHANGE_NAME[i];
-                SoundEffectAdapter.SoundEffectData data = new SoundEffectAdapter.SoundEffectData(image,type);
+                SoundEffectAdapter.SoundEffectData data = new SoundEffectAdapter.SoundEffectData(image, type);
                 dataList.add(data);
             }
         } else {
             for (int i = 0; i < REVERB_NAME.length; i++) {
                 Drawable image = context.getResources().getDrawable(REVERB_IMG_ID[i]);
                 String type = REVERB_NAME[i];
-                SoundEffectAdapter.SoundEffectData data = new SoundEffectAdapter.SoundEffectData(image,type);
+                SoundEffectAdapter.SoundEffectData data = new SoundEffectAdapter.SoundEffectData(image, type);
                 dataList.add(data);
             }
         }

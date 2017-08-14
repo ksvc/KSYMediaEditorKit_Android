@@ -48,4 +48,15 @@
         android:background="@drawable/exposure">
     </ImageView>
 
+    <ImageView
+        android:id="@+id/noise_suppression"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="20dp"
+        android:layout_gravity="center_vertical"
+        android:layout_toLeftOf="@id/chronometer"
+        android:background="@drawable/noise">
+    </ImageView>
+
 </RelativeLayout>

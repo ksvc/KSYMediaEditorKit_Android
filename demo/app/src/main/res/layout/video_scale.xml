@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:alpha="0.8"
+              android:background="#07080B"
+              android:gravity="center"
+              android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="40dp"
+            android:text="宽高比"
+            android:textColor="#ffffff"
+            android:textSize="20sp"/>
+        <TextView
+            android:id="@+id/click_to_9_16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:text="9:16"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:background="@drawable/config_text_bg"
+            />
+        <TextView
+            android:id="@+id/click_to_3_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:text="3:4"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:background="@drawable/config_text_bg"/>
+        <TextView
+            android:id="@+id/click_to_1_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:text="1:1"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:background="@drawable/config_text_bg"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="17dp"
+            android:text="裁剪模式"
+            android:textColor="#ffffff"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/video_scale_fit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:text="填充"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:background="@drawable/config_text_bg"/>
+
+        <TextView
+            android:id="@+id/video_scale_crop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="裁剪"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:background="@drawable/config_text_bg"/>
+
+    </LinearLayout>
+
+</LinearLayout>

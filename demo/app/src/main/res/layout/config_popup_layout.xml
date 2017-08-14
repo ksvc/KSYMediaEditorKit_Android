@@ -93,6 +93,42 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+        <TextView
+            android:layout_width="@dimen/config_text_type_width"
+            android:layout_height="wrap_content"
+            android:text="编码方式"
+            android:textColor="@drawable/config_text_color"
+            android:textSize="@dimen/config_text_size" />
+        <TextView
+            android:id="@+id/output_config_hw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="-5dp"
+            android:background="@drawable/config_text_bg"
+            android:gravity="center"
+            android:padding="@dimen/config_text_padding"
+            android:text="硬编"
+            android:textColor="@drawable/config_text_color"
+            android:textSize="@dimen/config_text_size" />
+        <TextView
+            android:id="@+id/output_config_sw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:gravity="center"
+            android:padding="@dimen/config_text_padding"
+            android:text="软编"
+            android:textColor="@drawable/config_text_color"
+            android:textSize="@dimen/config_text_size"
+            android:background="@drawable/config_text_bg"/>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -307,41 +343,32 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:visibility="gone">
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="65dp"
             android:layout_height="wrap_content"
-            android:text="横竖屏"
+            android:text="视频CRF"
             android:textColor="@drawable/config_text_color"
             android:textSize="@dimen/config_text_size" />
 
-        <TextView
-            android:id="@+id/output_config_landscape"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/output_config_video_crf"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:background="@drawable/config_text_bg"
-            android:gravity="center"
-            android:padding="@dimen/config_text_padding"
-            android:text="横屏"
-            android:textColor="@drawable/config_text_color"
-            android:textSize="@dimen/config_text_size" />
-
-        <TextView
-            android:id="@+id/output_config_portrait"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:background="@drawable/config_text_bg"
-            android:gravity="center"
-            android:padding="@dimen/config_text_padding"
-            android:text="竖屏"
-            android:textColor="@drawable/config_text_color"
-            android:textSize="@dimen/config_text_size" />
+            android:gravity="center_horizontal"
+            android:inputType="number"
+            android:singleLine="true"
+            android:text="24"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/config_text_size"
+            android:theme="@style/MyEditText" />
     </LinearLayout>
+
     <TextView
         android:id="@+id/output_confirm"
         android:layout_width="wrap_content"

@@ -18,11 +18,12 @@ import java.util.List;
  */
 
 public class ImageTextAdapter extends RecyclerView.Adapter<ImageTextAdapter.FilterViewHolder> {
-
+    private static final int UN_INIT = -1;
     private Context mContext;
     private List<Data> mData;
     private OnImageItemClickListener mListener;
     private FilterViewHolder mPreHolder;
+    private int mPreIndex = UN_INIT;
 
     public interface OnImageItemClickListener {
         void onClick(int index);
@@ -46,18 +47,25 @@ public class ImageTextAdapter extends RecyclerView.Adapter<ImageTextAdapter.Filt
 
     @Override
     public void onBindViewHolder(final FilterViewHolder holder, final int position) {
+        final Data data = this.mData.get(position);
+        if (data.isSelected) {
+            holder.setActivated(true);
+        } else {
+            holder.setActivated(false);
+        }
         holder.image.setImageDrawable(mData.get(position).drawable);
         holder.image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mPreHolder != null) {
-                    mPreHolder.title.setActivated(false);
-                    mPreHolder.border.setVisibility(View.INVISIBLE);
+                    mPreHolder.setActivated(false);
+                    ImageTextAdapter.this.mData.get(mPreIndex).isSelected = false;
                 }
-                holder.title.setActivated(true);
-                holder.border.setVisibility(View.VISIBLE);
+                holder.setActivated(true);
                 mListener.onClick(position);
+                ImageTextAdapter.this.mData.get(position).isSelected = true;
                 mPreHolder = holder;
+                mPreIndex = position;
             }
         });
         holder.title.setText(mData.get(position).text);
@@ -70,8 +78,7 @@ public class ImageTextAdapter extends RecyclerView.Adapter<ImageTextAdapter.Filt
 
     public void clear() {
         if (mPreHolder != null) {
-            mPreHolder.title.setActivated(false);
-            mPreHolder.border.setVisibility(View.INVISIBLE);
+            mPreHolder.setActivated(false);
         }
     }
 
@@ -86,11 +93,22 @@ public class ImageTextAdapter extends RecyclerView.Adapter<ImageTextAdapter.Filt
             this.border = (ImageView) view.findViewById(R.id.image_border);
             this.title = (TextView) view.findViewById(R.id.title_text);
         }
+
+        public void setActivated(boolean activated) {
+            if (activated) {
+                this.title.setActivated(true);
+                this.border.setVisibility(View.VISIBLE);
+            } else {
+                this.title.setActivated(false);
+                this.border.setVisibility(View.INVISIBLE);
+            }
+        }
     }
 
     public static class Data {
         public Drawable drawable;
         public String text;
+        public boolean isSelected = false;
 
         public Data(Drawable image, String type) {
             this.drawable = image;

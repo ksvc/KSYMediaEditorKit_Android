@@ -15,7 +15,7 @@ public class DownloadAndHandleTask extends AsyncTask<String, Integer, String> {
     private DownloadListener mDownloadListener;
 
     public interface DownloadListener {
-        void onCompleted();
+        void onCompleted(String filePath);
     }
 
     public DownloadAndHandleTask(String path, DownloadListener listener) {
@@ -59,7 +59,7 @@ public class DownloadAndHandleTask extends AsyncTask<String, Integer, String> {
 
     @Override
     protected void onPostExecute(String s) {
-        mDownloadListener.onCompleted();
+        mDownloadListener.onCompleted(mFilePath);
     }
 
 }

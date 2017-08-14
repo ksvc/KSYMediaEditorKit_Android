@@ -160,9 +160,10 @@
               
     <li><h2>Classes</h2>
       <ul>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/view/DrawTextParams.html">DrawTextParams</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYStickerView.html">KSYStickerView</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextItem.html">KSYTextItem</a></li>
           <li class="selected api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.html">KSYTextView</a></li>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.DrawTextParams.html">KSYTextView.DrawTextParams</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/view/StickerHelpBoxInfo.html">StickerHelpBoxInfo</a></li>
       </ul>
     </li>
@@ -378,19 +379,6 @@ Summary:
          
          
         
-        class</td>
-      <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.DrawTextParams.html">KSYTextView.DrawTextParams</a></td>
-      <td class="jd-descrcol" width="100%">draw text params
-&nbsp;</td>
-    </tr>
-    
-    
-    <tr class=" api apilevel-" >
-      <td class="jd-typecol">
-        
-         
-         
-        
         interface</td>
       <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.OnTextRectSelected.html">KSYTextView.OnTextRectSelected</a></td>
       <td class="jd-descrcol" width="100%">the text be selected
@@ -496,10 +484,10 @@ Summary:
             
             
             
-            float
+            void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.html#getTextSize()">getTextSize</a></span>()
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.html#addTextSticker(com.ksyun.media.shortvideo.view.DrawTextParams, com.ksyun.media.shortvideo.view.StickerHelpBoxInfo)">addTextSticker</a></span>(<a href="../../../../../com/ksyun/media/shortvideo/view/DrawTextParams.html">DrawTextParams</a> params, <a href="../../../../../com/ksyun/media/shortvideo/view/StickerHelpBoxInfo.html">StickerHelpBoxInfo</a> helpBoxInfo)
         
   </td></tr>
 
@@ -515,10 +503,40 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.html#initView(com.ksyun.media.shortvideo.view.KSYTextView.DrawTextParams, com.ksyun.media.shortvideo.view.StickerHelpBoxInfo, EditText)">initView</a></span>(<a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.DrawTextParams.html">KSYTextView.DrawTextParams</a> params, <a href="../../../../../com/ksyun/media/shortvideo/view/StickerHelpBoxInfo.html">StickerHelpBoxInfo</a> helpBoxInfo, EditText textView)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.html#clearTextContent()">clearTextContent</a></span>()
         
-        <div class="jd-descrdiv">init text view</div>
-  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            int
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.html#getCurrentTextColor()">getCurrentTextColor</a></span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            float
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.html#getCurrentTextSize()">getCurrentTextSize</a></span>()
+        
   </td></tr>
 
 
@@ -549,9 +567,10 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.html#setAutoNewLine(boolean)">setAutoNewLine</a></span>(boolean autoNewLine)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.html#removeStickers()">removeStickers</a></span>()
         
-        <div class="jd-descrdiv">auto new line for text</div>
+        <div class="jd-descrdiv">remove all stickers
+</div>
   
   </td></tr>
 
@@ -567,9 +586,45 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.html#setText(java.lang.String)">setText</a></span>(String text)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.html#setCurrentAutoNewLine(boolean)">setCurrentAutoNewLine</a></span>(boolean autoNewLine)
+        
+        <div class="jd-descrdiv">auto new line for text</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            boolean
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.html#setCurrentText(java.lang.String)">setCurrentText</a></span>(String text)
         
         <div class="jd-descrdiv">the the content of text</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.html#setCurrentTextColor(int)">setCurrentTextColor</a></span>(int newColor)
+        
+        <div class="jd-descrdiv">set color of text</div>
   
   </td></tr>
 
@@ -585,10 +640,8 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.html#setTextColor(int)">setTextColor</a></span>(int newColor)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.html#setEditText(EditText)">setEditText</a></span>(EditText text)
         
-        <div class="jd-descrdiv">set color of text</div>
-  
   </td></tr>
 
 
@@ -605,8 +658,6 @@ Summary:
         <td class="jd-linkcol" width="100%">
         <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.html#setTextRectSelected(com.ksyun.media.shortvideo.view.KSYTextView.OnTextRectSelected)">setTextRectSelected</a></span>(<a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.OnTextRectSelected.html">KSYTextView.OnTextRectSelected</a> textRectSelected)
         
-        <div class="jd-descrdiv">set textRect selected listener</div>
-  
   </td></tr>
 
 
@@ -621,9 +672,9 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.html#updateTextParams(com.ksyun.media.shortvideo.view.KSYTextView.DrawTextParams)">updateTextParams</a></span>(<a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.DrawTextParams.html">KSYTextView.DrawTextParams</a> params)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.html#updateTextParams(com.ksyun.media.shortvideo.view.DrawTextParams)">updateTextParams</a></span>(<a href="../../../../../com/ksyun/media/shortvideo/view/DrawTextParams.html">DrawTextParams</a> params)
         
-        <div class="jd-descrdiv">update bgm or TextPaint</div>
+        <div class="jd-descrdiv">change current the text sticker bitmap or TextPaint</div>
   
   </td></tr>
 
@@ -650,23 +701,7 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.html#onDraw(Canvas)">onDraw</a></span>(Canvas canvas)
-        
-  </td></tr>
-
-
-	 
-    <tr class=" api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            void
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.html#onMeasure(int, int)">onMeasure</a></span>(int widthMeasureSpec, int heightMeasureSpec)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.html#onSizeChanged(int, int, int, int)">onSizeChanged</a></span>(int w, int h, int oldw, int oldh)
         
   </td></tr>
 
@@ -1029,7 +1064,7 @@ From class
 
 
 
-<a id="getTextSize()"></a>
+<a id="addTextSticker(com.ksyun.media.shortvideo.view.DrawTextParams, com.ksyun.media.shortvideo.view.StickerHelpBoxInfo)"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -1039,9 +1074,40 @@ From class
          
          
          
-        float
+        void
       </span>
-      <span class="sympad">getTextSize</span>
+      <span class="sympad">addTextSticker</span>
+      <span class="normal">(<a href="../../../../../com/ksyun/media/shortvideo/view/DrawTextParams.html">DrawTextParams</a> params, <a href="../../../../../com/ksyun/media/shortvideo/view/StickerHelpBoxInfo.html">StickerHelpBoxInfo</a> helpBoxInfo)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+<a id="clearTextContent()"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">clearTextContent</span>
       <span class="normal">()</span>
     </h4>
       <div class="api-level">
@@ -1060,7 +1126,7 @@ From class
 </div>
 
 
-<a id="initView(com.ksyun.media.shortvideo.view.KSYTextView.DrawTextParams, com.ksyun.media.shortvideo.view.StickerHelpBoxInfo, EditText)"></a>
+<a id="getCurrentTextColor()"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -1070,10 +1136,10 @@ From class
          
          
          
-        void
+        int
       </span>
-      <span class="sympad">initView</span>
-      <span class="normal">(<a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.DrawTextParams.html">KSYTextView.DrawTextParams</a> params, <a href="../../../../../com/ksyun/media/shortvideo/view/StickerHelpBoxInfo.html">StickerHelpBoxInfo</a> helpBoxInfo, EditText textView)</span>
+      <span class="sympad">getCurrentTextColor</span>
+      <span class="normal">()</span>
     </h4>
       <div class="api-level">
         <div>
@@ -1085,25 +1151,38 @@ From class
       </div>
     <div class="jd-details-descr">
       
-  <div class="jd-tagdata jd-tagdescr"><p>init text view</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>params</th>
-          <td>can be null</td>
-        </tr>
-        <tr>
-          <th>helpBoxInfo</th>
-          <td>help box</td>
-        </tr>
-        <tr>
-          <th>textView</th>
-          <td>the text input EditText
-</td>
-        </tr>
-      </table>
-  </div>
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+<a id="getCurrentTextSize()"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        float
+      </span>
+      <span class="sympad">getCurrentTextSize</span>
+      <span class="normal">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
 
     </div>
 </div>
@@ -1140,7 +1219,7 @@ From class
 </div>
 
 
-<a id="setAutoNewLine(boolean)"></a>
+<a id="removeStickers()"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -1152,7 +1231,39 @@ From class
          
         void
       </span>
-      <span class="sympad">setAutoNewLine</span>
+      <span class="sympad">removeStickers</span>
+      <span class="normal">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>remove all stickers
+</p></div>
+
+    </div>
+</div>
+
+
+<a id="setCurrentAutoNewLine(boolean)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">setCurrentAutoNewLine</span>
       <span class="normal">(boolean autoNewLine)</span>
     </h4>
       <div class="api-level">
@@ -1171,7 +1282,7 @@ From class
 </div>
 
 
-<a id="setText(java.lang.String)"></a>
+<a id="setCurrentText(java.lang.String)"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -1181,9 +1292,9 @@ From class
          
          
          
-        void
+        boolean
       </span>
-      <span class="sympad">setText</span>
+      <span class="sympad">setCurrentText</span>
       <span class="normal">(String text)</span>
     </h4>
       <div class="api-level">
@@ -1202,7 +1313,7 @@ From class
 </div>
 
 
-<a id="setTextColor(int)"></a>
+<a id="setCurrentTextColor(int)"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -1214,7 +1325,7 @@ From class
          
         void
       </span>
-      <span class="sympad">setTextColor</span>
+      <span class="sympad">setCurrentTextColor</span>
       <span class="normal">(int newColor)</span>
     </h4>
       <div class="api-level">
@@ -1228,6 +1339,37 @@ From class
     <div class="jd-details-descr">
       
   <div class="jd-tagdata jd-tagdescr"><p>set color of text</p></div>
+
+    </div>
+</div>
+
+
+<a id="setEditText(EditText)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">setEditText</span>
+      <span class="normal">(EditText text)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
 
     </div>
 </div>
@@ -1258,18 +1400,13 @@ From class
       </div>
     <div class="jd-details-descr">
       
-  <div class="jd-tagdata jd-tagdescr"><p>set textRect selected listener</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">See Also</h5>
-      <ul class="nolist"><li><code><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.OnTextRectSelected.html">KSYTextView.OnTextRectSelected</a></code></li>
-      </ul>
-  </div>
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
 
     </div>
 </div>
 
 
-<a id="updateTextParams(com.ksyun.media.shortvideo.view.KSYTextView.DrawTextParams)"></a>
+<a id="updateTextParams(com.ksyun.media.shortvideo.view.DrawTextParams)"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -1282,7 +1419,7 @@ From class
         void
       </span>
       <span class="sympad">updateTextParams</span>
-      <span class="normal">(<a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.DrawTextParams.html">KSYTextView.DrawTextParams</a> params)</span>
+      <span class="normal">(<a href="../../../../../com/ksyun/media/shortvideo/view/DrawTextParams.html">DrawTextParams</a> params)</span>
     </h4>
       <div class="api-level">
         <div>
@@ -1294,17 +1431,7 @@ From class
       </div>
     <div class="jd-details-descr">
       
-  <div class="jd-tagdata jd-tagdescr"><p>update bgm or TextPaint</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>params</th>
-          <td>text params
-</td>
-        </tr>
-      </table>
-  </div>
+  <div class="jd-tagdata jd-tagdescr"><p>change current the text sticker bitmap or TextPaint</p></div>
 
     </div>
 </div>
@@ -1319,7 +1446,7 @@ From class
 
 
 
-<a id="onDraw(Canvas)"></a>
+<a id="onSizeChanged(int, int, int, int)"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -1331,39 +1458,8 @@ From class
          
         void
       </span>
-      <span class="sympad">onDraw</span>
-      <span class="normal">(Canvas canvas)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
-
-    </div>
-</div>
-
-
-<a id="onMeasure(int, int)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        protected 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">onMeasure</span>
-      <span class="normal">(int widthMeasureSpec, int heightMeasureSpec)</span>
+      <span class="sympad">onSizeChanged</span>
+      <span class="normal">(int w, int h, int oldw, int oldh)</span>
     </h4>
       <div class="api-level">
         <div>
