@@ -322,59 +322,56 @@ public class ConfigActivity extends Activity {
                         } else {
                             Uri uri = data.getData();
                             Log.i(TAG, "Uri = " + uri.toString());
-                            List<Uri> test = new LinkedList<>();
-                            test.add(uri);
-                            startTranscode(test);
-//                            try {
-//                                // Get the file path from the URI
-//                                final String path = FileUtils.getPath(this, uri);
-//                                String mimeType = FileUtils.getMimeType(this, uri);
-//
-//                                if (!TextUtils.isEmpty(mimeType) && isSupportedMimeType(mimeType)) {
-//
-//                                    Toast.makeText(ConfigActivity.this,
-//                                            "File Selected: " + path, Toast.LENGTH_LONG).show();
-//                                    EditActivity.startActivity(getApplicationContext(), path);
-//                                } else {
-//                                    if (path.endsWith("m3u8")) {
-//
-//                                        final MergeFilesAlertDialog dialog = new MergeFilesAlertDialog
-//                                                (ConfigActivity.this, R.style.dialog);
-//                                        dialog.setCancelable(false);
-//                                        dialog.show();
-//
-//                                        KSYRemuxKit ksyRemuxKit = new KSYRemuxKit();
-//                                        ksyRemuxKit.setOnInfoListener(new KSYRemuxKit.OnInfoListener() {
-//                                            @Override
-//                                            public void onInfo(KSYRemuxKit ksyRemuxKit, int type, String msg) {
-//                                                if (type == KSYTranscodeKit.INFO_COMPLETED) {
-//                                                    dialog.dismiss();
-//                                                    EditActivity.startActivity(ConfigActivity.this, Environment
-//                                                            .getExternalStorageDirectory() + "/newRemux" +
-//                                                            ".mp4");
-//                                                }
-//                                            }
-//                                        });
-//                                        ksyRemuxKit.setOnErrorListener(new KSYRemuxKit.OnErrorListener() {
-//                                            @Override
-//                                            public void onError(KSYRemuxKit ksyRemuxKit, int type, long msg) {
-//                                                dialog.dismiss();
-//                                                Toast.makeText(ConfigActivity.this, "Remux m3u8 " +
-//                                                        "failed", Toast.LENGTH_SHORT).show();
-//                                            }
-//                                        });
-//                                        ksyRemuxKit.start(path, Environment
-//                                                .getExternalStorageDirectory() + "/newRemux" +
-//                                                ".mp4");
-//                                    } else {
-//                                        Toast.makeText(ConfigActivity.this,
-//                                                "Do not support this file, please select other File ", Toast
-//                                                        .LENGTH_LONG).show();
-//                                    }
-//                                }
-//                            } catch (Exception e) {
-//                                Log.e(TAG, "File select error:" + e);
-//                            }
+                            try {
+                                // Get the file path from the URI
+                                final String path = FileUtils.getPath(this, uri);
+                                String mimeType = FileUtils.getMimeType(this, uri);
+
+                                if (!TextUtils.isEmpty(mimeType) && isSupportedMimeType(mimeType)) {
+
+                                    Toast.makeText(ConfigActivity.this,
+                                            "File Selected: " + path, Toast.LENGTH_LONG).show();
+                                    EditActivity.startActivity(getApplicationContext(), path);
+                                } else {
+                                    if (path.endsWith("m3u8")) {
+
+                                        final MergeFilesAlertDialog dialog = new MergeFilesAlertDialog
+                                                (ConfigActivity.this, R.style.dialog);
+                                        dialog.setCancelable(false);
+                                        dialog.show();
+
+                                        KSYRemuxKit ksyRemuxKit = new KSYRemuxKit();
+                                        ksyRemuxKit.setOnInfoListener(new KSYRemuxKit.OnInfoListener() {
+                                            @Override
+                                            public void onInfo(KSYRemuxKit ksyRemuxKit, int type, String msg) {
+                                                if (type == KSYTranscodeKit.INFO_COMPLETED) {
+                                                    dialog.dismiss();
+                                                    EditActivity.startActivity(ConfigActivity.this, Environment
+                                                            .getExternalStorageDirectory() + "/newRemux" +
+                                                            ".mp4");
+                                                }
+                                            }
+                                        });
+                                        ksyRemuxKit.setOnErrorListener(new KSYRemuxKit.OnErrorListener() {
+                                            @Override
+                                            public void onError(KSYRemuxKit ksyRemuxKit, int type, long msg) {
+                                                dialog.dismiss();
+                                                Toast.makeText(ConfigActivity.this, "Remux m3u8 " +
+                                                        "failed", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                        ksyRemuxKit.start(path, Environment
+                                                .getExternalStorageDirectory() + "/newRemux" +
+                                                ".mp4");
+                                    } else {
+                                        Toast.makeText(ConfigActivity.this,
+                                                "Do not support this file, please select other File ", Toast
+                                                        .LENGTH_LONG).show();
+                                    }
+                                }
+                            } catch (Exception e) {
+                                Log.e(TAG, "File select error:" + e);
+                            }
                         }
 
                     }
