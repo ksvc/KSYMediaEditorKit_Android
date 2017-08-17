@@ -34,6 +34,7 @@
 * [x] 美颜、特效
 * [x] 编辑添加[字幕](https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/TextSticker)
 * [x] 录制编辑[变声变调](https://github.com/ksvc/KSYStreamer_Android/wiki/Audio_Filter)
+* [x] [噪声抑制](https://github.com/ksvc/KSYStreamer_Android/wiki/Audio_NoiseSuppression)
 
 ## 1.1 运行环境  
 - 最低支持版本为Android 4.4 (API level 19)
