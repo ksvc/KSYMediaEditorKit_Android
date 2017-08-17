@@ -31,7 +31,7 @@
 * [x] 录制添加[动态贴纸](https://docs.ksyun.com/read/latest/142/_book/index.html) 
 * [x] 编辑添加[静态贴纸](https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/static_sticker) 
 * [x] 录制[断点续拍](https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/clip_record)
-* [x] 美颜、特效
+* [x] [美颜](https://github.com/ksvc/KSYStreamer_Android/wiki/Video_Filter_Inner)、[特效](https://github.com/ksvc/KSYStreamer_Android/wiki/style_filter)
 * [x] 编辑添加[字幕](https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/TextSticker)
 * [x] 录制编辑[变声变调](https://github.com/ksvc/KSYStreamer_Android/wiki/Audio_Filter)
 * [x] [噪声抑制](https://github.com/ksvc/KSYStreamer_Android/wiki/Audio_NoiseSuppression)
