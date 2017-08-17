@@ -19,7 +19,7 @@
 [KSYMediaEditorKit][KSYMediaEditorKit]是一款由金山云提供的的可以快速集成的短视频编辑SDK，当前支持以下功能：
 
 * [x] [短视频录制](https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/Recorder_Config_Params)（支持[美颜](https://github.com/ksvc/KSYStreamer_Android/wiki/Video_Filter_Inner)[滤镜](https://github.com/ksvc/KSYStreamer_Android/wiki/style_filter)、[麦克风&配乐控制](https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/audio_config)，[麦克风&配乐音量控制](https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/audio_config)、[前置镜像](https://github.com/ksvc/KSYStreamer_Android/wiki/front_camera_mirror)、[动态贴纸](https://docs.ksyun.com/read/latest/142/_book/index.html)、[水印](https://github.com/ksvc/KSYStreamer_Android/wiki/WaterMark)）
-* [x] 短视频文件导入，支持mp4/3gp/mov
+* [x] 短视频文件导入，支持mp4/3gp/mov/m3u8
 * [x] 录制或导入视频预览[编辑](https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/Edit_Confi_Params)
 * [x] 编辑合成添加[滤镜](https://github.com/ksvc/KSYStreamer_Android/wiki/style_filter)
 * [x] 编辑合成添加[水印](https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/edit_watermark)
