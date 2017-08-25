@@ -15,13 +15,14 @@ import com.ksyun.media.shortvideo.demo.videorange.HorizontalListView;
 import com.ksyun.media.shortvideo.demo.videorange.VideoRangeSeekBar;
 import com.ksyun.media.shortvideo.demo.videorange.VideoThumbnailAdapter;
 import com.ksyun.media.shortvideo.demo.videorange.VideoThumbnailInfo;
+import com.ksyun.media.shortvideo.demo.view.SectionSeekLayout;
 import com.ksyun.media.shortvideo.utils.FileUtils;
 import com.ksyun.media.shortvideo.kit.KSYEditKit;
 import com.ksyun.media.shortvideo.utils.ShortVideoConstants;
-import com.ksyun.media.shortvideo.view.DrawTextParams;
-import com.ksyun.media.shortvideo.view.KSYTextView;
-import com.ksyun.media.shortvideo.view.StickerHelpBoxInfo;
-import com.ksyun.media.shortvideo.view.KSYStickerView;
+import com.ksyun.media.shortvideo.sticker.KSYStickerView;
+import com.ksyun.media.shortvideo.sticker.StickerHelpBoxInfo;
+import com.ksyun.media.shortvideo.sticker.DrawTextParams;
+import com.ksyun.media.shortvideo.sticker.KSYStickerInfo;
 import com.ksyun.media.streamer.encoder.VideoEncodeFormat;
 import com.ksyun.media.streamer.filter.audio.AudioFilterBase;
 import com.ksyun.media.streamer.filter.audio.AudioReverbFilter;
@@ -35,6 +36,7 @@ import com.ksyun.media.streamer.kit.StreamerConstants;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -45,11 +47,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -59,11 +62,11 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -71,7 +74,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -168,20 +170,23 @@ public class EditActivity extends Activity implements
     private TextView mRuddyText;
     private AppCompatSeekBar mRuddySeekBar;
 
-    private View mRemoveStickers;
-    private RecyclerView mStickerList;// 贴图素材列表
-    private KSYStickerView mKSYStickerView;  //贴纸预览区域
-    private StickerAdapter mStickerAdapter;// 贴图列表适配器
-    private Bitmap mStickerDeleteBitmap;  //贴纸辅助区域的删除按钮
-    private Bitmap mStickerRotateBitmap;  //贴纸辅助区域的旋转按钮
-    private StickerHelpBoxInfo mStickerHelpBoxInfo;  //贴纸辅助区域的画笔
-    private EditText mTextInput;  //字幕输入框
-    private ImageView mTextColorSelect; //字母颜色选择
-    private KSYTextView mTextView;   //字幕预览显示
-    private ColorPicker mColorPicker;  //字体颜色选择
-    private InputMethodManager mInputMethodManager;
-    private RecyclerView mTextStickerList;
-    private StickerAdapter mTextStickerAdapter;
+    private KSYStickerView mKSYStickerView;  //贴纸预览区域（图片贴纸和字幕贴纸公用）
+    private Bitmap mStickerDeleteBitmap;  //贴纸辅助区域的删除按钮（图片贴纸和字幕贴纸公用）
+    private Bitmap mStickerRotateBitmap;  //贴纸辅助区域的旋转按钮（图片贴纸和字幕贴纸公用）
+    private StickerHelpBoxInfo mStickerHelpBoxInfo;  //贴纸辅助区域的画笔（图片贴纸和字幕贴纸公用）
+
+    private RecyclerView mStickerList;// 图片贴纸素材列表
+    private StickerAdapter mStickerAdapter;// 图片贴纸列表适配器
+    private RecyclerView mTextStickerList;  //字幕贴纸素材列表
+    private StickerAdapter mTextStickerAdapter; //字幕贴纸列表适配器
+    private EditText mTextInput;  //字幕贴纸文字输入框
+    private ImageView mTextColorSelect; //字幕贴纸颜色选择按钮
+    private ColorPicker mColorPicker;  //字幕贴纸字体颜色选择器
+    private InputMethodManager mInputMethodManager;  //输入
+
+    private SectionSeekLayout mSectionView;  //片段编辑UI
+    private Timer mPreviewRefreshTimer;
+    private TimerTask mPreviewRefreshTask;  //跟随播放预览的缩略图自动滚动任务
 
     private ImageView mSpeedDown; //减速
     private ImageView mSpeedUp; //加速
@@ -190,11 +195,11 @@ public class EditActivity extends Activity implements
     private boolean mFirstPlay = true;
     private boolean mWaterMarkChecked;
     private AudioSeekLayout.OnAudioSeekChecked mAudioSeekListener;
-    private float mAudioLength;  //背景音乐时长
-    private float mPreviewLength; //视频裁剪后的时长
+    private long mAudioLength;  //背景音乐时长
+    private long mPreviewLength; //视频裁剪后的时长
     private AudioSeekLayout mAudioSeekLayout;  //音频seek布局
-    private PopupWindow mConfigWindow;
-    private PopupWindow mComposeWindow;
+    private Dialog mConfigDialog;
+    private ComposeDialog mComposeDialog;
     private ShortVideoConfig mComposeConfig; //输出视频参数配置
     private ButtonObserver mButtonObserver;
     private SeekBarChangedObserver mSeekBarChangedObserver;
@@ -244,12 +249,6 @@ public class EditActivity extends Activity implements
             R.id.output_config_balance, R.id.output_config_high_performance};
     private static final int[] ENCODE_PROFILE_TYPE = {VideoEncodeFormat.ENCODE_PROFILE_LOW_POWER,
             VideoEncodeFormat.ENCODE_PROFILE_BALANCE, VideoEncodeFormat.ENCODE_PROFILE_HIGH_PERFORMANCE};
-    /*****合成窗口View*****/
-    private TextView mStateTextView;
-    private TextView mProgressText;
-    private View mSystemState;
-    private TextView mCpuRate;
-    private Timer mTimer;
 
     private Handler mMainHandler;
     private boolean mPaused = false;
@@ -367,8 +366,11 @@ public class EditActivity extends Activity implements
         mBgmVolumeSeekBar.setOnSeekBarChangeListener(mSeekBarChangedObserver);
         mStickerLayout = findViewById(R.id.sticker_choose);
         mBottomViewList[STICKER_LAYOUT_INDEX] = mStickerLayout;
+        mSubtitleLayout = findViewById(R.id.subtitle_choose);
+        mBottomViewList[SUBTITLE_LAYOUT_INDEX] = mSubtitleLayout;
+
         mKSYStickerView = (KSYStickerView) findViewById(R.id.sticker_panel);
-        //初始化贴纸选择List
+        //初始化图片贴纸UI
         mStickerList = (RecyclerView) findViewById(R.id.stickers_list);
         LinearLayoutManager stickerListLayoutManager = new LinearLayoutManager(
                 this);
@@ -378,12 +380,9 @@ public class EditActivity extends Activity implements
         mStickerList.setAdapter(mStickerAdapter);
         //Adapter中设置贴纸的路径，默认支持的是assets目录下面的，其它目录需要自行修改Adapter
         mStickerAdapter.addStickerImages(mStickerPath);
-        //添加Item选择事件用于添加贴纸
+        //添加Item选择事件用于添加图片贴纸
         mStickerAdapter.setOnStickerItemClick(mOnStickerItemClick);
-
-        mSubtitleLayout = findViewById(R.id.subtitle_choose);
-        mBottomViewList[SUBTITLE_LAYOUT_INDEX] = mSubtitleLayout;
-        mTextView = (KSYTextView) findViewById(R.id.text_panel);
+        //init 字幕贴纸UI
         mTextInput = (EditText) findViewById(R.id.text_input);
         mTextInput.addTextChangedListener(mTextInputChangedListener);
         mTextColorSelect = (ImageView) findViewById(R.id.text_color);
@@ -395,14 +394,16 @@ public class EditActivity extends Activity implements
         mTextStickerList.setLayoutManager(textstickerListLayoutManager);
         mTextStickerAdapter = new StickerAdapter(this);
         mTextStickerList.setAdapter(mTextStickerAdapter);
+        //Adapter中设置贴纸的路径，默认支持的是assets目录下面的，其它目录需要自行修改Adapter
         mTextStickerAdapter.addStickerImages(mTextStickerPath);
+        //添加Item选择事件用于添加字幕贴纸
         mTextStickerAdapter.setOnStickerItemClick(mOnTextStickerItemClick);
-
-        mTextView.setTextRectSelected(mTextRectSelected);
-        mTextView.setEditText(mTextInput);
-
+        //字幕贴纸的颜色选择器
         mColorPicker = new ColorPicker(this, 255, 255, 255);
         mTextColorSelect.setOnClickListener(mButtonObserver);
+        //片段编辑
+        mSectionView = (SectionSeekLayout) findViewById(R.id.session_layout);
+
         //变速
         mSpeedDown = (ImageView) findViewById(R.id.speed_down);
         mSpeedDown.setOnClickListener(mButtonObserver);
@@ -418,11 +419,10 @@ public class EditActivity extends Activity implements
         mEditKit.setDisplayPreview(mEditPreviewView);
         mEditKit.setOnErrorListener(mOnErrorListener);
         mEditKit.setOnInfoListener(mOnInfoListener);
+        //添加贴纸View到SDK
         mEditKit.addStickerView(mKSYStickerView);
-        mEditKit.addTextStickerView(mTextView);
 
         mSpeedInfo.setText(String.valueOf(mEditKit.getNomalSpeed()));
-
         Bundle bundle = getIntent().getExtras();
         String url = bundle.getString(SRC_URL);
         if (!TextUtils.isEmpty(url)) {
@@ -434,6 +434,7 @@ public class EditActivity extends Activity implements
         initVideoRange();
         initBgmView();
         initSoundEffectView();
+        initSticker();
         startEditPreview();
 
         mInputMethodManager = (InputMethodManager) this.getSystemService(Context
@@ -446,7 +447,7 @@ public class EditActivity extends Activity implements
                 mAudioSeekListener = new AudioSeekLayout.OnAudioSeekChecked() {
                     @Override
                     public void onActionUp(long start, long end) {
-                        mEditKit.setBGMRanges(start, end);
+                        mEditKit.setBGMRanges(start, end, true);
                     }
                 };
                 if (mAudioSeekLayout.getVisibility() != View.VISIBLE) {
@@ -508,7 +509,9 @@ public class EditActivity extends Activity implements
                 case MotionEvent.ACTION_UP:
                     //未移动
                     if (!mIsPreviewMoved) {
-                        updateBottomVideible((int) mLastRawX, (int) mLastRawY);
+                        updateBottomVisible((int) mLastRawX, (int) mLastRawY);
+                        //对编辑状态的贴纸生效
+                        mSectionView.calculateRange();
                     }
 
                     mIsPreviewMoved = false;
@@ -661,10 +664,15 @@ public class EditActivity extends Activity implements
             mMainHandler = null;
         }
 
+        if (mComposeDialog != null) {
+            mComposeDialog.closeDialog();
+            mComposeDialog = null;
+        }
         mBgmAdapter.setOnItemClickListener(null);
         mBgmAdapter.clearTask();
-
-        mTextView.setTextRectSelected(null);
+        mKSYStickerView.setOnStickerSelected(null);
+        stopPreviewTimerTask();
+        mSectionView.stopPreview();
         mEditKit.stopEditPreview();
         mEditKit.release();
     }
@@ -687,11 +695,12 @@ public class EditActivity extends Activity implements
             case MotionEvent.ACTION_DOWN:
                 int x = (int) event.getRawX();
                 int y = (int) event.getRawY();
-                updateBottomVideible(x, y);
+                updateBottomVisible(x, y);
                 break;
             case MotionEvent.ACTION_MOVE:
                 break;
             case MotionEvent.ACTION_UP:
+
                 break;
             default:
                 break;
@@ -699,7 +708,7 @@ public class EditActivity extends Activity implements
         return super.onTouchEvent(event);
     }
 
-    private void updateBottomVideible(int x, int y) {
+    private void updateBottomVisible(int x, int y) {
         if (!isTouchPointInView(mBarBottomLayout, x, y)) {
             if (mBottomViewPreIndex != WATER_MARK_INDEX) {
                 mBottomViewList[mBottomViewPreIndex].setVisibility(View.INVISIBLE);
@@ -780,7 +789,74 @@ public class EditActivity extends Activity implements
         mOriginAudioVolumeSeekBar.setProgress((int) (mEditKit.getOriginAudioVolume() * 100));
     }
 
-    /*********************************字幕 begin***************************************/
+    /*********************************贴纸 begin***************************************/
+    private void initSticker() {
+        //片段信息变更回调
+        mSectionView.setOnSectionSeekListener(new SectionSeekLayout.OnSectionSeekListener() {
+            @Override
+            public void onRangeChanged(int index, long start, long end) {
+                // 更新贴纸显示时间区间
+                Log.d(TAG, "update sticker range:" + start + "~" + "end - start");
+                mKSYStickerView.updateStickerInfo(index, start, end - start);
+            }
+
+            @Override
+            public void removeSticker(int id) {
+                // 删除贴纸
+                mKSYStickerView.removeSticker(id);
+            }
+
+            @Override
+            public void onPausePreview() {
+                onPauseClick();
+            }
+
+            @Override
+            public void onSeekTo(long time) {
+                mEditKit.seekTo(time);
+                mEditKit.updateStickerDraw();
+            }
+        });
+
+        //贴纸信息变更回调
+        mKSYStickerView.setOnStickerSelected(new KSYStickerView.OnStickerStateChanged() {
+            /**
+             * 某一个贴纸被选择
+             * @param index  被选择的贴纸的index
+             * @param text  被选择的贴纸的text信息，若为非null说明为字幕贴纸
+             */
+            @Override
+            public void selected(int index, String text) {
+                //重新选择某一个区间
+                //进入贴纸编辑状态，需要先暂停预览播放
+                pausePreview();
+                mSectionView.startSeek(index);
+                //带字幕的贴纸
+                if (!TextUtils.isEmpty(text)) {
+                    mTextInput.setText(text);
+                    mTextInput.setSelection(text.length());
+                    //显示输入框
+                    mTextInput.requestFocus();
+                    mInputMethodManager.showSoftInput(mTextInput, InputMethodManager.RESULT_SHOWN);
+                }
+            }
+
+            /**
+             * 某一个贴纸被删除
+             * @param list 被删除的贴纸的index集合
+             * @param text 删除贴纸的text信息，若为非null说明为当前编辑贴纸并且是字幕贴纸
+             */
+            @Override
+            public void deleted(List<Integer> list, String text) {
+                //带字幕的当前贴纸
+                mSectionView.delete(list);
+                if (!TextUtils.isEmpty(text)) {
+                    mTextInput.setText(null);
+                }
+            }
+        });
+    }
+
     /**
      * 字幕区域被选中
      */
@@ -803,43 +879,36 @@ public class EditActivity extends Activity implements
      */
     private void changeTextColor(int newColor) {
         mTextColorSelect.setBackgroundColor(newColor);
-        mTextView.setCurrentTextColor(newColor);
+        //只有字幕贴纸该设置才会生效
+        mKSYStickerView.setCurrentTextColor(newColor);
     }
 
     private StickerAdapter.OnStickerItemClick mOnStickerItemClick = new StickerAdapter.OnStickerItemClick() {
         @Override
         public void selectedStickerItem(String path) {
             if (path.contains("0")) {
-                mKSYStickerView.removeStickers();
+                //删除所有图片贴纸
+                mKSYStickerView.removeBitmapStickers();
                 return;
             }
-            //辅助区域的删除按钮
-            if (mStickerDeleteBitmap == null) {
-                mStickerDeleteBitmap = BitmapFactory.decodeResource(getResources(),
-                        R.drawable.sticker_delete);
-            }
 
-            //辅助区域的旋转按钮
-            if (mStickerRotateBitmap == null) {
-                mStickerRotateBitmap = BitmapFactory.decodeResource(getResources(),
-                        R.drawable.sticker_rotate);
-            }
+            //进入贴纸编辑状态，需要先暂停预览播放
+            pausePreview();
+            KSYStickerInfo info = new KSYStickerInfo();
+            initStickerHelpBox();
 
-            //辅助区域信息
-            if (mStickerHelpBoxInfo == null) {
-                mStickerHelpBoxInfo = new StickerHelpBoxInfo();
-                mStickerHelpBoxInfo.deleteBit = mStickerDeleteBitmap;  //删除按钮
-                mStickerHelpBoxInfo.rotateBit = mStickerRotateBitmap;  //旋转按钮
-                //辅助区域画笔
-                Paint helpBoxPaint = new Paint();
-                helpBoxPaint.setColor(Color.BLACK);
-                helpBoxPaint.setStyle(Paint.Style.STROKE);
-                helpBoxPaint.setAntiAlias(true);  //抗锯齿
-                helpBoxPaint.setStrokeWidth(4);     //宽度
-                mStickerHelpBoxInfo.helpBoxPaint = helpBoxPaint;
+            info.bitmap = getImageFromAssetsFile(path);
+            info.startTime = Long.MIN_VALUE;
+            info.duration = mEditKit.getEditDuration();
+            info.isText = false; //是否是字幕贴纸
+            //添加一个贴纸
+            int index = mKSYStickerView.addSticker(info, mStickerHelpBoxInfo);
+            //选择下一个贴纸时让上一个贴纸生效（如果之前已选择贴纸）
+            if (mSectionView.isSeeking()) {
+                mSectionView.calculateRange();
             }
-
-            mKSYStickerView.addSticker(getImageFromAssetsFile(path), mStickerHelpBoxInfo);
+            //开始当前贴纸的片段编辑
+            mSectionView.startSeek(index);
 
         }
     };
@@ -850,20 +919,24 @@ public class EditActivity extends Activity implements
         public void selectedStickerItem(String path) {
             if (path.contains("0")) {
                 //移除所有字幕
-                mTextView.removeStickers();
+                mKSYStickerView.removeTextStickers();
                 return;
             }
-
+            KSYStickerInfo params = new KSYStickerInfo();
+            //进入字幕编辑状态，需要先暂停预览播放
+            pausePreview();
+            //字幕贴纸的文字相关信息
             DrawTextParams textParams = new DrawTextParams();
             textParams.textPaint = new TextPaint();
             textParams.textPaint.setTextSize(DrawTextParams.DEFAULT_TEXT_SIZE);
-            textParams.textPaint.setColor(mTextView.getCurrentTextColor());
+            textParams.textPaint.setColor(mKSYStickerView.getCurrentTextColor());
             textParams.textPaint.setTextAlign(Paint.Align.LEFT);
             textParams.textPaint.setStyle(Paint.Style.FILL);
             textParams.textPaint.setAntiAlias(true);
             textParams.text = mTextInput.getText().toString().trim();
             textParams.autoNewLine = false;
 
+            //字幕贴纸的文字有效范围限制
             if (path.contains("3")) {
                 textParams.text_left_padding = 0.11f;
                 textParams.text_right_padding = 0.17f;
@@ -900,21 +973,43 @@ public class EditActivity extends Activity implements
 
             if (path.contains("1")) {
                 //添加无背景的字幕
-                textParams.bitmap = null;
+                params.bitmap = null;
                 if (TextUtils.isEmpty(textParams.text)) {
                     mTextInput.setText("input text");
                     textParams.text = mTextInput.getText().toString().trim();
                 }
             } else {
-                textParams.bitmap = getImageFromAssetsFile(path);
+                params.bitmap = getImageFromAssetsFile(path);
             }
 
-            mTextView.addTextSticker(textParams, mStickerHelpBoxInfo);
+            params.textParams = textParams;
+            params.startTime = Long.MIN_VALUE;
+            params.duration = mEditKit.getEditDuration();
+            params.isText = true;  //是否是字幕贴纸
+
+            int index = mKSYStickerView.addSticker(params, mStickerHelpBoxInfo);
+            // 选择下一个字幕时让前一个字幕生效（如果之前已选择一个字幕）
+            if (mSectionView.isSeeking()) {
+                mSectionView.calculateRange();
+            }
+            //开始当前字幕的片段编辑
+            mSectionView.startSeek(index);
         }
     };
 
     /**
-     * 提示的辅助区域
+     * 暂停预览，方便片段编辑
+     */
+    private void pausePreview() {
+        if (mPauseView.getDrawable().getLevel() == 2) {
+            mEditKit.pausePlay(true);
+            mPauseView.getDrawable().setLevel(1);
+            stopPreviewTimerTask();
+        }
+    }
+
+    /**
+     * 贴纸的辅助区域
      */
     private void initStickerHelpBox() {
         if (mStickerDeleteBitmap == null) {
@@ -954,25 +1049,11 @@ public class EditActivity extends Activity implements
         @Override
         public void afterTextChanged(Editable editable) {
             String text = editable.toString().trim();
-            if (!mTextView.setCurrentText(text)) {
+            if (!mKSYStickerView.setCurrentText(text)) {
                 Toast.makeText(EditActivity.this, "请先选择字幕类型", Toast.LENGTH_SHORT).show();
             }
         }
     };
-
-    public KSYTextView.OnTextRectSelected mTextRectSelected =
-            new KSYTextView.OnTextRectSelected() {
-                @Override
-                public void textRectSelected(String text) {
-                    //更新当前字母的文字内容
-                    mTextInput.setText(text);
-                    mTextInput.setSelection(text.length());
-                    //显示输入框
-                    mTextInput.requestFocus();
-                    mInputMethodManager.showSoftInput(mTextInput, InputMethodManager.RESULT_SHOWN);
-                }
-            };
-    /*********************************字幕 end***************************************/
 
     /**
      * 从Assert文件夹中读取位图数据
@@ -993,6 +1074,7 @@ public class EditActivity extends Activity implements
         return image;
     }
 
+    /*********************************sticker end***************************************/
 
     private void onWaterMarkLogoClick(boolean isCheck) {
         if (isCheck) {
@@ -1006,9 +1088,14 @@ public class EditActivity extends Activity implements
         if (mPauseView.getDrawable().getLevel() == 2) {
             mEditKit.pausePlay(true);
             mPauseView.getDrawable().setLevel(1);
+            stopPreviewTimerTask();
         } else {
             mEditKit.pausePlay(false);
             mPauseView.getDrawable().setLevel(2);
+            mSectionView.calculateRange();
+            startPreviewTimerTask();
+            //恢复播放的时候，需要调用setDrawHelpTool隐藏当前编辑态的贴纸的辅助绘制区域
+            mKSYStickerView.setDrawHelpTool(false);
         }
     }
 
@@ -1020,30 +1107,7 @@ public class EditActivity extends Activity implements
     }
 
     private void onBackoffClick() {
-        if (mComposeWindow != null && mComposeWindow.isShowing()) {
-            new AlertDialog.Builder(EditActivity.this)
-                    .setCancelable(true)
-                    .setTitle("中止合成?")
-                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-
-                        @Override
-                        public void onClick(DialogInterface arg0, int arg1) {
-
-                        }
-                    })
-                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface arg0, int arg1) {
-                            if (!mComposeFinished) {
-                                mEditKit.stopCompose();
-                                mComposeFinished = false;
-                                mComposeWindow.dismiss();
-                                mProgressText.setText(0 + "%");
-                                resumeEditPreview();
-                            }
-                        }
-                    }).show();
-        } else if ((mBottomViewPreIndex == WATER_MARK_INDEX) ||
+        if ((mBottomViewPreIndex == WATER_MARK_INDEX) ||
                 (mBottomViewPreIndex != WATER_MARK_INDEX &&
                         mBottomViewList[mBottomViewPreIndex].getVisibility() != View.VISIBLE)) {
             EditActivity.this.finish();
@@ -1057,19 +1121,22 @@ public class EditActivity extends Activity implements
 
     private void onNextClick() {
         mBgmAdapter.clearTask();
-        showPopupWindow();
+        showConfigDialog();
+        if (mSectionView.isSeeking()) {
+            mSectionView.calculateRange();
+        }
     }
 
-    private void showPopupWindow() {
-        if (mConfigWindow != null) {
-            View rootView = LayoutInflater.from(this).inflate(R.layout.edit_activity, null);
-            mConfigWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+    private void showConfigDialog() {
+        if (mConfigDialog != null) {
+            mConfigDialog.show();
             return;
         }
+        mConfigDialog = new Dialog(this, R.style.dialog);
         View contentView = LayoutInflater.from(this).inflate(R.layout.config_popup_layout, null);
-        mConfigWindow = new PopupWindow(contentView,
-                WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, true);
-        mConfigWindow.setContentView(contentView);
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        mConfigDialog.setContentView(contentView, params);
         mOutRes480p = (TextView) contentView.findViewById(R.id.output_config_r480p);
         mOutRes480p.setOnClickListener(mButtonObserver);
         mOutRes540p = (TextView) contentView.findViewById(R.id.output_config_r540p);
@@ -1108,36 +1175,27 @@ public class EditActivity extends Activity implements
         mOutEncodeBySW.setActivated(true);
         mOutForMP4.setActivated(true);
         mOutProfileGroup[1].setActivated(true);
-        View rootView = LayoutInflater.from(this).inflate(R.layout.edit_activity, null);
-        mConfigWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+        mConfigDialog.show();
 
     }
 
-    private void showComposePopWindow() {
-        if (mComposeWindow == null) {
-            View composeView = LayoutInflater.from(this).inflate(R.layout.compose_layout, null);
-            mComposeWindow = new PopupWindow(composeView, WindowManager.LayoutParams.WRAP_CONTENT,
-                    WindowManager.LayoutParams.WRAP_CONTENT, false);
-            mComposeWindow.setContentView(composeView);
-            mComposeWindow.setOutsideTouchable(false);
-            mComposeWindow.setBackgroundDrawable(new BitmapDrawable());
-            mStateTextView = (TextView) composeView.findViewById(R.id.state_text);
-            mProgressText = (TextView) composeView.findViewById(R.id.progress_text);
-            mSystemState = composeView.findViewById(R.id.system_state);
-            mSystemState.setVisibility(View.VISIBLE);
-            mCpuRate = (TextView) composeView.findViewById(R.id.cpu_rate);
+    private void showComposeDialog() {
+        if (mComposeDialog != null && mComposeDialog.isShowing()) {
+            mComposeDialog.closeDialog();
         }
 
-        View rootView = LayoutInflater.from(this).inflate(R.layout.edit_activity, null);
-        mComposeWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+        if (mComposeDialog == null) {
+            mComposeDialog = new ComposeDialog(this, R.style.dialog);
+        }
+        mComposeDialog.show();
     }
 
     private void onOutputConfirmClick() {
         confirmConfig();
-        if (mConfigWindow.isShowing()) {
-            mConfigWindow.dismiss();
+        if (mConfigDialog.isShowing()) {
+            mConfigDialog.dismiss();
         }
-        showComposePopWindow();
+        showComposeDialog();
         //配置合成参数
         if (mComposeConfig != null) {
             //配置合成参数
@@ -1215,8 +1273,8 @@ public class EditActivity extends Activity implements
                     Log.d(TAG, "compose failed:" + type);
                     Toast.makeText(EditActivity.this,
                             "Compose Failed:" + type, Toast.LENGTH_LONG).show();
-                    if (mComposeWindow != null) {
-                        mComposeWindow.dismiss();
+                    if (mComposeDialog != null && mComposeDialog.isShowing()) {
+                        mComposeDialog.closeDialog();
                         resumeEditPreview();
                     }
                     break;
@@ -1224,8 +1282,8 @@ public class EditActivity extends Activity implements
                     Log.d(TAG, "sdk auth failed:" + type);
                     Toast.makeText(EditActivity.this,
                             "Auth failed can't start compose:" + type, Toast.LENGTH_LONG).show();
-                    if (mComposeWindow != null) {
-                        mComposeWindow.dismiss();
+                    if (mComposeDialog != null) {
+                        mComposeDialog.closeDialog();
                         resumeEditPreview();
                     }
                     break;
@@ -1241,23 +1299,31 @@ public class EditActivity extends Activity implements
     private KSYEditKit.OnInfoListener mOnInfoListener = new KSYEditKit.OnInfoListener() {
         @Override
         public Object onInfo(int type, String... msgs) {
-            Log.d(TAG, "on info:" + type);
+            Log.e(TAG, "on info:" + type);
             switch (type) {
                 case ShortVideoConstants.SHORTVIDEO_EDIT_PREPARED:
                     mEditPreviewDuration = mEditKit.getEditDuration();
                     mPreviewLength = mEditPreviewDuration;
                     initSeekBar();
                     initThumbnailAdapter();
+                    // 启动预览后，开始片段编辑UI初始化
+                    mSectionView.init(mEditPreviewDuration, mEditKit);
+                    startPreviewTimerTask();
                     break;
                 case ShortVideoConstants.SHORTVIDEO_COMPOSE_START: {
                     mEditKit.pauseEditPreview();
-                    composeStarted();
+                    if(mComposeDialog != null && mComposeDialog.isShowing()) {
+                        mComposeDialog.composeStarted();
+                    }
                     return null;
                 }
                 case ShortVideoConstants.SHORTVIDEO_COMPOSE_FINISHED: {
                     //合成结束需要置为null，再次预览时重新创建
                     clearImgFilter();
-                    composeFinished(msgs[0]);
+                    Log.e(TAG, "compose finished");
+                    if(mComposeDialog != null && mComposeDialog.isShowing()) {
+                        mComposeDialog.composeFinished(msgs[0]);
+                    }
                     mComposeFinished = true;
 
                     //通过ProbeMediaInfoTools获取合成后文件信息
@@ -1280,9 +1346,9 @@ public class EditActivity extends Activity implements
 //                    String mineType = FileUtils.getMimeType(new File(msgs[0]));
 //                    StringBuilder objectKey = new StringBuilder(getPackageName() +
 //                            "/" + System.currentTimeMillis());
-//                    if (mineType == FileUtils.MINE_TYPE_MP4) {
+//                    if (mineType == FileUtils.MIME_TYPE_MP4) {
 //                        objectKey.append(".mp4");
-//                    } else if (mineType == FileUtils.MINE_TYPE_GIF) {
+//                    } else if (mineType == FileUtils.MIME_TYPE_GIF) {
 //                        objectKey.append(".gif");
 //                    }
 //                    mCurObjectKey = objectKey.toString();
@@ -1298,51 +1364,39 @@ public class EditActivity extends Activity implements
         }
     };
 
-    public void composeStarted() {
-        mStateTextView.setVisibility(View.VISIBLE);
-        mStateTextView.setText(R.string.compose_file);
-        mTimer = new Timer();
-        mTimer.schedule(new TimerTask() {
+    private void startPreviewTimerTask() {
+        mSectionView.startPreview();
+        mPreviewRefreshTimer = new Timer();
+        mPreviewRefreshTask = new TimerTask() {
             @Override
             public void run() {
-                final int progress = mEditKit.getProgress();
-                updateProgress(progress);
+                refreshUiOnUiThread();
             }
-
-        }, 500, 500);
+        };
+        // 定义顶部滚动view的刷新频率为20fps
+        mPreviewRefreshTimer.schedule(mPreviewRefreshTask, 50, 50);
     }
 
-    private void updateProgress(final int progress) {
+    private void stopPreviewTimerTask() {
+        if (mPreviewRefreshTimer != null) {
+            mPreviewRefreshTimer.cancel();
+            mPreviewRefreshTimer = null;
+        }
+        if (mPreviewRefreshTask != null) {
+            mPreviewRefreshTask.cancel();
+            mPreviewRefreshTask = null;
+        }
+        mSectionView.stopPreview();
+    }
+
+    private void refreshUiOnUiThread() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                int rate = (int) SystemStateObtainUtil.getInstance().sampleCPU();
-                mProgressText.setText(String.valueOf(progress) + "%");
-                mCpuRate.setText(rate + "%");
+                long curTime = mEditKit.getEditPreviewCurrentPosition();
+                mSectionView.scrollAuto(curTime);
             }
         });
-    }
-
-    public void composeFinished(String path) {
-        String mime_type = FileUtils.getMimeType(new File(path));
-        final Intent intent = new Intent(EditActivity.this, PublishActivity.class);
-        intent.putExtra(COMPOSE_PATH, path);
-        intent.putExtra(MIME_TYPE, mime_type);
-        intent.putExtra(PREVIEW_LEN, mPreviewLength);
-        if (mTimer != null) {
-            mTimer.cancel();
-            mTimer = null;
-        }
-        if (mComposeWindow.isShowing()) {
-            mComposeWindow.dismiss();
-        }
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                startActivity(intent);
-            }
-        });
-
     }
 
     private class ButtonObserver implements View.OnClickListener {
@@ -1700,7 +1754,8 @@ public class EditActivity extends Activity implements
 
         mVideoRange.setText(formatTimeStr2(((int) (10 * mVideoRangeSeekBar.getRangeEnd()))
                 - (int) (10 * mVideoRangeSeekBar.getRangeStart())));
-        mPreviewLength = (mVideoRangeSeekBar.getRangeEnd() - mVideoRangeSeekBar.getRangeStart()) * 1000;
+        mPreviewLength = (long) (mVideoRangeSeekBar.getRangeEnd() -
+                mVideoRangeSeekBar.getRangeStart()) * 1000;
         if (mAudioSeekLayout != null && mAudioLength != 0 &&
                 mPreviewLength < mAudioLength) {
             mAudioSeekLayout.updateAudioSeekUI(mAudioLength, mPreviewLength);
@@ -1781,8 +1836,8 @@ public class EditActivity extends Activity implements
                     if (curIndex == STICKER_LAYOUT_INDEX && mKSYStickerView.getVisibility() != View.VISIBLE) {
                         mKSYStickerView.setVisibility(View.VISIBLE);
                     }
-                    if (curIndex == SUBTITLE_LAYOUT_INDEX && mTextView.getVisibility() != View.VISIBLE) {
-                        mTextView.setVisibility(View.VISIBLE);
+                    if (curIndex == SUBTITLE_LAYOUT_INDEX && mKSYStickerView.getVisibility() != View.VISIBLE) {
+                        mKSYStickerView.setVisibility(View.VISIBLE);
                     }
                 } else {
                     if (curIndex != preIndex) {
@@ -1797,7 +1852,10 @@ public class EditActivity extends Activity implements
                         curIndex != preIndex) {
                     mBottomViewList[preIndex].setVisibility(View.GONE);
                 }
-
+                if ((preIndex == STICKER_LAYOUT_INDEX || preIndex == SUBTITLE_LAYOUT_INDEX) &&
+                        mSectionView.isSeeking()) {
+                    mSectionView.calculateRange();
+                }
                 initBeautyUI();
             }
         };
@@ -1988,17 +2046,22 @@ public class EditActivity extends Activity implements
             }
 
             @Override
-            public void onSelected(String path) {
+            public boolean onSelected(String path) {
                 if (ViewUtils.isForeground(EditActivity.this, EditActivity.class.getName()) &&
                         !isComposeWindowShow()) {
                     mFirstPlay = true;
                     setEnableBgmEdit(true);
+                    mEditKit.setBGMRanges(0, (long) mPreviewLength, false);
                     mEditKit.startBgm(path, true);
+                    return true;
                 } else {
                     if (ViewUtils.isForeground(EditActivity.this, EditActivity.class.getName())) {
+                        mBgmAdapter.clearTask();
                         mBgmAdapter.clear();
+                        return true;
                     }
                 }
+                return false;
             }
 
             @Override
@@ -2012,7 +2075,7 @@ public class EditActivity extends Activity implements
     }
 
     private boolean isComposeWindowShow() {
-        if (mComposeWindow != null && mComposeWindow.isShowing()) {
+        if (mComposeDialog != null && mComposeDialog.isShowing()) {
             return true;
         }
         return false;
@@ -2095,6 +2158,132 @@ public class EditActivity extends Activity implements
             mEditKit.getAudioFilterMgt().setFilter(filters);
         } else {
             mEditKit.getAudioFilterMgt().setFilter((AudioFilterBase) null);
+        }
+    }
+
+    private class ComposeDialog  extends Dialog {
+        private TextView mStateTextView;
+        private TextView mProgressText;
+        private View mSystemState;
+        private TextView mCpuRate;
+        private AlertDialog mConfimDialog;
+        private Timer mTimer;
+
+        protected ComposeDialog(Context context, int themeResId) {
+            super(context, themeResId);
+        }
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            View composeView = LayoutInflater.from(EditActivity.this).inflate(R.layout.compose_layout, null);
+            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            setContentView(composeView, params);
+            setCanceledOnTouchOutside(false);
+            mStateTextView = (TextView) composeView.findViewById(R.id.state_text);
+            mProgressText = (TextView) composeView.findViewById(R.id.progress_text);
+            mSystemState = composeView.findViewById(R.id.system_state);
+            mSystemState.setVisibility(View.VISIBLE);
+            mCpuRate = (TextView) composeView.findViewById(R.id.cpu_rate);
+        }
+
+        public void composeStarted() {
+            mStateTextView.setVisibility(View.VISIBLE);
+            mStateTextView.setText(R.string.compose_file);
+            mTimer = new Timer();
+            mTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    final int progress = mEditKit.getProgress();
+                    updateProgress(progress);
+                }
+
+            }, 500, 500);
+        }
+
+        private void updateProgress(final int progress) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    int rate = (int) SystemStateObtainUtil.getInstance().sampleCPU();
+                    mProgressText.setText(String.valueOf(progress) + "%");
+                    mCpuRate.setText(rate + "%");
+                }
+            });
+        }
+
+        public void composeFinished(String path) {
+            String mime_type = FileUtils.getMimeType(new File(path));
+            final Intent intent = new Intent(EditActivity.this, PublishActivity.class);
+            intent.putExtra(COMPOSE_PATH, path);
+            intent.putExtra(MIME_TYPE, mime_type);
+            intent.putExtra(PREVIEW_LEN, mPreviewLength);
+            if (mTimer != null) {
+                mTimer.cancel();
+                mTimer = null;
+            }
+            if (mComposeDialog.isShowing()) {
+                mComposeDialog.closeDialog();
+            }
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(intent);
+                }
+            });
+        }
+
+        @Override
+        public boolean onKeyDown(int keyCode, KeyEvent event) {
+            switch (keyCode) {
+                case KeyEvent.KEYCODE_BACK:
+                    if (!mComposeFinished) {
+                        mConfimDialog = new AlertDialog.Builder(EditActivity.this).setCancelable
+                                (true)
+                                .setTitle("中止合成?")
+                                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(DialogInterface arg0, int arg1) {
+                                        mConfimDialog = null;
+                                    }
+                                })
+                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface arg0, int arg1) {
+                                        if (!mComposeFinished) {
+                                            mEditKit.stopCompose();
+                                            mComposeFinished = false;
+                                            closeDialog();
+                                            resumeEditPreview();
+                                        }
+                                        mConfimDialog = null;
+                                    }
+                                }).show();
+                    } else {
+                        closeDialog();
+                        resumeEditPreview();
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return false;
+        }
+
+        public void closeDialog() {
+            mProgressText.setText(0 + "%");
+            if (mTimer != null) {
+                mTimer.cancel();
+                mTimer = null;
+            }
+
+            if(mConfimDialog != null && mConfimDialog.isShowing()) {
+                mConfimDialog.dismiss();
+                mConfimDialog = null;
+            }
+
+            EditActivity.ComposeDialog.this.dismiss();
         }
     }
 }

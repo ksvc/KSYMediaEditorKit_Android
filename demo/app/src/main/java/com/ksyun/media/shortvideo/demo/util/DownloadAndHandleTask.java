@@ -23,7 +23,6 @@ public class DownloadAndHandleTask extends AsyncTask<String, Integer, String> {
         mDownloadListener = listener;
     }
 
-
     @Override
     protected String doInBackground(String... params) {
         try {

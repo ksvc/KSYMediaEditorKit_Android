@@ -41,7 +41,7 @@ public class BgmSelectAdapter extends RecyclerView.Adapter<BgmSelectAdapter.MyVi
     public interface OnItemClickListener {
         void onCancel();
 
-        void onSelected(String path);
+        boolean onSelected(String path);
 
         void onImport();
     }
@@ -115,9 +115,11 @@ public class BgmSelectAdapter extends RecyclerView.Adapter<BgmSelectAdapter.MyVi
 
                         if (!TextUtils.isEmpty(mCurrentFilePath) && mCurrentFilePath.equals
                                 (downloadFilePath)) {
-                            holder.setActivated(true);
                             if (mListener != null) {
-                                mListener.onSelected(mCurrentFilePath);
+                                boolean isShow = mListener.onSelected(mCurrentFilePath);
+                                if(isShow) {
+                                    holder.setActivated(true);
+                                }
                             }
                         }
                     }
@@ -160,7 +162,6 @@ public class BgmSelectAdapter extends RecyclerView.Adapter<BgmSelectAdapter.MyVi
             mPreHolder.mProgress.setVisibility(View.GONE);
             mPreHolder.setActivated(false);
         }
-        clearTask();
     }
 
     public void clearTask() {

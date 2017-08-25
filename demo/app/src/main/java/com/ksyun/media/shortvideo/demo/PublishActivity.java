@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -32,7 +31,6 @@ import com.ksyun.ks3.exception.Ks3Error;
 import com.ksyun.ks3.services.handler.PutObjectResponseHandler;
 import com.ksyun.media.player.IMediaPlayer;
 import com.ksyun.media.player.KSYMediaPlayer;
-import com.ksyun.media.player.misc.KSYProbeMediaInfo;
 import com.ksyun.media.shortvideo.demo.util.HttpRequestTask;
 import com.ksyun.media.shortvideo.demo.util.KS3TokenTask;
 import com.ksyun.media.shortvideo.utils.FileUtils;
@@ -48,7 +46,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class PublishActivity extends Activity {
     //获取ks3播放地址，仅供demo使用，不提供上线服务
@@ -57,6 +55,11 @@ public class PublishActivity extends Activity {
     public static final String COMPOSE_PATH = "compose_path";
     public static final String MIME_TYPE = "mime_type";
     public static final String PREVIEW_LEN = "preview_length";
+
+    //标记上传状态
+    private static final int UPLOAD_STATE_NONE = 0;
+    private static final int UPLOAD_STATE_STARTING = 1;
+    private static final int UPLOAD_STATE_STARTED = 2;
 
     private View mPreviewLayout; //上传后的预览布局
     private View mCoverSeekLayout; //封面选择布局
@@ -77,7 +80,7 @@ public class PublishActivity extends Activity {
     private volatile Bitmap mBitmap;  //视频封面
     private long mSeekTime;
     private Timer mSeekTimer;
-    private float mPreviewLength;  //视频预览时长
+    private long mPreviewLength;  //视频预览时长
     private ButtonObserver mButtonObserver;
     private ProbeMediaInfoTools mImageSeekTools; //根据时间获取视频帧的工具类
     private Handler mMainHandler;
@@ -92,18 +95,21 @@ public class PublishActivity extends Activity {
     private Handler mSeekThumbnailHandler;
     private Runnable mSeekThumbnailRunable;
     private volatile boolean mStopSeekThumbnail = true;
-    private volatile boolean mH265File = false;
 
     /*****合成窗口View*****/
     private TextView mStateTextView;
     private TextView mProgressText;   //显示上传进度
     private PopupWindow mUploadWindow;  //上传状态的显示窗口
+    private View mParentView;
+
+    private AtomicInteger mUploadState;  //上传ks3状态
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_publish);
+        mParentView = LayoutInflater.from(this).inflate(R.layout.activity_publish, null);
         //must set
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -113,7 +119,7 @@ public class PublishActivity extends Activity {
         mFilePath = mLocalPath;
         mMainHandler = new Handler();
         mFileMineType = getIntent().getExtras().getString(MIME_TYPE);
-        mPreviewLength = getIntent().getExtras().getFloat(PREVIEW_LEN);
+        mPreviewLength = getIntent().getExtras().getLong(PREVIEW_LEN);
         mPreviewLayout = findViewById(R.id.compose_preview_layout);
         mCoverSeekLayout = findViewById(R.id.cover_layout);
         mButtonObserver = new ButtonObserver();
@@ -131,14 +137,13 @@ public class PublishActivity extends Activity {
         webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         mSurfaceHolder = mVideoSurfaceView.getHolder();
         mSurfaceHolder.addCallback(mSurfaceCallback);
-        if (!mFileMineType.equals(FileUtils.MINE_TYPE_GIF)) {
+        mUploadState = new AtomicInteger(UPLOAD_STATE_NONE);
+        if (!mFileMineType.equals(FileUtils.MIME_TYPE_GIF)) {
             startCoverSeek();
         } else {
             mCoverSeekLayout.setVisibility(View.GONE);
             startUpload();  //若为gif则不选择封面直接上传
         }
-
-
     }
 
     private void initSeekThread() {
@@ -155,14 +160,16 @@ public class PublishActivity extends Activity {
             mSeekThumbnailRunable = new Runnable() {
                 @Override
                 public void run() {
-                    if (!mH265File) {
-                        mBitmap = mImageSeekTools.getVideoThumbnailAtTime(mLocalPath, mSeekTime,
-                                0, 0, true);
-                    } else {
-                        //h265的视频暂时不支持精准seek
-                        mBitmap = mImageSeekTools.getVideoThumbnailAtTime(mLocalPath, mSeekTime,
-                                0, 0, false);
+                    if (mSeekTime < 0) {
+                        mSeekTime = 0;
                     }
+
+                    if (mSeekTime > mPreviewLength) {
+                        mSeekTime = mPreviewLength;
+                    }
+
+                    mBitmap = mImageSeekTools.getVideoThumbnailAtTime(mLocalPath, mSeekTime,
+                            0, 0, true);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -192,6 +199,7 @@ public class PublishActivity extends Activity {
     @Override
     protected void onDestroy() {
         releasePlay();
+
         if (mPlayUrlGetTask != null) {
             mPlayUrlGetTask.cancel(true);
             mPlayUrlGetTask.release();
@@ -219,21 +227,6 @@ public class PublishActivity extends Activity {
     }
 
     private void startCoverSeek() {
-        //h265的视频暂时不支持精准获取缩略图
-        ProbeMediaInfoTools tools = new ProbeMediaInfoTools();
-        tools.probeMediaInfo(mLocalPath, new ProbeMediaInfoTools.ProbeMediaInfoListener() {
-            @Override
-            public void probeMediaInfoFinished(ProbeMediaInfoTools.MediaInfo info) {
-                if (info.videoStreams != null && info.videoStreams.size() > 0) {
-                    KSYProbeMediaInfo.KSYVideoCodecType videoCodecType = info.videoStreams.get(0)
-                            .getVideoCodecType();
-                    if (videoCodecType == KSYProbeMediaInfo.KSYVideoCodecType.KSY_VIDEO_H265) {
-                        mH265File = true;
-                    }
-                }
-            }
-        });
-
         mCoverBack = (ImageView) findViewById(R.id.cover_back);
         mCoverBack.setOnClickListener(mButtonObserver);
         mCoverComplete = (TextView) findViewById(R.id.cover_complete);
@@ -242,6 +235,15 @@ public class PublishActivity extends Activity {
         mCoverSeekBar = (AppCompatSeekBar) findViewById(R.id.cover_seekBar);
         mImageSeekTools = new ProbeMediaInfoTools();
         mBitmap = mImageSeekTools.getVideoThumbnailAtTime(mLocalPath, mSeekTime, 0, 0, true);
+
+        mImageSeekTools.probeMediaInfo(mLocalPath, new ProbeMediaInfoTools.ProbeMediaInfoListener() {
+            @Override
+            public void probeMediaInfoFinished(ProbeMediaInfoTools.MediaInfo info) {
+                //使用合成视频时长更新视频的时长
+                mPreviewLength = info.duration;
+            }
+        });
+
         mCoverImage.setImageBitmap(mBitmap);
         mCoverSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -289,6 +291,14 @@ public class PublishActivity extends Activity {
     }
 
     private void onBackClick() {
+        if (mUploadState.get() >= UPLOAD_STATE_STARTING && mUploadState.get() <=
+                UPLOAD_STATE_STARTED) {
+            //取消上传，直接预览播放本地视频
+            mKS3Wrap.cancel();
+            onUploadFinished(false);
+            return;
+        }
+
         Intent intent = new Intent(PublishActivity.this, ConfigActivity.class);
         startActivity(intent);
     }
@@ -300,12 +310,13 @@ public class PublishActivity extends Activity {
     private void startUpload() {
         mKS3Wrap = KS3ClientWrap.getInstance(getApplicationContext());
         if (!TextUtils.isEmpty(mLocalPath)) {
+            mUploadState.set(UPLOAD_STATE_STARTING);
             String mineType = FileUtils.getMimeType(new File(mLocalPath));
             StringBuilder objectKey = new StringBuilder(getPackageName() +
                     "/" + System.currentTimeMillis());
-            if (mineType == FileUtils.MINE_TYPE_MP4) {
+            if (mineType == FileUtils.MIME_TYPE_MP4) {
                 objectKey.append(".mp4");
-            } else if (mineType == FileUtils.MINE_TYPE_GIF) {
+            } else if (mineType == FileUtils.MIME_TYPE_GIF) {
                 objectKey.append(".gif");
             }
             mCurObjectKey = objectKey.toString();
@@ -354,11 +365,13 @@ public class PublishActivity extends Activity {
         @Override
         public void onTaskFinish() {
             Log.d(TAG, "onTaskFinish");
+            mUploadState.set(UPLOAD_STATE_NONE);
         }
 
         @Override
         public void onTaskCancel() {
             Log.d(TAG, "onTaskCancel");
+            mUploadState.set(UPLOAD_STATE_NONE);
         }
 
         @Override
@@ -368,6 +381,7 @@ public class PublishActivity extends Activity {
     };
 
     private void onUploadStart() {
+        mUploadState.set(UPLOAD_STATE_STARTED);
         resetPlay();
         showUploadProgressDialog();
     }
@@ -384,6 +398,7 @@ public class PublishActivity extends Activity {
     }
 
     private void onUploadFinished(final boolean success) {
+        mUploadState.set(UPLOAD_STATE_NONE);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -413,7 +428,7 @@ public class PublishActivity extends Activity {
                                                 url = "http://" + url;
                                             }
                                             mFilePath = url;
-                                            Log.e(TAG, "play url:" + mFilePath);
+                                            Log.d(TAG, "play url:" + mFilePath);
                                             startPreview();
                                         }
                                     } catch (JSONException e) {
@@ -429,28 +444,28 @@ public class PublishActivity extends Activity {
                     mStateTextView.setText(R.string.get_file_url);
                     mPlayUrlGetTask.execute(FILE_URL_SERVER + "?objkey=" + mCurObjectKey);
                 } else {
-                    mStateTextView.setVisibility(View.VISIBLE);
-                    mStateTextView.setText(R.string.upload_file_fail);
+                    if (mStateTextView != null) {
+                        mStateTextView.setVisibility(View.VISIBLE);
+                        mStateTextView.setText(R.string.upload_file_fail);
+                    }
                     startPreview();
                 }
-
             }
         });
     }
 
     private void showUploadProgressDialog() {
-        View contentView = LayoutInflater.from(this).inflate(R.layout.compose_layout, null);
-        mStateTextView = (TextView) contentView.findViewById(R.id.state_text);
-        mProgressText = (TextView) contentView.findViewById(R.id.progress_text);
-        mStateTextView.setText(R.string.upload_file);
-
         if (mUploadWindow == null) {
+            View contentView = LayoutInflater.from(this).inflate(R.layout.compose_layout, null);
+            mStateTextView = (TextView) contentView.findViewById(R.id.state_text);
+            mProgressText = (TextView) contentView.findViewById(R.id.progress_text);
+            mStateTextView.setText(R.string.upload_file);
             mUploadWindow = new PopupWindow(contentView, WindowManager.LayoutParams.WRAP_CONTENT,
                     WindowManager.LayoutParams.WRAP_CONTENT);
         }
+
         if (!mUploadWindow.isShowing()) {
-            View parent = LayoutInflater.from(this).inflate(R.layout.activity_publish, null);
-            mUploadWindow.showAtLocation(parent, Gravity.CENTER, 0, 0);
+            mUploadWindow.showAtLocation(mParentView, Gravity.CENTER, 0, 0);
         }
     }
 
@@ -508,10 +523,11 @@ public class PublishActivity extends Activity {
             @Override
             public void run() {
                 Log.d(TAG, "start compose file Preview:");
-                if (mFileMineType.equals(FileUtils.MINE_TYPE_GIF)) {
-                    if (mUploadWindow != null && mUploadWindow.isShowing()) {
-                        mUploadWindow.dismiss();
-                    }
+                if (mUploadWindow != null && mUploadWindow.isShowing()) {
+                    mUploadWindow.dismiss();
+                }
+
+                if (mFileMineType.equals(FileUtils.MIME_TYPE_GIF)) {
                     mPreviewLayout.setVisibility(View.VISIBLE);
                     mGifView.setVisibility(View.VISIBLE);
                     mGifView.loadUrl("file://" + mLocalPath);

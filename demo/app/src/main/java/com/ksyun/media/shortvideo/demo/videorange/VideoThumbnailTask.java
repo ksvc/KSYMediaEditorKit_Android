@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -22,23 +23,26 @@ import java.lang.ref.WeakReference;
 public class VideoThumbnailTask extends AsyncTask<Long, Void, Bitmap> {
     private static final String TAG = VideoThumbnailTask.class.getSimpleName();
 
-    private final WeakReference<ImageView> imageViewReference;
+    private final WeakReference<ImageView> mImageViewReference;
     private Context mContext;
     private long mMS = 0;
     private VideoThumbnailInfo mVideoThumbnailData;
     private KSYEditKit mRetriever;
+    private boolean mH265File;
+    private Bitmap mBitmap;
 
     private final WeakReference<View> mNext;
 
     public VideoThumbnailTask(Context context, ImageView imageView, long ms,
                               VideoThumbnailInfo videoThumbnailData, KSYEditKit retriever, View
-                                      next) {
+                                      next, boolean h265file) {
         mContext = context;
-        imageViewReference = new WeakReference<ImageView>(imageView);
+        mImageViewReference = new WeakReference<>(imageView);
         mMS = ms;
-        mNext = new WeakReference<View>(next);
+        mNext = new WeakReference<>(next);
         mVideoThumbnailData = videoThumbnailData;
         mRetriever = retriever;
+        mH265File = h265file;
     }
 
     private static int mWorkTaskNum = 0;
@@ -50,10 +54,15 @@ public class VideoThumbnailTask extends AsyncTask<Long, Void, Bitmap> {
     public static void loadBitmap(Context context, ImageView imageView, Bitmap defaultBitmap, long ms,
                                   VideoThumbnailInfo videoThumbnailData, KSYEditKit retriever, View
                                           next) {
-
         if (cancelPotentialWork(ms, imageView)) {
+            boolean h265File = false;
+            String vcodec = retriever.getVideoCodecMeta();
+            if (!TextUtils.isEmpty(vcodec) && vcodec.equals("hevc") || vcodec.equals("h265")) {
+                h265File = true;
+            }
+
             final VideoThumbnailTask task = new VideoThumbnailTask(context,
-                    imageView, ms, videoThumbnailData, retriever, next);
+                    imageView, ms, videoThumbnailData, retriever, next, h265File);
             mWorkTaskNum++;
             final AsyncDrawable asyncDrawable =
                     new AsyncDrawable(context.getResources(), defaultBitmap, task);
@@ -64,22 +73,24 @@ public class VideoThumbnailTask extends AsyncTask<Long, Void, Bitmap> {
 
     @Override
     protected Bitmap doInBackground(Long... params) {
-//        if(mContext == null || mContext.isFinishing()){
-//            return null;
-//        }
-//        if (mContext.mBeginClip) {
-//            return null;
-//        }
-        Bitmap bitmap = mRetriever.getVideoThumbnailAtTime(mMS, 0, 0);
-        if (bitmap == null) {
-            Log.w("test", "can't get frame at" + mMS);
+
+        if (!mH265File) {
+            //精准seek比较耗时，同时存在获取到黑帧的情况，暂时不使用
+            mBitmap = mRetriever.getVideoThumbnailAtTime(mMS, mVideoThumbnailData.mWidth, 0, false);
+        } else {
+            //h265的视频暂时不支持精准seek
+            mBitmap = mRetriever.getVideoThumbnailAtTime(mMS, mVideoThumbnailData.mWidth, 0, false);
+        }
+        if (mBitmap == null) {
+            Log.w(TAG, "can't get frame at" + mMS);
 
             return null;
         }
+        if (mVideoThumbnailData != null) {
+            mVideoThumbnailData.mBitmap = mBitmap;
+        }
 
-        mVideoThumbnailData.mBitmap = bitmap;
-
-        return bitmap;
+        return mBitmap;
     }
 
     @Override
@@ -87,15 +98,10 @@ public class VideoThumbnailTask extends AsyncTask<Long, Void, Bitmap> {
 
         if (mWorkTaskNum > 0) {
             mWorkTaskNum--;
-            //if(mNext != null) ((TextView) mNext).setVisibility(View.GONE);
         }
 
-//        if(mContext == null || mContext.isFinishing()){
-//            return;
-//        }
-
         // if cancel was called on this task or the "exit early" flag is set then we're done
-        final ImageView imageView = imageViewReference.get();
+        final ImageView imageView = mImageViewReference.get();
         if (value != null && imageView != null && !((Activity) mContext).isFinishing()) {
             imageView.setImageBitmap(value);
         }
