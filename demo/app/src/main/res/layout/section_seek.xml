@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp">
+
+    <HorizontalScrollView
+        android:id="@+id/thumbnail_scroll_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <RelativeLayout
+            android:id="@+id/scroll_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/section_recycler"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+        </RelativeLayout>
+    </HorizontalScrollView>
+
+    <View
+        android:id="@+id/section_indicator"
+        android:layout_width="6dp"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:background="#ADFF2F" />
+
+    <RelativeLayout
+        android:id="@+id/section_top"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/section_tools"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/seek_rear"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/seek_rear" />
+
+            <View
+                android:id="@+id/seek_body"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/section_rect" />
+
+            <ImageView
+                android:id="@+id/seek_front"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/seek_front" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

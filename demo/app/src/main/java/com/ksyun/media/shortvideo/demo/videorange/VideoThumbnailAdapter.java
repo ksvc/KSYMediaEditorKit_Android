@@ -4,6 +4,8 @@ import com.ksyun.media.shortvideo.demo.R;
 import com.ksyun.media.shortvideo.kit.KSYEditKit;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ public class VideoThumbnailAdapter extends ArrayAdapter<VideoThumbnailInfo> {
     private Context mContext;
     private KSYEditKit mRetriever;
     private View mNext;
+    private Bitmap mDefaultBmp;
 
     public VideoThumbnailAdapter(Context context, VideoThumbnailInfo[] values, KSYEditKit
             retriever) {
@@ -29,6 +32,7 @@ public class VideoThumbnailAdapter extends ArrayAdapter<VideoThumbnailInfo> {
         mRetriever = retriever;
         mNext = null;
         mInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mDefaultBmp = BitmapFactory.decodeResource(context.getResources(),R.drawable.bottom_default);
     }
 
     public int getTaskNum() {
@@ -53,7 +57,7 @@ public class VideoThumbnailAdapter extends ArrayAdapter<VideoThumbnailInfo> {
         param.width = mList[position].mWidth;
         convertView.setLayoutParams(param);
 
-        holder.thumbnail.setImageBitmap(null);
+        holder.thumbnail.setImageBitmap(mDefaultBmp);
         if (mList[position].mBitmap != null) {
             holder.thumbnail.setImageBitmap(mList[position].mBitmap);
         } else {

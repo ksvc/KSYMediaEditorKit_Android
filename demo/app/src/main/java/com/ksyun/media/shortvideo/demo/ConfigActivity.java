@@ -3,6 +3,7 @@ package com.ksyun.media.shortvideo.demo;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.Context;
@@ -20,7 +21,9 @@ import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -29,9 +32,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ksyun.media.shortvideo.demo.util.FileUtils;
+import com.ksyun.media.shortvideo.kit.KSYEasyMergeKit;
 import com.ksyun.media.shortvideo.kit.KSYRemuxKit;
 import com.ksyun.media.shortvideo.kit.KSYTranscodeKit;
-import com.ksyun.media.shortvideo.utils.MP4ParserUtil;
 import com.ksyun.media.streamer.encoder.VideoEncodeFormat;
 import com.ksyun.media.streamer.framework.AVConst;
 import com.ksyun.media.streamer.kit.StreamerConstants;
@@ -56,6 +59,27 @@ public class ConfigActivity extends Activity {
     private final static String TITLE = "ksy_import_file";
     private final static String EXT_TRANSCODE = "/newTranscode";//转码生成后的文件前缀
 
+    /*******转码参数配置示例******/
+    private TextView mOutRes480p;
+    private TextView mOutRes540p;
+    private TextView mOutEncodeWithH264;
+    private TextView mOutEncodeWithH265;
+    private TextView mOutEncodeByHW;
+    private TextView mOutEncodeBySW;
+    private TextView mOutForMP4;
+    private TextView mOutForGIF;
+    private TextView[] mOutProfileGroup;
+    private EditText mOutFrameRate;
+    private EditText mOutVideoBitrate;
+    private EditText mOutAudioBitrate;
+    private EditText mOutVideoCRF;
+    private TextView mOutputConfirm;
+    private List<Uri> mTransCodeUris;
+    private ShortVideoConfig mTransConfig; //输出视频参数配置
+
+    private static final int[] OUTPUT_PROFILE_ID = {R.id.trans_output_config_low_power,
+            R.id.trans_output_config_balance, R.id.trans_output_config_high_performance};
+
     /*******录制参数配置示例******/
     private TextView mRecRes720p;
     private TextView mRecRes1080p;
@@ -69,6 +93,7 @@ public class ConfigActivity extends Activity {
     private EditText mRecAudioBitrate;
 
     private AsyncTask mMergeFilesTask;
+    private Dialog mTransConfDialog;
     private MergeFilesAlertDialog mTranscodeDialog;
     private KSYTranscodeKit mCurrentTranscodeKit;
     private List<String> mTranscodedFiles;
@@ -95,6 +120,7 @@ public class ConfigActivity extends Activity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         mObserver = new ConfigObserver();
+        mOutProfileGroup = new TextView[3];
 
         mRecRes720p = (TextView) findViewById(R.id.record_config_r720p);
         mRecRes720p.setOnClickListener(mObserver);
@@ -277,6 +303,60 @@ public class ConfigActivity extends Activity {
                     //启动短视频录制
                     RecordActivity.startActivity(getApplicationContext());
                     break;
+                case R.id.trans_output_config_audio_bitrate:
+                    mOutRes480p.setActivated(true);
+                    mOutRes540p.setActivated(false);
+                    break;
+                case R.id.trans_output_config_r540p:
+                    mOutRes480p.setActivated(false);
+                    mOutRes540p.setActivated(true);
+                    break;
+                case R.id.trans_output_config_h264:
+                    mOutEncodeWithH264.setActivated(true);
+                    mOutEncodeWithH265.setActivated(false);
+                    break;
+                case R.id.trans_output_config_h265:
+                    mOutEncodeWithH264.setActivated(false);
+                    mOutEncodeWithH265.setActivated(true);
+                    break;
+                case R.id.trans_output_config_hw:
+                    mOutEncodeByHW.setActivated(true);
+                    mOutEncodeBySW.setActivated(false);
+                    mOutVideoCRF.setEnabled(false);
+                    break;
+                case R.id.trans_output_config_sw:
+                    mOutEncodeByHW.setActivated(false);
+                    mOutEncodeBySW.setActivated(true);
+                    mOutVideoCRF.setEnabled(true);
+                    break;
+                case R.id.trans_output_config_mp4:
+                    mOutForMP4.setActivated(true);
+                    mOutForGIF.setActivated(false);
+                    mOutEncodeWithH264.setEnabled(true);
+                    mOutEncodeWithH265.setEnabled(true);
+                    mOutEncodeByHW.setEnabled(true);
+                    break;
+                case R.id.trans_output_config_gif:
+                    mOutForMP4.setActivated(false);
+                    mOutForGIF.setActivated(true);
+                    mOutEncodeWithH264.setActivated(false);
+                    mOutEncodeWithH265.setActivated(false);
+                    mOutEncodeWithH264.setEnabled(false);
+                    mOutEncodeWithH265.setEnabled(false);
+                    //gif 不支持硬编
+                    mOutEncodeByHW.setEnabled(false);
+                    mOutEncodeByHW.setActivated(false);
+                    mOutEncodeBySW.setActivated(true);
+                    break;
+                case R.id.output_config_low_power:
+                    onOutputEncodeProfileClick(0);
+                    break;
+                case R.id.output_config_balance:
+                    onOutputEncodeProfileClick(1);
+                    break;
+                case R.id.output_config_high_performance:
+                    onOutputEncodeProfileClick(2);
+                    break;
                 default:
                     break;
             }
@@ -316,8 +396,9 @@ public class ConfigActivity extends Activity {
                                 uris.add(item.getUri());
                                 Log.i(TAG, "Uri = " + item.getUri());
                             }
+                            showTransCodeDialog(uris);
                             //多选后转码和拼接处理
-                            startTranscode(uris);
+//                            startTranscode(uris);
 
                         } else {
                             Uri uri = data.getData();
@@ -344,7 +425,8 @@ public class ConfigActivity extends Activity {
                                         ksyRemuxKit.setOnInfoListener(new KSYRemuxKit.OnInfoListener() {
                                             @Override
                                             public void onInfo(KSYRemuxKit ksyRemuxKit, int type, String msg) {
-                                                if (type == KSYTranscodeKit.INFO_COMPLETED) {
+                                                if (type == KSYRemuxKit.INFO_PUBLISHER_STOPPED) {
+                                                    ksyRemuxKit.release();
                                                     dialog.dismiss();
                                                     EditActivity.startActivity(ConfigActivity.this, Environment
                                                             .getExternalStorageDirectory() + "/newRemux" +
@@ -355,6 +437,7 @@ public class ConfigActivity extends Activity {
                                         ksyRemuxKit.setOnErrorListener(new KSYRemuxKit.OnErrorListener() {
                                             @Override
                                             public void onError(KSYRemuxKit ksyRemuxKit, int type, long msg) {
+                                                ksyRemuxKit.release();
                                                 dialog.dismiss();
                                                 Toast.makeText(ConfigActivity.this, "Remux m3u8 " +
                                                         "failed", Toast.LENGTH_SHORT).show();
@@ -410,26 +493,32 @@ public class ConfigActivity extends Activity {
 
             if (mTranscodedFiles != null && mTranscodedFiles.size() > 0) {
                 final String outputFile = getTranscodeFileFolder() + "/mergedFile" + System.currentTimeMillis() + ".mp4";
-                mMergeFilesTask = new AsyncTask() {
+                KSYEasyMergeKit ksyEasyMergeKit = new KSYEasyMergeKit();
+                ksyEasyMergeKit.setOnInfoListener(new KSYEasyMergeKit.OnInfoListener() {
                     @Override
-                    protected Object doInBackground(Object[] objects) {
-                        boolean succ = MP4ParserUtil.stitchMovies(mTranscodedFiles, outputFile);
-                        Log.d(TAG, "outputFile = " + outputFile + "  succ = " + succ);
-                        mMergeFilesTask = null;
-                        return null;
+                    public void onInfo(KSYEasyMergeKit ksyEasyMergeKit, int type, String msg) {
+                        if (type == KSYEasyMergeKit.INFO_PUBLISHER_STOPPED) {
+                            ksyEasyMergeKit.release();
+                            if (mTranscodeDialog != null) {
+                                mTranscodeDialog.dismiss();
+                                mTranscodeDialog = null;
+                            }
+                            EditActivity.startActivity(ConfigActivity.this, outputFile);
+                        }
                     }
-
+                });
+                ksyEasyMergeKit.setOnErrorListener(new KSYEasyMergeKit.OnErrorListener() {
                     @Override
-                    protected void onPostExecute(Object obj) {
+                    public void onError(KSYEasyMergeKit ksyEasyMergeKit, int type, long msg) {
+                        Log.d(TAG, "merge failed: " + type);
+                        ksyEasyMergeKit.release();
                         if (mTranscodeDialog != null) {
                             mTranscodeDialog.dismiss();
                             mTranscodeDialog = null;
                         }
-                        EditActivity.startActivity(ConfigActivity.this, outputFile);
                     }
-
-                };
-                mMergeFilesTask.execute();
+                });
+                ksyEasyMergeKit.start(mTranscodedFiles, outputFile);
             } else {
                 if (mTranscodeDialog != null) {
                     mTranscodeDialog.dismiss();
@@ -456,20 +545,20 @@ public class ConfigActivity extends Activity {
         final KSYTranscodeKit ksyTranscodeKit = new KSYTranscodeKit();
         mCurrentTranscodeKit = ksyTranscodeKit;
         //设置转码后视频的分辨率
+        ksyTranscodeKit.setEncodeMethod(mTransConfig.encodeMethod);
         ksyTranscodeKit.setTargetResolution(480, 480);
-        ksyTranscodeKit.setAudioSampleRate(22050);
-        ksyTranscodeKit.setAudioChannels(1);
-        ksyTranscodeKit.setVideoFps(20);
-        ksyTranscodeKit.setVideoKBitrate(800);
-        ksyTranscodeKit.setAudioKBitrate(48);
+        ksyTranscodeKit.setAudioSampleRate(mTransConfig.audioSampleRate);
+        ksyTranscodeKit.setAudioChannels(mTransConfig.audioChannel);
+        ksyTranscodeKit.setVideoFps(mTransConfig.fps);
+        ksyTranscodeKit.setVideoKBitrate(mTransConfig.videoBitrate);
+        ksyTranscodeKit.setAudioKBitrate(mTransConfig.audioBitrate);
         ksyTranscodeKit.setOnInfoListener(new KSYTranscodeKit.OnInfoListener() {
             @Override
             public void onInfo(KSYTranscodeKit ksyTranscodeKit, int type, String msg) {
                 Log.d(TAG, "transcode kit info:" + type);
-                if (type == KSYTranscodeKit.INFO_COMPLETED) {
+                if (type == KSYTranscodeKit.INFO_PUBLISHER_COMPLETED) {
                     //将转码后的文件添加到merge列表中
                     mTranscodedFiles.add(msg);
-                    ksyTranscodeKit.release();
                     mCurrentTranscodeKit = null;
                     try {
                         //start trancode next file
@@ -477,9 +566,8 @@ public class ConfigActivity extends Activity {
                     } catch (Exception e) {
                         Log.e(TAG, "File select error:" + e);
                     }
-                } else if (type == KSYTranscodeKit.INFO_ABORTED) {
+                } else if (type == KSYTranscodeKit.INFO_PUBLISHER_ABORTED) {
                     mTranscodedFiles.clear();
-                    ksyTranscodeKit.release();
                     mCurrentTranscodeKit = null;
                 }
             }
@@ -542,10 +630,10 @@ public class ConfigActivity extends Activity {
      * 支持的MIME类型数组
      */
     private String[] SUPPORT_FILE_MIME_TYPE = new String[]{
-            "video/mp4",
-            "video/ext-mp4",
-            "video/3gpp",
-            "video/mov"
+            "video/mp4",  //.mp4
+            "video/ext-mp4",  //.mp4
+            "video/3gpp",   //.3gp
+            "video/quicktime" //.mov
     };
 
     public static ShortVideoConfig getRecordConfig() {
@@ -616,6 +704,110 @@ public class ConfigActivity extends Activity {
                     break;
             }
             return false;
+        }
+    }
+
+    private void showTransCodeDialog(List<Uri> uris) {
+        if (mTransConfDialog != null) {
+            mTransCodeUris = uris;
+            mTransConfDialog.show();
+            return;
+        }
+        mTransConfDialog = new Dialog(this, R.style.TransCodeDialog);
+        View contentView = LayoutInflater.from(this).inflate(R.layout.transcode_popup_layout, null);
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        mTransConfDialog.setContentView(contentView, params);
+        mOutRes480p = (TextView) contentView.findViewById(R.id.trans_output_config_r480p);
+        mOutRes480p.setOnClickListener(mObserver);
+        mOutRes540p = (TextView) contentView.findViewById(R.id.trans_output_config_r540p);
+        mOutRes540p.setOnClickListener(mObserver);
+        mOutEncodeWithH264 = (TextView) contentView.findViewById(R.id.trans_output_config_h264);
+        mOutEncodeWithH264.setOnClickListener(mObserver);
+        mOutEncodeWithH265 = (TextView) contentView.findViewById(R.id.trans_output_config_h265);
+        mOutEncodeWithH265.setOnClickListener(mObserver);
+        mOutEncodeByHW = (TextView) contentView.findViewById(R.id.trans_output_config_hw);
+        mOutEncodeByHW.setOnClickListener(mObserver);
+        mOutEncodeBySW = (TextView) contentView.findViewById(R.id.trans_output_config_sw);
+        mOutEncodeBySW.setOnClickListener(mObserver);
+        mOutForMP4 = (TextView) contentView.findViewById(R.id.trans_output_config_mp4);
+        mOutForMP4.setOnClickListener(mObserver);
+        mOutForGIF = (TextView) contentView.findViewById(R.id.trans_output_config_gif);
+        mOutForGIF.setOnClickListener(mObserver);
+        mOutProfileGroup = new TextView[3];
+        for (int i = 0; i < mOutProfileGroup.length; i++) {
+            mOutProfileGroup[i] = (TextView) contentView.findViewById(OUTPUT_PROFILE_ID[i]);
+            mOutProfileGroup[i].setOnClickListener(mObserver);
+        }
+        mOutFrameRate = (EditText) contentView.findViewById(R.id.trans_output_config_frameRate);
+        mOutVideoBitrate = (EditText) contentView.findViewById(R.id.trans_output_config_video_bitrate);
+        mOutAudioBitrate = (EditText) contentView.findViewById(R.id.trans_output_config_audio_bitrate);
+        mOutVideoCRF = (EditText) contentView.findViewById(R.id.trans_output_config_video_crf);
+        mTransConfig = new ShortVideoConfig();
+        mOutputConfirm = (TextView) contentView.findViewById(R.id.trans_output_confirm);
+        mOutputConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onOutputConfirmClick();
+            }
+        });
+        mTransCodeUris = uris;
+        mOutRes480p.setActivated(true);
+        mOutEncodeWithH264.setActivated(true);
+        mOutEncodeBySW.setActivated(true);
+        mOutForMP4.setActivated(true);
+        mOutProfileGroup[1].setActivated(true);
+        mTransConfDialog.show();
+
+    }
+
+    private void onOutputConfirmClick() {
+        confirmTransConfig();
+        if (mTransConfDialog.isShowing()) {
+            mTransConfDialog.dismiss();
+        }
+        startTranscode(mTransCodeUris);
+    }
+
+    private void confirmTransConfig() {
+        if (mOutRes480p.isActivated()) {
+            mTransConfig.resolution = StreamerConstants.VIDEO_RESOLUTION_480P;
+        } else if (mOutRes540p.isActivated()) {
+            mTransConfig.resolution = StreamerConstants.VIDEO_RESOLUTION_540P;
+        }
+        if (mOutEncodeWithH264.isActivated()) {
+            mTransConfig.encodeType = AVConst.CODEC_ID_AVC;
+        } else if (mOutEncodeWithH265.isActivated()) {
+            mTransConfig.encodeType = AVConst.CODEC_ID_HEVC;
+        }
+
+        if (mOutEncodeByHW.isActivated()) {
+            mTransConfig.encodeMethod = StreamerConstants.ENCODE_METHOD_HARDWARE;
+        } else if (mOutEncodeBySW.isActivated()) {
+            mTransConfig.encodeMethod = StreamerConstants.ENCODE_METHOD_SOFTWARE;
+        }
+
+        if (mOutForGIF.isActivated()) {
+            mTransConfig.encodeType = AVConst.CODEC_ID_GIF;
+        }
+        for (int i = 0; i < mOutProfileGroup.length; i++) {
+            if (mOutProfileGroup[i].isActivated()) {
+                mTransConfig.encodeProfile = ENCODE_PROFILE_TYPE[i];
+                break;
+            }
+        }
+        mTransConfig.fps = Integer.parseInt(mOutFrameRate.getText().toString());
+        mTransConfig.videoBitrate = Integer.parseInt(mOutVideoBitrate.getText().toString());
+        mTransConfig.audioBitrate = Integer.parseInt(mOutAudioBitrate.getText().toString());
+        mTransConfig.videoCRF = Integer.parseInt(mOutVideoCRF.getText().toString());
+    }
+
+    private void onOutputEncodeProfileClick(int index) {
+        mOutProfileGroup[index].setActivated(true);
+        for (int i = 0; i < mOutProfileGroup.length; i++) {
+            if (i != index) {
+                mOutProfileGroup[i].setActivated(false);
+            }
         }
     }
 }

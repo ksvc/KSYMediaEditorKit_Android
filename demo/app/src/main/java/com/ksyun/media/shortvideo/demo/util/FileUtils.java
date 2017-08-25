@@ -260,6 +260,7 @@ public class FileUtils {
 
         String extension = getExtension(file.getName());
 
+
         if (extension.length() > 0)
             return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension.substring(1));
 
@@ -280,7 +281,7 @@ public class FileUtils {
 
         int dot = uri.lastIndexOf(".");
         if (dot >= 0) {
-            return uri.substring(dot);
+            return uri.substring(dot).toLowerCase();
         } else {
             // No extension.
             return "";

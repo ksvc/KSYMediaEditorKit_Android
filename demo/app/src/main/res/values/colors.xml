@@ -3,6 +3,7 @@
     <color name="font_color_35">#DC143C</color>
     <color name="transparent1">#7fffffff</color><!--透明白色 -->
     <color name="transparent2">#616060</color><!--透明白色 -->
+    <color name="full_black">#000000</color>
     <color name="transparent">#00000000</color>
 
     <color name="record_progress_black">#2c2c2c</color>

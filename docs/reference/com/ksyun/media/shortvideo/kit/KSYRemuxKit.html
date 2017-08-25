@@ -143,9 +143,9 @@
     <li class="selected api apilevel-">
   <a href="../../../../../com/ksyun/media/shortvideo/kit/package-summary.html">com.ksyun.media.shortvideo.kit</a></li>
     <li class="api apilevel-">
-  <a href="../../../../../com/ksyun/media/shortvideo/utils/package-summary.html">com.ksyun.media.shortvideo.utils</a></li>
+  <a href="../../../../../com/ksyun/media/shortvideo/sticker/package-summary.html">com.ksyun.media.shortvideo.sticker</a></li>
     <li class="api apilevel-">
-  <a href="../../../../../com/ksyun/media/shortvideo/view/package-summary.html">com.ksyun.media.shortvideo.view</a></li>
+  <a href="../../../../../com/ksyun/media/shortvideo/utils/package-summary.html">com.ksyun.media.shortvideo.utils</a></li>
               </ul><br/>
             </div> <!-- end packages -->
           </div> <!-- end resize-packages -->
@@ -162,6 +162,7 @@
               
     <li><h2>Classes</h2>
       <ul>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEasyMergeKit.html">KSYEasyMergeKit</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html">KSYEditKit</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRecordKit.html">KSYRecordKit</a></li>
           <li class="selected api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRemuxKit.html">KSYRemuxKit</a></li>
@@ -367,22 +368,43 @@ Summary:
     
     <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">int</td>
-        <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRemuxKit.html#INFO_ABORTED">INFO_ABORTED</a></td>
-        <td class="jd-descrcol" width="100%">The constant INFO_ABORTED.</td>
+        <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRemuxKit.html#ERROR_DEMUXER_FAILED">ERROR_DEMUXER_FAILED</a></td>
+        <td class="jd-descrcol" width="100%"></td>
     </tr>
     
     
     <tr class=" api apilevel-" >
         <td class="jd-typecol">int</td>
-        <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRemuxKit.html#INFO_COMPLETED">INFO_COMPLETED</a></td>
-        <td class="jd-descrcol" width="100%">The constant INFO_COMPLETED.</td>
+        <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRemuxKit.html#ERROR_PUBLISHER_ERROR">ERROR_PUBLISHER_ERROR</a></td>
+        <td class="jd-descrcol" width="100%"></td>
     </tr>
     
     
     <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">int</td>
-        <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRemuxKit.html#INFO_STARTED">INFO_STARTED</a></td>
-        <td class="jd-descrcol" width="100%">The constant INFO_STARTED.</td>
+        <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRemuxKit.html#INFO_DEMUXER_STARTED">INFO_DEMUXER_STARTED</a></td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">int</td>
+        <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRemuxKit.html#INFO_DEMUXER_STOPPED">INFO_DEMUXER_STOPPED</a></td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">int</td>
+        <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRemuxKit.html#INFO_PUBLISHER_STARTED">INFO_PUBLISHER_STARTED</a></td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">int</td>
+        <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRemuxKit.html#INFO_PUBLISHER_STOPPED">INFO_PUBLISHER_STOPPED</a></td>
+        <td class="jd-descrcol" width="100%"></td>
     </tr>
     
     
@@ -859,7 +881,7 @@ From class
 
 
 
-<a id="INFO_ABORTED"></a>
+<a id="ERROR_DEMUXER_FAILED"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -869,7 +891,7 @@ From class
         final 
         int
       </span>
-        INFO_ABORTED
+        ERROR_DEMUXER_FAILED
     </h4>
       <div class="api-level">
         
@@ -881,16 +903,15 @@ From class
       </div>
     <div class="jd-details-descr">
       
-  <div class="jd-tagdata jd-tagdescr"><p>The constant INFO_ABORTED.
-</p></div>
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
 
     
         <div class="jd-tagdata">
         <span class="jd-tagtitle">Constant Value: </span>
         <span>
             
-                3
-                (0x00000003)
+                -1
+                (0xffffffff)
             
         </span>
         </div>
@@ -900,7 +921,7 @@ From class
 
 
 
-<a id="INFO_COMPLETED"></a>
+<a id="ERROR_PUBLISHER_ERROR"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -910,7 +931,7 @@ From class
         final 
         int
       </span>
-        INFO_COMPLETED
+        ERROR_PUBLISHER_ERROR
     </h4>
       <div class="api-level">
         
@@ -922,8 +943,87 @@ From class
       </div>
     <div class="jd-details-descr">
       
-  <div class="jd-tagdata jd-tagdescr"><p>The constant INFO_COMPLETED.
-</p></div>
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                -100
+                (0xffffff9c)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<a id="INFO_DEMUXER_STARTED"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        int
+      </span>
+        INFO_DEMUXER_STARTED
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                1
+                (0x00000001)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<a id="INFO_DEMUXER_STOPPED"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        int
+      </span>
+        INFO_DEMUXER_STOPPED
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
 
     
         <div class="jd-tagdata">
@@ -941,7 +1041,7 @@ From class
 
 
 
-<a id="INFO_STARTED"></a>
+<a id="INFO_PUBLISHER_STARTED"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -951,7 +1051,7 @@ From class
         final 
         int
       </span>
-        INFO_STARTED
+        INFO_PUBLISHER_STARTED
     </h4>
       <div class="api-level">
         
@@ -963,16 +1063,55 @@ From class
       </div>
     <div class="jd-details-descr">
       
-  <div class="jd-tagdata jd-tagdescr"><p>The constant INFO_STARTED.
-</p></div>
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
 
     
         <div class="jd-tagdata">
         <span class="jd-tagtitle">Constant Value: </span>
         <span>
             
-                1
-                (0x00000001)
+                100
+                (0x00000064)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<a id="INFO_PUBLISHER_STOPPED"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        int
+      </span>
+        INFO_PUBLISHER_STOPPED
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                101
+                (0x00000065)
             
         </span>
         </div>

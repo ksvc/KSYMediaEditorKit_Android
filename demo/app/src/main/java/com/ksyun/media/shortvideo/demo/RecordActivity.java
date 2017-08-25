@@ -512,6 +512,12 @@ public class RecordActivity extends Activity implements
                             dialog.dismiss();
                             mRecordUrl = filePath;  //合成文件本地路径
                             updateRecordUI();
+                            if (filePath == null) {
+                                Log.e(TAG, "Merge file failed");
+                                Toast.makeText(RecordActivity.this, "Merge file failed!",
+                                        Toast.LENGTH_LONG).show();
+                                return;
+                            }
                             //可以调用此接口在合成结束后，删除断点录制的所有视频
                             //mKSYRecordKit.deleteAllFiles();
 
@@ -842,8 +848,14 @@ public class RecordActivity extends Activity implements
                     if (parameters != null) {
                         int minValue = parameters.getMinExposureCompensation();
                         int maxValue = parameters.getMaxExposureCompensation();
-                        int range = 100 / (maxValue - minValue);
-                        parameters.setExposureCompensation(progress / range + minValue);
+                        int range = 0;
+                        int value = minValue;
+                        if (maxValue > minValue) {
+                            range = 100 / (maxValue - minValue);
+                            value = progress / range + minValue;
+                        }
+
+                        parameters.setExposureCompensation(value);
                     }
                     mKSYRecordKit.getCameraCapture().setCameraParameters(parameters);
                 }
@@ -928,12 +940,14 @@ public class RecordActivity extends Activity implements
             }
 
             @Override
-            public void onSelected(String path) {
-                if(ViewUtils.isForeground(RecordActivity.this, RecordActivity.class.getName())) {
+            public boolean onSelected(String path) {
+                if (ViewUtils.isForeground(RecordActivity.this, RecordActivity.class.getName())) {
                     setEnableBgmEdit(true);
                     clearPitchState();
                     mKSYRecordKit.startBgm(path, true);
+                    return true;
                 }
+                return false;
             }
 
             @Override

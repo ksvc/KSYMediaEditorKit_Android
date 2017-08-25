@@ -1,6 +1,212 @@
 <api>
 <package name="com.ksyun.media.shortvideo.kit"
 >
+<class name="KSYEasyMergeKit"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="KSYEasyMergeKit"
+ type="com.ksyun.media.shortvideo.kit.KSYEasyMergeKit"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<method name="release"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="setOnErrorListener"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="onErrorListener" type="com.ksyun.media.shortvideo.kit.KSYEasyMergeKit.OnErrorListener">
+</parameter>
+</method>
+<method name="setOnInfoListener"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="onInfoListener" type="com.ksyun.media.shortvideo.kit.KSYEasyMergeKit.OnInfoListener">
+</parameter>
+</method>
+<method name="start"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="srcUrls" type="java.util.List&lt;java.lang.String&gt;">
+</parameter>
+<parameter name="desUrl" type="java.lang.String">
+</parameter>
+</method>
+<method name="stop"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<field name="ERROR_DEMUXER_FAILED"
+ type="int"
+ transient="false"
+ volatile="false"
+ value="-1"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="ERROR_PUBLISHER_ERROR"
+ type="int"
+ transient="false"
+ volatile="false"
+ value="-100"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="INFO_DEMUXER_STARTED"
+ type="int"
+ transient="false"
+ volatile="false"
+ value="1"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="INFO_DEMUXER_STOPPED"
+ type="int"
+ transient="false"
+ volatile="false"
+ value="2"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="INFO_PUBLISHER_STARTED"
+ type="int"
+ transient="false"
+ volatile="false"
+ value="100"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="INFO_PUBLISHER_STOPPED"
+ type="int"
+ transient="false"
+ volatile="false"
+ value="101"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="mFilePublisherListener"
+ type="FilePublisher.PubListener"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<interface name="KSYEasyMergeKit.OnErrorListener"
+ abstract="true"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="onError"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="ksyEasyMergeKit" type="com.ksyun.media.shortvideo.kit.KSYEasyMergeKit">
+</parameter>
+<parameter name="type" type="int">
+</parameter>
+<parameter name="msg" type="long">
+</parameter>
+</method>
+</interface>
+<interface name="KSYEasyMergeKit.OnInfoListener"
+ abstract="true"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="onInfo"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="ksyEasyMergeKit" type="com.ksyun.media.shortvideo.kit.KSYEasyMergeKit">
+</parameter>
+<parameter name="type" type="int">
+</parameter>
+<parameter name="msg" type="java.lang.String">
+</parameter>
+</method>
+</interface>
 <class name="KSYEditKit"
  extends="java.lang.Object"
  abstract="false"
@@ -29,20 +235,7 @@
  deprecated="not deprecated"
  visibility="public"
 >
-<parameter name="view" type="com.ksyun.media.shortvideo.view.KSYStickerView">
-</parameter>
-</method>
-<method name="addTextStickerView"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="view" type="com.ksyun.media.shortvideo.view.KSYTextView">
+<parameter name="view" type="com.ksyun.media.shortvideo.sticker.KSYStickerView">
 </parameter>
 </method>
 <method name="enableOriginAudio"
@@ -212,6 +405,17 @@
  visibility="public"
 >
 </method>
+<method name="getMediaPlayer"
+ return="KSYMediaPlayer"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
 <method name="getNomalSpeed"
  return="float"
  abstract="false"
@@ -278,6 +482,17 @@
  visibility="public"
 >
 </method>
+<method name="getVideoCodecMeta"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
 <method name="getVideoThumbnailAtTime"
  return="Bitmap"
  abstract="false"
@@ -293,6 +508,8 @@
 <parameter name="width" type="int">
 </parameter>
 <parameter name="height" type="int">
+</parameter>
+<parameter name="accurate" type="boolean">
 </parameter>
 </method>
 <method name="hideWaterMarkLogo"
@@ -400,6 +617,19 @@
 <parameter name="seekto" type="long">
 </parameter>
 </method>
+<method name="seekTo"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="seekto" type="long">
+</parameter>
+</method>
 <method name="setAudioBitrate"
  return="void"
  abstract="false"
@@ -460,6 +690,8 @@
 <parameter name="startTime" type="long">
 </parameter>
 <parameter name="endTime" type="long">
+</parameter>
+<parameter name="immediately" type="boolean">
 </parameter>
 </method>
 <method name="setBgmVolume"
@@ -931,6 +1163,17 @@
 <parameter name="plus" type="boolean">
 </parameter>
 </method>
+<method name="updateStickerDraw"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
 <field name="DEFAULT_SCALE"
  type="float"
  transient="false"
@@ -1190,6 +1433,16 @@
 <parameter name="listener" type="com.ksyun.media.shortvideo.kit.KSYRecordKit.MergeFilesFinishedListener">
 </parameter>
 </method>
+<field name="EASY_MERGE_FAILED"
+ type="int"
+ transient="false"
+ volatile="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
 <field name="mOnErrorListener"
  type="KSYStreamer.OnErrorListener"
  transient="false"
@@ -1359,18 +1612,40 @@
  visibility="public"
 >
 </method>
-<field name="INFO_ABORTED"
+<field name="ERROR_DEMUXER_FAILED"
  type="int"
  transient="false"
  volatile="false"
- value="3"
+ value="-1"
  static="true"
  final="true"
  deprecated="not deprecated"
  visibility="public"
 >
 </field>
-<field name="INFO_COMPLETED"
+<field name="ERROR_PUBLISHER_ERROR"
+ type="int"
+ transient="false"
+ volatile="false"
+ value="-100"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="INFO_DEMUXER_STARTED"
+ type="int"
+ transient="false"
+ volatile="false"
+ value="1"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="INFO_DEMUXER_STOPPED"
  type="int"
  transient="false"
  volatile="false"
@@ -1381,11 +1656,22 @@
  visibility="public"
 >
 </field>
-<field name="INFO_STARTED"
+<field name="INFO_PUBLISHER_STARTED"
  type="int"
  transient="false"
  volatile="false"
- value="1"
+ value="100"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="INFO_PUBLISHER_STOPPED"
+ type="int"
+ transient="false"
+ volatile="false"
+ value="101"
  static="true"
  final="true"
  deprecated="not deprecated"
@@ -1813,33 +2099,110 @@
  visibility="public"
 >
 </field>
-<field name="INFO_ABORTED"
+<field name="ERROR_DECODER_FAILED"
  type="int"
  transient="false"
  volatile="false"
- value="3"
+ value="-1000"
  static="true"
  final="true"
  deprecated="not deprecated"
  visibility="public"
 >
 </field>
-<field name="INFO_COMPLETED"
+<field name="ERROR_DEMUXER_FAILED"
  type="int"
  transient="false"
  volatile="false"
- value="2"
+ value="-100"
  static="true"
  final="true"
  deprecated="not deprecated"
  visibility="public"
 >
 </field>
-<field name="INFO_STARTED"
+<field name="ERROR_PUBLISHER_FAILED"
  type="int"
  transient="false"
  volatile="false"
- value="1"
+ value="-2000"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="INFO_DECODER_STARTED"
+ type="int"
+ transient="false"
+ volatile="false"
+ value="1000"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="INFO_DECODER_STOPPED"
+ type="int"
+ transient="false"
+ volatile="false"
+ value="1001"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="INFO_DEMUXER_STARTED"
+ type="int"
+ transient="false"
+ volatile="false"
+ value="100"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="INFO_DEMUXER_STOPPED"
+ type="int"
+ transient="false"
+ volatile="false"
+ value="101"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="INFO_PUBLISHER_ABORTED"
+ type="int"
+ transient="false"
+ volatile="false"
+ value="2002"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="INFO_PUBLISHER_COMPLETED"
+ type="int"
+ transient="false"
+ volatile="false"
+ value="2001"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="INFO_PUBLISHER_STARTED"
+ type="int"
+ transient="false"
+ volatile="false"
+ value="2000"
  static="true"
  final="true"
  deprecated="not deprecated"
@@ -1917,6 +2280,1139 @@
 </parameter>
 </method>
 </interface>
+</package>
+<package name="com.ksyun.media.shortvideo.sticker"
+>
+<class name="DrawTextParams"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="DrawTextParams"
+ type="com.ksyun.media.shortvideo.sticker.DrawTextParams"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<field name="DEFAULT_TEXT_SIZE"
+ type="int"
+ transient="false"
+ volatile="false"
+ value="80"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="autoNewLine"
+ type="boolean"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="text"
+ type="java.lang.String"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="textPaint"
+ type="TextPaint"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="text_bottom_padding"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="text_left_padding"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="text_right_padding"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="text_top_padding"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<class name="KSYStickerInfo"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="KSYStickerInfo"
+ type="com.ksyun.media.shortvideo.sticker.KSYStickerInfo"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<field name="bitmap"
+ type="Bitmap"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="duration"
+ type="long"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="isText"
+ type="boolean"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="startTime"
+ type="long"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="textParams"
+ type="com.ksyun.media.shortvideo.sticker.DrawTextParams"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<class name="KSYStickerItem"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="KSYStickerItem"
+ type="com.ksyun.media.shortvideo.sticker.KSYStickerItem"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="helpBoxInfo" type="com.ksyun.media.shortvideo.sticker.StickerHelpBoxInfo">
+</parameter>
+</constructor>
+<method name="draw"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="canvas" type="Canvas">
+</parameter>
+</method>
+<method name="drawSticker"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="canvas" type="Canvas">
+</parameter>
+</method>
+<method name="getBitRect"
+ return="RectF"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getDeleteRect"
+ return="RectF"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getDraw"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getDuration"
+ return="long"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getEndTime"
+ return="long"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getRotateRect"
+ return="RectF"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getStartTime"
+ return="long"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getText"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getTextSize"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="init"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="info" type="com.ksyun.media.shortvideo.sticker.KSYStickerInfo">
+</parameter>
+<parameter name="parentView" type="View">
+</parameter>
+</method>
+<method name="isText"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="setAutoNewLine"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="autoNewLine" type="boolean">
+</parameter>
+</method>
+<method name="setDraw"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="draw" type="boolean">
+</parameter>
+</method>
+<method name="setDrawHelpTool"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="draw" type="boolean">
+</parameter>
+</method>
+<method name="setText"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="text" type="java.lang.String">
+</parameter>
+</method>
+<method name="setTextColor"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="newColor" type="int">
+</parameter>
+</method>
+<method name="updatePos"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="dx" type="float">
+</parameter>
+<parameter name="dy" type="float">
+</parameter>
+</method>
+<method name="updateRotateAndScale"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="dx" type="float">
+</parameter>
+<parameter name="dy" type="float">
+</parameter>
+</method>
+<method name="updateScale"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="scale" type="float">
+</parameter>
+</method>
+<method name="updateStickerInfo"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="startTime" type="long">
+</parameter>
+<parameter name="duration" type="long">
+</parameter>
+</method>
+<method name="updateStickerInfo"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="info" type="com.ksyun.media.shortvideo.sticker.KSYStickerInfo">
+</parameter>
+<parameter name="parentView" type="View">
+</parameter>
+</method>
+</class>
+<class name="KSYStickerView"
+ extends="View"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="KSYStickerView"
+ type="com.ksyun.media.shortvideo.sticker.KSYStickerView"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="context" type="Context">
+</parameter>
+</constructor>
+<constructor name="KSYStickerView"
+ type="com.ksyun.media.shortvideo.sticker.KSYStickerView"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="context" type="Context">
+</parameter>
+<parameter name="attrs" type="AttributeSet">
+</parameter>
+</constructor>
+<constructor name="KSYStickerView"
+ type="com.ksyun.media.shortvideo.sticker.KSYStickerView"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="context" type="Context">
+</parameter>
+<parameter name="attrs" type="AttributeSet">
+</parameter>
+<parameter name="defStyleAttr" type="int">
+</parameter>
+</constructor>
+<method name="addSticker"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="true"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="params" type="com.ksyun.media.shortvideo.sticker.KSYStickerInfo">
+</parameter>
+<parameter name="helpBoxInfo" type="com.ksyun.media.shortvideo.sticker.StickerHelpBoxInfo">
+</parameter>
+</method>
+<method name="configSticker"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="draw"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getCurrentText"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getCurrentTextColor"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getCurrentTextSize"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getStickerEvents"
+ return="java.util.TreeMap&lt;java.lang.Long, java.util.List&lt;com.ksyun.media.shortvideo.sticker.StickerEvent&gt;&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="hasBitmapSticker"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="hasTextSticker"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isTextSticker"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="index" type="int">
+</parameter>
+</method>
+<method name="onSizeChanged"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+<parameter name="w" type="int">
+</parameter>
+<parameter name="h" type="int">
+</parameter>
+<parameter name="oldw" type="int">
+</parameter>
+<parameter name="oldh" type="int">
+</parameter>
+</method>
+<method name="onTouchEvent"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="event" type="MotionEvent">
+</parameter>
+</method>
+<method name="removeBitmapStickers"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="true"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="removeSticker"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="true"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="index" type="int">
+</parameter>
+</method>
+<method name="removeStickers"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="removeTextStickers"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="true"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="setCurrentText"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="text" type="java.lang.String">
+</parameter>
+</method>
+<method name="setCurrentTextColor"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="newColor" type="int">
+</parameter>
+</method>
+<method name="setDrawHelpTool"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="drawHelpTool" type="boolean">
+</parameter>
+</method>
+<method name="setOnStickerSelected"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="stickerSelected" type="com.ksyun.media.shortvideo.sticker.KSYStickerView.OnStickerStateChanged">
+</parameter>
+</method>
+<method name="updateStickerDraw"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="true"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="currentPosition" type="long">
+</parameter>
+</method>
+<method name="updateStickerInfo"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="index" type="int">
+</parameter>
+<parameter name="startTime" type="long">
+</parameter>
+<parameter name="duration" type="long">
+</parameter>
+</method>
+<method name="updateStickerInfo"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="params" type="com.ksyun.media.shortvideo.sticker.KSYStickerInfo">
+</parameter>
+</method>
+</class>
+<class name="KSYStickerView.DrawTextParams"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="DrawTextParams"
+ type="com.ksyun.media.shortvideo.sticker.KSYStickerView.DrawTextParams"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<field name="DEFAULT_TEXT_SIZE"
+ type="int"
+ transient="false"
+ volatile="false"
+ value="80"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="autoNewLine"
+ type="boolean"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="text"
+ type="java.lang.String"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="textPaint"
+ type="TextPaint"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="text_bottom_padding"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="text_left_padding"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="text_right_padding"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="text_top_padding"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<interface name="KSYStickerView.OnStickerStateChanged"
+ abstract="true"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="deleted"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="index" type="java.util.List&lt;java.lang.Integer&gt;">
+</parameter>
+<parameter name="text" type="java.lang.String">
+</parameter>
+</method>
+<method name="selected"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="index" type="int">
+</parameter>
+<parameter name="text" type="java.lang.String">
+</parameter>
+</method>
+</interface>
+<class name="StickerEvent"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="StickerEvent"
+ type="com.ksyun.media.shortvideo.sticker.StickerEvent"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="item" type="com.ksyun.media.shortvideo.sticker.KSYStickerItem">
+</parameter>
+<parameter name="index" type="int">
+</parameter>
+<parameter name="isShow" type="boolean">
+</parameter>
+</constructor>
+<field name="index"
+ type="int"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="isShow"
+ type="boolean"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="item"
+ type="com.ksyun.media.shortvideo.sticker.KSYStickerItem"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<class name="StickerHelpBoxInfo"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="StickerHelpBoxInfo"
+ type="com.ksyun.media.shortvideo.sticker.StickerHelpBoxInfo"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<field name="deleteBit"
+ type="Bitmap"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="helpBoxPaint"
+ type="Paint"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="rotateBit"
+ type="Bitmap"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<class name="StickerInfo"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="StickerInfo"
+ type="com.ksyun.media.shortvideo.sticker.StickerInfo"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<field name="bitmap"
+ type="Bitmap"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="duration"
+ type="long"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="height"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="left"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="startTime"
+ type="long"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="top"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="width"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
 </package>
 <package name="com.ksyun.media.shortvideo.utils"
 >
@@ -2074,6 +3570,112 @@
 </parameter>
 </method>
 </interface>
+<class name="ImgBufToTex"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="ImgBufToTex"
+ type="com.ksyun.media.shortvideo.utils.ImgBufToTex"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="glRender" type="GLRender">
+</parameter>
+</constructor>
+<method name="getSinkPin"
+ return="&lt;any&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<field name="mSinkPin"
+ type="&lt;any&gt;"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="mSrcPin"
+ type="ImgTexSrcPin"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<class name="ImgBufToTex.ImgBufSinPin"
+ extends="<any>"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="ImgBufSinPin"
+ type="com.ksyun.media.shortvideo.utils.ImgBufToTex.ImgBufSinPin"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<method name="onDisconnect"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="recursive" type="boolean">
+</parameter>
+</method>
+<method name="onFormatChanged"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="format" type="java.lang.Object">
+</parameter>
+</method>
+<method name="onFrameAvailable"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="frame" type="ImgBufFrame">
+</parameter>
+</method>
+</class>
 <class name="KS3ClientWrap"
  extends="java.lang.Object"
  abstract="false"
@@ -2082,6 +3684,17 @@
  deprecated="not deprecated"
  visibility="public"
 >
+<method name="cancel"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
 <method name="getInstance"
  return="com.ksyun.media.shortvideo.utils.KS3ClientWrap"
  abstract="false"
@@ -2615,741 +4228,9 @@
  type="java.lang.String"
  transient="false"
  volatile="false"
- value="&quot;1.1.2&quot;"
+ value="&quot;1.2.2&quot;"
  static="true"
  final="true"
- deprecated="not deprecated"
- visibility="public"
->
-</field>
-</class>
-</package>
-<package name="com.ksyun.media.shortvideo.view"
->
-<class name="DrawTextParams"
- extends="java.lang.Object"
- abstract="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<constructor name="DrawTextParams"
- type="com.ksyun.media.shortvideo.view.DrawTextParams"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</constructor>
-<field name="DEFAULT_TEXT_SIZE"
- type="int"
- transient="false"
- volatile="false"
- value="80"
- static="true"
- final="true"
- deprecated="not deprecated"
- visibility="public"
->
-</field>
-<field name="autoNewLine"
- type="boolean"
- transient="false"
- volatile="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</field>
-<field name="bitmap"
- type="Bitmap"
- transient="false"
- volatile="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</field>
-<field name="text"
- type="java.lang.String"
- transient="false"
- volatile="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</field>
-<field name="textPaint"
- type="TextPaint"
- transient="false"
- volatile="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</field>
-<field name="text_bottom_padding"
- type="float"
- transient="false"
- volatile="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</field>
-<field name="text_left_padding"
- type="float"
- transient="false"
- volatile="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</field>
-<field name="text_right_padding"
- type="float"
- transient="false"
- volatile="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</field>
-<field name="text_top_padding"
- type="float"
- transient="false"
- volatile="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</field>
-</class>
-<class name="KSYStickerView"
- extends="View"
- abstract="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<constructor name="KSYStickerView"
- type="com.ksyun.media.shortvideo.view.KSYStickerView"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="context" type="Context">
-</parameter>
-</constructor>
-<constructor name="KSYStickerView"
- type="com.ksyun.media.shortvideo.view.KSYStickerView"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="context" type="Context">
-</parameter>
-<parameter name="attrs" type="AttributeSet">
-</parameter>
-</constructor>
-<constructor name="KSYStickerView"
- type="com.ksyun.media.shortvideo.view.KSYStickerView"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="context" type="Context">
-</parameter>
-<parameter name="attrs" type="AttributeSet">
-</parameter>
-<parameter name="defStyleAttr" type="int">
-</parameter>
-</constructor>
-<method name="addSticker"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="addBit" type="Bitmap">
-</parameter>
-<parameter name="helpBoxInfo" type="com.ksyun.media.shortvideo.view.StickerHelpBoxInfo">
-</parameter>
-</method>
-<method name="hideHelpTool"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="onSizeChanged"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="w" type="int">
-</parameter>
-<parameter name="h" type="int">
-</parameter>
-<parameter name="oldw" type="int">
-</parameter>
-<parameter name="oldh" type="int">
-</parameter>
-</method>
-<method name="onTouchEvent"
- return="boolean"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="event" type="MotionEvent">
-</parameter>
-</method>
-<method name="removeStickers"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-</class>
-<class name="KSYTextItem"
- extends="java.lang.Object"
- abstract="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<constructor name="KSYTextItem"
- type="com.ksyun.media.shortvideo.view.KSYTextItem"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="params" type="com.ksyun.media.shortvideo.view.DrawTextParams">
-</parameter>
-<parameter name="helpBoxInfo" type="com.ksyun.media.shortvideo.view.StickerHelpBoxInfo">
-</parameter>
-</constructor>
-<method name="draw"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="canvas" type="Canvas">
-</parameter>
-</method>
-<method name="drawText"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="canvas" type="Canvas">
-</parameter>
-</method>
-<method name="getBitRect"
- return="RectF"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="getDeleteRect"
- return="RectF"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="getRotateRect"
- return="RectF"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="getString"
- return="java.lang.String"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="getTextSize"
- return="float"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="init"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="parentView" type="View">
-</parameter>
-</method>
-<method name="reCreate"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="params" type="com.ksyun.media.shortvideo.view.DrawTextParams">
-</parameter>
-<parameter name="parentView" type="View">
-</parameter>
-</method>
-<method name="setAutoNewLine"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="autoNewLine" type="boolean">
-</parameter>
-</method>
-<method name="setDrawHelpTool"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="draw" type="boolean">
-</parameter>
-</method>
-<method name="setText"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="text" type="java.lang.String">
-</parameter>
-</method>
-<method name="setTextColor"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="newColor" type="int">
-</parameter>
-</method>
-<method name="updateRotateAndScale"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="dx" type="float">
-</parameter>
-<parameter name="dy" type="float">
-</parameter>
-</method>
-<method name="updateScale"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="scale" type="float">
-</parameter>
-</method>
-<method name="updateTextPos"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="dx" type="float">
-</parameter>
-<parameter name="dy" type="float">
-</parameter>
-</method>
-</class>
-<class name="KSYTextView"
- extends="View"
- abstract="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<constructor name="KSYTextView"
- type="com.ksyun.media.shortvideo.view.KSYTextView"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="context" type="Context">
-</parameter>
-</constructor>
-<constructor name="KSYTextView"
- type="com.ksyun.media.shortvideo.view.KSYTextView"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="context" type="Context">
-</parameter>
-<parameter name="attrs" type="AttributeSet">
-</parameter>
-</constructor>
-<constructor name="KSYTextView"
- type="com.ksyun.media.shortvideo.view.KSYTextView"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="context" type="Context">
-</parameter>
-<parameter name="attrs" type="AttributeSet">
-</parameter>
-<parameter name="defStyleAttr" type="int">
-</parameter>
-</constructor>
-<method name="addTextSticker"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="params" type="com.ksyun.media.shortvideo.view.DrawTextParams">
-</parameter>
-<parameter name="helpBoxInfo" type="com.ksyun.media.shortvideo.view.StickerHelpBoxInfo">
-</parameter>
-</method>
-<method name="clearTextContent"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="getCurrentTextColor"
- return="int"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="getCurrentTextSize"
- return="float"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="onSizeChanged"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="protected"
->
-<parameter name="w" type="int">
-</parameter>
-<parameter name="h" type="int">
-</parameter>
-<parameter name="oldw" type="int">
-</parameter>
-<parameter name="oldh" type="int">
-</parameter>
-</method>
-<method name="onTouchEvent"
- return="boolean"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="event" type="MotionEvent">
-</parameter>
-</method>
-<method name="removeStickers"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="setCurrentAutoNewLine"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="autoNewLine" type="boolean">
-</parameter>
-</method>
-<method name="setCurrentText"
- return="boolean"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="text" type="java.lang.String">
-</parameter>
-</method>
-<method name="setCurrentTextColor"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="newColor" type="int">
-</parameter>
-</method>
-<method name="setEditText"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="text" type="EditText">
-</parameter>
-</method>
-<method name="setTextRectSelected"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="textRectSelected" type="com.ksyun.media.shortvideo.view.KSYTextView.OnTextRectSelected">
-</parameter>
-</method>
-<method name="updateTextParams"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="params" type="com.ksyun.media.shortvideo.view.DrawTextParams">
-</parameter>
-</method>
-</class>
-<interface name="KSYTextView.OnTextRectSelected"
- abstract="true"
- static="true"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<method name="textRectSelected"
- return="void"
- abstract="true"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="text" type="java.lang.String">
-</parameter>
-</method>
-</interface>
-<class name="StickerHelpBoxInfo"
- extends="java.lang.Object"
- abstract="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<constructor name="StickerHelpBoxInfo"
- type="com.ksyun.media.shortvideo.view.StickerHelpBoxInfo"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</constructor>
-<field name="deleteBit"
- type="Bitmap"
- transient="false"
- volatile="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</field>
-<field name="helpBoxPaint"
- type="Paint"
- transient="false"
- volatile="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</field>
-<field name="rotateBit"
- type="Bitmap"
- transient="false"
- volatile="false"
- static="false"
- final="false"
  deprecated="not deprecated"
  visibility="public"
 >
