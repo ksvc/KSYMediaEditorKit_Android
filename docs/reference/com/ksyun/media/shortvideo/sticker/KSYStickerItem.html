@@ -315,7 +315,7 @@ Summary:
 
 
 <h2>Class Overview</h2>
-<p>Created by zanxiaofei on 17/8/15.
+<p>for sticker draw
 </p>
 
 
@@ -554,6 +554,22 @@ Summary:
             
             
             
+            int
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/sticker/KSYStickerItem.html#getStickerType()">getStickerType</a></span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
             String
         </td>
         <td class="jd-linkcol" width="100%">
@@ -565,7 +581,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -583,7 +599,7 @@ Summary:
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -599,23 +615,23 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
             
             
             
-            boolean
+            void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/sticker/KSYStickerItem.html#isText()">isText</a></span>()
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/sticker/KSYStickerItem.html#release()">release</a></span>()
         
   </td></tr>
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -633,7 +649,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -649,7 +665,7 @@ Summary:
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -665,7 +681,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -683,7 +699,7 @@ Summary:
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -696,6 +712,62 @@ Summary:
         <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/sticker/KSYStickerItem.html#setTextColor(int)">setTextColor</a></span>(int newColor)
         
         <div class="jd-descrdiv">set color of text</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/sticker/KSYStickerItem.html#setUpdateListener(com.ksyun.media.shortvideo.sticker.KSYStickerView.OnUpdateDrawListener)">setUpdateListener</a></span>(<a href="../../../../../com/ksyun/media/shortvideo/sticker/KSYStickerView.OnUpdateDrawListener.html">KSYStickerView.OnUpdateDrawListener</a> listener)
+        
+        <div class="jd-descrdiv">由贴纸内部触发贴纸父控件的绘制</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/sticker/KSYStickerItem.html#startDraw()">startDraw</a></span>()
+        
+        <div class="jd-descrdiv">开始动态贴纸的解析
+</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/sticker/KSYStickerItem.html#stopDraw()">stopDraw</a></span>()
+        
+        <div class="jd-descrdiv">停止动态贴纸的解析
+</div>
   
   </td></tr>
 
@@ -763,9 +835,9 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/sticker/KSYStickerItem.html#updateStickerInfo(com.ksyun.media.shortvideo.sticker.KSYStickerInfo, View)">updateStickerInfo</a></span>(<a href="../../../../../com/ksyun/media/shortvideo/sticker/KSYStickerInfo.html">KSYStickerInfo</a> info, View parentView)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/sticker/KSYStickerItem.html#updateStickerInfo(long, long)">updateStickerInfo</a></span>(long startTime, long duration)
         
-        <div class="jd-descrdiv">会对本贴纸做重新初始化，之前的旋转缩放移动等信息会失效</div>
+        <div class="jd-descrdiv">更新贴纸的时间信息</div>
   
   </td></tr>
 
@@ -781,9 +853,9 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/sticker/KSYStickerItem.html#updateStickerInfo(long, long)">updateStickerInfo</a></span>(long startTime, long duration)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/sticker/KSYStickerItem.html#updateStickerInfo(com.ksyun.media.shortvideo.sticker.KSYStickerInfo, View)">updateStickerInfo</a></span>(<a href="../../../../../com/ksyun/media/shortvideo/sticker/KSYStickerInfo.html">KSYStickerInfo</a> info, View parentView)
         
-        <div class="jd-descrdiv">更新贴纸的时间信息</div>
+        <div class="jd-descrdiv">会对本贴纸做重新初始化，之前的旋转缩放移动等信息会失效</div>
   
   </td></tr>
 
@@ -1363,6 +1435,37 @@ From class
 </div>
 
 
+<a id="getStickerType()"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        int
+      </span>
+      <span class="sympad">getStickerType</span>
+      <span class="normal">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
 <a id="getText()"></a>
 
 <div class="jd-details api apilevel-"> 
@@ -1456,7 +1559,7 @@ From class
 </div>
 
 
-<a id="isText()"></a>
+<a id="release()"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -1466,9 +1569,9 @@ From class
          
          
          
-        boolean
+        void
       </span>
-      <span class="sympad">isText</span>
+      <span class="sympad">release</span>
       <span class="normal">()</span>
     </h4>
       <div class="api-level">
@@ -1642,6 +1745,101 @@ From class
 </div>
 
 
+<a id="setUpdateListener(com.ksyun.media.shortvideo.sticker.KSYStickerView.OnUpdateDrawListener)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">setUpdateListener</span>
+      <span class="normal">(<a href="../../../../../com/ksyun/media/shortvideo/sticker/KSYStickerView.OnUpdateDrawListener.html">KSYStickerView.OnUpdateDrawListener</a> listener)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>由贴纸内部触发贴纸父控件的绘制</p></div>
+
+    </div>
+</div>
+
+
+<a id="startDraw()"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">startDraw</span>
+      <span class="normal">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>开始动态贴纸的解析
+</p></div>
+
+    </div>
+</div>
+
+
+<a id="stopDraw()"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">stopDraw</span>
+      <span class="normal">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>停止动态贴纸的解析
+</p></div>
+
+    </div>
+</div>
+
+
 <a id="updatePos(float, float)"></a>
 
 <div class="jd-details api apilevel-"> 
@@ -1735,37 +1933,6 @@ From class
 </div>
 
 
-<a id="updateStickerInfo(com.ksyun.media.shortvideo.sticker.KSYStickerInfo, View)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">updateStickerInfo</span>
-      <span class="normal">(<a href="../../../../../com/ksyun/media/shortvideo/sticker/KSYStickerInfo.html">KSYStickerInfo</a> info, View parentView)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>会对本贴纸做重新初始化，之前的旋转缩放移动等信息会失效</p></div>
-
-    </div>
-</div>
-
-
 <a id="updateStickerInfo(long, long)"></a>
 
 <div class="jd-details api apilevel-"> 
@@ -1792,6 +1959,37 @@ From class
     <div class="jd-details-descr">
       
   <div class="jd-tagdata jd-tagdescr"><p>更新贴纸的时间信息</p></div>
+
+    </div>
+</div>
+
+
+<a id="updateStickerInfo(com.ksyun.media.shortvideo.sticker.KSYStickerInfo, View)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">updateStickerInfo</span>
+      <span class="normal">(<a href="../../../../../com/ksyun/media/shortvideo/sticker/KSYStickerInfo.html">KSYStickerInfo</a> info, View parentView)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>会对本贴纸做重新初始化，之前的旋转缩放移动等信息会失效</p></div>
 
     </div>
 </div>

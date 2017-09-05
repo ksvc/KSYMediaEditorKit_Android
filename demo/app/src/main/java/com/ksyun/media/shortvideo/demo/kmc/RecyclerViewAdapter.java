@@ -1,7 +1,5 @@
 package com.ksyun.media.shortvideo.demo.kmc;
 
-import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
@@ -24,9 +22,6 @@ import java.util.Map;
 public class RecyclerViewAdapter extends RecyclerView.Adapter {
     private static final String TAG = RecyclerViewAdapter.class.getSimpleName();
     private List<MaterialInfoItem> mImageList;
-    private Context mContext;
-    private LayoutInflater mInflater;
-    Bitmap iconBitmap;
     private int selectIndex = -1;
     private RecyclerView mRecyclerView;
 
@@ -51,12 +46,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
         this.onRecyclerViewListener = onRecyclerViewListener;
     }
 
-    public RecyclerViewAdapter(List<MaterialInfoItem> materialList, Context context) {
-        this.mContext = context;
+    public RecyclerViewAdapter(List<MaterialInfoItem> materialList) {
         this.mImageList = materialList;
-        mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         int count = getItemCount();
-        mItemState = new HashMap<Integer, Integer>(count);
+        mItemState = new HashMap<>(count);
         for (int i = 0; i < mImageList.size(); i++) {
             mItemState.put(i, STATE_INIT);
         }

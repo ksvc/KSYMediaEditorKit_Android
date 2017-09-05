@@ -9,6 +9,7 @@ import com.ksyun.media.streamer.kit.StreamerConstants;
  */
 
 public class ShortVideoConfig {
+    public boolean isLandscape = false;
     public float fps = StreamerConstants.DEFAULT_TARGET_FPS;
     public int resolution = StreamerConstants.VIDEO_RESOLUTION_480P;
     public int videoBitrate = StreamerConstants.DEFAULT_INIT_VIDEO_BITRATE;
@@ -19,4 +20,6 @@ public class ShortVideoConfig {
     public int videoCRF = 24;
     public int audioChannel = 1;
     public int audioSampleRate = 44100;
+    public int width = 480;
+    public int height = 480;
 }

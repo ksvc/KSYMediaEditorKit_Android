@@ -3,6 +3,7 @@ package com.ksyun.media.shortvideo.demo;
 import com.ksyun.media.shortvideo.demo.adapter.BgmSelectAdapter;
 import com.ksyun.media.shortvideo.demo.adapter.ImageTextAdapter;
 import com.ksyun.media.shortvideo.demo.adapter.SoundEffectAdapter;
+import com.ksyun.media.shortvideo.demo.recordclip.RecordProgressView;
 import com.ksyun.media.shortvideo.demo.util.DataFactory;
 import com.ksyun.media.shortvideo.demo.util.FileUtils;
 import com.ksyun.media.shortvideo.demo.kmc.ApiHttpUrlConnection;
@@ -17,19 +18,21 @@ import com.ksyun.media.streamer.filter.audio.AudioFilterBase;
 import com.ksyun.media.streamer.filter.audio.AudioReverbFilter;
 import com.ksyun.media.streamer.filter.audio.KSYAudioEffectFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgBeautyProFilter;
+import com.ksyun.media.streamer.filter.imgtex.ImgBeautySoftFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgBeautySpecialEffectsFilter;
+import com.ksyun.media.streamer.filter.imgtex.ImgBeautyStylizeFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgFilterBase;
+import com.ksyun.media.streamer.filter.imgtex.ImgTexFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgTexFilterBase;
+import com.ksyun.media.streamer.filter.imgtex.ImgTexFilterMgt;
 import com.ksyun.media.streamer.kit.KSYStreamer;
 import com.ksyun.media.streamer.kit.StreamerConstants;
 import com.ksyun.media.streamer.logstats.StatsLogReport;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -50,7 +53,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.Gravity;
@@ -60,7 +62,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Chronometer;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -127,7 +128,7 @@ public class RecordActivity extends Activity implements
     private View mNoiseSuppressionView;
     private VerticalSeekBar mExposureSeekBar;
     private VerticalSeekBar mNoiseSeekBar;
-    private RelativeLayout mBarBottomLayout;
+    private RecordProgressView mRecordProgressView;
     private ImageView mRecordView;
     private ImageView mBackView;
     private ImageView mNextView;
@@ -165,18 +166,22 @@ public class RecordActivity extends Activity implements
     private BgmSelectAdapter mBgmAdapter;
     private SoundEffectAdapter mSoundChangeAdapter;
     private SoundEffectAdapter mReverbAdapter;
+    private ShortVideoConfig mRecordConfig;
 
     private AppCompatSeekBar mMicAudioVolumeSeekBar;
     private AppCompatSeekBar mBgmVolumeSeekBar;
 
     //美颜
+    private static final int BEAUTY_DISABLE = 100;
+    private static final int BEAUTY_NATURE = 101;
+    private static final int BEAUTY_PRO = 102;
+    private static final int BEAUTY_FLOWER_LIKE = 103;
+    private static final int BEAUTY_DELICATE = 104;
     private View mBeautyChooseView;
-    //磨皮
-    private AppCompatSeekBar mGrindSeekBar;
-    //美白
-    private AppCompatSeekBar mWhitenSeekBar;
-    //红润
-    private AppCompatSeekBar mRuddySeekBar;
+    private ImageView mBeautyOriginalView;
+    private ImageView mBeautyBorder;
+    private TextView mBeautyOriginalText;
+    private RecyclerView mBeautyRecyclerView;
 
     private View mFilterChooseView;
 
@@ -206,7 +211,7 @@ public class RecordActivity extends Activity implements
 
     //录制kit
     private KSYRecordKit mKSYRecordKit;
-    private ImgBeautyProFilter mImgBeautyProFilter;  //美颜filter
+    private int mImgBeautyTypeIndex = BEAUTY_DISABLE;  //美颜type
     private int mEffectFilterIndex = FILTER_DISABLE;  //滤镜filter type
 
     private Handler mMainHandler;
@@ -228,6 +233,7 @@ public class RecordActivity extends Activity implements
     private String mLogoPath = "assets://KSYLogo/logo.png";
 
     private int mScreenHeight;
+    private int mFilterTypeIndex = -1;
 
     public static void startActivity(Context context) {
         Intent intent = new Intent(context, RecordActivity.class);
@@ -239,15 +245,25 @@ public class RecordActivity extends Activity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.record_acitvity);
+        //录制参数配置
+        if (ConfigActivity.getRecordConfig() != null) {
+            mRecordConfig = ConfigActivity.getRecordConfig();
+        } else {
+            mRecordConfig = new ShortVideoConfig();
+        }
+        if (mRecordConfig.isLandscape) {
+            setContentView(R.layout.record_acitvity_landscape);
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else {
+            //默认设置为竖屏
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            setContentView(R.layout.record_acitvity);
+        }
 
         //must set
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
-        //默认设置为竖屏
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         //init UI
         mScreenHeight = getResources().getDisplayMetrics().heightPixels;
@@ -270,7 +286,6 @@ public class RecordActivity extends Activity implements
         mNoiseSeekBar.setProgress(0);
         mNoiseSeekBar.setSecondaryProgress(0);
         mNoiseSeekBar.setOnSeekBarChangeListener(getVerticalSeekListener());
-        mBarBottomLayout = (RelativeLayout) findViewById(R.id.bar_bottom);
         mCameraPreviewView = (GLSurfaceView) findViewById(R.id.camera_preview);
         //美颜及背景音乐界面控件
         mDefaultRecordBottomLayout = findViewById(R.id.default_bottom_layout);
@@ -306,18 +321,11 @@ public class RecordActivity extends Activity implements
         mNextView = (ImageView) findViewById(R.id.click_to_next);
         mNextView.setOnClickListener(mObserverButton);
 
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mBarBottomLayout.getLayoutParams();
-        params.height = mScreenHeight / 3;
-        mBarBottomLayout.setLayoutParams(params);
-
         mBeautyChooseView = findViewById(R.id.record_beauty_choose);
         BottomTitleViewInfo mBeautyInfo = new BottomTitleViewInfo(mBeauty, mBeautyIndicator,
                 mBeautyChooseView, mObserverButton);
         mBeautyInfo.setChosenState(true);
         mRecordTitleArray.put(INDEX_BEAUTY_TITLE_BASE, mBeautyInfo);
-        mGrindSeekBar = (AppCompatSeekBar) findViewById(R.id.grind_seek_bar);
-        mWhitenSeekBar = (AppCompatSeekBar) findViewById(R.id.whiten_seek_bar);
-        mRuddySeekBar = (AppCompatSeekBar) findViewById(R.id.ruddy_seek_bar);
 
         mStickerChooseView = findViewById(R.id.record_sticker_choose);
         BottomTitleViewInfo mStickerInfo = new BottomTitleViewInfo(mDynSticker, mStickerIndicator,
@@ -329,8 +337,8 @@ public class RecordActivity extends Activity implements
         mRecordTitleArray.put(INDEX_BEAUTY_TITLE_BASE + 2, mFilterInfo);
 
         //断点拍摄UI初始化
-        //mBarBottomLayout为拍摄进度显示的父控件
-        mRecordProgressCtl = new RecordProgressController(mBarBottomLayout);
+        mRecordProgressView = (RecordProgressView) findViewById(R.id.record_progress);
+        mRecordProgressCtl = new RecordProgressController(mRecordProgressView, mChronometer);
         //拍摄时长变更回调
         mRecordProgressCtl.setRecordingLengthChangedListener(mRecordLengthChangedListener);
         mRecordProgressCtl.start();
@@ -340,44 +348,41 @@ public class RecordActivity extends Activity implements
         //init
         mMainHandler = new Handler();
         mKSYRecordKit = new KSYRecordKit(this);
-        //录制参数配置
-        ShortVideoConfig config;
-        if (ConfigActivity.getRecordConfig() != null) {
-            config = ConfigActivity.getRecordConfig();
-        } else {
-            config = new ShortVideoConfig();
-        }
-        float frameRate = config.fps;
+
+        float frameRate = mRecordConfig.fps;
         if (frameRate > 0) {
             mKSYRecordKit.setPreviewFps(frameRate);
             mKSYRecordKit.setTargetFps(frameRate);
         }
 
-        int videoBitrate = config.videoBitrate;
+        int videoBitrate = mRecordConfig.videoBitrate;
         if (videoBitrate > 0) {
             mKSYRecordKit.setVideoKBitrate(videoBitrate);
         }
 
-        int audioBitrate = config.audioBitrate;
+        int audioBitrate = mRecordConfig.audioBitrate;
         if (audioBitrate > 0) {
             mKSYRecordKit.setAudioKBitrate(audioBitrate);
         }
 
-        int videoResolution = config.resolution;
+        int videoResolution = mRecordConfig.resolution;
         mKSYRecordKit.setPreviewResolution(videoResolution);
         mKSYRecordKit.setTargetResolution(videoResolution);
 
-        int encode_type = config.encodeType;
+        int encode_type = mRecordConfig.encodeType;
         mKSYRecordKit.setVideoCodecId(encode_type);
 
-        int encode_method = config.encodeMethod;
+        int encode_method = mRecordConfig.encodeMethod;
         mKSYRecordKit.setEncodeMethod(encode_method);
 
-        int encodeProfile = config.encodeProfile;
+        int encodeProfile = mRecordConfig.encodeProfile;
         mKSYRecordKit.setVideoEncodeProfile(encodeProfile);
 
-        //Demo仅展示竖屏，SDK支持横屏
-        mKSYRecordKit.setRotateDegrees(0);
+        if (mRecordConfig.isLandscape) {
+            mKSYRecordKit.setRotateDegrees(90);
+        } else {
+            mKSYRecordKit.setRotateDegrees(0);
+        }
         mKSYRecordKit.setDisplayPreview(mCameraPreviewView);
         mKSYRecordKit.setEnableRepeatLastFrame(false);
         mKSYRecordKit.setCameraFacing(CameraCapture.FACING_FRONT);
@@ -385,8 +390,9 @@ public class RecordActivity extends Activity implements
         mKSYRecordKit.setOnInfoListener(mOnInfoListener);
         mKSYRecordKit.setOnErrorListener(mOnErrorListener);
         mKSYRecordKit.setOnLogEventListener(mOnLogEventListener);
+        initBeautyUI(); //初始化美颜界面
         initStickerUI();  //初始化动态贴纸界面
-        initFilterUI();
+        initFilterUI();  //初始化滤镜界面
         initBgmView();  //初始化背景音乐界面
         initSoundEffectView(); //初始化音效界面
         // touch focus and zoom support
@@ -571,7 +577,6 @@ public class RecordActivity extends Activity implements
         if (mIsFileRecording) {
             return;
         }
-
         mChronometer.setBase(SystemClock.elapsedRealtime());
         mChronometer.stop();
     }
@@ -783,10 +788,9 @@ public class RecordActivity extends Activity implements
      * 作为删除按钮时，初次点击时先设置为待删除状态，在带删除状态下再执行文件回删
      */
     private void onBackoffClick() {
-        if (mDefaultRecordBottomLayout.getVisibility() != View.VISIBLE) {
-            if (mPreRecordConfigLayout.getVisibility() == View.VISIBLE) {
-                mPreRecordConfigLayout.setVisibility(View.INVISIBLE);
-            }
+        if (mPreRecordConfigLayout != mDefaultRecordBottomLayout &&
+                mPreRecordConfigLayout.getVisibility() == View.VISIBLE) {
+            mPreRecordConfigLayout.setVisibility(View.INVISIBLE);
             mDefaultRecordBottomLayout.setVisibility(View.VISIBLE);
             mPreRecordConfigLayout = mDefaultRecordBottomLayout;
         } else {
@@ -806,6 +810,7 @@ public class RecordActivity extends Activity implements
                     mRecordProgressCtl.rollback();
                     updateDeleteView();
                     mRecordView.setEnabled(true);
+                    mRecordView.setClickable(true);
                 }
             } else {
                 mChronometer.stop();
@@ -1010,23 +1015,51 @@ public class RecordActivity extends Activity implements
     private void addImgFilter() {
         ImgBeautyProFilter proFilter;
         ImgBeautySpecialEffectsFilter specialEffectsFilter;
+        ImgTexFilter texFilter;
         List<ImgFilterBase> filters = new LinkedList<>();
-
-        if (mImgBeautyProFilter != null) {
-            proFilter = new ImgBeautyProFilter(mKSYRecordKit.getGLRender(), getApplicationContext());
-            proFilter.setGrindRatio(mImgBeautyProFilter.getGrindRatio());
-            proFilter.setRuddyRatio(mImgBeautyProFilter.getRuddyRatio());
-            proFilter.setWhitenRatio(mImgBeautyProFilter.getWhitenRatio());
-            mImgBeautyProFilter = proFilter;
-            filters.add(proFilter);
+        switch (mImgBeautyTypeIndex) {
+            case BEAUTY_NATURE:
+                ImgBeautySoftFilter softFilter = new ImgBeautySoftFilter(mKSYRecordKit.getGLRender());
+                softFilter.setGrindRatio(0.5f);
+                filters.add(softFilter);
+                break;
+            case BEAUTY_PRO:
+                proFilter = new ImgBeautyProFilter(mKSYRecordKit.getGLRender(), getApplicationContext());
+                proFilter.setGrindRatio(0.5f);
+                proFilter.setWhitenRatio(0.5f);
+                proFilter.setRuddyRatio(0);
+                filters.add(proFilter);
+                break;
+            case BEAUTY_FLOWER_LIKE:
+                proFilter = new ImgBeautyProFilter(mKSYRecordKit.getGLRender(), getApplicationContext(), 3);
+                proFilter.setGrindRatio(0.5f);
+                proFilter.setWhitenRatio(0.5f);
+                proFilter.setRuddyRatio(0.15f);
+                filters.add(proFilter);
+                break;
+            case BEAUTY_DELICATE:
+                proFilter = new ImgBeautyProFilter(mKSYRecordKit.getGLRender(), getApplicationContext(), 3);
+                proFilter.setGrindRatio(0.5f);
+                proFilter.setWhitenRatio(0.5f);
+                proFilter.setRuddyRatio(0.3f);
+                filters.add(proFilter);
+                break;
+            case FILTER_DISABLE:
+                break;
+            default:
+                break;
         }
-
-        if (mEffectFilterIndex != FILTER_DISABLE) {
-            specialEffectsFilter = new ImgBeautySpecialEffectsFilter(mKSYRecordKit.getGLRender(),
-                    getApplicationContext(), mEffectFilterIndex);
-            filters.add(specialEffectsFilter);
+        if (mFilterTypeIndex != -1 && mEffectFilterIndex != FILTER_DISABLE) {
+            if (mFilterTypeIndex < 13) {
+                specialEffectsFilter = new ImgBeautySpecialEffectsFilter(mKSYRecordKit.getGLRender(),
+                        getApplicationContext(), mEffectFilterIndex);
+                filters.add(specialEffectsFilter);
+            } else {
+                texFilter = new ImgBeautyStylizeFilter(mKSYRecordKit.getGLRender(), getApplicationContext(),
+                        mEffectFilterIndex);
+                filters.add(texFilter);
+            }
         }
-
         if (filters.size() > 0) {
             mKSYRecordKit.getImgTexFilterMgt().setFilter(filters);
         } else {
@@ -1034,21 +1067,57 @@ public class RecordActivity extends Activity implements
         }
     }
 
-    private void setBeautyFilter() {
-        if (mImgBeautyProFilter == null) {
-            //Demo中当前演示该美颜被设置后，未演示取消，后续完善，更多美颜参考：
-            //https://github.com/ksvc/KSYStreamer_Android/wiki/Video_Filter_Inner
-            //注意：该filter只能被set一次，若调用用过mKSYRecordKit.getImgTexFilterMgt().setFilter(null)
-            //后不能再使用该filter，需要重新new
-            mImgBeautyProFilter = new ImgBeautyProFilter(mKSYRecordKit.getGLRender(),
-                    RecordActivity.this);
-            addImgFilter();
-        }
-    }
-
     private void setEffectFilter(int type) {
         mEffectFilterIndex = type;
         addImgFilter();
+    }
+
+    /**
+     * 美颜设置
+     */
+    private void initBeautyUI() {
+        final int[] BEAUTY_TYPE = {BEAUTY_NATURE, BEAUTY_PRO, BEAUTY_FLOWER_LIKE, BEAUTY_DELICATE};
+        mBeautyOriginalView = (ImageView) findViewById(R.id.iv_beauty_origin);
+        mBeautyBorder = (ImageView) findViewById(R.id.iv_beauty_border);
+        mBeautyOriginalText = (TextView) findViewById(R.id.tv_beauty_origin);
+        mBeautyRecyclerView = (RecyclerView) findViewById(R.id.beauty_recyclerView);
+        changeOriginalBeautyState(true);
+        List<ImageTextAdapter.Data> beautyData = DataFactory.getBeautyTypeDate(this);
+        final ImageTextAdapter beautyAdapter = new ImageTextAdapter(this, beautyData);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mBeautyRecyclerView.setLayoutManager(layoutManager);
+        ImageTextAdapter.OnImageItemClickListener listener = new ImageTextAdapter.OnImageItemClickListener() {
+            @Override
+            public void onClick(int index) {
+                if (mBeautyOriginalText.isActivated()) {
+                    changeOriginalBeautyState(false);
+                }
+                mImgBeautyTypeIndex = BEAUTY_TYPE[index];
+                addImgFilter();
+            }
+        };
+        mBeautyOriginalView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                beautyAdapter.clear();
+                changeOriginalBeautyState(true);
+                mImgBeautyTypeIndex = BEAUTY_DISABLE;
+                addImgFilter();
+            }
+        });
+        beautyAdapter.setOnImageItemClick(listener);
+        mBeautyRecyclerView.setAdapter(beautyAdapter);
+    }
+
+    private void changeOriginalBeautyState(boolean isSelected) {
+        if (isSelected) {
+            mBeautyBorder.setVisibility(View.VISIBLE);
+            mBeautyOriginalText.setActivated(true);
+        } else {
+            mBeautyBorder.setVisibility(View.INVISIBLE);
+            mBeautyOriginalText.setActivated(false);
+        }
     }
 
     /**
@@ -1069,7 +1138,18 @@ public class RecordActivity extends Activity implements
                 ImgBeautySpecialEffectsFilter.KSY_SPECIAL_EFFECT_SUNSHINE_NIGHT,
                 ImgBeautySpecialEffectsFilter.KSY_SPECIAL_EFFECT_RUDDY,
                 ImgBeautySpecialEffectsFilter.KSY_SPECIAL_EFFECT_SUSHINE,
-                ImgBeautySpecialEffectsFilter.KSY_SPECIAL_EFFECT_NATURE};
+                ImgBeautySpecialEffectsFilter.KSY_SPECIAL_EFFECT_NATURE,
+                ImgBeautyStylizeFilter.KSY_FILTER_STYLE_AMARO,
+                ImgBeautyStylizeFilter.KSY_FILTER_STYLE_BRANNAN,
+                ImgBeautyStylizeFilter.KSY_FILTER_STYLE_EARLY_BIRD,
+                ImgBeautyStylizeFilter.KSY_FILTER_STYLE_HUDSON,
+                ImgBeautyStylizeFilter.KSY_FILTER_STYLE_LOMO,
+                ImgBeautyStylizeFilter.KSY_FILTER_STYLE_NASHVILLE,
+                ImgBeautyStylizeFilter.KSY_FILTER_STYLE_RISE,
+                ImgBeautyStylizeFilter.KSY_FILTER_STYLE_TOASTER,
+                ImgBeautyStylizeFilter.KSY_FILTER_STYLE_VALENCIA,
+                ImgBeautyStylizeFilter.KSY_FILTER_STYLE_WALDEN,
+                ImgBeautyStylizeFilter.KSY_FILTER_STYLE_XPROLL};
         List<ImageTextAdapter.Data> filterData = DataFactory.getImgFilterData(this);
         mFilterOriginImage = (ImageView) findViewById(R.id.iv_filter_origin);
         mFilterBorder = (ImageView) findViewById(R.id.iv_filter_border);
@@ -1086,7 +1166,7 @@ public class RecordActivity extends Activity implements
                 if (mFilterOriginText.isActivated()) {
                     changeOriginalImageState(false);
                 }
-
+                mFilterTypeIndex = index;
                 setEffectFilter(FILTER_TYPE[index]);
             }
         };
@@ -1110,51 +1190,6 @@ public class RecordActivity extends Activity implements
             mFilterOriginText.setActivated(false);
             mFilterBorder.setVisibility(View.INVISIBLE);
         }
-    }
-
-    /**
-     * 美颜设置
-     */
-    private void initBeautyUI() {
-        if (mBeautyChooseView.getVisibility() == View.VISIBLE) {
-            setBeautyFilter();
-
-            mGrindSeekBar.setProgress((int) (mImgBeautyProFilter.getGrindRatio() * 100));
-            mWhitenSeekBar.setProgress((int) (mImgBeautyProFilter.getWhitenRatio() * 100));
-            int ruddyVal = (int) (mImgBeautyProFilter.getRuddyRatio() * 50 + 50);
-            mRuddySeekBar.setProgress(ruddyVal);
-        }
-
-        SeekBar.OnSeekBarChangeListener seekBarChangeListener =
-                new SeekBar.OnSeekBarChangeListener() {
-                    @Override
-                    public void onProgressChanged(SeekBar seekBar, int progress,
-                                                  boolean fromUser) {
-                        if (!fromUser) {
-                            return;
-                        }
-                        float val = progress / 100.f;
-                        if (seekBar == mGrindSeekBar) {
-                            mImgBeautyProFilter.setGrindRatio(val);
-                        } else if (seekBar == mWhitenSeekBar) {
-                            mImgBeautyProFilter.setWhitenRatio(val);
-                        } else if (seekBar == mRuddySeekBar) {
-                            val = progress / 50.f - 1.0f;
-                            mImgBeautyProFilter.setRuddyRatio(val);
-                        }
-                    }
-
-                    @Override
-                    public void onStartTrackingTouch(SeekBar seekBar) {
-                    }
-
-                    @Override
-                    public void onStopTrackingTouch(SeekBar seekBar) {
-                    }
-                };
-        mGrindSeekBar.setOnSeekBarChangeListener(seekBarChangeListener);
-        mWhitenSeekBar.setOnSeekBarChangeListener(seekBarChangeListener);
-        mRuddySeekBar.setOnSeekBarChangeListener(seekBarChangeListener);
     }
 
     /**
@@ -1188,7 +1223,7 @@ public class RecordActivity extends Activity implements
     private void clearRecordState() {
         mKSYRecordKit.stopBgm();
         mKSYRecordKit.getImgTexFilterMgt().setFilter((ImgFilterBase) null);
-        mImgBeautyProFilter = null;
+        mImgBeautyTypeIndex = BEAUTY_DISABLE;
         mEffectFilterIndex = FILTER_DISABLE;
         mFilterOriginImage.callOnClick();
         mKSYRecordKit.getImgTexFilterMgt().setExtraFilter((ImgFilterBase) null);
@@ -1324,17 +1359,25 @@ public class RecordActivity extends Activity implements
     }
 
     private void onBeautyClick() {
-        mPreRecordConfigLayout.setVisibility(View.GONE);
+        if (!(mRecordConfig.isLandscape && mPreRecordConfigLayout == mDefaultRecordBottomLayout)) {
+            mPreRecordConfigLayout.setVisibility(View.INVISIBLE);
+        }
+        if (mRecordConfig.isLandscape) {
+            mBeautyLayout.setBackgroundResource(R.drawable.beauty_bg);
+        }
         mPreRecordConfigLayout = mBeautyLayout;
         if (mBeautyLayout.getVisibility() != View.VISIBLE) {
             mBeautyLayout.setVisibility(View.VISIBLE);
         }
-
-        initBeautyUI();
     }
 
     private void onBgmClick() {
-        mPreRecordConfigLayout.setVisibility(View.GONE);
+        if (!(mRecordConfig.isLandscape && mPreRecordConfigLayout == mDefaultRecordBottomLayout)) {
+            mPreRecordConfigLayout.setVisibility(View.INVISIBLE);
+        }
+        if (mRecordConfig.isLandscape) {
+            mBgmLayout.setBackgroundResource(R.drawable.music_bg);
+        }
         mPreRecordConfigLayout = mBgmLayout;
         if (mBgmLayout.getVisibility() != View.VISIBLE) {
             mBgmLayout.setVisibility(View.VISIBLE);
@@ -1342,7 +1385,12 @@ public class RecordActivity extends Activity implements
     }
 
     private void onSoundEffectClick() {
-        mPreRecordConfigLayout.setVisibility(View.GONE);
+        if (!(mRecordConfig.isLandscape && mPreRecordConfigLayout == mDefaultRecordBottomLayout)) {
+            mPreRecordConfigLayout.setVisibility(View.INVISIBLE);
+        }
+        if (mRecordConfig.isLandscape) {
+            mSoundEffectLayout.setBackgroundResource(R.drawable.sound_effect_bg);
+        }
         mPreRecordConfigLayout = mSoundEffectLayout;
         if (mSoundEffectLayout.getVisibility() != View.VISIBLE) {
             mSoundEffectLayout.setVisibility(View.VISIBLE);
@@ -1353,17 +1401,20 @@ public class RecordActivity extends Activity implements
      * 美颜标题点击事件处理
      */
     private void onBeautyTitleClick(int index) {
+        if (index == 1) {
+            if (mRecordConfig.isLandscape) {
+                Toast.makeText(RecordActivity.this, "横屏录制目前不支持动态特效",Toast.LENGTH_SHORT).show();
+                return;
+            } else {
+                updateKMCFilterView();
+            }
+        }
         BottomTitleViewInfo curInfo = mRecordTitleArray.get(INDEX_BEAUTY_TITLE_BASE + index);
         BottomTitleViewInfo preInfo = mRecordTitleArray.get(INDEX_BEAUTY_TITLE_BASE + mPreBeautyTitleIndex);
         if (index != mPreBeautyTitleIndex) {
             curInfo.setChosenState(true);
             preInfo.setChosenState(false);
             mPreBeautyTitleIndex = index;
-        }
-        initBeautyUI();
-
-        if (index == 1) {
-            updateKMCFilterView();
         }
     }
 
@@ -1566,10 +1617,10 @@ public class RecordActivity extends Activity implements
                             //到达最大拍摄时长时，需要主动停止录制
                             stopRecord(false);
                             mRecordView.getDrawable().setLevel(1);
+                            mRecordView.setClickable(false);
                             mRecordView.setEnabled(false);
                             Toast.makeText(RecordActivity.this, "录制结束，请继续操作",
-                                    Toast
-                                            .LENGTH_SHORT).show();
+                                    Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -1844,8 +1895,7 @@ public class RecordActivity extends Activity implements
             return;
         }
 
-        mKMCAdapter = new RecyclerViewAdapter(mMaterialList,
-                getApplicationContext());
+        mKMCAdapter = new RecyclerViewAdapter(mMaterialList);
         mKMCAdapter.setRecyclerView(mKMCRecyclerView);
         mKMCRecyclerView.setAdapter(mKMCAdapter);
 

@@ -154,6 +154,7 @@
               
     <li><h2>Interfaces</h2>
       <ul>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/AnimatedImageCapture.ImageUpdateListener.html">AnimatedImageCapture.ImageUpdateListener</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.OnErrorListener.html">KSYEditKit.OnErrorListener</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.OnInfoListener.html">KSYEditKit.OnInfoListener</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRecordKit.MergeFilesFinishedListener.html">KSYRecordKit.MergeFilesFinishedListener</a></li>
@@ -162,8 +163,10 @@
               
     <li><h2>Classes</h2>
       <ul>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/AnimatedImageCapture.html">AnimatedImageCapture</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEasyMergeKit.html">KSYEasyMergeKit</a></li>
           <li class="selected api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html">KSYEditKit</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMergeKit.html">KSYMergeKit</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRecordKit.html">KSYRecordKit</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRemuxKit.html">KSYRemuxKit</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYTranscodeKit.html">KSYTranscodeKit</a></li>
@@ -477,6 +480,28 @@ Summary:
           final
           int</td>
           <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#SCALING_MODE_FULL_FILL">SCALING_MODE_FULL_FILL</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class=" api apilevel-" >
+          <td class="jd-typecol">
+          public
+          
+          
+          IMediaPlayer.OnErrorListener</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#mMediaPlayerOnErrorListener">mMediaPlayerOnErrorListener</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class="alt-color api apilevel-" >
+          <td class="jd-typecol">
+          public
+          
+          
+          IMediaPlayer.OnInfoListener</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#mMediaPlayerOnInfoListener">mMediaPlayerOnInfoListener</a></td>
           <td class="jd-descrcol" width="100%"></td>
       </tr>
       
@@ -1287,7 +1312,7 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setEditPreviewRanges(long, long)">setEditPreviewRanges</a></span>(long startTime, long endTime)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setEditPreviewRanges(long, long, boolean)">setEditPreviewRanges</a></span>(long startTime, long endTime, boolean immediately)
         
         <div class="jd-descrdiv">set preview interval</div>
   
@@ -2281,6 +2306,66 @@ From class
         int
       </span>
         SCALING_MODE_FULL_FILL
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+    </div>
+</div>
+
+
+
+<a id="mMediaPlayerOnErrorListener"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+        IMediaPlayer.OnErrorListener
+      </span>
+        mMediaPlayerOnErrorListener
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+    </div>
+</div>
+
+
+
+<a id="mMediaPlayerOnInfoListener"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+        IMediaPlayer.OnInfoListener
+      </span>
+        mMediaPlayerOnInfoListener
     </h4>
       <div class="api-level">
         
@@ -3833,7 +3918,7 @@ From class
 </div>
 
 
-<a id="setEditPreviewRanges(long, long)"></a>
+<a id="setEditPreviewRanges(long, long, boolean)"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -3846,7 +3931,7 @@ From class
         void
       </span>
       <span class="sympad">setEditPreviewRanges</span>
-      <span class="normal">(long startTime, long endTime)</span>
+      <span class="normal">(long startTime, long endTime, boolean immediately)</span>
     </h4>
       <div class="api-level">
         <div>

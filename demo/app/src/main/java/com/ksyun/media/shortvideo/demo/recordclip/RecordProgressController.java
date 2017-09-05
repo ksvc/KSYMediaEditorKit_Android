@@ -4,7 +4,9 @@ import com.ksyun.media.shortvideo.demo.R;
 import com.ksyun.media.shortvideo.demo.RecordActivity;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
+import android.widget.Chronometer;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -22,18 +24,19 @@ public class RecordProgressController {
     private RecordProgressTimer mProgressTimer;
     private long mStartRecordingTime;
     private boolean mIsRecording;
+    private Chronometer mCmt;
     private LinkedList<RecordClipModel> mProgressClipList;
 
     private List<RecordingStateChanged> mRecordStateChangedListeners;
     private RecordingLengthChangedListener mRecordingLengthChangedListener;
 
     /**
-     *
-     * @param rootView  拍摄进度显示的父控件
+     * @param view 拍摄进度显示的控件
      */
-    public RecordProgressController(View rootView) {
+    public RecordProgressController(RecordProgressView view, Chronometer cmt) {
         mHandler = new Handler();
-        mProgressView = (RecordProgressView) rootView.findViewById(R.id.record_progress);
+        mProgressView = view;
+        mCmt = cmt;
         mProgressRunnable = new ChangeProgressRunnable();
         mRecordStateChangedListeners = new ArrayList<>();
         mProgressTimer = new RecordProgressTimer();
@@ -51,7 +54,7 @@ public class RecordProgressController {
     private class ChangeProgressRunnable implements Runnable {
         @Override
         public void run() {
-            if (mProgressView.mTotalWidth >= mProgressView.mScreenWidth) {
+            if (getChronometerTime() >= RecordActivity.MAX_DURATION) {
                 mProgressView.invalidate();
                 if (mIsRecording && mRecordingLengthChangedListener != null) {
                     mRecordingLengthChangedListener.passMaxPoint();
@@ -59,9 +62,25 @@ public class RecordProgressController {
                 mIsRecording = false;
             }
             mRecordingLengthChangedListener.passMinPoint(isPassMinPoint());
-
             mProgressView.invalidate();
         }
+    }
+
+    public int getChronometerTime() {
+        int curTime = 0;
+        if (mCmt != null) {
+            String str = mCmt.getText().toString();
+            String[] split = str.split(":");
+            if (str.length() == 5) {
+                curTime = Integer.parseInt(split[0]) * 60
+                        + Integer.parseInt(split[1]);
+            } else if (str.length() == 7) {
+                curTime = Integer.parseInt(split[0]) * 60 * 60
+                        + Integer.parseInt(split[1]) * 60
+                        + Integer.parseInt(split[2]);
+            }
+        }
+        return curTime * 1000;
     }
 
     /**
@@ -198,6 +217,7 @@ public class RecordProgressController {
 
     /**
      * 用于通知最短拍摄时长和最长拍摄时长
+     *
      * @param listener
      */
     public void setRecordingLengthChangedListener(RecordingLengthChangedListener listener) {

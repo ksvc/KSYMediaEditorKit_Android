@@ -3,12 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:alpha="0.8"
-    android:gravity="center_vertical"
-    android:background="#07080B">
+    android:background="#07080B"
+    android:gravity="center_vertical">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/kmc_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="98dp"
-        android:scrollbars="none"/>
+        android:scrollbars="none" />
 </LinearLayout>

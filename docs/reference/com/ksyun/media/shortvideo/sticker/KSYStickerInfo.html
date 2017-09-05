@@ -228,9 +228,12 @@ Summary:
 
 
 
+  <a href="#constants">Constants</a>
+  
 
 
-  <a href="#lfields">Fields</a>
+
+  &#124; <a href="#lfields">Fields</a>
   
 
 
@@ -315,7 +318,7 @@ Summary:
 
 
 <h2>Class Overview</h2>
-<p>Created by zanxiaofei on 17/8/4.
+<p>贴纸配置信息
 </p>
 
 
@@ -356,6 +359,36 @@ Summary:
 
 
 
+<!-- =========== ENUM CONSTANT SUMMARY =========== -->
+<table id="constants" class="jd-sumtable"><tr><th colspan="12">Constants</th></tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">int</td>
+        <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/sticker/KSYStickerInfo.html#STICKER_TYPE_IMAGE">STICKER_TYPE_IMAGE</a></td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">int</td>
+        <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/sticker/KSYStickerInfo.html#STICKER_TYPE_IMAGE_ANIMATE">STICKER_TYPE_IMAGE_ANIMATE</a></td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">int</td>
+        <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/sticker/KSYStickerInfo.html#STICKER_TYPE_TEXT">STICKER_TYPE_TEXT</a></td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+
+</table>
+
+
 
 
 
@@ -371,8 +404,8 @@ Summary:
           public
           
           
-          Bitmap</td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/sticker/KSYStickerInfo.html#bitmap">bitmap</a></td>
+          String</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/sticker/KSYStickerInfo.html#animateUrl">animateUrl</a></td>
           <td class="jd-descrcol" width="100%"></td>
       </tr>
       
@@ -382,8 +415,8 @@ Summary:
           public
           
           
-          long</td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/sticker/KSYStickerInfo.html#duration">duration</a></td>
+          Bitmap</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/sticker/KSYStickerInfo.html#bitmap">bitmap</a></td>
           <td class="jd-descrcol" width="100%"></td>
       </tr>
       
@@ -393,8 +426,8 @@ Summary:
           public
           
           
-          boolean</td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/sticker/KSYStickerInfo.html#isText">isText</a></td>
+          long</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/sticker/KSYStickerInfo.html#duration">duration</a></td>
           <td class="jd-descrcol" width="100%"></td>
       </tr>
       
@@ -411,6 +444,17 @@ Summary:
       
     
       <tr class="alt-color api apilevel-" >
+          <td class="jd-typecol">
+          public
+          
+          
+          int</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/sticker/KSYStickerInfo.html#stickerType">stickerType</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class=" api apilevel-" >
           <td class="jd-typecol">
           public
           
@@ -694,12 +738,169 @@ From class
 <!-- Constants -->
 
 
+<!-- ========= ENUM CONSTANTS DETAIL ======== -->
+<h2>Constants</h2>
+
+
+
+
+<a id="STICKER_TYPE_IMAGE"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        int
+      </span>
+        STICKER_TYPE_IMAGE
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                1
+                (0x00000001)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<a id="STICKER_TYPE_IMAGE_ANIMATE"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        int
+      </span>
+        STICKER_TYPE_IMAGE_ANIMATE
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                4
+                (0x00000004)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<a id="STICKER_TYPE_TEXT"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        int
+      </span>
+        STICKER_TYPE_TEXT
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                2
+                (0x00000002)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+
 <!-- Fields -->
 
 
 <!-- ========= FIELD DETAIL ======== -->
 <h2>Fields</h2>
 
+
+
+
+<a id="animateUrl"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+        String
+      </span>
+        animateUrl
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+    </div>
+</div>
 
 
 
@@ -763,7 +964,7 @@ From class
 
 
 
-<a id="isText"></a>
+<a id="startTime"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -771,9 +972,9 @@ From class
         public 
          
          
-        boolean
+        long
       </span>
-        isText
+        startTime
     </h4>
       <div class="api-level">
         
@@ -793,7 +994,7 @@ From class
 
 
 
-<a id="startTime"></a>
+<a id="stickerType"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -801,9 +1002,9 @@ From class
         public 
          
          
-        long
+        int
       </span>
-        startTime
+        stickerType
     </h4>
       <div class="api-level">
         
