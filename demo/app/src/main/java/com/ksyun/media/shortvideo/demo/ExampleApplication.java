@@ -6,6 +6,7 @@ package com.ksyun.media.shortvideo.demo;
 import android.app.Application;
 import android.content.Context;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.tencent.bugly.crashreport.CrashReport;
 
 
@@ -28,5 +29,7 @@ public class ExampleApplication extends Application{
          * Bugly为应用崩溃日志收集工具，开发者可根据实际情况选择不集成或依赖其它Bug收集工具
          */
         CrashReport.initCrashReport(getApplicationContext(), "4e98881bde", true);
+        // 初始化fresco库，用来支持动态贴纸功能，若不使用，可以不调用
+        Fresco.initialize(this);
     }
 }

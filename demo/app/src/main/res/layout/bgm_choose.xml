@@ -5,7 +5,8 @@
     android:alpha="0.8"
     android:background="#07080B"
     android:gravity="center_vertical"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingRight="10dp">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/bgm_recycler"

@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
     <RelativeLayout
         android:id="@+id/default_bottom_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:id="@+id/record_title"
             android:layout_width="match_parent"
@@ -13,73 +15,85 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:orientation="horizontal">
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
+
                 <ImageView
                     android:id="@+id/record_beauty"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/beauty"/>
+                    android:src="@drawable/beauty" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="美颜"
-                    android:textColor="#ffffff"/>
+                    android:textColor="#ffffff" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
+
                 <ImageView
                     android:id="@+id/record_bgm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/music"/>
+                    android:src="@drawable/music" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="音乐"
-                    android:textColor="#ffffff"/>
+                    android:textColor="#ffffff" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
+
                 <ImageView
                     android:id="@+id/record_sound_effect"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/sound_effect"/>
+                    android:src="@drawable/sound_effect" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="音效"
-                    android:textColor="#ffffff"/>
+                    android:textColor="#ffffff" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
+
                 <ImageView
                     android:id="@+id/record_watermark"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/water_mark_selector"/>
+                    android:src="@drawable/water_mark_selector" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="水印"
-                    android:textColor="#ffffff"/>
+                    android:textColor="#ffffff" />
             </LinearLayout>
         </LinearLayout>
 
@@ -87,14 +101,14 @@
             android:id="@+id/progress_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
             android:layout_below="@+id/record_title"
-            android:background="@drawable/record_dotted_line">
+            android:layout_marginTop="15dp">
 
             <com.ksyun.media.shortvideo.demo.recordclip.RecordProgressView
                 android:id="@+id/record_progress"
                 android:layout_width="match_parent"
-                android:layout_height="8dp"/>
+                android:layout_height="8dp"
+                android:background="@drawable/record_dotted_line" />
         </FrameLayout>
 
         <RelativeLayout
@@ -109,8 +123,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/record_state">
-            </ImageView>
+                android:src="@drawable/record_state" />
 
             <ImageView
                 android:id="@+id/click_to_back"
@@ -119,7 +132,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="25dp"
-                android:src="@drawable/record_back_state"/>
+                android:src="@drawable/record_back_state" />
 
             <ImageView
                 android:id="@+id/click_to_next"
@@ -129,28 +142,29 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="25dp"
                 android:src="@drawable/record_complete"
-                android:visibility="invisible"/>
+                android:visibility="invisible" />
         </RelativeLayout>
     </RelativeLayout>
 
-
     <include
         android:id="@+id/item_beauty_select"
+        layout="@layout/stub_item_beauty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        layout="@layout/stub_item_beauty"
-        android:visibility="gone"/>
+        android:visibility="gone" />
+
     <include
         android:id="@+id/item_bgm_select"
+        layout="@layout/bgm_choose"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        layout="@layout/bgm_choose"
-        android:visibility="gone"/>
+        android:visibility="gone" />
+
     <include
         android:id="@+id/item_sound_effect"
+        layout="@layout/stub_item_bgm"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        layout="@layout/stub_item_bgm"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 </RelativeLayout>

@@ -11,7 +11,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -32,9 +31,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ksyun.media.shortvideo.demo.util.FileUtils;
-import com.ksyun.media.shortvideo.kit.KSYEasyMergeKit;
 import com.ksyun.media.shortvideo.kit.KSYRemuxKit;
-import com.ksyun.media.shortvideo.kit.KSYTranscodeKit;
+import com.ksyun.media.shortvideo.kit.KSYMergeKit;
 import com.ksyun.media.streamer.encoder.VideoEncodeFormat;
 import com.ksyun.media.streamer.framework.AVConst;
 import com.ksyun.media.streamer.kit.StreamerConstants;
@@ -73,9 +71,14 @@ public class ConfigActivity extends Activity {
     private EditText mOutVideoBitrate;
     private EditText mOutAudioBitrate;
     private EditText mOutVideoCRF;
+    private TextView mLandscape;
+    private TextView mPortrait;
     private TextView mOutputConfirm;
+    private EditText mTargetWidth;
+    private EditText mTargetHeight;
     private List<Uri> mTransCodeUris;
     private ShortVideoConfig mTransConfig; //输出视频参数配置
+    private Timer mTimer;
 
     private static final int[] OUTPUT_PROFILE_ID = {R.id.trans_output_config_low_power,
             R.id.trans_output_config_balance, R.id.trans_output_config_high_performance};
@@ -92,15 +95,13 @@ public class ConfigActivity extends Activity {
     private EditText mRecVideoBitrate;
     private EditText mRecAudioBitrate;
 
-    private AsyncTask mMergeFilesTask;
     private Dialog mTransConfDialog;
     private MergeFilesAlertDialog mTranscodeDialog;
-    private KSYTranscodeKit mCurrentTranscodeKit;
-    private List<String> mTranscodedFiles;
-    private Timer mTimer;  //转码进度更新timer
 
     private ImageView mImport;  //从外部导入文件
     private ImageView mStartRecord;   //由此进入录制示例窗口
+
+    private KSYMergeKit mKsyMergeKit;
 
     private ConfigObserver mObserver;
     private static ShortVideoConfig mRecordConfig = new ShortVideoConfig();  //录制参数配置
@@ -142,12 +143,19 @@ public class ConfigActivity extends Activity {
         mRecFrameRate = (EditText) findViewById(R.id.record_config_frameRate);
         mRecVideoBitrate = (EditText) findViewById(R.id.record_config_video_bitrate);
         mRecAudioBitrate = (EditText) findViewById(R.id.record_config_audio_bitrate);
-
+        mLandscape = (TextView) findViewById(R.id.record_config_landscape);
+        mLandscape.setOnClickListener(mObserver);
+        mPortrait = (TextView) findViewById(R.id.record_config_portrait);
+        mPortrait.setOnClickListener(mObserver);
         mImport = (ImageView) findViewById(R.id.config_import);
         mImport.setOnClickListener(mObserver);
         mStartRecord = (ImageView) findViewById(R.id.config_record);
         mStartRecord.setOnClickListener(mObserver);
         initView();
+
+        mKsyMergeKit = new KSYMergeKit(ConfigActivity.this);
+        mKsyMergeKit.setOnErrorListener(mOnErrorListener);
+        mKsyMergeKit.setOnInfoListener(mOnInfoListener);
     }
 
     @Override
@@ -159,23 +167,17 @@ public class ConfigActivity extends Activity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (mTimer != null) {
+            mTimer.cancel();
+            mTimer = null;
+        }
         if (mTranscodeDialog != null) {
             mTranscodeDialog.dismiss();
             mTranscodeDialog = null;
         }
 
-        if (mTimer != null) {
-            mTimer.cancel();
-            mTimer = null;
-        }
-
-        if (mCurrentTranscodeKit != null) {
-            mCurrentTranscodeKit.release();
-        }
-
-        if (mMergeFilesTask != null) {
-            mMergeFilesTask.cancel(true);
-            mMergeFilesTask = null;
+        if (mKsyMergeKit != null) {
+            mKsyMergeKit.release();
         }
     }
 
@@ -194,6 +196,7 @@ public class ConfigActivity extends Activity {
         mRecEncodeWithH264.setActivated(true);
         mRecEncodeByHW.setActivated(true);
         mRecProfileGroup[0].setActivated(true);
+        mPortrait.setActivated(true);
     }
 
     private void onRecordEncodeProfileClick(int index) {
@@ -226,6 +229,11 @@ public class ConfigActivity extends Activity {
                 mRecordConfig.encodeProfile = ENCODE_PROFILE_TYPE[i];
                 break;
             }
+        }
+        if (mLandscape.isActivated()) {
+            mRecordConfig.isLandscape = true;
+        } else {
+            mRecordConfig.isLandscape = false;
         }
         mRecordConfig.fps = Integer.parseInt(mRecFrameRate.getText().toString());
         mRecordConfig.videoBitrate = Integer.parseInt(mRecVideoBitrate.getText().toString());
@@ -292,6 +300,14 @@ public class ConfigActivity extends Activity {
                     break;
                 case R.id.record_config_high_performance:
                     onRecordEncodeProfileClick(2);
+                    break;
+                case R.id.record_config_landscape:
+                    mLandscape.setActivated(true);
+                    mPortrait.setActivated(false);
+                    break;
+                case R.id.record_config_portrait:
+                    mLandscape.setActivated(false);
+                    mPortrait.setActivated(true);
                     break;
                 case R.id.config_import:
                     confirmConfig();
@@ -396,10 +412,8 @@ public class ConfigActivity extends Activity {
                                 uris.add(item.getUri());
                                 Log.i(TAG, "Uri = " + item.getUri());
                             }
-                            showTransCodeDialog(uris);
                             //多选后转码和拼接处理
-//                            startTranscode(uris);
-
+                            showTransCodeDialog(uris);
                         } else {
                             Uri uri = data.getData();
                             Log.i(TAG, "Uri = " + uri.toString());
@@ -465,145 +479,80 @@ public class ConfigActivity extends Activity {
     }
 
     private void startTranscode(final List<Uri> srcFiles) {
-        if (mTranscodedFiles == null) {
-            mTranscodedFiles = new LinkedList<>();
-        }
-        mTranscodedFiles.clear();
-
         mTranscodeDialog = new MergeFilesAlertDialog
                 (ConfigActivity.this, R.style.dialog);
         mTranscodeDialog.setCancelable(false);
         mTranscodeDialog.show();
-        transcode(srcFiles, 0);
-    }
 
-    private void transcode(final List<Uri> srcFiles, final int currentTransFileIdx) {
-        //取消上一次进度更新
-        if (mTimer != null) {
-            mTimer.cancel();
-            mTimer = null;
-        }
+        mKsyMergeKit.setEncodeMethod(mTransConfig.encodeMethod);
+        mKsyMergeKit.setTargetSize(mTransConfig.width, mTransConfig.height);
+        mKsyMergeKit.setVideoBitrate(mTransConfig.videoBitrate);
+        mKsyMergeKit.setAudioBitrate(mTransConfig.audioBitrate);
+        mKsyMergeKit.setAudioChannels(mTransConfig.audioChannel);
+        mKsyMergeKit.setAudioSampleRate(mTransConfig.audioSampleRate);
+        mKsyMergeKit.setVideoFps(mTransConfig.fps);
 
-        if (currentTransFileIdx >= srcFiles.size()) {
-            //取消上一次的合成
-            if (mMergeFilesTask != null) {
-                mMergeFilesTask.cancel(true);
-                mMergeFilesTask = null;
-            }
-
-            if (mTranscodedFiles != null && mTranscodedFiles.size() > 0) {
-                final String outputFile = getTranscodeFileFolder() + "/mergedFile" + System.currentTimeMillis() + ".mp4";
-                KSYEasyMergeKit ksyEasyMergeKit = new KSYEasyMergeKit();
-                ksyEasyMergeKit.setOnInfoListener(new KSYEasyMergeKit.OnInfoListener() {
-                    @Override
-                    public void onInfo(KSYEasyMergeKit ksyEasyMergeKit, int type, String msg) {
-                        if (type == KSYEasyMergeKit.INFO_PUBLISHER_STOPPED) {
-                            ksyEasyMergeKit.release();
-                            if (mTranscodeDialog != null) {
-                                mTranscodeDialog.dismiss();
-                                mTranscodeDialog = null;
-                            }
-                            EditActivity.startActivity(ConfigActivity.this, outputFile);
-                        }
-                    }
-                });
-                ksyEasyMergeKit.setOnErrorListener(new KSYEasyMergeKit.OnErrorListener() {
-                    @Override
-                    public void onError(KSYEasyMergeKit ksyEasyMergeKit, int type, long msg) {
-                        Log.d(TAG, "merge failed: " + type);
-                        ksyEasyMergeKit.release();
-                        if (mTranscodeDialog != null) {
-                            mTranscodeDialog.dismiss();
-                            mTranscodeDialog = null;
-                        }
-                    }
-                });
-                ksyEasyMergeKit.start(mTranscodedFiles, outputFile);
-            } else {
-                if (mTranscodeDialog != null) {
-                    mTranscodeDialog.dismiss();
-                    mTranscodeDialog = null;
-                }
-                Toast.makeText(ConfigActivity.this, "Transcode: do not need be merged", Toast
-                        .LENGTH_SHORT).show();
-            }
-            return;
-        }
-
-        String srcUrl = FileUtils.getPath(ConfigActivity.this, srcFiles.get
-                (currentTransFileIdx));
-        File file = new File(srcUrl);
-        String mimeType = FileUtils.getMimeType(file);
-        if (!isSupportedMimeType(mimeType)) {
-            //当前文件不支持，继续对下一个文件进行转码
-            Toast.makeText(ConfigActivity.this, "Transcode: this file do not support(" + srcUrl +
-                    ")", Toast.LENGTH_SHORT).show();
-            transcode(srcFiles, currentTransFileIdx + 1);
-            return;
-        }
-
-        final KSYTranscodeKit ksyTranscodeKit = new KSYTranscodeKit();
-        mCurrentTranscodeKit = ksyTranscodeKit;
-        //设置转码后视频的分辨率
-        ksyTranscodeKit.setEncodeMethod(mTransConfig.encodeMethod);
-        ksyTranscodeKit.setTargetResolution(480, 480);
-        ksyTranscodeKit.setAudioSampleRate(mTransConfig.audioSampleRate);
-        ksyTranscodeKit.setAudioChannels(mTransConfig.audioChannel);
-        ksyTranscodeKit.setVideoFps(mTransConfig.fps);
-        ksyTranscodeKit.setVideoKBitrate(mTransConfig.videoBitrate);
-        ksyTranscodeKit.setAudioKBitrate(mTransConfig.audioBitrate);
-        ksyTranscodeKit.setOnInfoListener(new KSYTranscodeKit.OnInfoListener() {
-            @Override
-            public void onInfo(KSYTranscodeKit ksyTranscodeKit, int type, String msg) {
-                Log.d(TAG, "transcode kit info:" + type);
-                if (type == KSYTranscodeKit.INFO_PUBLISHER_COMPLETED) {
-                    //将转码后的文件添加到merge列表中
-                    mTranscodedFiles.add(msg);
-                    mCurrentTranscodeKit = null;
-                    try {
-                        //start trancode next file
-                        transcode(srcFiles, currentTransFileIdx + 1);
-                    } catch (Exception e) {
-                        Log.e(TAG, "File select error:" + e);
-                    }
-                } else if (type == KSYTranscodeKit.INFO_PUBLISHER_ABORTED) {
-                    mTranscodedFiles.clear();
-                    mCurrentTranscodeKit = null;
-                }
-            }
-        });
-        ksyTranscodeKit.setOnErrorListener(new KSYTranscodeKit.OnErrorListener() {
-            @Override
-            public void onError(KSYTranscodeKit ksyTranscodeKit, int type, long msg) {
-                mTranscodeDialog.dismiss();
-                mTranscodeDialog = null;
-                Toast.makeText(ConfigActivity.this, "Transcode " +
-                        "failed:" + type, Toast.LENGTH_SHORT).show();
-                //TODO:其中一个文件失败，剩余文件还可以继续
-                ksyTranscodeKit.release();
-                mCurrentTranscodeKit = null;
-            }
-        });
-        StringBuilder filePath = new StringBuilder(getTranscodeFileFolder());
-        filePath.append(EXT_TRANSCODE);
-        filePath.append(String.valueOf(currentTransFileIdx));
-        filePath.append(".mp4");
-        ksyTranscodeKit.start(FileUtils.getPath(ConfigActivity.this, srcFiles.get(currentTransFileIdx)),
-                filePath.toString());
+        String outputFile = getTranscodeFileFolder() + "/mergedFile" +
+                System.currentTimeMillis() + ".mp4";
+        mKsyMergeKit.start(mTransCodeUris, outputFile, null, true);
 
         mTimer = new Timer();
         mTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                final int progress = (int) ksyTranscodeKit.getProgress();
-                if (mTranscodeDialog != null) {
-                    mTranscodeDialog.updateProgress(progress, (currentTransFileIdx + 1));
+                if (mKsyMergeKit != null && mTranscodeDialog != null) {
+                    mTranscodeDialog.updateProgress((int) mKsyMergeKit.getTranscodeProgress(),
+                            mKsyMergeKit.getCurrentTransFileId());
                 }
             }
-
         }, 500, 500);
-
     }
+
+    private KSYMergeKit.OnInfoListener mOnInfoListener = new KSYMergeKit.OnInfoListener() {
+        @Override
+        public void onInfo(int type, String msg) {
+            switch (type) {
+                case KSYMergeKit.INFO_MERGE_FINISH:
+                    if (mTranscodeDialog != null) {
+                        mTranscodeDialog.dismiss();
+                        mTranscodeDialog = null;
+                    }
+                    EditActivity.startActivity(ConfigActivity.this, msg);
+                    break;
+                case KSYMergeKit.INFO_TRANSCODE_UNSUPPORT:
+                    Log.d(TAG, "onInfo: " + msg);
+                    break;
+                case KSYMergeKit.INFO_TRANSCODE_STOPBYUSERS:
+                    if (mTranscodeDialog != null) {
+                        mTranscodeDialog.dismiss();
+                        mTranscodeDialog = null;
+                    }
+                    Log.d(TAG, "onInfo: stopped by user");
+                default:
+                    break;
+            }
+        }
+    };
+
+    private KSYMergeKit.OnErrorListener mOnErrorListener = new KSYMergeKit.OnErrorListener() {
+        @Override
+        public void onError(int type, int reason, long msg) {
+            Toast.makeText(ConfigActivity.this, "Transcode " +
+                    "failed: " + type + "， reason:" + reason, Toast.LENGTH_SHORT).show();
+
+            switch (type) {
+                case KSYMergeKit.ERROR_MERGE_EMPTY:
+                case KSYMergeKit.ERROR_MERGE_FAILED:
+                    if (mTranscodeDialog != null) {
+                        mTranscodeDialog.dismiss();
+                        mTranscodeDialog = null;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
     private String getTranscodeFileFolder() {
         String fileFolder = "/sdcard/ksy_sv_transcode_test";
@@ -693,9 +642,7 @@ public class ConfigActivity extends Activity {
                                         mTranscodeDialog = null;
                                     }
                                     mConfimDialog = null;
-                                    if (mCurrentTranscodeKit != null) {
-                                        mCurrentTranscodeKit.stop();
-                                    }
+                                    mKsyMergeKit.stop();
                                 }
                             }).show();
 
@@ -742,6 +689,8 @@ public class ConfigActivity extends Activity {
         mOutFrameRate = (EditText) contentView.findViewById(R.id.trans_output_config_frameRate);
         mOutVideoBitrate = (EditText) contentView.findViewById(R.id.trans_output_config_video_bitrate);
         mOutAudioBitrate = (EditText) contentView.findViewById(R.id.trans_output_config_audio_bitrate);
+        mTargetWidth = (EditText) contentView.findViewById(R.id.trans_output_config_video_width);
+        mTargetHeight = (EditText) contentView.findViewById(R.id.trans_output_config_video_height);
         mOutVideoCRF = (EditText) contentView.findViewById(R.id.trans_output_config_video_crf);
         mTransConfig = new ShortVideoConfig();
         mOutputConfirm = (TextView) contentView.findViewById(R.id.trans_output_confirm);
@@ -800,6 +749,8 @@ public class ConfigActivity extends Activity {
         mTransConfig.videoBitrate = Integer.parseInt(mOutVideoBitrate.getText().toString());
         mTransConfig.audioBitrate = Integer.parseInt(mOutAudioBitrate.getText().toString());
         mTransConfig.videoCRF = Integer.parseInt(mOutVideoCRF.getText().toString());
+        mTransConfig.width = Integer.parseInt(mTargetWidth.getText().toString());
+        mTransConfig.height = Integer.parseInt(mTargetHeight.getText().toString());
     }
 
     private void onOutputEncodeProfileClick(int index) {

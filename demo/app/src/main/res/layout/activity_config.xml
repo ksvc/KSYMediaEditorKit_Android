@@ -307,8 +307,7 @@
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
-                android:background="#121217"
-                android:visibility="gone">
+                android:background="#121217">
                 <TextView
                     android:layout_width="@dimen/config_text_type_width"
                     android:layout_height="wrap_content"

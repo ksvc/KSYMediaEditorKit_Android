@@ -22,12 +22,11 @@ import java.util.LinkedList;
  * record progress on 17/5/12.
  */
 
-public class RecordProgressView extends View implements RecordProgressController.RecordingStateChanged{
+public class RecordProgressView extends View implements RecordProgressController.RecordingStateChanged {
     private static final String TAG = "RecordProgressView";
 
     private int paddingTop = 4;
     private int paddingBottom = 4;
-    private Paint mBkgPaint;
     private Paint mPaint;
     private Paint mMinPaint;
     private Paint mPausedPaint;
@@ -59,7 +58,6 @@ public class RecordProgressView extends View implements RecordProgressController
     }
 
     private void instantiate(Context context) {
-        mBkgPaint = new Paint();
         mPaint = new Paint();
         mMinPaint = new Paint();
         mPausedPaint = new Paint();
@@ -71,11 +69,6 @@ public class RecordProgressView extends View implements RecordProgressController
         Resources res = context.getResources();
         mCursorBitmap = BitmapFactory.decodeResource(res,
                 R.drawable.record_progressbar_front);
-
-        this.setBackgroundColor(getResources().getColor(R.color.record_progress_black));
-        mBkgPaint.setStyle(android.graphics.Paint.Style.FILL);
-        mBkgPaint.setColor(getResources()
-                .getColor(R.color.record_progress_bg));
         mPaint.setStyle(android.graphics.Paint.Style.FILL);
         mPaint.setColor(getResources().getColor(R.color.record_progress_blue));
         mPausedPaint.setStyle(android.graphics.Paint.Style.FILL);
@@ -97,8 +90,6 @@ public class RecordProgressView extends View implements RecordProgressController
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawRect(0, paddingTop, getMeasuredWidth(), getMeasuredHeight()
-                - paddingBottom, mBkgPaint);
         boolean pendingDelete = false;
         if (mProgressClipList != null && !mProgressClipList.isEmpty()) {
             int totalWidth = 0;
@@ -151,7 +142,7 @@ public class RecordProgressView extends View implements RecordProgressController
     }
 
     public void release() {
-        if(mHandler != null) {
+        if (mHandler != null) {
             mHandler.removeCallbacksAndMessages(null);
             mHandler = null;
         }

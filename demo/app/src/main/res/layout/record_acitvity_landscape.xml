@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.opengl.GLSurfaceView
+        android:id="@+id/camera_preview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.ksyun.media.shortvideo.demo.view.CameraHintView
+        android:id="@+id/camera_hint"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true" />
+
+    <include
+        android:id="@+id/actionbar"
+        layout="@layout/record_title_bar"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true" />
+
+    <include
+        android:id="@+id/default_bottom_layout"
+        layout="@layout/record_bar_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true" />
+
+    <include
+        android:id="@+id/record_option"
+        layout="@layout/record_options"
+        android:layout_width="350dp"
+        android:layout_height="220dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="50dp"
+        android:layout_marginLeft="60dp" />
+
+    <FrameLayout
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="30dp">
+
+        <com.ksyun.media.shortvideo.demo.recordclip.RecordProgressView
+            android:id="@+id/record_progress"
+            android:layout_width="360dp"
+            android:layout_height="8dp"
+            android:background="@drawable/record_dotted_line" />
+    </FrameLayout>
+
+    <com.ksyun.media.shortvideo.demo.view.VerticalSeekBar
+        android:id="@+id/exposure_seekBar"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:layout_toLeftOf="@+id/default_bottom_layout"
+        android:progressBackgroundTint="#9b9b9b"
+        android:progressTint="@color/font_color_35"
+        android:thumbTint="#ffffff"
+        android:visibility="gone" />
+
+    <com.ksyun.media.shortvideo.demo.view.VerticalSeekBar
+        android:id="@+id/noise_seekBar"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="20dp"
+        android:progressBackgroundTint="#9b9b9b"
+        android:progressTint="@color/font_color_35"
+        android:thumbTint="#ffffff"
+        android:visibility="gone" />
+
+</RelativeLayout>
