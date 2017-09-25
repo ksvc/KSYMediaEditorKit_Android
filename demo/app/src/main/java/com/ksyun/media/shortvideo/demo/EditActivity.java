@@ -9,6 +9,7 @@ import com.ksyun.media.shortvideo.demo.audiorange.AudioSeekLayout;
 import com.ksyun.media.shortvideo.demo.sticker.ColorPicker;
 import com.ksyun.media.shortvideo.demo.sticker.StickerAdapter;
 import com.ksyun.media.shortvideo.demo.util.DataFactory;
+import com.ksyun.media.shortvideo.demo.util.DownloadAndHandleTask;
 import com.ksyun.media.shortvideo.demo.util.SystemStateObtainUtil;
 import com.ksyun.media.shortvideo.demo.util.ViewUtils;
 import com.ksyun.media.shortvideo.demo.videorange.HorizontalListView;
@@ -53,6 +54,7 @@ import android.graphics.Paint;
 import android.net.Uri;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.AppCompatSeekBar;
@@ -251,7 +253,10 @@ public class EditActivity extends Activity implements
     private EditText mOutAudioBitrate;
     private EditText mOutVideoCRF;
     private TextView mOutputConfirm;
-
+    private String mTailVideoUrl = "https://ks3-cn-beijing.ksyun.com/ksy.vcloud.sdk/Android/short_video/TailLeader.mp4";
+    private String mTailVideoPath = Environment.getExternalStorageDirectory().
+            getAbsolutePath() + "/tailvideo.mp4";
+    private DownloadAndHandleTask mTailLoadTask;
     private static final int[] OUTPUT_PROFILE_ID = {R.id.output_config_low_power,
             R.id.output_config_balance, R.id.output_config_high_performance};
     private static final int[] ENCODE_PROFILE_TYPE = {VideoEncodeFormat.ENCODE_PROFILE_LOW_POWER,
@@ -478,6 +483,18 @@ public class EditActivity extends Activity implements
         });
 
         mEditPreviewView.setOnTouchListener(mPreviewViewTouchListener);
+
+        //下载片尾视频，在startCompose前执行即可
+        File tailMp4 = new File(mTailVideoPath);
+        if (!tailMp4.exists()) {
+            mTailLoadTask = new DownloadAndHandleTask(mTailVideoPath, new DownloadAndHandleTask.DownloadListener() {
+                @Override
+                public void onCompleted(String filePath) {
+                    mTailVideoPath = filePath;
+                }
+            });
+            mTailLoadTask.execute(mTailVideoUrl);
+        }
     }
 
     private View.OnTouchListener mPreviewViewTouchListener = new View.OnTouchListener() {
@@ -1266,9 +1283,10 @@ public class EditActivity extends Activity implements
             mEditKit.setVideoEncodeProfile(mComposeConfig.encodeProfile);
             mEditKit.setAudioKBitrate(mComposeConfig.audioBitrate);
             mEditKit.setVideoKBitrate(mComposeConfig.videoBitrate);
-
+            mEditKit.setTailUrl(mTailVideoPath);
             //设置合成路径
-            String fileFolder = "/sdcard/ksy_sv_compose_test";
+            String fileFolder = Environment.getExternalStorageDirectory().
+                    getAbsolutePath() + "/ksy_sv_compose_test";
             File file = new File(fileFolder);
             if (!file.exists()) {
                 file.mkdir();
@@ -1428,6 +1446,11 @@ public class EditActivity extends Activity implements
                 case ShortVideoConstants.SHORTVIDEO_EDIT_PREVIEW_PLAYER_INFO:
                     Log.d(TAG, "KSYEditKit preview player info:" + type + "_" + msgs[0]);
                     break;
+                case ShortVideoConstants.SHORTVIDEO_COMPOSE_TAIL_STARTED:
+                    Log.d(TAG, "tail video compose started");
+                    break;
+                case ShortVideoConstants.SHORTVIDEO_COMPOSE_TITLE_STARTED:
+                    Log.d(TAG, "title video compose started");
                 default:
                     return null;
             }

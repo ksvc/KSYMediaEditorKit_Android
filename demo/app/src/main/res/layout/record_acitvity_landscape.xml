@@ -39,6 +39,25 @@
         android:layout_marginBottom="50dp"
         android:layout_marginLeft="60dp" />
 
+    <ImageView
+        android:id="@+id/count_down_image"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+    <FrameLayout
+        android:id="@+id/record_speed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/actionbar"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="8dp">
+
+        <include layout="@layout/record_speed" />
+    </FrameLayout>
+
     <FrameLayout
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"

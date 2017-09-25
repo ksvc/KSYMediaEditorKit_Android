@@ -72,6 +72,9 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.RiseAnimation" />
+        <activity
+            android:name=".MediaImportActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

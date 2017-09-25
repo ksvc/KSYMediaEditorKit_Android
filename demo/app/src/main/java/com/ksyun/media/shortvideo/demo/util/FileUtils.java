@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 
@@ -290,15 +291,17 @@ public class FileUtils {
 
     public static String getCacheDirectory(Context context) {
         String appCacheDir;
-        if (Environment.MEDIA_MOUNTED == Environment.getExternalStorageState()) {
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
             appCacheDir = context.getExternalCacheDir().getAbsolutePath();
-            if (appCacheDir == null) {
-                appCacheDir = Environment.getExternalStorageDirectory() + "Android" + context.getPackageName() + "cache";
+            if (TextUtils.isEmpty(appCacheDir)) {
+                appCacheDir = Environment.getExternalStorageDirectory() + File.separator
+                        + "Android" + File.separator + context.getPackageName()
+                        + File.separator + "cache";
             }
             return appCacheDir;
         } else {
             appCacheDir = context.getCacheDir().getAbsolutePath();
-            if (appCacheDir == null) {
+            if (TextUtils.isEmpty(appCacheDir)) {
                 appCacheDir = "/data/data/" + context.getPackageName() + "/cache/";
             }
             return appCacheDir;

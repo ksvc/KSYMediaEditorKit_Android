@@ -25,7 +25,7 @@
         android:progressBackgroundTint="#9b9b9b"
         android:progressTint="@color/font_color_35"
         android:thumbTint="#ffffff"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 
     <com.ksyun.media.shortvideo.demo.view.VerticalSeekBar
@@ -38,7 +38,7 @@
         android:progressBackgroundTint="#9b9b9b"
         android:progressTint="@color/font_color_35"
         android:thumbTint="#ffffff"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <include
         android:id="@+id/actionbar"
@@ -52,6 +52,13 @@
         layout="@layout/record_bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="220dp"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true" />
+
+    <ImageView
+        android:id="@+id/count_down_image"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
 
 </RelativeLayout>
