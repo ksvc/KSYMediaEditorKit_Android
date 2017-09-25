@@ -56,4 +56,14 @@
         android:layout_toLeftOf="@id/chronometer"
         android:background="@drawable/noise" />
 
+    <ImageView
+        android:id="@+id/timing_record"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_toLeftOf="@id/noise_suppression"
+        android:background="@drawable/timing_record" />
+
 </RelativeLayout>

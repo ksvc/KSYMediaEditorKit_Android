@@ -4,8 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ActivityNotFoundException;
-import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -38,6 +36,7 @@ import com.ksyun.media.streamer.framework.AVConst;
 import com.ksyun.media.streamer.kit.StreamerConstants;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Timer;
@@ -381,15 +380,8 @@ public class ConfigActivity extends Activity {
     }
 
     private void onImportClick() {
-        Intent target = FileUtils.createGetContentIntent();
-        // Create the chooser Intent
-        Intent intent = Intent.createChooser(
-                target, TITLE);
-        try {
-            startActivityForResult(intent, REQUEST_CODE);
-        } catch (ActivityNotFoundException e) {
-            e.printStackTrace();
-        }
+        Intent intent = new Intent(this, MediaImportActivity.class);
+        startActivityForResult(intent, REQUEST_CODE);
     }
 
     /**
@@ -405,17 +397,16 @@ public class ConfigActivity extends Activity {
                     if (data != null) {
                         // Get the URI of the selected file
                         List<Uri> uris = new LinkedList<>();
-                        ClipData clipData = data.getClipData();
-                        if (clipData != null) {
-                            for (int i = 0; i < clipData.getItemCount(); i++) {
-                                ClipData.Item item = clipData.getItemAt(i);
-                                uris.add(item.getUri());
-                                Log.i(TAG, "Uri = " + item.getUri());
-                            }
+                        ArrayList<String> pathList = data.getStringArrayListExtra("filePath");
+                        for (int i = 0; i < pathList.size(); i++) {
+                            Uri uri = Uri.parse("file://" + pathList.get(i));
+                            uris.add(uri);
+                        }
+                        if (uris.size() > 1) {
                             //多选后转码和拼接处理
                             showTransCodeDialog(uris);
                         } else {
-                            Uri uri = data.getData();
+                            Uri uri = uris.get(0);
                             Log.i(TAG, "Uri = " + uri.toString());
                             try {
                                 // Get the file path from the URI

@@ -427,11 +427,11 @@ Summary:
     
       <tr class=" api apilevel-" >
           <td class="jd-typecol">
-          public
+          protected
           
           
-          KSYStreamer.OnErrorListener</td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRecordKit.html#mOnErrorListener">mOnErrorListener</a></td>
+          AudioSpeedFilter</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRecordKit.html#mAudioSpeedFilter">mAudioSpeedFilter</a></td>
           <td class="jd-descrcol" width="100%"></td>
       </tr>
       
@@ -441,8 +441,30 @@ Summary:
           public
           
           
+          KSYStreamer.OnErrorListener</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRecordKit.html#mOnErrorListener">mOnErrorListener</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class=" api apilevel-" >
+          <td class="jd-typecol">
+          public
+          
+          
           KSYStreamer.OnInfoListener</td>
           <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRecordKit.html#mOnInfoListener">mOnInfoListener</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class="alt-color api apilevel-" >
+          <td class="jd-typecol">
+          protected
+          
+          
+          float</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRecordKit.html#mRecordSpeed">mRecordSpeed</a></td>
           <td class="jd-descrcol" width="100%"></td>
       </tr>
       
@@ -571,6 +593,22 @@ Summary:
             
             
             
+            float
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRecordKit.html#getRecordSpeed()">getRecordSpeed</a></span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
             int
         </td>
         <td class="jd-linkcol" width="100%">
@@ -582,7 +620,41 @@ Summary:
 
 
 	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRecordKit.html#release()">release</a></span>()
+        
+  </td></tr>
+
+
+	 
     <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRecordKit.html#setEnableAudioNS(boolean)">setEnableAudioNS</a></span>(boolean enable)
+        
+        <div class="jd-descrdiv">set if enable use the NoiseSuppression</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -598,7 +670,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -610,6 +682,27 @@ Summary:
         <td class="jd-linkcol" width="100%">
         <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRecordKit.html#setOnInfoListener(OnInfoListener)">setOnInfoListener</a></span>(OnInfoListener listener)
         
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRecordKit.html#setRecordSpeed(float)">setRecordSpeed</a></span>(float recordSpeed)
+        
+        <div class="jd-descrdiv">set speed for record
+ default value:1.0
+ valid value:0.0~2.0
+ effect on the next  <code><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRecordKit.html#stopRecord()">stopRecord()</a></code> call.</div>
+  
   </td></tr>
 
 
@@ -642,8 +735,10 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRecordKit.html#stopRecord()">stopRecord</a></span>()
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRecordKit.html#stopRecord(java.lang.String, com.ksyun.media.shortvideo.kit.KSYRecordKit.MergeFilesFinishedListener)">stopRecord</a></span>(String outputFile, <a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRecordKit.MergeFilesFinishedListener.html">KSYRecordKit.MergeFilesFinishedListener</a> listener)
         
+        <div class="jd-descrdiv">stop part record</div>
+  
   </td></tr>
 
 
@@ -658,10 +753,8 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRecordKit.html#stopRecord(java.lang.String, com.ksyun.media.shortvideo.kit.KSYRecordKit.MergeFilesFinishedListener)">stopRecord</a></span>(String outputFile, <a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRecordKit.MergeFilesFinishedListener.html">KSYRecordKit.MergeFilesFinishedListener</a> listener)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRecordKit.html#stopRecord()">stopRecord</a></span>()
         
-        <div class="jd-descrdiv">stop part record</div>
-  
   </td></tr>
 
 
@@ -945,6 +1038,36 @@ From class
 
 
 
+<a id="mAudioSpeedFilter"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        protected 
+         
+         
+        AudioSpeedFilter
+      </span>
+        mAudioSpeedFilter
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+    </div>
+</div>
+
+
+
 <a id="mOnErrorListener"></a>
 
 <div class="jd-details api apilevel-"> 
@@ -986,6 +1109,36 @@ From class
         KSYStreamer.OnInfoListener
       </span>
         mOnInfoListener
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+    </div>
+</div>
+
+
+
+<a id="mRecordSpeed"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        protected 
+         
+         
+        float
+      </span>
+        mRecordSpeed
     </h4>
       <div class="api-level">
         
@@ -1199,6 +1352,42 @@ From class
 </div>
 
 
+<a id="getRecordSpeed()"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        float
+      </span>
+      <span class="sympad">getRecordSpeed</span>
+      <span class="normal">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist"><li>speed value
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
 <a id="getRecordedFilesCount()"></a>
 
 <div class="jd-details api apilevel-"> 
@@ -1229,6 +1418,78 @@ From class
       <h5 class="jd-tagtitle">Returns</h5>
       <ul class="nolist"><li>counts
 </li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="release()"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">release</span>
+      <span class="normal">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+<a id="setEnableAudioNS(boolean)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">setEnableAudioNS</span>
+      <span class="normal">(boolean enable)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>set if enable use the NoiseSuppression</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>enable</th>
+          <td>true to enable, false to disable.
+</td>
+        </tr>
+      </table>
   </div>
 
     </div>
@@ -1297,6 +1558,40 @@ From class
 </div>
 
 
+<a id="setRecordSpeed(float)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">setRecordSpeed</span>
+      <span class="normal">(float recordSpeed)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>set speed for record
+ default value:1.0
+ valid value:0.0~2.0
+ effect on the next  <code><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRecordKit.html#stopRecord()">stopRecord()</a></code> call.</p></div>
+
+    </div>
+</div>
+
+
 <a id="startRecord(java.lang.String)"></a>
 
 <div class="jd-details api apilevel-"> 
@@ -1328,37 +1623,6 @@ From class
       <ul class="nolist"><li>false if it's already recording, true otherwise.
 </li></ul>
   </div>
-
-    </div>
-</div>
-
-
-<a id="stopRecord()"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">stopRecord</span>
-      <span class="normal">()</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
 
     </div>
 </div>
@@ -1404,6 +1668,37 @@ From class
         </tr>
       </table>
   </div>
+
+    </div>
+</div>
+
+
+<a id="stopRecord()"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">stopRecord</span>
+      <span class="normal">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
 
     </div>
 </div>

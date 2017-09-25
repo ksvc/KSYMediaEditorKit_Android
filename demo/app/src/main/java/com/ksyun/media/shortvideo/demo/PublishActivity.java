@@ -314,9 +314,9 @@ public class PublishActivity extends Activity {
             String mineType = FileUtils.getMimeType(new File(mLocalPath));
             StringBuilder objectKey = new StringBuilder(getPackageName() +
                     "/" + System.currentTimeMillis());
-            if (mineType == FileUtils.MIME_TYPE_MP4) {
+            if (mineType.equals(FileUtils.MIME_TYPE_MP4)) {
                 objectKey.append(".mp4");
-            } else if (mineType == FileUtils.MIME_TYPE_GIF) {
+            } else if (mineType.equals(FileUtils.MIME_TYPE_GIF)) {
                 objectKey.append(".gif");
             }
             mCurObjectKey = objectKey.toString();

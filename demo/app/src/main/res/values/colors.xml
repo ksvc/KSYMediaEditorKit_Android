@@ -30,5 +30,5 @@
     <color name="bright_foreground_disabled_material_light">#80000000</color>
 
     <color name="grey_bg">#B02b2b2b</color>
-
+    <color name="import_bg">#232A42</color>
 </resources>

@@ -24,12 +24,14 @@ import com.ksyun.media.streamer.filter.imgtex.ImgBeautyStylizeFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgFilterBase;
 import com.ksyun.media.streamer.filter.imgtex.ImgTexFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgTexFilterBase;
-import com.ksyun.media.streamer.filter.imgtex.ImgTexFilterMgt;
 import com.ksyun.media.streamer.kit.KSYStreamer;
 import com.ksyun.media.streamer.kit.StreamerConstants;
 import com.ksyun.media.streamer.logstats.StatsLogReport;
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
@@ -126,6 +128,7 @@ public class RecordActivity extends Activity implements
     private View mFlashView;
     private View mExposureView;
     private View mNoiseSuppressionView;
+    private ImageView mTimingRecordView;
     private VerticalSeekBar mExposureSeekBar;
     private VerticalSeekBar mNoiseSeekBar;
     private RecordProgressView mRecordProgressView;
@@ -136,6 +139,7 @@ public class RecordActivity extends Activity implements
     private ImageView mBgmMusicView;
     private ImageView mSoundEffectView;
     private ImageView mWaterMarkView;
+    private ImageView mCountDownImage;
     private View mDefaultRecordBottomLayout;
     private View mBeautyLayout;
     private View mBgmLayout;
@@ -167,6 +171,8 @@ public class RecordActivity extends Activity implements
     private SoundEffectAdapter mSoundChangeAdapter;
     private SoundEffectAdapter mReverbAdapter;
     private ShortVideoConfig mRecordConfig;
+
+    private AnimatorSet mAnimatorSet;
 
     private AppCompatSeekBar mMicAudioVolumeSeekBar;
     private AppCompatSeekBar mBgmVolumeSeekBar;
@@ -208,6 +214,14 @@ public class RecordActivity extends Activity implements
     private static int mMaterialIndex = -1;
     private boolean mIsFirstFetchMaterialList = true;
     private Bitmap mNullBitmap = null;
+
+    //变速录制
+    private View mSpeedLayout;
+    private TextView m1SpeedView;
+    private TextView m1_5SpeedView;
+    private TextView m2SpeedView;
+    private TextView m0_5SpeedView;
+    private boolean mHasBgm;
 
     //录制kit
     private KSYRecordKit mKSYRecordKit;
@@ -278,6 +292,8 @@ public class RecordActivity extends Activity implements
         mExposureView.setOnClickListener(mObserverButton);
         mNoiseSuppressionView = findViewById(R.id.noise_suppression);
         mNoiseSuppressionView.setOnClickListener(mObserverButton);
+        mTimingRecordView = (ImageView) findViewById(R.id.timing_record);
+        mTimingRecordView.setOnClickListener(mObserverButton);
         mExposureSeekBar = (VerticalSeekBar) findViewById(R.id.exposure_seekBar);
         mExposureSeekBar.setProgress(50);
         mExposureSeekBar.setSecondaryProgress(50);
@@ -320,6 +336,7 @@ public class RecordActivity extends Activity implements
         mBackView.setOnClickListener(mObserverButton);
         mNextView = (ImageView) findViewById(R.id.click_to_next);
         mNextView.setOnClickListener(mObserverButton);
+        mCountDownImage = (ImageView) findViewById(R.id.count_down_image);
 
         mBeautyChooseView = findViewById(R.id.record_beauty_choose);
         BottomTitleViewInfo mBeautyInfo = new BottomTitleViewInfo(mBeauty, mBeautyIndicator,
@@ -345,6 +362,19 @@ public class RecordActivity extends Activity implements
 
         mBackView.getDrawable().setLevel(1);
         mBackView.setSelected(false);
+
+        //speed ui
+        mSpeedLayout = findViewById(R.id.record_speed);
+        m1SpeedView = (TextView) findViewById(R.id.record_speed_1);
+        m1SpeedView.setOnClickListener(mObserverButton);
+        m1_5SpeedView = (TextView) findViewById(R.id.record_speed_1_5);
+        m1_5SpeedView.setOnClickListener(mObserverButton);
+        m2SpeedView = (TextView) findViewById(R.id.record_speed_2);
+        m2SpeedView.setOnClickListener(mObserverButton);
+        m0_5SpeedView = (TextView) findViewById(R.id.record_speed_0_5);
+        m0_5SpeedView.setOnClickListener(mObserverButton);
+        m1SpeedView.setActivated(true);
+
         //init
         mMainHandler = new Handler();
         mKSYRecordKit = new KSYRecordKit(this);
@@ -441,7 +471,7 @@ public class RecordActivity extends Activity implements
 
         mBgmAdapter.setOnItemClickListener(null);
         mBgmAdapter.clearTask();
-        mKSYRecordKit.stopBgm();
+        stopBgm();
 
         mRecordProgressCtl.stop();
         mRecordProgressCtl.setRecordingLengthChangedListener(null);
@@ -454,6 +484,12 @@ public class RecordActivity extends Activity implements
             mKMCInitThread.interrupt();
             mKMCInitThread = null;
         }
+        if (mAnimatorSet != null) {
+            mAnimatorSet.cancel();
+        }
+
+        KMCAuthManager.getInstance().release();
+        KMCFilterManager.getInstance().release();
     }
 
     @Override
@@ -468,17 +504,70 @@ public class RecordActivity extends Activity implements
         return super.onKeyDown(keyCode, event);
     }
 
+    private void startCountDownAnimation() {
+        final int[] resId = new int[]{R.drawable.num_three, R.drawable.num_two, R.drawable.num_one};
+        //沿x轴缩小
+        ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(mCountDownImage, "scaleX", 1f, 0.5f, 0.2f);
+        scaleXAnimator.setRepeatCount(2);
+        //沿y轴缩小
+        ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(mCountDownImage, "scaleY", 1f, 0.5f, 0.2f);
+        scaleYAnimator.setRepeatCount(2);
+        //透明度动画
+        ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(mCountDownImage, "alpha", 1f, 0.5f);
+        alphaAnimator.setRepeatCount(2);
+        if (mAnimatorSet != null) {
+            mAnimatorSet.cancel();
+        }
+        mAnimatorSet = new AnimatorSet();
+        mAnimatorSet.play(scaleXAnimator).with(scaleYAnimator).with(alphaAnimator);
+        scaleXAnimator.addListener(new Animator.AnimatorListener() {
+            int index = 0;
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+                if (mCountDownImage.getVisibility() != View.VISIBLE) {
+                    mCountDownImage.setVisibility(View.VISIBLE);
+                }
+                mCountDownImage.setImageDrawable(getResources().getDrawable(resId[0]));
+                index++;
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mCountDownImage.setVisibility(View.GONE);
+                startRecord();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+                if (index >= 0 && index < 3) {
+                    mCountDownImage.setImageDrawable(getResources().getDrawable(resId[index]));
+                    index++;
+                }
+            }
+        });
+        mAnimatorSet.setDuration(1000).start();
+    }
+
     //start recording to a local file
     private void startRecord() {
         if (mIsFileRecording) {
             // 上一次录制未停止完，不能开启下一次录制
             return;
         }
+        mSpeedLayout.setVisibility(View.GONE);
         String fileFolder = getRecordFileFolder();
         mRecordUrl = fileFolder + "/" + System.currentTimeMillis() + ".mp4";
         Log.d(TAG, "record url:" + mRecordUrl);
         float val = mMicAudioVolumeSeekBar.getProgress() / 100.f;
         mKSYRecordKit.setVoiceVolume(val);
+        updateSpeedVolume();
+
         //设置录制文件的本地存储路径，并开始录制
         if (mKSYRecordKit.startRecord(mRecordUrl)) {
             mIsFileRecording = true;
@@ -493,6 +582,7 @@ public class RecordActivity extends Activity implements
      * @param finished 代表是否结束断点拍摄
      */
     private void stopRecord(boolean finished) {
+        mSpeedLayout.setVisibility(View.VISIBLE);
         //停止录制接口为异步接口，sdk在停止结束后会发送
         // StreamerConstants.KSY_STREAMER_FILE_RECORD_STOPPED消息
         //下一次录制响应最好在接收到消息后再进行
@@ -941,7 +1031,7 @@ public class RecordActivity extends Activity implements
             public void onCancel() {
                 setEnableBgmEdit(false);
                 clearPitchState();
-                mKSYRecordKit.stopBgm();
+                stopBgm();
             }
 
             @Override
@@ -949,7 +1039,7 @@ public class RecordActivity extends Activity implements
                 if (ViewUtils.isForeground(RecordActivity.this, RecordActivity.class.getName())) {
                     setEnableBgmEdit(true);
                     clearPitchState();
-                    mKSYRecordKit.startBgm(path, true);
+                    startBgm(path);
                     return true;
                 }
                 return false;
@@ -1221,7 +1311,7 @@ public class RecordActivity extends Activity implements
      * 重置录制状态
      */
     private void clearRecordState() {
-        mKSYRecordKit.stopBgm();
+        stopBgm();
         mKSYRecordKit.getImgTexFilterMgt().setFilter((ImgFilterBase) null);
         mImgBeautyTypeIndex = BEAUTY_DISABLE;
         mEffectFilterIndex = FILTER_DISABLE;
@@ -1279,6 +1369,9 @@ public class RecordActivity extends Activity implements
                 case R.id.noise_suppression:
                     onNoiseSuppresionClick();
                     break;
+                case R.id.timing_record:
+                    startCountDownAnimation();
+                    break;
                 case R.id.click_to_record:
                     onRecordClick();
                     break;
@@ -1320,6 +1413,35 @@ public class RecordActivity extends Activity implements
                     break;
                 case R.id.bgm_title_reverberation:
                     onBgmTitleClick(1);
+                    break;
+                case R.id.record_speed_1:
+                    m1SpeedView.setActivated(true);
+                    m1_5SpeedView.setActivated(false);
+                    m2SpeedView.setActivated(false);
+                    m0_5SpeedView.setActivated(false);
+                    onSpeedClick(1.0f);
+                    break;
+                case R.id.record_speed_0_5:
+                    m1SpeedView.setActivated(false);
+                    m1_5SpeedView.setActivated(false);
+                    m2SpeedView.setActivated(false);
+                    m0_5SpeedView.setActivated(true);
+                    onSpeedClick(0.5f);
+                    break;
+                case R.id.record_speed_1_5:
+                    m1SpeedView.setActivated(false);
+                    m1_5SpeedView.setActivated(true);
+                    m2SpeedView.setActivated(false);
+                    m0_5SpeedView.setActivated(false);
+                    onSpeedClick(1.5f);
+                    break;
+                case R.id.record_speed_2:
+                    m1SpeedView.setActivated(false);
+                    m1_5SpeedView.setActivated(false);
+                    m2SpeedView.setActivated(true);
+                    m0_5SpeedView.setActivated(false);
+                    onSpeedClick(2.0f);
+                    break;
                 default:
                     break;
             }
@@ -1371,6 +1493,39 @@ public class RecordActivity extends Activity implements
         }
     }
 
+    private void onSpeedClick(float speed) {
+        mKSYRecordKit.setRecordSpeed(speed);
+    }
+
+    private void startBgm(String path) {
+        mHasBgm = true;
+        updateSpeedVolume();
+        mKSYRecordKit.startBgm(path, true);
+    }
+
+    private void stopBgm() {
+        mHasBgm = false;
+        mKSYRecordKit.stopBgm();
+        updateSpeedVolume();
+    }
+
+    /**
+     * 变速录制时建议将原声静音，否则在添加背景音乐后效果不太好
+     */
+    private void updateSpeedVolume() {
+        if (mKSYRecordKit.getRecordSpeed() != 1.0f && mHasBgm) {
+            mKSYRecordKit.setVoiceVolume(0.f);
+            mMicAudioVolumeSeekBar.setProgress((int) (mKSYRecordKit.getVoiceVolume() * 100));
+            mMicAudioVolumeSeekBar.setEnabled(false);
+        } else {
+            if (mKSYRecordKit.getVoiceVolume() == 0.f) {
+                mKSYRecordKit.setVoiceVolume(1.0f);
+                mMicAudioVolumeSeekBar.setProgress((int) (mKSYRecordKit.getVoiceVolume() * 100));
+                mMicAudioVolumeSeekBar.setEnabled(true);
+            }
+        }
+    }
+
     private void onBgmClick() {
         if (!(mRecordConfig.isLandscape && mPreRecordConfigLayout == mDefaultRecordBottomLayout)) {
             mPreRecordConfigLayout.setVisibility(View.INVISIBLE);
@@ -1403,7 +1558,7 @@ public class RecordActivity extends Activity implements
     private void onBeautyTitleClick(int index) {
         if (index == 1) {
             if (mRecordConfig.isLandscape) {
-                Toast.makeText(RecordActivity.this, "横屏录制目前不支持动态特效",Toast.LENGTH_SHORT).show();
+                Toast.makeText(RecordActivity.this, "横屏录制目前不支持动态特效", Toast.LENGTH_SHORT).show();
                 return;
             } else {
                 updateKMCFilterView();
@@ -1460,9 +1615,11 @@ public class RecordActivity extends Activity implements
                         try {
                             // Get the file path from the URI
                             final String path = FileUtils.getPath(this, uri);
+                            mHasBgm = true;
                             mKSYRecordKit.startBgm(path, true);
                             setEnableBgmEdit(true);
                         } catch (Exception e) {
+                            mHasBgm = false;
                             Log.e(TAG, "File select error:" + e);
                         }
                     }
@@ -1937,9 +2094,11 @@ public class RecordActivity extends Activity implements
             if (mMaterial.actionId != 0) {
                 makeToast(materialInfoItem.material.actionTip);
             }
-            mKMCFilter = new KMCFilter(getApplicationContext(),
-                    mKSYRecordKit.getGLRender());
-            mKSYRecordKit.getImgTexFilterMgt().setExtraFilter(mKMCFilter);
+            if (mKMCFilter == null) {
+                mKMCFilter = new KMCFilter(getApplicationContext(),
+                        mKSYRecordKit.getGLRender());
+                mKSYRecordKit.getImgTexFilterMgt().setExtraFilter(mKMCFilter);
+            }
             mKMCFilter.startShowingMaterial(mMaterial);
             if (mKMCAdapter.getItemState(position) != MSG_DOWNLOAD_SUCCESS) {
                 mHandler.sendMessage(mHandler.obtainMessage(MSG_DOWNLOAD_SUCCESS, position, 0));

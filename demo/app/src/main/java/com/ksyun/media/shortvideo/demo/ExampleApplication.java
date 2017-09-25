@@ -7,6 +7,8 @@ import android.app.Application;
 import android.content.Context;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.tencent.bugly.crashreport.CrashReport;
 
 
@@ -31,5 +33,7 @@ public class ExampleApplication extends Application{
         CrashReport.initCrashReport(getApplicationContext(), "4e98881bde", true);
         // 初始化fresco库，用来支持动态贴纸功能，若不使用，可以不调用
         Fresco.initialize(this);
+        ImageLoaderConfiguration configuration = ImageLoaderConfiguration.createDefault(this);
+        ImageLoader.getInstance().init(configuration);
     }
 }
