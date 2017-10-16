@@ -1543,6 +1543,8 @@ public class EditActivity extends Activity implements
                     mOutForGIF.setActivated(false);
                     mOutEncodeWithH264.setEnabled(true);
                     mOutEncodeWithH265.setEnabled(true);
+                    mOutEncodeWithH264.setActivated(true);
+                    mOutEncodeWithH265.setActivated(false);
                     mOutEncodeByHW.setEnabled(true);
                     break;
                 case R.id.output_config_gif:

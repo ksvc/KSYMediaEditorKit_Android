@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ksyun.media.shortvideo.demo.adapter.MediaGalleryAdapter;
 import com.ksyun.media.shortvideo.demo.adapter.MediaSelectedAdapter;
@@ -114,10 +115,14 @@ public class MediaImportActivity extends Activity {
         for (int i = 0; i < list.size(); i++) {
             path.add(list.get(i).filePath);
         }
-        Intent intent = new Intent();
-        intent.putStringArrayListExtra("filePath", path);
-        setResult(RESULT_CODE, intent);
-        finish();
+        if (path.size() == 0) {
+            Toast.makeText(this, "请至少选择一个文件", Toast.LENGTH_SHORT).show();
+        } else {
+            Intent intent = new Intent();
+            intent.putStringArrayListExtra("filePath", path);
+            setResult(RESULT_CODE, intent);
+            finish();
+        }
     }
 
     private class ButtonObserver implements View.OnClickListener {
