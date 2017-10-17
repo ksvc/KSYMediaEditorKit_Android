@@ -54,7 +54,7 @@ public class RecordProgressController {
     private class ChangeProgressRunnable implements Runnable {
         @Override
         public void run() {
-            if (getChronometerTime() >= RecordActivity.MAX_DURATION) {
+            if (getTotalRecordTime() >= RecordActivity.MAX_DURATION) {
                 mProgressView.invalidate();
                 if (mIsRecording && mRecordingLengthChangedListener != null) {
                     mRecordingLengthChangedListener.passMaxPoint();
@@ -81,6 +81,14 @@ public class RecordProgressController {
             }
         }
         return curTime * 1000;
+    }
+
+    private long getTotalRecordTime() {
+        long time = 0;
+        for (RecordClipModel clip : mProgressClipList) {
+            time += clip.timeInterval;
+        }
+        return time;
     }
 
     /**
