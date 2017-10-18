@@ -608,7 +608,7 @@ public class PublishActivity extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if (mUploadWindow.isShowing()) {
+                            if (mUploadWindow != null && mUploadWindow.isShowing()) {
                                 mUploadWindow.dismiss();
                             }
                         }
