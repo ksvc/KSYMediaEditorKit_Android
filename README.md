@@ -37,6 +37,8 @@
 * [x] [噪声抑制](https://github.com/ksvc/KSYStreamer_Android/wiki/Audio_NoiseSuppression)
 * [x] [变速录制](https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/record_speed)  
 * [x] [片头片尾](https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/add_title_tail)  
+* [x] [MV](https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/mv)  
+* [x] [涂鸦](https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/scrawl)  
 
 ## 1.1 运行环境  
 - 最低支持版本为Android 4.4 (API level 19)
