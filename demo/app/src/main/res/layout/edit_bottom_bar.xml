@@ -80,6 +80,13 @@
             android:visibility="invisible" />
 
         <include
+            android:id="@+id/paint_menu_choose"
+            layout="@layout/paint_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+        <include
             android:id="@+id/animate_sticker_choose"
             layout="@layout/edit_animated_sticker_choose"
             android:layout_width="match_parent"

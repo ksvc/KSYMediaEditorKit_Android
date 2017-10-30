@@ -63,6 +63,8 @@ public class ConfigActivity extends Activity {
     private TextView mOutEncodeWithH265;
     private TextView mOutEncodeByHW;
     private TextView mOutEncodeBySW;
+    private TextView mOutDecodeByHW;
+    private TextView mOutDecodeBySW;
     private TextView mOutForMP4;
     private TextView mOutForGIF;
     private TextView[] mOutProfileGroup;
@@ -194,7 +196,7 @@ public class ConfigActivity extends Activity {
         mRecRes720p.setActivated(true);
         mRecEncodeWithH264.setActivated(true);
         mRecEncodeByHW.setActivated(true);
-        mRecProfileGroup[0].setActivated(true);
+        mRecProfileGroup[2].setActivated(true);
         mPortrait.setActivated(true);
     }
 
@@ -344,6 +346,14 @@ public class ConfigActivity extends Activity {
                     mOutEncodeBySW.setActivated(true);
                     mOutVideoCRF.setEnabled(true);
                     break;
+                case R.id.trans_output_config_decode_hw:
+                    mOutDecodeByHW.setActivated(true);
+                    mOutDecodeBySW.setActivated(false);
+                    break;
+                case R.id.trans_output_config_decode_sw:
+                    mOutDecodeBySW.setActivated(true);
+                    mOutDecodeByHW.setActivated(false);
+                    break;
                 case R.id.trans_output_config_mp4:
                     mOutForMP4.setActivated(true);
                     mOutForGIF.setActivated(false);
@@ -477,12 +487,12 @@ public class ConfigActivity extends Activity {
 
         mKsyMergeKit.setEncodeMethod(mTransConfig.encodeMethod);
         mKsyMergeKit.setTargetSize(mTransConfig.width, mTransConfig.height);
-        mKsyMergeKit.setVideoBitrate(mTransConfig.videoBitrate);
-        mKsyMergeKit.setAudioBitrate(mTransConfig.audioBitrate);
+        mKsyMergeKit.setVideoKBitrate(mTransConfig.videoBitrate);
+        mKsyMergeKit.setAudioKBitrate(mTransConfig.audioBitrate);
         mKsyMergeKit.setAudioChannels(mTransConfig.audioChannel);
         mKsyMergeKit.setAudioSampleRate(mTransConfig.audioSampleRate);
         mKsyMergeKit.setVideoFps(mTransConfig.fps);
-
+        mKsyMergeKit.setVideoDecodeMethod(mTransConfig.decodeMethod);
         String outputFile = getTranscodeFileFolder() + "/mergedFile" +
                 System.currentTimeMillis() + ".mp4";
         mKsyMergeKit.start(mTransCodeUris, outputFile, null, true);
@@ -668,6 +678,10 @@ public class ConfigActivity extends Activity {
         mOutEncodeByHW.setOnClickListener(mObserver);
         mOutEncodeBySW = (TextView) contentView.findViewById(R.id.trans_output_config_sw);
         mOutEncodeBySW.setOnClickListener(mObserver);
+        mOutDecodeByHW = (TextView) contentView.findViewById(R.id.trans_output_config_decode_hw);
+        mOutDecodeByHW.setOnClickListener(mObserver);
+        mOutDecodeBySW = (TextView) contentView.findViewById(R.id.trans_output_config_decode_sw);
+        mOutDecodeBySW.setOnClickListener(mObserver);
         mOutForMP4 = (TextView) contentView.findViewById(R.id.trans_output_config_mp4);
         mOutForMP4.setOnClickListener(mObserver);
         mOutForGIF = (TextView) contentView.findViewById(R.id.trans_output_config_gif);
@@ -695,6 +709,7 @@ public class ConfigActivity extends Activity {
         mOutRes480p.setActivated(true);
         mOutEncodeWithH264.setActivated(true);
         mOutEncodeBySW.setActivated(true);
+        mOutDecodeByHW.setActivated(true);
         mOutForMP4.setActivated(true);
         mOutProfileGroup[1].setActivated(true);
         mTransConfDialog.show();
@@ -725,6 +740,12 @@ public class ConfigActivity extends Activity {
             mTransConfig.encodeMethod = StreamerConstants.ENCODE_METHOD_HARDWARE;
         } else if (mOutEncodeBySW.isActivated()) {
             mTransConfig.encodeMethod = StreamerConstants.ENCODE_METHOD_SOFTWARE;
+        }
+
+        if (mOutDecodeByHW.isActivated()) {
+            mTransConfig.decodeMethod = StreamerConstants.DECODE_METHOD_HARDWARE;
+        } else if (mOutDecodeBySW.isActivated()) {
+            mTransConfig.decodeMethod = StreamerConstants.DECODE_METHOD_SOFTWARE;
         }
 
         if (mOutForGIF.isActivated()) {

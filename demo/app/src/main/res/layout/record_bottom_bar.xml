@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:id="@+id/default_bottom_layout"
@@ -13,8 +13,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true">
-           <include
-               layout="@layout/record_speed"/>
+
+            <include layout="@layout/record_speed" />
         </FrameLayout>
 
         <LinearLayout
@@ -38,13 +38,13 @@
                     android:id="@+id/record_beauty"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/beauty"/>
+                    android:src="@drawable/beauty" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="美颜"
-                    android:textColor="#ffffff"/>
+                    android:textColor="#ffffff" />
             </LinearLayout>
 
             <LinearLayout
@@ -58,13 +58,13 @@
                     android:id="@+id/record_bgm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/music"/>
+                    android:src="@drawable/music" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="音乐"
-                    android:textColor="#ffffff"/>
+                    android:textColor="#ffffff" />
             </LinearLayout>
 
             <LinearLayout
@@ -78,13 +78,13 @@
                     android:id="@+id/record_sound_effect"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/sound_effect"/>
+                    android:src="@drawable/sound_effect" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="音效"
-                    android:textColor="#ffffff"/>
+                    android:textColor="#ffffff" />
             </LinearLayout>
 
             <LinearLayout
@@ -95,16 +95,36 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/record_watermark"
+                    android:id="@+id/record_mv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/water_mark_selector"/>
+                    android:src="@drawable/mv" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="水印"
-                    android:textColor="#ffffff"/>
+                    android:text="MV"
+                    android:textColor="#ffffff" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/record_scrawl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/paint_icon_choose" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="涂鸦"
+                    android:textColor="#ffffff" />
             </LinearLayout>
         </LinearLayout>
 
@@ -119,7 +139,7 @@
                 android:id="@+id/record_progress"
                 android:layout_width="match_parent"
                 android:layout_height="8dp"
-                android:background="@drawable/record_dotted_line"/>
+                android:background="@drawable/record_dotted_line" />
         </FrameLayout>
 
         <RelativeLayout
@@ -134,7 +154,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/record_state"/>
+                android:src="@drawable/record_state" />
 
             <ImageView
                 android:id="@+id/click_to_back"
@@ -143,7 +163,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="25dp"
-                android:src="@drawable/record_back_state"/>
+                android:src="@drawable/record_back_state" />
 
             <ImageView
                 android:id="@+id/click_to_next"
@@ -153,7 +173,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="25dp"
                 android:src="@drawable/record_complete"
-                android:visibility="invisible"/>
+                android:visibility="invisible" />
         </RelativeLayout>
     </RelativeLayout>
 
@@ -162,14 +182,14 @@
         layout="@layout/stub_item_beauty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <include
         android:id="@+id/item_bgm_select"
         layout="@layout/bgm_choose"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <include
         android:id="@+id/item_sound_effect"
@@ -177,5 +197,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"/>
+
+    <include
+        android:id="@+id/item_mv_select"
+        layout="@layout/mv_select_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
 </RelativeLayout>

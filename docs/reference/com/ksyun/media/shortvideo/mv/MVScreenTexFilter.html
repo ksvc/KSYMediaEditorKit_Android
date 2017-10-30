@@ -57,7 +57,7 @@
 <link rel="shortcut icon" type="image/x-icon" href="../../../../../favicon.ico" />
 <title>
 
-  KSYTextView.DrawTextParams
+  MVScreenTexFilter
 
 
 </title>
@@ -142,28 +142,28 @@
                 
     <li class="api apilevel-">
   <a href="../../../../../com/ksyun/media/shortvideo/kit/package-summary.html">com.ksyun.media.shortvideo.kit</a></li>
+    <li class="selected api apilevel-">
+  <a href="../../../../../com/ksyun/media/shortvideo/mv/package-summary.html">com.ksyun.media.shortvideo.mv</a></li>
+    <li class="api apilevel-">
+  <a href="../../../../../com/ksyun/media/shortvideo/sticker/package-summary.html">com.ksyun.media.shortvideo.sticker</a></li>
     <li class="api apilevel-">
   <a href="../../../../../com/ksyun/media/shortvideo/utils/package-summary.html">com.ksyun.media.shortvideo.utils</a></li>
-    <li class="selected api apilevel-">
-  <a href="../../../../../com/ksyun/media/shortvideo/view/package-summary.html">com.ksyun.media.shortvideo.view</a></li>
               </ul><br/>
             </div> <!-- end packages -->
           </div> <!-- end resize-packages -->
           <div id="classes-nav">
             <ul>
               
-    <li><h2>Interfaces</h2>
-      <ul>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.OnTextRectSelected.html">KSYTextView.OnTextRectSelected</a></li>
-      </ul>
-    </li>
               
     <li><h2>Classes</h2>
       <ul>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYStickerView.html">KSYStickerView</a></li>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.html">KSYTextView</a></li>
-          <li class="selected api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.DrawTextParams.html">KSYTextView.DrawTextParams</a></li>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/view/StickerHelpBoxInfo.html">StickerHelpBoxInfo</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/mv/KSYMVAVInfo.html">KSYMVAVInfo</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/mv/KSYMVFilterInfo.html">KSYMVFilterInfo</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/mv/KSYMVFrameInfo.html">KSYMVFrameInfo</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/mv/KSYMVInfo.html">KSYMVInfo</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/mv/KSYMVMgt.html">KSYMVMgt</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/mv/MVImgTexFilterBase.html">MVImgTexFilterBase</a></li>
+          <li class="selected api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/mv/MVScreenTexFilter.html">MVScreenTexFilter</a></li>
       </ul>
     </li>
               
@@ -208,6 +208,11 @@
 
 
   
+  
+  
+  
+
+  
    
   
   
@@ -226,15 +231,15 @@ Summary:
 
 
 
-  <a href="#lfields">Fields</a>
+
+
+  <a href="#pubctors">Ctors</a>
   
 
 
 
-  &#124; <a href="#pubctors">Ctors</a>
+  &#124; <a href="#pubmethods">Methods</a>
   
-
-
 
 
 
@@ -258,16 +263,20 @@ Summary:
 
 <div id="jd-header">
     public
-    static 
+     
      
     
     class
-<h1>KSYTextView.DrawTextParams</h1>
+<h1>MVScreenTexFilter</h1>
 
 
 
   
-    extends Object<br/>
+  
+  
+
+  
+    extends ImgTexFilter<br/>
   
   
   
@@ -287,7 +296,7 @@ Summary:
 
     <tr>
          	
-        <td colspan="2" class="jd-inheritance-class-cell">java.lang.Object</td>
+        <td colspan="3" class="jd-inheritance-class-cell">java.lang.Object</td>
     </tr>
     
 
@@ -295,7 +304,17 @@ Summary:
         
             <td class="jd-inheritance-space">&nbsp;&nbsp;&nbsp;&#x21b3;</td>
          	
-        <td colspan="1" class="jd-inheritance-class-cell">com.ksyun.media.shortvideo.view.KSYTextView.DrawTextParams</td>
+        <td colspan="2" class="jd-inheritance-class-cell">ImgTexFilter</td>
+    </tr>
+    
+
+    <tr>
+        
+            <td class="jd-inheritance-space">&nbsp;</td>
+        
+            <td class="jd-inheritance-space">&nbsp;&nbsp;&nbsp;&#x21b3;</td>
+         	
+        <td colspan="1" class="jd-inheritance-class-cell">com.ksyun.media.shortvideo.mv.MVScreenTexFilter</td>
     </tr>
     
 
@@ -311,7 +330,7 @@ Summary:
 
 
 <h2>Class Overview</h2>
-<p>draw text params
+<p>for screen alpha filter
 </p>
 
 
@@ -357,97 +376,6 @@ Summary:
 
 
 
-<!-- =========== FIELD SUMMARY =========== -->
-<table id="lfields" class="jd-sumtable"><tr><th colspan="12">Fields</th></tr>
-
-
-    
-      <tr class="alt-color api apilevel-" >
-          <td class="jd-typecol">
-          public
-          
-          
-          boolean</td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.DrawTextParams.html#autoNewLine">autoNewLine</a></td>
-          <td class="jd-descrcol" width="100%"></td>
-      </tr>
-      
-    
-      <tr class=" api apilevel-" >
-          <td class="jd-typecol">
-          public
-          
-          
-          Bitmap</td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.DrawTextParams.html#bitmap">bitmap</a></td>
-          <td class="jd-descrcol" width="100%">the text bgm bitmap
-</td>
-      </tr>
-      
-    
-      <tr class="alt-color api apilevel-" >
-          <td class="jd-typecol">
-          public
-          
-          
-          TextPaint</td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.DrawTextParams.html#textPaint">textPaint</a></td>
-          <td class="jd-descrcol" width="100%"></td>
-      </tr>
-      
-    
-      <tr class=" api apilevel-" >
-          <td class="jd-typecol">
-          public
-          
-          
-          float</td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.DrawTextParams.html#text_bottom_padding">text_bottom_padding</a></td>
-          <td class="jd-descrcol" width="100%">the text bottom padding
-</td>
-      </tr>
-      
-    
-      <tr class="alt-color api apilevel-" >
-          <td class="jd-typecol">
-          public
-          
-          
-          float</td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.DrawTextParams.html#text_left_padding">text_left_padding</a></td>
-          <td class="jd-descrcol" width="100%">the text left padding
-</td>
-      </tr>
-      
-    
-      <tr class=" api apilevel-" >
-          <td class="jd-typecol">
-          public
-          
-          
-          float</td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.DrawTextParams.html#text_right_padding">text_right_padding</a></td>
-          <td class="jd-descrcol" width="100%">the text right padding
-</td>
-      </tr>
-      
-    
-      <tr class="alt-color api apilevel-" >
-          <td class="jd-typecol">
-          public
-          
-          
-          float</td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.DrawTextParams.html#text_top_padding">text_top_padding</a></td>
-          <td class="jd-descrcol" width="100%">the text top padding
-</td>
-      </tr>
-      
-    
-
-</table>
-
-
 
 
 
@@ -469,7 +397,100 @@ Summary:
             
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.DrawTextParams.html#DrawTextParams()">DrawTextParams</a></span>()
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/mv/MVScreenTexFilter.html#MVScreenTexFilter(GLRender)">MVScreenTexFilter</a></span>(GLRender glRender)
+        
+  </td></tr>
+
+
+
+</table>
+
+
+
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+<table id="pubmethods" class="jd-sumtable"><tr><th colspan="12">Public Methods</th></tr>
+
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            <any>
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/mv/MVScreenTexFilter.html#getVSinkPin()">getVSinkPin</a></span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/mv/MVScreenTexFilter.html#onDrawArraysAfter()">onDrawArraysAfter</a></span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/mv/MVScreenTexFilter.html#onDrawArraysPre()">onDrawArraysPre</a></span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/mv/MVScreenTexFilter.html#onInitialized()">onInitialized</a></span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/mv/MVScreenTexFilter.html#onRelease()">onRelease</a></span>()
         
   </td></tr>
 
@@ -483,14 +504,12 @@ Summary:
 
 
 
-
-
-
-
 <!-- ========== METHOD SUMMARY =========== -->
 <table id="inhmethods" class="jd-sumtable"><tr><th>
   <a href="#" class="toggle-all" onclick="return toggleAllInherited(this, null)">[Expand]</a>
   <div style="clear:left;">Inherited Methods</div></th></tr>
+
+
 
 
 <tr class="api apilevel-" >
@@ -720,228 +739,6 @@ From class
 <!-- Fields -->
 
 
-<!-- ========= FIELD DETAIL ======== -->
-<h2>Fields</h2>
-
-
-
-
-<a id="autoNewLine"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-        boolean
-      </span>
-        autoNewLine
-    </h4>
-      <div class="api-level">
-        
-
-
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
-
-    
-    </div>
-</div>
-
-
-
-<a id="bitmap"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-        Bitmap
-      </span>
-        bitmap
-    </h4>
-      <div class="api-level">
-        
-
-
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>the text bgm bitmap
-</p></div>
-
-    
-    </div>
-</div>
-
-
-
-<a id="textPaint"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-        TextPaint
-      </span>
-        textPaint
-    </h4>
-      <div class="api-level">
-        
-
-
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
-
-    
-    </div>
-</div>
-
-
-
-<a id="text_bottom_padding"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-        float
-      </span>
-        text_bottom_padding
-    </h4>
-      <div class="api-level">
-        
-
-
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>the text bottom padding
-</p></div>
-
-    
-    </div>
-</div>
-
-
-
-<a id="text_left_padding"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-        float
-      </span>
-        text_left_padding
-    </h4>
-      <div class="api-level">
-        
-
-
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>the text left padding
-</p></div>
-
-    
-    </div>
-</div>
-
-
-
-<a id="text_right_padding"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-        float
-      </span>
-        text_right_padding
-    </h4>
-      <div class="api-level">
-        
-
-
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>the text right padding
-</p></div>
-
-    
-    </div>
-</div>
-
-
-
-<a id="text_top_padding"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-        float
-      </span>
-        text_top_padding
-    </h4>
-      <div class="api-level">
-        
-
-
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>the text top padding
-</p></div>
-
-    
-    </div>
-</div>
-
-
-
-
 <!-- Public ctors -->
 
 
@@ -950,7 +747,7 @@ From class
 
 
 
-<a id="DrawTextParams()"></a>
+<a id="MVScreenTexFilter(GLRender)"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -962,8 +759,8 @@ From class
          
         
       </span>
-      <span class="sympad">DrawTextParams</span>
-      <span class="normal">()</span>
+      <span class="sympad">MVScreenTexFilter</span>
+      <span class="normal">(GLRender glRender)</span>
     </h4>
       <div class="api-level">
         <div>
@@ -991,6 +788,166 @@ From class
 
 <!-- ========= METHOD DETAIL ======== -->
 <!-- Public methdos -->
+
+<h2>Public Methods</h2>
+
+
+
+<a id="getVSinkPin()"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        <any>
+      </span>
+      <span class="sympad">getVSinkPin</span>
+      <span class="normal">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+<a id="onDrawArraysAfter()"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">onDrawArraysAfter</span>
+      <span class="normal">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+<a id="onDrawArraysPre()"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">onDrawArraysPre</span>
+      <span class="normal">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+<a id="onInitialized()"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">onInitialized</span>
+      <span class="normal">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+<a id="onRelease()"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">onRelease</span>
+      <span class="normal">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
 
 
 

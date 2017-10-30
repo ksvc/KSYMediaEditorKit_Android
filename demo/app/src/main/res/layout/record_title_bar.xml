@@ -37,14 +37,14 @@
         android:background="@drawable/record_flash_normal" />
 
     <ImageView
-        android:id="@+id/exposure"
+        android:id="@+id/record_watermark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginRight="20dp"
         android:layout_marginTop="5dp"
         android:layout_toLeftOf="@id/flash"
-        android:background="@drawable/exposure" />
+        android:src="@drawable/water_mark_selector" />
 
     <ImageView
         android:id="@+id/noise_suppression"

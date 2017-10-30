@@ -57,7 +57,7 @@
 <link rel="shortcut icon" type="image/x-icon" href="../../../../../favicon.ico" />
 <title>
 
-  KSYComposeKit.OnInfoListener
+  KSYMVAVInfo
 
 
 </title>
@@ -140,8 +140,12 @@
               </div>
               <ul>
                 
-    <li class="selected api apilevel-">
+    <li class="api apilevel-">
   <a href="../../../../../com/ksyun/media/shortvideo/kit/package-summary.html">com.ksyun.media.shortvideo.kit</a></li>
+    <li class="selected api apilevel-">
+  <a href="../../../../../com/ksyun/media/shortvideo/mv/package-summary.html">com.ksyun.media.shortvideo.mv</a></li>
+    <li class="api apilevel-">
+  <a href="../../../../../com/ksyun/media/shortvideo/sticker/package-summary.html">com.ksyun.media.shortvideo.sticker</a></li>
     <li class="api apilevel-">
   <a href="../../../../../com/ksyun/media/shortvideo/utils/package-summary.html">com.ksyun.media.shortvideo.utils</a></li>
               </ul><br/>
@@ -150,21 +154,16 @@
           <div id="classes-nav">
             <ul>
               
-    <li><h2>Interfaces</h2>
-      <ul>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYComposeKit.OnErrorListener.html">KSYComposeKit.OnErrorListener</a></li>
-          <li class="selected api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYComposeKit.OnInfoListener.html">KSYComposeKit.OnInfoListener</a></li>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.OnErrorListener.html">KSYEditKit.OnErrorListener</a></li>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.OnInfoListener.html">KSYEditKit.OnInfoListener</a></li>
-      </ul>
-    </li>
               
     <li><h2>Classes</h2>
       <ul>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYComposeKit.html">KSYComposeKit</a></li>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html">KSYEditKit</a></li>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRecordKit.html">KSYRecordKit</a></li>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/MediaPlayerCapture.html">MediaPlayerCapture</a></li>
+          <li class="selected api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/mv/KSYMVAVInfo.html">KSYMVAVInfo</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/mv/KSYMVFilterInfo.html">KSYMVFilterInfo</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/mv/KSYMVFrameInfo.html">KSYMVFrameInfo</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/mv/KSYMVInfo.html">KSYMVInfo</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/mv/KSYMVMgt.html">KSYMVMgt</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/mv/MVImgTexFilterBase.html">MVImgTexFilterBase</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/mv/MVScreenTexFilter.html">MVScreenTexFilter</a></li>
       </ul>
     </li>
               
@@ -208,9 +207,37 @@
 
 
 
+  
+   
+  
+  
+  
+  
+
 
 <div class="sum-details-links">
 
+
+Summary:
+
+
+
+
+
+
+
+
+
+  <a href="#pubctors">Ctors</a>
+  
+
+
+
+
+
+  &#124; <a href="#inhmethods">Inherited Methods</a>
+
+&#124; <a href="#" onclick="return toggleAllClassInherited()" id="toggleAllClassInherited">[Expand All]</a>
 
 </div><!-- end sum-details-links -->
 <div class="api-level">
@@ -228,13 +255,19 @@
 
 <div id="jd-header">
     public
-    static 
+     
      
     
-    interface
-<h1>KSYComposeKit.OnInfoListener</h1>
+    class
+<h1>KSYMVAVInfo</h1>
 
 
+
+  
+    extends Object<br/>
+  
+  
+  
 
   
   
@@ -251,7 +284,15 @@
 
     <tr>
          	
-        <td colspan="1" class="jd-inheritance-class-cell">com.ksyun.media.shortvideo.kit.KSYComposeKit.OnInfoListener</td>
+        <td colspan="2" class="jd-inheritance-class-cell">java.lang.Object</td>
+    </tr>
+    
+
+    <tr>
+        
+            <td class="jd-inheritance-space">&nbsp;&nbsp;&nbsp;&#x21b3;</td>
+         	
+        <td colspan="1" class="jd-inheritance-class-cell">com.ksyun.media.shortvideo.mv.KSYMVAVInfo</td>
     </tr>
     
 
@@ -267,7 +308,7 @@
 
 
 <h2>Class Overview</h2>
-<p>The interface On info listener.
+<p>mv data class for music or movie
 </p>
 
 
@@ -318,30 +359,24 @@
 
 
 
-
-
-
-
-<!-- ========== METHOD SUMMARY =========== -->
-<table id="pubmethods" class="jd-sumtable"><tr><th colspan="12">Public Methods</th></tr>
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+<table id="pubctors" class="jd-sumtable"><tr><th colspan="12">Public Constructors</th></tr>
 
 
 
 	 
     <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
-            abstract
             
             
             
             
-            void
+            
+            
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYComposeKit.OnInfoListener.html#onInfo(com.ksyun.media.shortvideo.kit.KSYComposeKit, int, java.lang.String)">onInfo</a></span>(<a href="../../../../../com/ksyun/media/shortvideo/kit/KSYComposeKit.html">KSYComposeKit</a> ksyComposeKit, int type, String msg)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/mv/KSYMVAVInfo.html#KSYMVAVInfo(java.lang.String, boolean)">KSYMVAVInfo</a></span>(String path, boolean loop)
         
-        <div class="jd-descrdiv">On info.</div>
-  
   </td></tr>
 
 
@@ -352,6 +387,220 @@
 
 
 
+
+
+
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+<table id="inhmethods" class="jd-sumtable"><tr><th>
+  <a href="#" class="toggle-all" onclick="return toggleAllInherited(this, null)">[Expand]</a>
+  <div style="clear:left;">Inherited Methods</div></th></tr>
+
+
+<tr class="api apilevel-" >
+<td colspan="12">
+  <a href="#" onclick="return toggleInherited(this, null)" id="inherited-methods-java.lang.Object" class="jd-expando-trigger closed"
+          ><img id="inherited-methods-java.lang.Object-trigger"
+          src="../../../../../../assets/images/triangle-closed.png"
+          class="jd-expando-trigger-img" /></a>
+From class
+
+  java.lang.Object
+
+<div id="inherited-methods-java.lang.Object">
+  <div id="inherited-methods-java.lang.Object-list"
+        class="jd-inheritedlinks">
+  </div>
+  <div id="inherited-methods-java.lang.Object-summary" style="display: none;">
+    <table class="jd-sumtable-expando">
+    
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            Object
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad">clone</span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            boolean
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad">equals</span>(Object arg0)
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad">finalize</span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            Class&lt;?&gt;
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad">getClass</span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            int
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad">hashCode</span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad">notify</span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad">notifyAll</span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            String
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad">toString</span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad">wait</span>(long arg0, int arg1)
+        
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad">wait</span>(long arg0)
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad">wait</span>()
+        
+  </td></tr>
+
+
+</table>
+  </div>
+</div>
+</td></tr>
+
+
+</table>
 
 
 </div><!-- jd-descr (summary) -->
@@ -380,20 +629,12 @@
 <!-- Public ctors -->
 
 
-
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
-<!-- Protected ctors -->
+<h2>Public Constructors</h2>
 
 
 
-<!-- ========= METHOD DETAIL ======== -->
-<!-- Public methdos -->
-
-<h2>Public Methods</h2>
-
-
-
-<a id="onInfo(com.ksyun.media.shortvideo.kit.KSYComposeKit, int, java.lang.String)"></a>
+<a id="KSYMVAVInfo(java.lang.String, boolean)"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -401,12 +642,12 @@
         public 
          
          
-        abstract 
          
-        void
+         
+        
       </span>
-      <span class="sympad">onInfo</span>
-      <span class="normal">(<a href="../../../../../com/ksyun/media/shortvideo/kit/KSYComposeKit.html">KSYComposeKit</a> ksyComposeKit, int type, String msg)</span>
+      <span class="sympad">KSYMVAVInfo</span>
+      <span class="normal">(String path, boolean loop)</span>
     </h4>
       <div class="api-level">
         <div>
@@ -418,30 +659,22 @@
       </div>
     <div class="jd-details-descr">
       
-  <div class="jd-tagdata jd-tagdescr"><p>On info.</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>ksyComposeKit</th>
-          <td>the ksy compose kit</td>
-        </tr>
-        <tr>
-          <th>type</th>
-          <td>the type</td>
-        </tr>
-        <tr>
-          <th>msg</th>
-          <td>the msg
-</td>
-        </tr>
-      </table>
-  </div>
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
 
     </div>
 </div>
 
 
+
+
+
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+<!-- Protected ctors -->
+
+
+
+<!-- ========= METHOD DETAIL ======== -->
+<!-- Public methdos -->
 
 
 

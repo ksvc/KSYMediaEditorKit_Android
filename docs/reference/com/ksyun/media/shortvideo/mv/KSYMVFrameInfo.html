@@ -57,7 +57,7 @@
 <link rel="shortcut icon" type="image/x-icon" href="../../../../../favicon.ico" />
 <title>
 
-  StickerHelpBoxInfo
+  KSYMVFrameInfo
 
 
 </title>
@@ -142,29 +142,28 @@
                 
     <li class="api apilevel-">
   <a href="../../../../../com/ksyun/media/shortvideo/kit/package-summary.html">com.ksyun.media.shortvideo.kit</a></li>
+    <li class="selected api apilevel-">
+  <a href="../../../../../com/ksyun/media/shortvideo/mv/package-summary.html">com.ksyun.media.shortvideo.mv</a></li>
+    <li class="api apilevel-">
+  <a href="../../../../../com/ksyun/media/shortvideo/sticker/package-summary.html">com.ksyun.media.shortvideo.sticker</a></li>
     <li class="api apilevel-">
   <a href="../../../../../com/ksyun/media/shortvideo/utils/package-summary.html">com.ksyun.media.shortvideo.utils</a></li>
-    <li class="selected api apilevel-">
-  <a href="../../../../../com/ksyun/media/shortvideo/view/package-summary.html">com.ksyun.media.shortvideo.view</a></li>
               </ul><br/>
             </div> <!-- end packages -->
           </div> <!-- end resize-packages -->
           <div id="classes-nav">
             <ul>
               
-    <li><h2>Interfaces</h2>
-      <ul>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.OnTextRectSelected.html">KSYTextView.OnTextRectSelected</a></li>
-      </ul>
-    </li>
               
     <li><h2>Classes</h2>
       <ul>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/view/DrawTextParams.html">DrawTextParams</a></li>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYStickerView.html">KSYStickerView</a></li>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextItem.html">KSYTextItem</a></li>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/view/KSYTextView.html">KSYTextView</a></li>
-          <li class="selected api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/view/StickerHelpBoxInfo.html">StickerHelpBoxInfo</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/mv/KSYMVAVInfo.html">KSYMVAVInfo</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/mv/KSYMVFilterInfo.html">KSYMVFilterInfo</a></li>
+          <li class="selected api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/mv/KSYMVFrameInfo.html">KSYMVFrameInfo</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/mv/KSYMVInfo.html">KSYMVInfo</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/mv/KSYMVMgt.html">KSYMVMgt</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/mv/MVImgTexFilterBase.html">MVImgTexFilterBase</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/mv/MVScreenTexFilter.html">MVScreenTexFilter</a></li>
       </ul>
     </li>
               
@@ -263,7 +262,7 @@ Summary:
      
     
     class
-<h1>StickerHelpBoxInfo</h1>
+<h1>KSYMVFrameInfo</h1>
 
 
 
@@ -296,7 +295,7 @@ Summary:
         
             <td class="jd-inheritance-space">&nbsp;&nbsp;&nbsp;&#x21b3;</td>
          	
-        <td colspan="1" class="jd-inheritance-class-cell">com.ksyun.media.shortvideo.view.StickerHelpBoxInfo</td>
+        <td colspan="1" class="jd-inheritance-class-cell">com.ksyun.media.shortvideo.mv.KSYMVFrameInfo</td>
     </tr>
     
 
@@ -312,7 +311,7 @@ Summary:
 
 
 <h2>Class Overview</h2>
-<p>sticker help box for delete and rotate
+<p>frame  info for mv
 </p>
 
 
@@ -368,8 +367,8 @@ Summary:
           public
           
           
-          Bitmap</td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/view/StickerHelpBoxInfo.html#deleteBit">deleteBit</a></td>
+          int</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/mv/KSYMVFrameInfo.html#eid">eid</a></td>
           <td class="jd-descrcol" width="100%"></td>
       </tr>
       
@@ -379,15 +378,9 @@ Summary:
           public
           
           
-          Paint</td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/view/StickerHelpBoxInfo.html#helpBoxPaint">helpBoxPaint</a></td>
-          <td class="jd-descrcol" width="100%">set help box paint<br/>
- for example(http://blog.csdn.net/abcdef314159/article/details/51720686):<br/>
- setColor(Color.BLACK);   颜色<br/>
- setStyle(Paint.Style.STROKE);  描边<br/>
- helpBoxPaint.setAntiAlias(true);  抗锯齿<br/>
- helpBoxPaint.setStrokeWidth(4);  描边宽度<br/>
-</td>
+          int</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/mv/KSYMVFrameInfo.html#fid">fid</a></td>
+          <td class="jd-descrcol" width="100%"></td>
       </tr>
       
     
@@ -396,8 +389,41 @@ Summary:
           public
           
           
-          Bitmap</td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/view/StickerHelpBoxInfo.html#rotateBit">rotateBit</a></td>
+          ImgFilterBase</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/mv/KSYMVFrameInfo.html#filter">filter</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class=" api apilevel-" >
+          <td class="jd-typecol">
+          public
+          
+          
+          boolean</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/mv/KSYMVFrameInfo.html#fs">fs</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class="alt-color api apilevel-" >
+          <td class="jd-typecol">
+          public
+          
+          
+          long</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/mv/KSYMVFrameInfo.html#t">t</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class=" api apilevel-" >
+          <td class="jd-typecol">
+          public
+          
+          
+          String</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/mv/KSYMVFrameInfo.html#vtrack">vtrack</a></td>
           <td class="jd-descrcol" width="100%"></td>
       </tr>
       
@@ -427,7 +453,7 @@ Summary:
             
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/view/StickerHelpBoxInfo.html#StickerHelpBoxInfo()">StickerHelpBoxInfo</a></span>()
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/mv/KSYMVFrameInfo.html#KSYMVFrameInfo(int, int, long, java.lang.String, boolean)">KSYMVFrameInfo</a></span>(int eid, int fid, long t, String vtrack, boolean fs)
         
   </td></tr>
 
@@ -684,7 +710,7 @@ From class
 
 
 
-<a id="deleteBit"></a>
+<a id="eid"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -692,9 +718,9 @@ From class
         public 
          
          
-        Bitmap
+        int
       </span>
-        deleteBit
+        eid
     </h4>
       <div class="api-level">
         
@@ -714,7 +740,7 @@ From class
 
 
 
-<a id="helpBoxPaint"></a>
+<a id="fid"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -722,9 +748,9 @@ From class
         public 
          
          
-        Paint
+        int
       </span>
-        helpBoxPaint
+        fid
     </h4>
       <div class="api-level">
         
@@ -736,13 +762,7 @@ From class
       </div>
     <div class="jd-details-descr">
       
-  <div class="jd-tagdata jd-tagdescr"><p>set help box paint<br/>
- for example(http://blog.csdn.net/abcdef314159/article/details/51720686):<br/>
- setColor(Color.BLACK);   颜色<br/>
- setStyle(Paint.Style.STROKE);  描边<br/>
- helpBoxPaint.setAntiAlias(true);  抗锯齿<br/>
- helpBoxPaint.setStrokeWidth(4);  描边宽度<br/>
-</p></div>
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
 
     
     </div>
@@ -750,7 +770,7 @@ From class
 
 
 
-<a id="rotateBit"></a>
+<a id="filter"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -758,9 +778,99 @@ From class
         public 
          
          
-        Bitmap
+        ImgFilterBase
       </span>
-        rotateBit
+        filter
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+    </div>
+</div>
+
+
+
+<a id="fs"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+        boolean
+      </span>
+        fs
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+    </div>
+</div>
+
+
+
+<a id="t"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+        long
+      </span>
+        t
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+    </div>
+</div>
+
+
+
+<a id="vtrack"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+        String
+      </span>
+        vtrack
     </h4>
       <div class="api-level">
         
@@ -789,7 +899,7 @@ From class
 
 
 
-<a id="StickerHelpBoxInfo()"></a>
+<a id="KSYMVFrameInfo(int, int, long, java.lang.String, boolean)"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -801,8 +911,8 @@ From class
          
         
       </span>
-      <span class="sympad">StickerHelpBoxInfo</span>
-      <span class="normal">()</span>
+      <span class="sympad">KSYMVFrameInfo</span>
+      <span class="normal">(int eid, int fid, long t, String vtrack, boolean fs)</span>
     </h4>
       <div class="api-level">
         <div>
