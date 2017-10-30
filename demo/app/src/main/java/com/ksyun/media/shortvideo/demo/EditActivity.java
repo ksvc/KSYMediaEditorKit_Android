@@ -6,6 +6,7 @@ import com.ksyun.media.shortvideo.demo.adapter.BottomTitleAdapter;
 import com.ksyun.media.shortvideo.demo.adapter.ImageTextAdapter;
 import com.ksyun.media.shortvideo.demo.adapter.SoundEffectAdapter;
 import com.ksyun.media.shortvideo.demo.audiorange.AudioSeekLayout;
+import com.ksyun.media.shortvideo.demo.paint.PaintMenu;
 import com.ksyun.media.shortvideo.demo.sticker.ColorPicker;
 import com.ksyun.media.shortvideo.demo.sticker.StickerAdapter;
 import com.ksyun.media.shortvideo.demo.util.DataFactory;
@@ -37,6 +38,7 @@ import com.ksyun.media.streamer.filter.imgtex.ImgTexFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgTexFilterBase;
 import com.ksyun.media.streamer.framework.AVConst;
 import com.ksyun.media.streamer.kit.StreamerConstants;
+import com.lht.paintview.PaintView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -121,9 +123,10 @@ public class EditActivity extends Activity implements
     private static final int MUSIC_LAYOUT_INDEX = 6;
     private static final int SOUND_CHANGE_INDEX = 7;
     private static final int REVERB_LAYOUT_INDEX = 8;
-    private static final int ANIMATED_STICKER_LAYOUT_INDEX = 9;
-    private static final int STICKER_LAYOUT_INDEX = 10;
-    private static final int SUBTITLE_LAYOUT_INDEX = 11;
+    private static final int PAINT_MENU_LAYOUT_INDEX = 9;
+    private static final int ANIMATED_STICKER_LAYOUT_INDEX = 10;
+    private static final int STICKER_LAYOUT_INDEX = 11;
+    private static final int SUBTITLE_LAYOUT_INDEX = 12;
 
     private RelativeLayout mPreviewLayout;
     private GLSurfaceView mEditPreviewView;
@@ -143,6 +146,7 @@ public class EditActivity extends Activity implements
     private View mAudioEditLayout;  //bgm音频裁剪
     private View mSoundChangeLayout;  //原始音频变声
     private View mReverbLayout;  //原始音频混响
+    private View mPaintMenuLayout; //涂鸦画笔信息选择布局
     private View mStickerLayout;  //图片贴纸
     private View mAnimatedStickerLayout; //动态贴纸
     private View mSubtitleLayout;  //字幕
@@ -174,6 +178,11 @@ public class EditActivity extends Activity implements
     private ImageView mBeautyBorder;
     private TextView mBeautyOriginalText;
     private RecyclerView mBeautyRecyclerView;
+
+    //涂鸦
+    private PaintView mPaintView;
+    private PaintMenu mPaintMenuView;
+    private boolean mIsPainting = false;
 
     //贴纸
     private KSYStickerView mKSYStickerView;  //贴纸预览区域（图片贴纸和字幕贴纸公用）
@@ -227,7 +236,7 @@ public class EditActivity extends Activity implements
     private static final int[] REVERB_TYPE = {AudioReverbFilter.AUDIO_REVERB_LEVEL_1, AudioReverbFilter.AUDIO_REVERB_LEVEL_3,
             AudioReverbFilter.AUDIO_REVERB_LEVEL_4, AudioReverbFilter.AUDIO_REVERB_LEVEL_2};
 
-    private static final int BOTTOM_VIEW_NUM = 13;
+    private static final int BOTTOM_VIEW_NUM = 14;
     private String mLogoPath = "assets://KSYLogo/logo.png";
     private String mAnimateStickerPath = "AnimatedStickers/Thumbnail";
     private String mStickerPath = "Stickers";  //贴纸加载地址默认在Assets目录，如果修改加载地址需要修改StickerAdapter的图片加载
@@ -245,6 +254,8 @@ public class EditActivity extends Activity implements
     private TextView mOutEncodeWithH265;
     private TextView mOutEncodeByHW;
     private TextView mOutEncodeBySW;
+    private TextView mOutDecodeByHW;
+    private TextView mOutDecodeBySW;
     private TextView mOutForMP4;
     private TextView mOutForGIF;
     private TextView[] mOutProfileGroup;
@@ -373,6 +384,22 @@ public class EditActivity extends Activity implements
         mBottomViewList[ANIMATED_STICKER_LAYOUT_INDEX] = mAnimatedStickerLayout;
         mSubtitleLayout = findViewById(R.id.subtitle_choose);
         mBottomViewList[SUBTITLE_LAYOUT_INDEX] = mSubtitleLayout;
+        mPaintMenuLayout = findViewById(R.id.paint_menu_choose);
+        mBottomViewList[PAINT_MENU_LAYOUT_INDEX] = mPaintMenuLayout;
+
+        mPaintView = (PaintView) findViewById(R.id.edit_paint_view);
+        mPaintView.setBgColor(Color.TRANSPARENT);
+        mPaintView.setPaintEnable(false);
+        mIsPainting = false;
+        mPaintMenuView = new PaintMenu(this, mPaintMenuLayout, mPaintView);
+        mPaintMenuView.setOnPaintOpera(new PaintMenu.OnPaintComplete() {
+            @Override
+            public void completePaint() {
+                mBottomViewList[mBottomViewPreIndex].setVisibility(View.GONE);
+                mPaintView.setPaintEnable(false);
+                mTitleAdapter.clear();
+            }
+        });
 
         mKSYStickerView = (KSYStickerView) findViewById(R.id.sticker_panel);
 
@@ -738,6 +765,7 @@ public class EditActivity extends Activity implements
             default:
                 break;
         }
+
         return super.onTouchEvent(event);
     }
 
@@ -745,6 +773,10 @@ public class EditActivity extends Activity implements
         if (!isTouchPointInView(mBarBottomLayout, x, y)) {
             if (mBottomViewPreIndex != WATER_MARK_INDEX) {
                 mBottomViewList[mBottomViewPreIndex].setVisibility(View.INVISIBLE);
+                if (mBottomViewPreIndex == PAINT_MENU_LAYOUT_INDEX) {
+                    mPaintView.setPaintEnable(false);
+                    mIsPainting = false;
+                }
                 if (mTitleAdapter != null) {
                     mTitleAdapter.clear();
                 }
@@ -932,13 +964,13 @@ public class EditActivity extends Activity implements
                 urlInfo.append("4.gif");
             } else if (path.contains("5")) {
                 urlInfo.append("5.gif");
-            } else if(path.contains("6")) {
+            } else if (path.contains("6")) {
                 urlInfo.append("6.webp");
-            } else if(path.contains("7")) {
+            } else if (path.contains("7")) {
                 urlInfo.append("7.webp");
-            } else if(path.contains("8")) {
+            } else if (path.contains("8")) {
                 urlInfo.append("8.webp");
-            } else if(path.contains("9")) {
+            } else if (path.contains("9")) {
                 urlInfo.append("9.webp");
             }
 
@@ -1190,6 +1222,10 @@ public class EditActivity extends Activity implements
             EditActivity.this.finish();
         } else {
             mBottomViewList[mBottomViewPreIndex].setVisibility(View.INVISIBLE);
+            if (mBottomViewPreIndex == PAINT_MENU_LAYOUT_INDEX) {
+                mPaintView.setPaintEnable(false);
+                mIsPainting = false;
+            }
             if (mTitleAdapter != null) {
                 mTitleAdapter.clear();
             }
@@ -1226,6 +1262,10 @@ public class EditActivity extends Activity implements
         mOutEncodeByHW.setOnClickListener(mButtonObserver);
         mOutEncodeBySW = (TextView) contentView.findViewById(R.id.output_config_sw);
         mOutEncodeBySW.setOnClickListener(mButtonObserver);
+        mOutDecodeByHW = (TextView) contentView.findViewById(R.id.output_config_decode_hw);
+        mOutDecodeByHW.setOnClickListener(mButtonObserver);
+        mOutDecodeBySW = (TextView) contentView.findViewById(R.id.output_config_decode_sw);
+        mOutDecodeBySW.setOnClickListener(mButtonObserver);
         mOutForMP4 = (TextView) contentView.findViewById(R.id.output_config_mp4);
         mOutForMP4.setOnClickListener(mButtonObserver);
         mOutForGIF = (TextView) contentView.findViewById(R.id.output_config_gif);
@@ -1250,6 +1290,7 @@ public class EditActivity extends Activity implements
         mOutRes480p.setActivated(true);
         mOutEncodeWithH264.setActivated(true);
         mOutEncodeBySW.setActivated(true);
+        mOutDecodeByHW.setActivated(true);
         mOutForMP4.setActivated(true);
         mOutProfileGroup[1].setActivated(true);
         mConfigDialog.show();
@@ -1283,7 +1324,9 @@ public class EditActivity extends Activity implements
             mEditKit.setVideoEncodeProfile(mComposeConfig.encodeProfile);
             mEditKit.setAudioKBitrate(mComposeConfig.audioBitrate);
             mEditKit.setVideoKBitrate(mComposeConfig.videoBitrate);
+            mEditKit.setVideoDecodeMethod(mComposeConfig.decodeMethod);
             mEditKit.setTailUrl(mTailVideoPath);
+            mEditKit.addPaintView(mPaintView);
             //设置合成路径
             String fileFolder = Environment.getExternalStorageDirectory().
                     getAbsolutePath() + "/ksy_sv_compose_test";
@@ -1322,6 +1365,12 @@ public class EditActivity extends Activity implements
             mComposeConfig.encodeMethod = StreamerConstants.ENCODE_METHOD_HARDWARE;
         } else if (mOutEncodeBySW.isActivated()) {
             mComposeConfig.encodeMethod = StreamerConstants.ENCODE_METHOD_SOFTWARE;
+        }
+
+        if (mOutDecodeByHW.isActivated()) {
+            mComposeConfig.decodeMethod = StreamerConstants.DECODE_METHOD_HARDWARE;
+        } else if (mOutDecodeBySW.isActivated()) {
+            mComposeConfig.decodeMethod = StreamerConstants.DECODE_METHOD_SOFTWARE;
         }
 
         if (mOutForGIF.isActivated()) {
@@ -1532,11 +1581,22 @@ public class EditActivity extends Activity implements
                     mOutEncodeByHW.setActivated(true);
                     mOutEncodeBySW.setActivated(false);
                     mOutVideoCRF.setEnabled(false);
+                    if(Integer.parseInt(mOutVideoBitrate.getText().toString()) == 0) {
+                        mOutVideoBitrate.setText(String.valueOf(2000));
+                    }
                     break;
                 case R.id.output_config_sw:
                     mOutEncodeByHW.setActivated(false);
                     mOutEncodeBySW.setActivated(true);
                     mOutVideoCRF.setEnabled(true);
+                    break;
+                case R.id.output_config_decode_hw:
+                    mOutDecodeByHW.setActivated(true);
+                    mOutDecodeBySW.setActivated(false);
+                    break;
+                case R.id.output_config_decode_sw:
+                    mOutDecodeBySW.setActivated(true);
+                    mOutDecodeByHW.setActivated(false);
                     break;
                 case R.id.output_config_mp4:
                     mOutForMP4.setActivated(true);
@@ -1914,8 +1974,8 @@ public class EditActivity extends Activity implements
     private void initTitleRecycleView() {
         View pitchLayout = findViewById(R.id.bgm_pitch);
         pitchLayout.setVisibility(View.GONE);
-        String[] items = {"美颜", "滤镜", "水印", "变速", "时长裁剪", "画布裁剪", "音乐", "变声", "混响", "动态贴纸", "贴纸",
-                "字幕"};
+        String[] items = {"美颜", "滤镜", "水印", "变速", "时长裁剪", "画布裁剪", "音乐", "变声", "混响",
+                "涂鸦", "动态贴纸", "贴纸", "字幕"};
         mTitleData = Arrays.asList(items);
         mTitleView = (RecyclerView) findViewById(R.id.edit_title_recyclerView);
         mTitleAdapter = new BottomTitleAdapter(this, mTitleData);
@@ -1929,6 +1989,29 @@ public class EditActivity extends Activity implements
                             SUBTITLE_LAYOUT_INDEX && mKSYStickerView.getVisibility() != View.VISIBLE) {
                         mKSYStickerView.setVisibility(View.VISIBLE);
                     }
+
+                    if (curIndex == PAINT_MENU_LAYOUT_INDEX) {
+                        if(mPaintView.getVisibility() != View.VISIBLE) {
+                            mPaintView.setVisibility(View.VISIBLE);
+                        }
+                        mPaintView.setPaintEnable(true);
+                        mIsPainting = true;
+                    }
+
+                    if(curIndex == VIDEO_SCALE_INDEX ||
+                            curIndex >= ANIMATED_STICKER_LAYOUT_INDEX && curIndex <=
+                                    SUBTITLE_LAYOUT_INDEX) {
+                        //裁剪和贴纸模式时需要隐藏涂鸦，否则接收不到touch时间，
+                        //PaintView的bug，已经提issues：https://github.com/LiuHongtao/PaintView/issues/4
+                        if(mPaintView.getVisibility() == View.VISIBLE) {
+                            mPaintView.setVisibility(View.GONE);
+                        }
+                        Toast.makeText(EditActivity.this, "暂时隐藏涂鸦", Toast.LENGTH_SHORT).show();
+                    } else {
+                        if(mPaintView.getVisibility() != View.VISIBLE) {
+                            mPaintView.setVisibility(View.VISIBLE);
+                        }
+                    }
                 } else {
                     if (curIndex != preIndex) {
                         mWaterMarkChecked = true;
@@ -1941,6 +2024,10 @@ public class EditActivity extends Activity implements
                 if (preIndex != WATER_MARK_INDEX && preIndex != -1 &&
                         curIndex != preIndex) {
                     mBottomViewList[preIndex].setVisibility(View.GONE);
+                    if (preIndex == PAINT_MENU_LAYOUT_INDEX) {
+                        mPaintView.setPaintEnable(false);
+                        mIsPainting = false;
+                    }
                 }
                 if ((preIndex == STICKER_LAYOUT_INDEX || preIndex == SUBTITLE_LAYOUT_INDEX ||
                         preIndex == ANIMATED_STICKER_LAYOUT_INDEX)) {

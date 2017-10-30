@@ -17,6 +17,7 @@ public class ShortVideoConfig {
     public int encodeType = AVConst.CODEC_ID_AVC;
     public int encodeMethod = StreamerConstants.ENCODE_METHOD_SOFTWARE;
     public int encodeProfile = VideoEncodeFormat.ENCODE_PROFILE_LOW_POWER;
+    public int decodeMethod = StreamerConstants.DECODE_METHOD_HARDWARE;
     public int videoCRF = 24;
     public int audioChannel = 1;
     public int audioSampleRate = 44100;

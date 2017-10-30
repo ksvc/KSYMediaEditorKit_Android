@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import com.ksyun.media.shortvideo.demo.R;
 import com.ksyun.media.shortvideo.demo.adapter.BgmSelectAdapter;
 import com.ksyun.media.shortvideo.demo.adapter.ImageTextAdapter;
+import com.ksyun.media.shortvideo.demo.adapter.MVTypeListAdapter;
 import com.ksyun.media.shortvideo.demo.adapter.SoundEffectAdapter;
 
 import java.util.ArrayList;
@@ -75,6 +76,11 @@ public class DataFactory {
             BgmSelectAdapter.BgmData data = new BgmSelectAdapter.BgmData(image, type);
             dataList.add(data);
         }
+        return dataList;
+    }
+
+    public static List<MVTypeListAdapter.MVData> getMVData() {
+        List<MVTypeListAdapter.MVData> dataList = new ArrayList<>();
         return dataList;
     }
 

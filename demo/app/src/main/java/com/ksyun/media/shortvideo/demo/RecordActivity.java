@@ -2,17 +2,21 @@ package com.ksyun.media.shortvideo.demo;
 
 import com.ksyun.media.shortvideo.demo.adapter.BgmSelectAdapter;
 import com.ksyun.media.shortvideo.demo.adapter.ImageTextAdapter;
+import com.ksyun.media.shortvideo.demo.adapter.MVTypeListAdapter;
 import com.ksyun.media.shortvideo.demo.adapter.SoundEffectAdapter;
 import com.ksyun.media.shortvideo.demo.recordclip.RecordProgressView;
 import com.ksyun.media.shortvideo.demo.util.DataFactory;
 import com.ksyun.media.shortvideo.demo.util.FileUtils;
 import com.ksyun.media.shortvideo.demo.kmc.ApiHttpUrlConnection;
 import com.ksyun.media.shortvideo.demo.recordclip.RecordProgressController;
+import com.ksyun.media.shortvideo.demo.util.UnZipTask;
 import com.ksyun.media.shortvideo.demo.util.ViewUtils;
 import com.ksyun.media.shortvideo.demo.view.CameraHintView;
 import com.ksyun.media.shortvideo.demo.view.VerticalSeekBar;
 import com.ksyun.media.shortvideo.kit.KSYRecordKit;
+import com.ksyun.media.shortvideo.mv.KSYMVInfo;
 import com.ksyun.media.streamer.capture.CameraCapture;
+import com.ksyun.media.streamer.capture.ViewCapture;
 import com.ksyun.media.streamer.capture.camera.CameraTouchHelper;
 import com.ksyun.media.streamer.filter.audio.AudioFilterBase;
 import com.ksyun.media.streamer.filter.audio.AudioReverbFilter;
@@ -41,6 +45,10 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.opengl.GLSurfaceView;
@@ -76,11 +84,19 @@ import com.ksyun.media.kmcfilter.KMCFilterManager;
 import com.ksyun.media.shortvideo.demo.kmc.MaterialInfoItem;
 import com.ksyun.media.shortvideo.demo.kmc.RecyclerViewAdapter;
 import com.ksyun.media.shortvideo.demo.kmc.SpacesItemDecoration;
+import com.lht.paintview.PaintView;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 短视频录制示例窗口
@@ -107,6 +123,10 @@ public class RecordActivity extends Activity implements
 
     private static final int INDEX_BEAUTY_TITLE_BASE = 0;  //美颜标题在mRecordTitleArray中的启始位置索引
     private static final int INDEX_BGM_TITLE_BASE = 10;  //音乐标题在mRecordTitleArray中的启始位置索引
+
+    public static final String MV_ASSETS_SUB_PATH = "MVResource";
+    private static final String MV_ICON_NAME = "icon.png";  //zip包中mv的缩略图文件名
+    public static final String ZIP_INFO = ".zip";
 
     private int mAudioEffectType = AUDIO_FILTER_DISABLE;  //变声类型
     private int mAudioReverbType = AUDIO_FILTER_DISABLE;  //混响类型
@@ -138,7 +158,14 @@ public class RecordActivity extends Activity implements
     private ImageView mBeautyView;
     private ImageView mBgmMusicView;
     private ImageView mSoundEffectView;
+    private ImageView mMVView;
+    private ImageView mMVCancel;
+    private RecyclerView mMVTypeList;
+    private MVTypeListAdapter mMVAdapter;
     private ImageView mWaterMarkView;
+    private ImageView mScrawlView;
+    private PaintView mPaintView;
+    private ViewCapture mPaintViewCapture;
     private ImageView mCountDownImage;
     private View mDefaultRecordBottomLayout;
     private View mBeautyLayout;
@@ -147,6 +174,7 @@ public class RecordActivity extends Activity implements
     private View mBeautyIndicator;
     private View mStickerIndicator;
     private View mFilterIndicator;
+    private View mMVLayout;
     private TextView mBeauty;
     private TextView mDynSticker;
     private TextView mFilter;
@@ -223,10 +251,20 @@ public class RecordActivity extends Activity implements
     private TextView m0_5SpeedView;
     private boolean mHasBgm;
 
+    //mv
+    private ArrayList<String> mMVPaths;  //各个mv资源的路径
+    private String[] mMVFileNames;  //各mv资源zip包名存储数组
+    private LinkedHashMap<String, KSYMVInfo> mMVs = new LinkedHashMap<>();
+    // mv解析后的配置信息，避免重复解析mv的配置文件
+
     //录制kit
     private KSYRecordKit mKSYRecordKit;
     private int mImgBeautyTypeIndex = BEAUTY_DISABLE;  //美颜type
     private int mEffectFilterIndex = FILTER_DISABLE;  //滤镜filter type
+    private int mLastImgBeautyTypeIndex = BEAUTY_DISABLE;  //美颜type
+    private int mLastEffectFilterIndex = FILTER_DISABLE;  //滤镜filter type
+    private Map<Integer, ImgFilterBase> mBeautyFilters;
+    private Map<Integer, ImgFilterBase> mEffectFilters;
 
     private Handler mMainHandler;
 
@@ -313,6 +351,8 @@ public class RecordActivity extends Activity implements
         mBgmMusicView.setOnClickListener(mObserverButton);
         mSoundEffectView = (ImageView) findViewById(R.id.record_sound_effect);
         mSoundEffectView.setOnClickListener(mObserverButton);
+        mMVView = (ImageView) findViewById(R.id.record_mv);
+        mMVView.setOnClickListener(mObserverButton);
         mBeautyLayout = findViewById(R.id.item_beauty_select);
         mSoundEffectLayout = findViewById(R.id.item_sound_effect);
         mBeauty = (TextView) findViewById(R.id.item_beauty);
@@ -321,9 +361,13 @@ public class RecordActivity extends Activity implements
         mStickerIndicator = findViewById(R.id.item_sticker_indicator);
         mFilter = (TextView) findViewById(R.id.item_filter);
         mFilterIndicator = findViewById(R.id.item_filter_indicator);
+        mMVLayout = findViewById(R.id.item_mv_select);
         //mFrontMirrorCheckBox = (CheckBox) findViewById(R.id.record_front_mirror);
         mWaterMarkView = (ImageView) findViewById(R.id.record_watermark);
         mWaterMarkView.setOnClickListener(mObserverButton);
+        mScrawlView = (ImageView) findViewById(R.id.record_scrawl);
+        mScrawlView.setOnClickListener(mObserverButton);
+        mPaintView = (PaintView) findViewById(R.id.view_paint);
         mMicAudioVolumeSeekBar = (AppCompatSeekBar) findViewById(R.id.record_mic_audio_volume);
         mMicAudioVolumeSeekBar.setOnSeekBarChangeListener(mSeekBarChangedObserver);
         mBgmVolumeSeekBar = (AppCompatSeekBar) findViewById(R.id.record_music_audio_volume);
@@ -424,6 +468,7 @@ public class RecordActivity extends Activity implements
         initStickerUI();  //初始化动态贴纸界面
         initFilterUI();  //初始化滤镜界面
         initBgmView();  //初始化背景音乐界面
+        initMVSelectView(); //初始化MV选择界面
         initSoundEffectView(); //初始化音效界面
         // touch focus and zoom support
         CameraTouchHelper cameraTouchHelper = new CameraTouchHelper();
@@ -860,7 +905,10 @@ public class RecordActivity extends Activity implements
         if (mExposureSeekBar.getVisibility() == View.VISIBLE) {
             mExposureSeekBar.setVisibility(View.GONE);
         } else {
-            mExposureSeekBar.setVisibility(View.VISIBLE);
+            //正在涂鸦，需要关闭涂鸦再做曝光度调节
+            if (mPaintView.getVisibility() != View.VISIBLE) {
+                mExposureSeekBar.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -868,7 +916,10 @@ public class RecordActivity extends Activity implements
         if (mNoiseSeekBar.getVisibility() == View.VISIBLE) {
             mNoiseSeekBar.setVisibility(View.GONE);
         } else {
-            mNoiseSeekBar.setVisibility(View.VISIBLE);
+            //正在涂鸦，需要关闭涂鸦再做降噪调节
+            if (mPaintView.getVisibility() != View.VISIBLE) {
+                mNoiseSeekBar.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -1102,64 +1153,157 @@ public class RecordActivity extends Activity implements
         mReverbRecycler.setAdapter(mReverbAdapter);
     }
 
-    private void addImgFilter() {
-        ImgBeautyProFilter proFilter;
-        ImgBeautySpecialEffectsFilter specialEffectsFilter;
-        ImgTexFilter texFilter;
-        List<ImgFilterBase> filters = new LinkedList<>();
+    private void addBeautyFiler() {
+        if (mImgBeautyTypeIndex == mLastImgBeautyTypeIndex) {
+            return;
+        }
+        if (mBeautyFilters == null) {
+            mBeautyFilters = new LinkedHashMap<>();
+        }
+
+        //disable beauty
+        if (mImgBeautyTypeIndex == BEAUTY_DISABLE) {
+            if (mBeautyFilters.containsKey(mLastImgBeautyTypeIndex)) {
+                ImgFilterBase lastFilter = mBeautyFilters.get
+                        (mLastImgBeautyTypeIndex);
+                if (mKSYRecordKit.getImgTexFilterMgt().getFilter().contains(lastFilter)) {
+                    mKSYRecordKit.getImgTexFilterMgt().replaceFilter(lastFilter, null);
+                }
+            }
+            mLastImgBeautyTypeIndex = mImgBeautyTypeIndex;
+            return;
+        }
+        //enable filter
+        if (mBeautyFilters.containsKey(mImgBeautyTypeIndex)) {
+            ImgFilterBase filterBase = mBeautyFilters.get
+                    (mImgBeautyTypeIndex);
+            if (mBeautyFilters.containsKey(mLastImgBeautyTypeIndex)) {
+                ImgFilterBase lastFilter = mBeautyFilters.get(mLastImgBeautyTypeIndex);
+                if (mKSYRecordKit.getImgTexFilterMgt().getFilter().contains(lastFilter)) {
+                    mKSYRecordKit.getImgTexFilterMgt().replaceFilter(lastFilter, filterBase);
+                }
+            } else {
+                if (!mKSYRecordKit.getImgTexFilterMgt().getFilter().contains(filterBase)) {
+                    mKSYRecordKit.getImgTexFilterMgt().addFilter(filterBase);
+                }
+            }
+            mLastImgBeautyTypeIndex = mImgBeautyTypeIndex;
+            return;
+        }
+        ImgFilterBase filterBase = null;
         switch (mImgBeautyTypeIndex) {
             case BEAUTY_NATURE:
                 ImgBeautySoftFilter softFilter = new ImgBeautySoftFilter(mKSYRecordKit.getGLRender());
                 softFilter.setGrindRatio(0.5f);
-                filters.add(softFilter);
+                filterBase = softFilter;
                 break;
             case BEAUTY_PRO:
-                proFilter = new ImgBeautyProFilter(mKSYRecordKit.getGLRender(), getApplicationContext());
+                ImgBeautyProFilter proFilter = new ImgBeautyProFilter(mKSYRecordKit.getGLRender()
+                        , getApplicationContext());
                 proFilter.setGrindRatio(0.5f);
                 proFilter.setWhitenRatio(0.5f);
                 proFilter.setRuddyRatio(0);
-                filters.add(proFilter);
+                filterBase = proFilter;
                 break;
             case BEAUTY_FLOWER_LIKE:
-                proFilter = new ImgBeautyProFilter(mKSYRecordKit.getGLRender(), getApplicationContext(), 3);
-                proFilter.setGrindRatio(0.5f);
-                proFilter.setWhitenRatio(0.5f);
-                proFilter.setRuddyRatio(0.15f);
-                filters.add(proFilter);
+                ImgBeautyProFilter pro1Filter = new ImgBeautyProFilter(mKSYRecordKit.getGLRender()
+                        , getApplicationContext(), 3);
+                pro1Filter.setGrindRatio(0.5f);
+                pro1Filter.setWhitenRatio(0.5f);
+                pro1Filter.setRuddyRatio(0.15f);
+                mBeautyFilters.put(BEAUTY_FLOWER_LIKE, pro1Filter);
+                filterBase = pro1Filter;
                 break;
             case BEAUTY_DELICATE:
-                proFilter = new ImgBeautyProFilter(mKSYRecordKit.getGLRender(), getApplicationContext(), 3);
-                proFilter.setGrindRatio(0.5f);
-                proFilter.setWhitenRatio(0.5f);
-                proFilter.setRuddyRatio(0.3f);
-                filters.add(proFilter);
+                ImgBeautyProFilter pro2Filter = new ImgBeautyProFilter(mKSYRecordKit.getGLRender()
+                        , getApplicationContext(), 3);
+                pro2Filter.setGrindRatio(0.5f);
+                pro2Filter.setWhitenRatio(0.5f);
+                pro2Filter.setRuddyRatio(0.3f);
+                filterBase = pro2Filter;
                 break;
-            case FILTER_DISABLE:
+            case BEAUTY_DISABLE:
                 break;
             default:
                 break;
         }
-        if (mFilterTypeIndex != -1 && mEffectFilterIndex != FILTER_DISABLE) {
-            if (mFilterTypeIndex < 13) {
-                specialEffectsFilter = new ImgBeautySpecialEffectsFilter(mKSYRecordKit.getGLRender(),
-                        getApplicationContext(), mEffectFilterIndex);
-                filters.add(specialEffectsFilter);
-            } else {
-                texFilter = new ImgBeautyStylizeFilter(mKSYRecordKit.getGLRender(), getApplicationContext(),
-                        mEffectFilterIndex);
-                filters.add(texFilter);
+
+        if (filterBase != null) {
+            ImgFilterBase lastFilter = null;
+            if (mBeautyFilters.containsKey(mLastImgBeautyTypeIndex)) {
+                lastFilter = mBeautyFilters.get(mLastImgBeautyTypeIndex);
+
             }
+            mBeautyFilters.put(mImgBeautyTypeIndex, filterBase);
+            if (lastFilter != null && mKSYRecordKit.getImgTexFilterMgt().getFilter().contains
+                    (lastFilter)) {
+                mKSYRecordKit.getImgTexFilterMgt().replaceFilter(lastFilter, filterBase);
+            } else {
+                mKSYRecordKit.getImgTexFilterMgt().addFilter(filterBase);
+            }
+
         }
-        if (filters.size() > 0) {
-            mKSYRecordKit.getImgTexFilterMgt().setFilter(filters);
+        mLastImgBeautyTypeIndex = mImgBeautyTypeIndex;
+    }
+
+    private void addEffectFilter() {
+        if (mLastEffectFilterIndex == mEffectFilterIndex) {
+            return;
+        }
+        if (mEffectFilters == null) {
+            mEffectFilters = new LinkedHashMap<>();
+        }
+
+        if (mEffectFilterIndex == FILTER_DISABLE) {
+            if (mEffectFilters.containsKey(mLastEffectFilterIndex)) {
+                ImgFilterBase lastFilter = mEffectFilters.get(mLastEffectFilterIndex);
+                if (mKSYRecordKit.getImgTexFilterMgt().getFilter().contains(lastFilter)) {
+                    mKSYRecordKit.getImgTexFilterMgt().replaceFilter(lastFilter, null);
+                }
+            }
+            mLastEffectFilterIndex = mEffectFilterIndex;
+            return;
+        }
+        if (mEffectFilters.containsKey(mEffectFilterIndex)) {
+            ImgFilterBase filter = mEffectFilters.get(mEffectFilterIndex);
+            if (mEffectFilters.containsKey(mLastEffectFilterIndex)) {
+                ImgFilterBase lastfilter = mEffectFilters.get(mLastEffectFilterIndex);
+                if (mKSYRecordKit.getImgTexFilterMgt().getFilter().contains(lastfilter)) {
+                    mKSYRecordKit.getImgTexFilterMgt().replaceFilter(lastfilter, filter);
+                }
+            } else {
+                if (!mKSYRecordKit.getImgTexFilterMgt().getFilter().contains(filter)) {
+                    mKSYRecordKit.getImgTexFilterMgt().addFilter(filter);
+                }
+            }
+            mLastEffectFilterIndex = mEffectFilterIndex;
         } else {
-            mKSYRecordKit.getImgTexFilterMgt().setFilter((ImgTexFilterBase) null);
+            ImgFilterBase filter;
+            if (mFilterTypeIndex < 13) {
+                filter = new ImgBeautySpecialEffectsFilter(mKSYRecordKit.getGLRender(),
+                        getApplicationContext(), mEffectFilterIndex);
+            } else {
+                filter = new ImgBeautyStylizeFilter(mKSYRecordKit
+                        .getGLRender(), getApplicationContext(), mEffectFilterIndex);
+            }
+            mEffectFilters.put(mEffectFilterIndex, filter);
+            ImgFilterBase lastFilter = null;
+            if (mEffectFilters.containsKey(mLastEffectFilterIndex)) {
+                lastFilter = mEffectFilters.get(mLastEffectFilterIndex);
+            }
+            if (lastFilter != null && mKSYRecordKit.getImgTexFilterMgt().getFilter().contains
+                    (lastFilter)) {
+                mKSYRecordKit.getImgTexFilterMgt().replaceFilter(lastFilter, filter);
+            } else {
+                mKSYRecordKit.getImgTexFilterMgt().addFilter(filter);
+            }
+            mLastEffectFilterIndex = mEffectFilterIndex;
         }
     }
 
     private void setEffectFilter(int type) {
         mEffectFilterIndex = type;
-        addImgFilter();
+        addEffectFilter();
     }
 
     /**
@@ -1184,7 +1328,7 @@ public class RecordActivity extends Activity implements
                     changeOriginalBeautyState(false);
                 }
                 mImgBeautyTypeIndex = BEAUTY_TYPE[index];
-                addImgFilter();
+                addBeautyFiler();
             }
         };
         mBeautyOriginalView.setOnClickListener(new View.OnClickListener() {
@@ -1193,7 +1337,7 @@ public class RecordActivity extends Activity implements
                 beautyAdapter.clear();
                 changeOriginalBeautyState(true);
                 mImgBeautyTypeIndex = BEAUTY_DISABLE;
-                addImgFilter();
+                addBeautyFiler();
             }
         });
         beautyAdapter.setOnImageItemClick(listener);
@@ -1282,6 +1426,139 @@ public class RecordActivity extends Activity implements
         }
     }
 
+    private void initMVSelectView() {
+        mMVCancel = (ImageView) findViewById(R.id.mv_cancel);
+        mMVCancel.setOnClickListener(mObserverButton);
+        mMVTypeList = (RecyclerView) findViewById(R.id.mv_list);
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        llm.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mMVTypeList.setLayoutManager(llm);
+
+        mMVAdapter = new MVTypeListAdapter(DataFactory.getMVData());
+        mMVAdapter.setOnItemClickListener(new MVTypeListAdapter.OnItemClickListener() {
+            @Override
+
+            public void onClick(MVTypeListAdapter.MVData data) {
+                int index = 0;
+                for (int i = 0; i < mMVFileNames.length; i++) {
+                    if (mMVFileNames[i].equals(data.text + ZIP_INFO)) {
+                        index = i;
+                    }
+                }
+                final String mvPath = mMVPaths.get(index);
+                File file = new File(mvPath);
+                if (file.exists()) {
+                    if (mMVs.containsKey(data.text)) {
+                        KSYMVInfo ksymvInfo = mMVs.get(data.text);
+                        mKSYRecordKit.applyMV(ksymvInfo);
+                    } else {
+                        KSYMVInfo ksymvInfo = new KSYMVInfo(mvPath);
+                        mMVs.put(data.text, ksymvInfo);
+                        mKSYRecordKit.applyMV(ksymvInfo);
+                    }
+                }
+            }
+        });
+        mMVTypeList.setAdapter(mMVAdapter);
+
+        //读取Assets下面MVResource所有的资源文件，并把zip包名除.zip外其它作为mv的名称及解压后的路径名
+        //因此需要资源包名称和zip包名相同
+        mMVFileNames = new String[0];
+        mMVPaths = new ArrayList<>();
+
+        try {
+            mMVFileNames = this.getAssets().list(MV_ASSETS_SUB_PATH);
+            for (String name : mMVFileNames) {
+                mMVPaths.add(FileUtils.getAvailableMVPath(this) + File.separator +
+                        name.substring(0, name.length() - ZIP_INFO.length()));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        for (int i = 0; i < mMVPaths.size(); i++) {
+            final String mvPath = mMVPaths.get(i);
+            final String mvZipName = mMVFileNames[i];
+
+            File file = new File(mvPath);
+            if (file.exists()) {
+                boolean isSame = true;
+                //zip包是否需要重新copy解压
+                try {
+                    InputStream in = getAssets().open(MV_ASSETS_SUB_PATH + File.separator +
+                            mMVFileNames[i]);
+                    String newFileString = FileUtils.getFileMD5(in);
+
+                    String localPath = mvPath + ZIP_INFO;
+                    File localFile = new File(localPath);
+                    String localFileMD5 = FileUtils.getFileMD5(localFile);
+                    isSame = newFileString.equals(localFileMD5);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (isSame) {
+                    addMVData(mvPath, mvZipName.substring(0, mvZipName.length() - ZIP_INFO.length()));
+                } else {
+                    FileUtils.reloadMVResourceFromAssets(getApplicationContext(), mvZipName,
+                            new UnZipTask.OnProcessListener() {
+                                @Override
+                                public void onFinish(String filePath, String fileName) {
+                                    addMVData(filePath, fileName);
+                                }
+                            });
+                }
+            } else {
+                FileUtils.reloadMVResourceFromAssets(getApplicationContext(), mvZipName,
+                        new UnZipTask.OnProcessListener() {
+                            @Override
+                            public void onFinish(String filePath, String fileName) {
+                                addMVData(filePath, fileName);
+                            }
+                        });
+            }
+        }
+    }
+
+    private void addMVData(String filePath, String fileName) {
+        Drawable image = getMVImage(filePath + File.separator + MV_ICON_NAME);
+
+        MVTypeListAdapter.MVData data = new MVTypeListAdapter.MVData(image,
+                fileName);
+        mMVAdapter.addMVData(data);
+    }
+
+    private Drawable getMVImage(String path) {
+        Bitmap bitMap = BitmapFactory.decodeFile(path);
+        if (bitMap != null) {
+            int width = bitMap.getWidth();
+            int height = bitMap.getHeight();
+            // 设置想要的大小
+            int size = dipTopx(this, 160);
+            int newWidth = size;
+            int newHeight = size;
+            // 计算缩放比例
+            float scaleWidth = ((float) newWidth) / width;
+            float scaleHeight = ((float) newHeight) / height;
+            // 取得想要缩放的matrix参数
+            Matrix matrix = new Matrix();
+            matrix.postScale(scaleWidth, scaleHeight);
+            // 得到新的图片
+            bitMap = Bitmap.createBitmap(bitMap, 0, 0, width, height, matrix, true);
+            return new BitmapDrawable(bitMap);
+        }
+        return null;
+    }
+
+    public int dipTopx(Context paramContext, float paramFloat) {
+        return (int) (0.5F + paramFloat * paramContext.getResources().getDisplayMetrics().density);
+    }
+
+    private void onMVCancel() {
+        mMVAdapter.clearState();
+        mKSYRecordKit.applyMV(null);
+    }
+
     /**
      * 添加音频滤镜，支持变声和混响同时生效
      * https://github.com/ksvc/KSYStreamer_Android/wiki/Audio_Filter
@@ -1311,16 +1588,15 @@ public class RecordActivity extends Activity implements
      * 重置录制状态
      */
     private void clearRecordState() {
+        onMVCancel();
         stopBgm();
+        clearKMC();
         mKSYRecordKit.getImgTexFilterMgt().setFilter((ImgFilterBase) null);
         mImgBeautyTypeIndex = BEAUTY_DISABLE;
         mEffectFilterIndex = FILTER_DISABLE;
         mFilterOriginImage.callOnClick();
-        mKSYRecordKit.getImgTexFilterMgt().setExtraFilter((ImgFilterBase) null);
-        if (mKMCAdapter != null) {
-            mKMCAdapter.setSelectIndex(-1);
-        }
-        addImgFilter();
+        addBeautyFiler();
+        addEffectFilter();
         if (mBgmAdapter != null) {
             mBgmAdapter.clear();
         }
@@ -1390,8 +1666,17 @@ public class RecordActivity extends Activity implements
                 case R.id.record_sound_effect:
                     onSoundEffectClick();
                     break;
+                case R.id.record_mv:
+                    onMVClick();
+                    break;
+                case R.id.mv_cancel:
+                    onMVCancel();
+                    break;
                 case R.id.record_watermark:
                     onWaterMarkClick();
+                    break;
+                case R.id.record_scrawl:
+                    onPaintClick();
                     break;
                 case R.id.item_beauty:
                     onBeautyTitleClick(0);
@@ -1448,6 +1733,77 @@ public class RecordActivity extends Activity implements
         }
     }
 
+    private void onPaintClick() {
+        if (!mScrawlView.isActivated()) {
+            //隐藏曝光度和降噪调节
+            if (mNoiseSeekBar.getVisibility() == View.VISIBLE) {
+                mNoiseSeekBar.setVisibility(View.GONE);
+            }
+            if (mExposureSeekBar.getVisibility() == View.VISIBLE) {
+                mExposureSeekBar.setVisibility(View.GONE);
+            }
+
+            mScrawlView.setActivated(true);
+            onPaintChecked(true);
+        } else {
+            mScrawlView.setActivated(false);
+            onPaintChecked(false);
+        }
+    }
+
+    private void onPaintChecked(boolean isChecked) {
+        if (isChecked) {
+            // config paint view
+            mPaintView.setVisibility(View.VISIBLE);
+            mPaintView.setColor(Color.RED);
+            mPaintView.setBgColor(Color.TRANSPARENT);
+            mPaintView.setStrokeWidth(4);
+            mPaintView.setGestureEnable(false);
+
+            if (mPaintViewCapture == null) {
+                mPaintViewCapture = new ViewCapture(mKSYRecordKit.getGLRender());
+                // connect to the empty last sink pin of graph mixer
+                mPaintViewCapture.getSrcPin().connect(mKSYRecordKit.getImgTexMixer().getSinkPin(7));
+                // set render position relative to the video
+                mKSYRecordKit.getImgTexMixer().setRenderRect(7, 0, 0, 1, 1, 1);
+
+                // restart PaintViewCapture while view layout changed
+                mPaintView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                    @Override
+                    public void onLayoutChange(View v, int left, int top, int right, int bottom,
+                                               int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                        int oldW = oldRight - oldLeft;
+                        int oldH = oldBottom - oldTop;
+                        if ((oldW * oldH != 0)) {
+                            stopPaintViewCapture();
+                            startPaintViewCapture();
+                        }
+                    }
+                });
+            }
+            startPaintViewCapture();
+        } else {
+            stopPaintViewCapture();
+            mPaintView.clear();
+            mPaintView.setVisibility(View.GONE);
+        }
+    }
+
+    private void startPaintViewCapture() {
+        if (mPaintViewCapture != null) {
+            mPaintViewCapture.setTargetResolution(mKSYRecordKit.getTargetWidth(),
+                    mKSYRecordKit.getTargetHeight());
+            mPaintViewCapture.setUpdateFps(mKSYRecordKit.getTargetFps());
+            mPaintViewCapture.start(mPaintView);
+        }
+    }
+
+    private void stopPaintViewCapture() {
+        if (mPaintViewCapture != null) {
+            mPaintViewCapture.stop();
+        }
+    }
+
     /**
      * 清除音调状态，重置为'0'
      */
@@ -1485,7 +1841,7 @@ public class RecordActivity extends Activity implements
             mPreRecordConfigLayout.setVisibility(View.INVISIBLE);
         }
         if (mRecordConfig.isLandscape) {
-            mBeautyLayout.setBackgroundResource(R.drawable.beauty_bg);
+            mBeautyLayout.setBackgroundResource(R.drawable.popupwindow);
         }
         mPreRecordConfigLayout = mBeautyLayout;
         if (mBeautyLayout.getVisibility() != View.VISIBLE) {
@@ -1531,7 +1887,7 @@ public class RecordActivity extends Activity implements
             mPreRecordConfigLayout.setVisibility(View.INVISIBLE);
         }
         if (mRecordConfig.isLandscape) {
-            mBgmLayout.setBackgroundResource(R.drawable.music_bg);
+            mBgmLayout.setBackgroundResource(R.drawable.popupwindow);
         }
         mPreRecordConfigLayout = mBgmLayout;
         if (mBgmLayout.getVisibility() != View.VISIBLE) {
@@ -1544,12 +1900,46 @@ public class RecordActivity extends Activity implements
             mPreRecordConfigLayout.setVisibility(View.INVISIBLE);
         }
         if (mRecordConfig.isLandscape) {
-            mSoundEffectLayout.setBackgroundResource(R.drawable.sound_effect_bg);
+            mSoundEffectLayout.setBackgroundResource(R.drawable.popupwindow);
         }
         mPreRecordConfigLayout = mSoundEffectLayout;
         if (mSoundEffectLayout.getVisibility() != View.VISIBLE) {
             mSoundEffectLayout.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void onMVClick() {
+        if (!(mRecordConfig.isLandscape && mPreRecordConfigLayout == mDefaultRecordBottomLayout)) {
+            mPreRecordConfigLayout.setVisibility(View.INVISIBLE);
+        }
+        if (mRecordConfig.isLandscape) {
+            mMVLayout.setBackgroundResource(R.drawable.popupwindow);
+        }
+        mPreRecordConfigLayout = mMVLayout;
+        if (mMVLayout.getVisibility() != View.VISIBLE) {
+            mMVLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public String getMVConfigString(InputStream inputStream) {
+        InputStreamReader inputStreamReader = null;
+        try {
+            inputStreamReader = new InputStreamReader(inputStream, "utf-8");
+        } catch (UnsupportedEncodingException e1) {
+            e1.printStackTrace();
+        }
+        BufferedReader reader = new BufferedReader(inputStreamReader);
+        StringBuilder sb = new StringBuilder("");
+        String line;
+        try {
+            while ((line = reader.readLine()) != null) {
+                sb.append(line);
+                sb.append("\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return sb.toString();
     }
 
     /**
@@ -2070,17 +2460,24 @@ public class RecordActivity extends Activity implements
         });
     }
 
+    private void clearKMC() {
+        mMaterial = null;
+        saveSelectedIndex(0);
+        if(mKMCAdapter != null) {
+            mKMCAdapter.setSelectIndex(0);
+            mKMCAdapter.notifyDataSetChanged();
+        }
+
+        if (mKMCFilter != null) {
+            mKMCFilter.startShowingMaterial(null);
+        }
+    }
+
     private void onRecyclerViewItemClick(int position) {
         MaterialInfoItem materialInfoItem = mMaterialList.get(position);
 
         if (position == 0) {
-            mMaterial = null;
-            mKMCAdapter.setSelectIndex(position);
-            saveSelectedIndex(position);
-            mKMCAdapter.notifyDataSetChanged();
-            if (mKMCFilter != null) {
-                mKMCFilter.startShowingMaterial(null);
-            }
+            clearKMC();
             //closeMaterialsShowLayer();
             return;
         }
@@ -2099,6 +2496,7 @@ public class RecordActivity extends Activity implements
                         mKSYRecordKit.getGLRender());
                 mKSYRecordKit.getImgTexFilterMgt().setExtraFilter(mKMCFilter);
             }
+
             mKMCFilter.startShowingMaterial(mMaterial);
             if (mKMCAdapter.getItemState(position) != MSG_DOWNLOAD_SUCCESS) {
                 mHandler.sendMessage(mHandler.obtainMessage(MSG_DOWNLOAD_SUCCESS, position, 0));

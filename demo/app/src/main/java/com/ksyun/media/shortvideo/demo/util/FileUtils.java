@@ -1,11 +1,14 @@
 package com.ksyun.media.shortvideo.demo.util;
 
+import com.ksyun.media.shortvideo.demo.RecordActivity;
+
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
@@ -15,13 +18,24 @@ import android.util.Log;
 import android.webkit.MimeTypeMap;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public class FileUtils {
     /**
      * TAG for log messages.
      */
-    static final String TAG = "FileUtils";
+    private static final String TAG = "FileUtils";
     private static final boolean DEBUG = false; // Set to true to enable logging
+    private static String SDCard_ROOT;
 
     /**
      * Get the Intent for selecting content to be used in an Intent Chooser.
@@ -307,4 +321,145 @@ public class FileUtils {
             return appCacheDir;
         }
     }
+
+    /**
+     * copy 并解压mv资源到本地
+     * @param context
+     * @param target
+     * @param listener
+     */
+    public static void reloadMVResourceFromAssets(Context context, String target, UnZipTask.OnProcessListener listener) {
+        SDCard_ROOT = getCacheDirectory(context) + File.separator;
+        copySelf(context, RecordActivity.MV_ASSETS_SUB_PATH, target);
+        String targetPath = SDCard_ROOT + RecordActivity.MV_ASSETS_SUB_PATH + File.separator + target;
+        unZip(target, targetPath, listener);
+    }
+
+    /**
+     * copy 文件到SDCard
+     * @param context
+     * @param root
+     * @param target
+     */
+    public static void copySelf(Context context, String root, String target) {
+        try {
+            String[] files = context.getAssets().list(root);
+            if (files.length > 0) {
+                File mirror = new File(SDCard_ROOT + root);
+                if (!mirror.exists()) {
+                    mirror.mkdirs();
+                } else {
+                    mirror.delete();
+                }
+                for (String fileName : files) {
+                    File tempFile = new File(SDCard_ROOT + root + File.separator + fileName);
+                    if (fileName.equals(target) && !tempFile.exists()) {
+                        copySelf(context, root + File.separator + fileName, target);
+                    }
+                }
+            } else {
+                Log.d(TAG, "copying...... to SDCard");
+                OutputStream os = new FileOutputStream(SDCard_ROOT + root);
+                InputStream is = context.getAssets().open(root);
+                byte[] buffer = new byte[1024 * 8];
+                int length = is.read(buffer);
+                while (length > 0) {
+                    os.write(buffer, 0, length);
+                    length = is.read(buffer);
+                }
+                os.flush();
+                is.close();
+                os.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 解压给定目录下的所有ZIP文件
+     *
+     * @param filePath 要解压的文件路径
+     */
+    public static void unZip(String targetZip, String filePath, UnZipTask.OnProcessListener
+            listener) {
+        UnZipTask task = new UnZipTask(targetZip);
+        task.setOnProcessListener(listener);
+        File file = new File(filePath);
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, file);
+    }
+
+    public static void unZipFolder(String zipFileString, String outPathString) throws Exception {
+        ZipInputStream inZip = new ZipInputStream(new FileInputStream(zipFileString));
+        ZipEntry zipEntry;
+        String szName = "";
+        while ((zipEntry = inZip.getNextEntry()) != null) {
+            szName = zipEntry.getName();
+            if (zipEntry.isDirectory()) {
+                // get the folder name of the widget
+                szName = szName.substring(0, szName.length() - 1);
+                File folder = new File(outPathString + File.separator + szName);
+                folder.mkdirs();
+            } else {
+                File file = new File(outPathString + File.separator + szName);
+                file.createNewFile();
+                FileOutputStream out = new FileOutputStream(file);
+                int len;
+                byte[] buffer = new byte[1024];
+                while ((len = inZip.read(buffer)) != -1) {
+                    out.write(buffer, 0, len);
+                    out.flush();
+                }
+                out.close();
+            }
+        }
+        inZip.close();
+    }
+
+    public static String getFileMD5(File file) {
+        if (!file.isFile()) {
+            return null;
+        }
+        MessageDigest digest = null;
+        FileInputStream in = null;
+        byte buffer[] = new byte[1024];
+        int len;
+        try {
+            digest = MessageDigest.getInstance("MD5");
+            in = new FileInputStream(file);
+            while ((len = in.read(buffer, 0, 1024)) != -1) {
+                digest.update(buffer, 0, len);
+            }
+            in.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        BigInteger bigInt = new BigInteger(1, digest.digest());
+        return bigInt.toString(16);
+    }
+
+    public static String getFileMD5(InputStream in) {
+        MessageDigest digest = null;
+        byte buffer[] = new byte[1024];
+        int len;
+        try {
+            digest = MessageDigest.getInstance("MD5");
+            while ((len = in.read(buffer, 0, 1024)) != -1) {
+                digest.update(buffer, 0, len);
+            }
+            in.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        BigInteger bigInt = new BigInteger(1, digest.digest());
+        return bigInt.toString(16);
+    }
+
+    public static String getAvailableMVPath(Context context) {
+        String path = getCacheDirectory(context) + File.separator + RecordActivity.MV_ASSETS_SUB_PATH;
+        return path;
+    }
+
 }

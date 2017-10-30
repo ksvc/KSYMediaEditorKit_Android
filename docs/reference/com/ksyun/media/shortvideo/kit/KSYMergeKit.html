@@ -143,6 +143,8 @@
     <li class="selected api apilevel-">
   <a href="../../../../../com/ksyun/media/shortvideo/kit/package-summary.html">com.ksyun.media.shortvideo.kit</a></li>
     <li class="api apilevel-">
+  <a href="../../../../../com/ksyun/media/shortvideo/mv/package-summary.html">com.ksyun.media.shortvideo.mv</a></li>
+    <li class="api apilevel-">
   <a href="../../../../../com/ksyun/media/shortvideo/sticker/package-summary.html">com.ksyun.media.shortvideo.sticker</a></li>
     <li class="api apilevel-">
   <a href="../../../../../com/ksyun/media/shortvideo/utils/package-summary.html">com.ksyun.media.shortvideo.utils</a></li>
@@ -530,6 +532,8 @@ Summary:
         <td class="jd-linkcol" width="100%">
         <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMergeKit.html#setAudioBitrate(int)">setAudioBitrate</a></span>(int bitrate)
         
+        <div class="jd-descrdiv">Set compose audio bitrate in bps.</div>
+  
   </td></tr>
 
 
@@ -546,6 +550,8 @@ Summary:
         <td class="jd-linkcol" width="100%">
         <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMergeKit.html#setAudioChannels(int)">setAudioChannels</a></span>(int channels)
         
+        <div class="jd-descrdiv">Set audio channel number.</div>
+  
   </td></tr>
 
 
@@ -560,8 +566,10 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMergeKit.html#setAudioSampleRate(int)">setAudioSampleRate</a></span>(int sampleRate)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMergeKit.html#setAudioKBitrate(int)">setAudioKBitrate</a></span>(int kBitrate)
         
+        <div class="jd-descrdiv">Set audio bitrate in kbps.</div>
+  
   </td></tr>
 
 
@@ -576,13 +584,33 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMergeKit.html#setEncodeMethod(int)">setEncodeMethod</a></span>(int encodeMethod)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMergeKit.html#setAudioSampleRate(int)">setAudioSampleRate</a></span>(int sampleRate)
         
+        <div class="jd-descrdiv">Set audio sample rate while streaming.</div>
+  
   </td></tr>
 
 
 	 
     <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMergeKit.html#setEncodeMethod(int)">setEncodeMethod</a></span>(int encodeMethod)
+        
+        <div class="jd-descrdiv">Set encode method for both video and audio.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -598,7 +626,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -614,7 +642,7 @@ Summary:
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -630,7 +658,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -642,11 +670,13 @@ Summary:
         <td class="jd-linkcol" width="100%">
         <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMergeKit.html#setTargetSize(int, int)">setTargetSize</a></span>(int width, int height)
         
+        <div class="jd-descrdiv">Set transcode target size.</div>
+  
   </td></tr>
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -662,7 +692,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -674,11 +704,15 @@ Summary:
         <td class="jd-linkcol" width="100%">
         <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMergeKit.html#setVideoBitrate(int)">setVideoBitrate</a></span>(int bitrate)
         
+        <div class="jd-descrdiv">Set merge video bitrate in bps<br/>
+ do not set during merging
+ default value : 600 * 1000</div>
+  
   </td></tr>
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -690,11 +724,13 @@ Summary:
         <td class="jd-linkcol" width="100%">
         <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMergeKit.html#setVideoCodecId(int)">setVideoCodecId</a></span>(int codecId)
         
+        <div class="jd-descrdiv">Set codec id to video encoder.</div>
+  
   </td></tr>
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -712,6 +748,24 @@ Summary:
 
 
 	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMergeKit.html#setVideoDecodeMethod(int)">setVideoDecodeMethod</a></span>(int decodeMethod)
+        
+        <div class="jd-descrdiv">Set decode method for video.</div>
+  
+  </td></tr>
+
+
+	 
     <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
@@ -724,6 +778,8 @@ Summary:
         <td class="jd-linkcol" width="100%">
         <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMergeKit.html#setVideoFps(float)">setVideoFps</a></span>(float fps)
         
+        <div class="jd-descrdiv">Sets video fps.</div>
+  
   </td></tr>
 
 
@@ -738,13 +794,33 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMergeKit.html#setVideoProfile(int)">setVideoProfile</a></span>(int videoProfile)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMergeKit.html#setVideoKBitrate(int)">setVideoKBitrate</a></span>(int kBitrate)
         
+        <div class="jd-descrdiv">Set video bitrate in kbps<br/></div>
+  
   </td></tr>
 
 
 	 
     <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMergeKit.html#setVideoProfile(int)">setVideoProfile</a></span>(int videoProfile)
+        
+        <div class="jd-descrdiv">Set encode profile to video encoder.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -762,7 +838,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1483,7 +1559,27 @@ From class
       </div>
     <div class="jd-details-descr">
       
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+  <div class="jd-tagdata jd-tagdescr"><p>Set compose audio bitrate in bps.<br/>
+ do not set during merging
+ default value : 48 * 1000</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>bitrate</th>
+          <td>audio bitrate in bps.</td>
+        </tr>
+      </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Throws</h5>
+      <table class="jd-tagtable">  
+        <tr>
+            <th>IllegalArgumentException</td>
+            <td></td>
+        </tr>
+      </table>
+  </div>
 
     </div>
 </div>
@@ -1514,7 +1610,59 @@ From class
       </div>
     <div class="jd-details-descr">
       
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+  <div class="jd-tagdata jd-tagdescr"><p>Set audio channel number.<br/>
+ default value : 1</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>channels</th>
+          <td>audio channel number, 1 for mono, 2 for stereo, 0 for input config.
+</td>
+        </tr>
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="setAudioKBitrate(int)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">setAudioKBitrate</span>
+      <span class="normal">(int kBitrate)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Set audio bitrate in kbps.<br/></p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>kBitrate</th>
+          <td>audio bitrate in kbps.
+</td>
+        </tr>
+      </table>
+  </div>
 
     </div>
 </div>
@@ -1545,7 +1693,18 @@ From class
       </div>
     <div class="jd-details-descr">
       
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+  <div class="jd-tagdata jd-tagdescr"><p>Set audio sample rate while streaming.<br/>
+ default value 44100</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>sampleRate</th>
+          <td>sample rate in Hz.
+</td>
+        </tr>
+      </table>
+  </div>
 
     </div>
 </div>
@@ -1576,7 +1735,23 @@ From class
       </div>
     <div class="jd-details-descr">
       
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+  <div class="jd-tagdata jd-tagdescr"><p>Set encode method for both video and audio.<br/>
+ Must not be set while encoding.
+ default value:ENCODE_METHOD_SOFTWARE</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>encodeMethod</th>
+          <td>Encode method.<br/></td>
+        </tr>
+      </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">See Also</h5>
+      <ul class="nolist"><li>StreamerConstants#ENCODE_METHOD_SOFTWARE</li><li>StreamerConstants#ENCODE_METHOD_SOFTWARE_COMPAT</li><li>StreamerConstants#ENCODE_METHOD_HARDWARE</li>
+      </ul>
+  </div>
 
     </div>
 </div>
@@ -1710,7 +1885,21 @@ From class
       </div>
     <div class="jd-details-descr">
       
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+  <div class="jd-tagdata jd-tagdescr"><p>Set transcode target size.<br/></p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>width</th>
+          <td>streaming width.</td>
+        </tr>
+        <tr>
+          <th>height</th>
+          <td>streaming height.
+</td>
+        </tr>
+      </table>
+  </div>
 
     </div>
 </div>
@@ -1772,7 +1961,27 @@ From class
       </div>
     <div class="jd-details-descr">
       
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+  <div class="jd-tagdata jd-tagdescr"><p>Set merge video bitrate in bps<br/>
+ do not set during merging
+ default value : 600 * 1000</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>bitrate</th>
+          <td>video bitrate in bps</td>
+        </tr>
+      </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Throws</h5>
+      <table class="jd-tagtable">  
+        <tr>
+            <th>IllegalArgumentException</td>
+            <td></td>
+        </tr>
+      </table>
+  </div>
 
     </div>
 </div>
@@ -1803,7 +2012,16 @@ From class
       </div>
     <div class="jd-details-descr">
       
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+  <div class="jd-tagdata jd-tagdescr"><p>Set codec id to video encoder.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>codecId</th>
+          <td>video codec id to set.</td>
+        </tr>
+      </table>
+  </div>
   <div class="jd-tagdata">
       <h5 class="jd-tagtitle">Throws</h5>
       <table class="jd-tagtable">  
@@ -1812,6 +2030,11 @@ From class
             <td></td>
         </tr>
       </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">See Also</h5>
+      <ul class="nolist"><li>AVConst#CODEC_ID_AVC</li><li>AVConst#CODEC_ID_HEVC</li>
+      </ul>
   </div>
 
     </div>
@@ -1849,6 +2072,52 @@ From class
 </div>
 
 
+<a id="setVideoDecodeMethod(int)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">setVideoDecodeMethod</span>
+      <span class="normal">(int decodeMethod)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Set decode method for video.<br/>
+ Must not be set while transcoding.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>decodeMethod</th>
+          <td>Decode method.<br/></td>
+        </tr>
+      </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">See Also</h5>
+      <ul class="nolist"><li>StreamerConstants#DECODE_METHOD_SOFTWARE</li><li>StreamerConstants#DECODE_METHOD_HARDWARE</li>
+      </ul>
+  </div>
+
+    </div>
+</div>
+
+
 <a id="setVideoFps(float)"></a>
 
 <div class="jd-details api apilevel-"> 
@@ -1874,7 +2143,58 @@ From class
       </div>
     <div class="jd-details-descr">
       
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+  <div class="jd-tagdata jd-tagdescr"><p>Sets video fps.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>fps</th>
+          <td>the fps
+</td>
+        </tr>
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="setVideoKBitrate(int)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">setVideoKBitrate</span>
+      <span class="normal">(int kBitrate)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Set video bitrate in kbps<br/></p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>kBitrate</th>
+          <td>video bitrate in kbps
+</td>
+        </tr>
+      </table>
+  </div>
 
     </div>
 </div>
@@ -1905,7 +2225,24 @@ From class
       </div>
     <div class="jd-details-descr">
       
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+  <div class="jd-tagdata jd-tagdescr"><p>Set encode profile to video encoder.
+ <p>
+ Only valid in ENCODE_METHOD_SOFTWARE and ENCODE_METHOD_SOFTWARE_COMPAT mode.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>videoProfile</th>
+          <td>encode profile mode to be set,
+                default value VideoEncodeFormat#ENCODE_PROFILE_LOW_POWER</td>
+        </tr>
+      </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">See Also</h5>
+      <ul class="nolist"><li>VideoEncodeFormat#ENCODE_PROFILE_LOW_POWER</li><li>VideoEncodeFormat#ENCODE_PROFILE_BALANCE</li><li>VideoEncodeFormat#ENCODE_PROFILE_HIGH_PERFORMANCE</li>
+      </ul>
+  </div>
 
     </div>
 </div>

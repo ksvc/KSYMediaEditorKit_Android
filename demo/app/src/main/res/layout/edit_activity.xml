@@ -21,13 +21,12 @@
             android:layout_gravity="center"
             android:visibility="gone" />
 
-        <!--<com.ksyun.media.shortvideo.view.KSYTextView-->
-        <!--android:id="@+id/text_panel"-->
-
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_centerInParent="true"-->
-        <!--android:visibility="gone" />-->
+        <com.lht.paintview.PaintView
+            android:id="@+id/edit_paint_view"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
 
         <ImageView
             android:id="@+id/click_to_next"

@@ -183,6 +183,42 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+        <TextView
+            android:layout_width="@dimen/config_text_type_width"
+            android:layout_height="wrap_content"
+            android:text="解码方式"
+            android:textColor="@drawable/config_text_color"
+            android:textSize="@dimen/config_text_size" />
+        <TextView
+            android:id="@+id/trans_output_config_decode_hw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="-5dp"
+            android:background="@drawable/config_text_bg"
+            android:gravity="center"
+            android:padding="@dimen/config_text_padding"
+            android:text="硬解"
+            android:textColor="@drawable/config_text_color"
+            android:textSize="@dimen/config_text_size" />
+        <TextView
+            android:id="@+id/trans_output_config_decode_sw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:gravity="center"
+            android:padding="@dimen/config_text_padding"
+            android:text="软解"
+            android:textColor="@drawable/config_text_color"
+            android:textSize="@dimen/config_text_size"
+            android:background="@drawable/config_text_bg"/>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"

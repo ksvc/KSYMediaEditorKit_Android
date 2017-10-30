@@ -24,4 +24,15 @@
         <attr name="android:requiresFadingEdge" />
         <attr name="android:fadingEdgeLength" />
     </declare-styleable>
+
+    <array name="paint_colors">
+        <item>#FFFFFF</item>
+        <item>#000000</item>
+        <item>#01ADD9</item>
+        <item>#53DA3E</item>
+        <item>#FFEF02</item>
+        <item>#FF6D00</item>
+        <item>#E72E45</item>
+        <item>#BC34BA</item>
+    </array>
 </resources>
