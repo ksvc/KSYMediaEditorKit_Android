@@ -1,5 +1,7 @@
 # 金山云短视频编辑SDK KSYMediaEditorKit
 
+[ ![Download](https://api.bintray.com/packages/ksvc/ksymediaeditor/libksysv-java/images/download.svg) ](https://bintray.com/ksvc/ksymediaeditor/libksysv-java/_latestVersion)
+
 关键名词解释：
 - 视频录制：采集摄像头及麦克风音视频数据，通过预处理、编码、复用等过程最终生成一个本地的mp4文件  
 - 视频预览编辑：对指定视频播放的同时添加音视频滤镜、水印同时提供处理后的音频和视频的预览 
