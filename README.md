@@ -48,7 +48,7 @@
 
 
 ## 1.2 关于费用
-[KSYMediaEditorKit][KSYMediaEditorKit]短视频SDK是一款免费SDK，录制、编辑和播放功能都免费提供，可以用于商业集成和使用。
+[KSYMediaEditorKit][KSYMediaEditorKit]短视频SDK是一款收费的短视频编辑SDK，按照功能授权收费，可以用于商业集成和使用，询价及细节了解，可扫描下方**短视频解决方案咨询**的二维码，或进入[金山云官网](http://www.ksyun.com/proservice/ksvs)了解。
 
 License说明请见[wiki][license]
 
