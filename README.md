@@ -1,6 +1,9 @@
 # 金山云短视频编辑SDK KSYMediaEditorKit
 
 [ ![Download](https://api.bintray.com/packages/ksvc/ksymediaeditor/libksysv-java/images/download.svg) ](https://bintray.com/ksvc/ksymediaeditor/libksysv-java/_latestVersion)
+<pre>Source Type:<b> Binary SDK</b>
+Charge Type:<b> nonfree</b></pre>
+
 
 关键名词解释：
 - 视频录制：采集摄像头及麦克风音视频数据，通过预处理、编码、复用等过程最终生成一个本地的mp4文件  
@@ -54,8 +57,8 @@ License说明请见[wiki][license]
 
 ### 1.2.1 鉴权
 短视频SDK涉及两个鉴权，区别如下：
-* SDK鉴权免费，是必需的
-* KS3(金山云存储服务)鉴权涉及费用，可以选择不用
+* SDK鉴权收费，且必需的；
+* KS3(金山云存储服务)鉴权涉及费用，可以选择不用；
 
 #### 1.2.1.1 SDK鉴权
 使用[KSYMediaEditorKit短视频编辑SDK][KSYMediaEditorKit]前需要注册金山云帐号，SDK需要使用开发者帐号鉴权。请[在此注册][ksyun]开发者帐号。
