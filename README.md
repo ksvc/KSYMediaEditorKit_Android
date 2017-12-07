@@ -61,21 +61,9 @@ License说明请见[wiki][license]
 * KS3(金山云存储服务)鉴权涉及费用，可以选择不用；
 
 #### 1.2.1.1 SDK鉴权
-使用[KSYMediaEditorKit短视频编辑SDK][KSYMediaEditorKit]前需要注册金山云帐号，SDK需要使用开发者帐号鉴权。请[在此注册][ksyun]开发者帐号。
+使用[KSYMediaEditorKit短视频编辑SDK][KSYMediaEditorKit]使用前，需要付费购买*Token*。
 
-SDK鉴权本身不需要付费。
-
-
-为了开始开发用于SDK鉴权所需要的鉴权串，提供了服务器端鉴权需要的代码：
-
-* 服务器鉴权代码--JAVA版本
-
-https://github.com/ksvc/KSYMediaEditorKit_iOS/tree/master/server/java/auth
-
-* 服务器鉴权代码--GO版本
-
-https://github.com/ksvc/KSYMediaEditorKit_iOS/tree/master/server/python/auth
-
+*Token*用于离线SDK鉴权。
 
 #### 1.2.1.2 KS3鉴权
 使用[KSYMediaEditorKit短视频编辑SDK][KSYMediaEditorKit]将合成的短视频上传至[KS3][KS3](金山云存储服务)存储时，需要满足KS3的鉴权要求。
@@ -86,10 +74,11 @@ https://github.com/ksvc/KSYMediaEditorKit_iOS/tree/master/server/python/auth
 
 ### 1.2.2 付费
 
-[KSYMediaEditorKit][KSYMediaEditorKit]可以免费使用。涉及付费的包括：
-* 动态贴纸（可以不集成，如果需要集成需要向第三方供应商付费）
-* 云存储（可以不集成）
-* 点播CDN（可以不集成）
+[KSYMediaEditorKit][KSYMediaEditorKit]是商业SDK。涉及付费的包括：
+* [KSYMediaEditorKit][KSYMediaEditorKit] SDK本身，依赖付费购买的*Token*；
+* 动态贴纸（可以不集成，如果需要集成需要向第三方供应商付费）；
+* 云存储（可以不集成）；
+* 点播CDN（可以不集成）。
 
 涉及的云存储和CDN，具体费用请参考[金山云官网][ksyun]
 
