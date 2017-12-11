@@ -141,11 +141,17 @@
               <ul>
                 
     <li class="api apilevel-">
+  <a href="../../../../../com/ksyun/media/shortvideo/capture/package-summary.html">com.ksyun.media.shortvideo.capture</a></li>
+    <li class="api apilevel-">
+  <a href="../../../../../com/ksyun/media/shortvideo/filter/package-summary.html">com.ksyun.media.shortvideo.filter</a></li>
+    <li class="api apilevel-">
   <a href="../../../../../com/ksyun/media/shortvideo/kit/package-summary.html">com.ksyun.media.shortvideo.kit</a></li>
     <li class="api apilevel-">
   <a href="../../../../../com/ksyun/media/shortvideo/mv/package-summary.html">com.ksyun.media.shortvideo.mv</a></li>
     <li class="api apilevel-">
   <a href="../../../../../com/ksyun/media/shortvideo/sticker/package-summary.html">com.ksyun.media.shortvideo.sticker</a></li>
+    <li class="api apilevel-">
+  <a href="../../../../../com/ksyun/media/shortvideo/transition/package-summary.html">com.ksyun.media.shortvideo.transition</a></li>
     <li class="selected api apilevel-">
   <a href="../../../../../com/ksyun/media/shortvideo/utils/package-summary.html">com.ksyun.media.shortvideo.utils</a></li>
               </ul><br/>
@@ -156,8 +162,6 @@
               
     <li><h2>Interfaces</h2>
       <ul>
-        <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/AuthInfoManager.CheckAuthResultListener.html">AuthInfoManager.CheckAuthResultListener</a></li>
-        <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/KS3ClientWrap.OnGetAuthInfoListener.html">KS3ClientWrap.OnGetAuthInfoListener</a></li>
         <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/ProbeMediaInfoTools.ProbeMediaInfoListener.html">ProbeMediaInfoTools.ProbeMediaInfoListener</a></li>
       </ul>
     </li>
@@ -166,11 +170,11 @@
       <ul>
         <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/AuthInfoManager.html">AuthInfoManager</a></li>
         <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/AuthInfoManager.AuthInfo.html">AuthInfoManager.AuthInfo</a></li>
+        <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/AVSync.html">AVSync</a></li>
+        <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/AVSync.AudioSinkPin.html">AVSync.AudioSinkPin</a></li>
+        <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/AVSync.VideoSinkPin.html">AVSync.VideoSinkPin</a></li>
         <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/ImgBufToTex.html">ImgBufToTex</a></li>
         <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/ImgBufToTex.ImgBufSinPin.html">ImgBufToTex.ImgBufSinPin</a></li>
-        <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/KS3ClientWrap.html">KS3ClientWrap</a></li>
-        <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/KS3ClientWrap.KS3AuthInfo.html">KS3ClientWrap.KS3AuthInfo</a></li>
-        <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/KS3ClientWrap.KS3UploadInfo.html">KS3ClientWrap.KS3UploadInfo</a></li>
         <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/ProbeMediaInfoTools.html">ProbeMediaInfoTools</a></li>
         <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/ProbeMediaInfoTools.MediaInfo.html">ProbeMediaInfoTools.MediaInfo</a></li>
         <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/ShortVideoConstants.html">ShortVideoConstants</a></li>
@@ -244,17 +248,6 @@
     
   <table class="jd-sumtable-expando">
         <tr class="alt-color api apilevel-" >
-              <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/utils/AuthInfoManager.CheckAuthResultListener.html">AuthInfoManager.CheckAuthResultListener</a></td>
-              <td class="jd-descrcol" width="100%">authentication check result callback
-&nbsp;</td>
-          </tr>
-        <tr class=" api apilevel-" >
-              <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/utils/KS3ClientWrap.OnGetAuthInfoListener.html">KS3ClientWrap.OnGetAuthInfoListener</a></td>
-              <td class="jd-descrcol" width="100%">get Ks3's token callback<br/>
- need to fetch token for file upload
-&nbsp;</td>
-          </tr>
-        <tr class="alt-color api apilevel-" >
               <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/utils/ProbeMediaInfoTools.ProbeMediaInfoListener.html">ProbeMediaInfoTools.ProbeMediaInfoListener</a></td>
               <td class="jd-descrcol" width="100%">return MediaInfo for probeMediaInfo
 &nbsp;</td>
@@ -281,28 +274,25 @@
 &nbsp;</td>
           </tr>
         <tr class="alt-color api apilevel-" >
-              <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/utils/ImgBufToTex.html">ImgBufToTex</a></td>
-              <td class="jd-descrcol" width="100%">Transform I420/RGBA buffer to texture.&nbsp;</td>
+              <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/utils/AVSync.html">AVSync</a></td>
+              <td class="jd-descrcol" width="100%">Audio video Sync module
+ This module only cache audio frame.&nbsp;</td>
           </tr>
         <tr class=" api apilevel-" >
-              <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/utils/ImgBufToTex.ImgBufSinPin.html">ImgBufToTex.ImgBufSinPin</a></td>
+              <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/utils/AVSync.AudioSinkPin.html">AVSync.AudioSinkPin</a></td>
               <td class="jd-descrcol" width="100%">&nbsp;</td>
           </tr>
         <tr class="alt-color api apilevel-" >
-              <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/utils/KS3ClientWrap.html">KS3ClientWrap</a></td>
-              <td class="jd-descrcol" width="100%">KS3 client tools
-&nbsp;</td>
+              <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/utils/AVSync.VideoSinkPin.html">AVSync.VideoSinkPin</a></td>
+              <td class="jd-descrcol" width="100%">&nbsp;</td>
           </tr>
         <tr class=" api apilevel-" >
-              <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/utils/KS3ClientWrap.KS3AuthInfo.html">KS3ClientWrap.KS3AuthInfo</a></td>
-              <td class="jd-descrcol" width="100%">KS3 authentication info<br/>
- data class
-&nbsp;</td>
+              <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/utils/ImgBufToTex.html">ImgBufToTex</a></td>
+              <td class="jd-descrcol" width="100%">Transform I420/RGBA buffer to texture.&nbsp;</td>
           </tr>
         <tr class="alt-color api apilevel-" >
-              <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/utils/KS3ClientWrap.KS3UploadInfo.html">KS3ClientWrap.KS3UploadInfo</a></td>
-              <td class="jd-descrcol" width="100%">bucket info for upload file to ks3
-&nbsp;</td>
+              <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/utils/ImgBufToTex.ImgBufSinPin.html">ImgBufToTex.ImgBufSinPin</a></td>
+              <td class="jd-descrcol" width="100%">&nbsp;</td>
           </tr>
         <tr class=" api apilevel-" >
               <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/utils/ProbeMediaInfoTools.html">ProbeMediaInfoTools</a></td>

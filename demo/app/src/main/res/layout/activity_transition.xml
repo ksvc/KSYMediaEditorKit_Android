@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#000000">
+
+    <RelativeLayout
+        android:id="@+id/transtion_preview_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.opengl.GLSurfaceView
+            android:id="@+id/transition_preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <ImageView
+            android:id="@+id/click_to_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_margin="10dp"
+            android:src="@drawable/edit_complete"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/transtion_bottom_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/transtion_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/slid"
+                android:layout_marginLeft="10dp"
+                android:orientation="horizontal"/>
+
+            <View
+                android:id="@+id/slid"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#919191"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="50dp"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/transtion_type_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:orientation="horizontal"/>
+    </RelativeLayout>
+</RelativeLayout>
