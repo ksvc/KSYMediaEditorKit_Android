@@ -65,8 +65,8 @@ public class MVTypeListAdapter extends RecyclerView.Adapter<MVTypeListAdapter.My
                 }
                 holder.setActivated(true);
                 if (mListener != null) {
-                    mListener.onClick(mData.get(position));
                     mPreHolder = (MyViewHolder) v.getTag();
+                    mListener.onClick(mData.get(position));
                 }
             }
         });

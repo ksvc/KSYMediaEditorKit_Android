@@ -130,9 +130,10 @@ public class BgmSelectAdapter extends RecyclerView.Adapter<BgmSelectAdapter.MyVi
             } else {
                 holder.mDownload.setVisibility(View.GONE);
                 holder.mProgress.setVisibility(View.GONE);
-                holder.setActivated(true);
                 if (mListener != null) {
-                    mListener.onSelected(filePath);
+                    if(mListener.onSelected(filePath)) {
+                        holder.setActivated(true);
+                    }
                 }
             }
             mCurrentFilePath = filePath;

@@ -259,6 +259,7 @@ public class EditActivity extends Activity implements
     private TextView mOutForMP4;
     private TextView mOutForGIF;
     private TextView[] mOutProfileGroup;
+    private TextView[] mOutAudioProfileGroup;
     private EditText mOutFrameRate;
     private EditText mOutVideoBitrate;
     private EditText mOutAudioBitrate;
@@ -272,6 +273,10 @@ public class EditActivity extends Activity implements
             R.id.output_config_balance, R.id.output_config_high_performance};
     private static final int[] ENCODE_PROFILE_TYPE = {VideoEncodeFormat.ENCODE_PROFILE_LOW_POWER,
             VideoEncodeFormat.ENCODE_PROFILE_BALANCE, VideoEncodeFormat.ENCODE_PROFILE_HIGH_PERFORMANCE};
+    private static final int[] AUDIO_OUTPUT_PROFILE_ID = {R.id.output_config_aac_lc,
+            R.id.output_config_aac_he, R.id.output_config_aac_he_v2};
+    private static final int[] AUDIO_ENCODE_PROFILE = {AVConst.PROFILE_AAC_LOW, AVConst.PROFILE_AAC_HE,
+            AVConst.PROFILE_AAC_HE_V2};
 
     private Handler mMainHandler;
     private boolean mPaused = false;
@@ -951,8 +956,6 @@ public class EditActivity extends Activity implements
     private StickerAdapter.OnStickerItemClick mOnAnimatedStickerItemClick = new StickerAdapter.OnStickerItemClick() {
         @Override
         public void selectedStickerItem(String path) {
-            //进入贴纸编辑状态，需要先暂停预览播放
-            pausePreview();
             StringBuilder urlInfo = new StringBuilder("assets://AnimatedStickers/gif/");
             if (path.contains("1")) {
                 urlInfo.append("1.gif");
@@ -982,13 +985,21 @@ public class EditActivity extends Activity implements
             info.animateUrl = urlInfo.toString();
             info.stickerType = KSYStickerInfo.STICKER_TYPE_IMAGE_ANIMATE; //是否是字幕贴纸
             //添加一个贴纸
+
             int index = mKSYStickerView.addSticker(info, mStickerHelpBoxInfo);
-            // 选择下一个贴纸时让前一个贴纸生效（如果之前已选择一个贴纸）
-            if (mSectionView.isSeeking()) {
-                mSectionView.calculateRange();
+            if(index >= 0) {
+                //进入贴纸编辑状态，需要先暂停预览播放
+                pausePreview();
+                // 选择下一个贴纸时让前一个贴纸生效（如果之前已选择一个贴纸）
+                if (mSectionView.isSeeking()) {
+                    mSectionView.calculateRange();
+                }
+                //开始当前贴纸的片段编辑
+                mSectionView.startSeek(index);
+            } else {
+                Log.e(TAG, "add sticker failed");
             }
-            //开始当前贴纸的片段编辑
-            mSectionView.startSeek(index);
+
         }
     };
 
@@ -1001,8 +1012,6 @@ public class EditActivity extends Activity implements
                 return;
             }
 
-            //进入贴纸编辑状态，需要先暂停预览播放
-            pausePreview();
             KSYStickerInfo info = new KSYStickerInfo();
             initStickerHelpBox();
 
@@ -1012,12 +1021,18 @@ public class EditActivity extends Activity implements
             info.stickerType = KSYStickerInfo.STICKER_TYPE_IMAGE; //是否是字幕贴纸
             //添加一个贴纸
             int index = mKSYStickerView.addSticker(info, mStickerHelpBoxInfo);
-            //选择下一个贴纸时让上一个贴纸生效（如果之前已选择贴纸）
-            if (mSectionView.isSeeking()) {
-                mSectionView.calculateRange();
+            if(index >= 0) {
+                //进入贴纸编辑状态，需要先暂停预览播放
+                pausePreview();
+                // 选择下一个贴纸时让前一个贴纸生效（如果之前已选择一个贴纸）
+                if (mSectionView.isSeeking()) {
+                    mSectionView.calculateRange();
+                }
+                //开始当前贴纸的片段编辑
+                mSectionView.startSeek(index);
+            } else {
+                Log.e(TAG, "add sticker failed");
             }
-            //开始当前贴纸的片段编辑
-            mSectionView.startSeek(index);
 
         }
     };
@@ -1032,8 +1047,7 @@ public class EditActivity extends Activity implements
                 return;
             }
             KSYStickerInfo params = new KSYStickerInfo();
-            //进入字幕编辑状态，需要先暂停预览播放
-            pausePreview();
+
             //字幕贴纸的文字相关信息
             DrawTextParams textParams = new DrawTextParams();
             textParams.textPaint = new TextPaint();
@@ -1097,12 +1111,19 @@ public class EditActivity extends Activity implements
             params.stickerType = KSYStickerInfo.STICKER_TYPE_TEXT;  //是否是字幕贴纸
 
             int index = mKSYStickerView.addSticker(params, mStickerHelpBoxInfo);
-            // 选择下一个字幕时让前一个字幕生效（如果之前已选择一个字幕）
-            if (mSectionView.isSeeking()) {
-                mSectionView.calculateRange();
+
+            if(index >= 0) {
+                //进入贴纸编辑状态，需要先暂停预览播放
+                pausePreview();
+                // 选择下一个贴纸时让前一个贴纸生效（如果之前已选择一个贴纸）
+                if (mSectionView.isSeeking()) {
+                    mSectionView.calculateRange();
+                }
+                //开始当前贴纸的片段编辑
+                mSectionView.startSeek(index);
+            } else {
+                Log.e(TAG, "add sticker failed");
             }
-            //开始当前字幕的片段编辑
-            mSectionView.startSeek(index);
         }
     };
 
@@ -1271,9 +1292,13 @@ public class EditActivity extends Activity implements
         mOutForGIF = (TextView) contentView.findViewById(R.id.output_config_gif);
         mOutForGIF.setOnClickListener(mButtonObserver);
         mOutProfileGroup = new TextView[3];
+        mOutAudioProfileGroup = new TextView[3];
         for (int i = 0; i < mOutProfileGroup.length; i++) {
             mOutProfileGroup[i] = (TextView) contentView.findViewById(OUTPUT_PROFILE_ID[i]);
             mOutProfileGroup[i].setOnClickListener(mButtonObserver);
+
+            mOutAudioProfileGroup[i] = (TextView) contentView.findViewById(AUDIO_OUTPUT_PROFILE_ID[i]);
+            mOutAudioProfileGroup[i].setOnClickListener(mButtonObserver);
         }
         mOutFrameRate = (EditText) contentView.findViewById(R.id.output_config_frameRate);
         mOutVideoBitrate = (EditText) contentView.findViewById(R.id.output_config_video_bitrate);
@@ -1293,6 +1318,7 @@ public class EditActivity extends Activity implements
         mOutDecodeByHW.setActivated(true);
         mOutForMP4.setActivated(true);
         mOutProfileGroup[1].setActivated(true);
+        mOutAudioProfileGroup[0].setActivated(true);
         mConfigDialog.show();
 
     }
@@ -1327,6 +1353,7 @@ public class EditActivity extends Activity implements
             mEditKit.setVideoDecodeMethod(mComposeConfig.decodeMethod);
             mEditKit.setTailUrl(mTailVideoPath);
             mEditKit.addPaintView(mPaintView);
+            mEditKit.setAudioEncodeProfile(mComposeConfig.audioEncodeProfile);
             //设置合成路径
             String fileFolder = Environment.getExternalStorageDirectory().
                     getAbsolutePath() + "/ksy_sv_compose_test";
@@ -1382,6 +1409,13 @@ public class EditActivity extends Activity implements
                 break;
             }
         }
+
+        for (int i = 0; i < mOutAudioProfileGroup.length; i++) {
+            if (mOutAudioProfileGroup[i].isActivated()) {
+                mComposeConfig.audioEncodeProfile = AUDIO_ENCODE_PROFILE[i];
+                break;
+            }
+        }
         mComposeConfig.fps = Integer.parseInt(mOutFrameRate.getText().toString());
         mComposeConfig.videoBitrate = Integer.parseInt(mOutVideoBitrate.getText().toString());
         mComposeConfig.audioBitrate = Integer.parseInt(mOutAudioBitrate.getText().toString());
@@ -1414,11 +1448,6 @@ public class EditActivity extends Activity implements
                         resumeEditPreview();
                     }
                     break;
-//               case ShortVideoConstants.SHORTVIDEO_ERROR_UPLOAD_KS3_TOKEN_ERROR:
-//                    Log.d(TAG, "ks3 upload token error, upload to ks3 failed");
-//                    Toast.makeText(EditActivity.this,
-//                            "Auth failed can't start upload:" + type, Toast.LENGTH_LONG).show();
-//                    break;
                 case ShortVideoConstants.SHORTVIDEO_EDIT_PREVIEW_PLAYER_ERROR:
                     Log.d(TAG, "KSYEditKit preview player error:" + type + "_" + msg);
                 default:
@@ -1472,21 +1501,6 @@ public class EditActivity extends Activity implements
 //                    });
 //                    //get thumbnail for first frame
 //                    probeMediaInfoTools.getVideoThumbnailAtTime(msgs[0],0,0,0);
-
-                    // 可在此处触发sdk将合成后文件上传到ks3，示例代码如下：
-//                    //上传必要信息：bucket,objectkey，及PutObjectResponseHandler上传过程回调
-//                    String mineType = FileUtils.getMimeType(new File(msgs[0]));
-//                    StringBuilder objectKey = new StringBuilder(getPackageName() +
-//                            "/" + System.currentTimeMillis());
-//                    if (mineType == FileUtils.MIME_TYPE_MP4) {
-//                        objectKey.append(".mp4");
-//                    } else if (mineType == FileUtils.MIME_TYPE_GIF) {
-//                        objectKey.append(".gif");
-//                    }
-//                    mCurObjectKey = objectKey.toString();
-//                    KS3ClientWrap.KS3UploadInfo bucketInfo = new KS3ClientWrap.KS3UploadInfo
-//                            ("ksvsdemo", mCurObjectKey, mPutObjectResponseHandler);
-//                    return bucketInfo;
                     return null;
                 }
                 case ShortVideoConstants.SHORTVIDEO_COMPOSE_ABORTED:
@@ -1628,6 +1642,14 @@ public class EditActivity extends Activity implements
                 case R.id.output_config_high_performance:
                     onOutputEncodeProfileClick(2);
                     break;
+                case R.id.output_config_aac_lc:
+                    onOutputAudioEncodeProfileClick(0);
+                    break;
+                case R.id.output_config_aac_he:
+                    onOutputAudioEncodeProfileClick(1);
+                    break;
+                case R.id.output_config_aac_he_v2:
+                    onOutputAudioEncodeProfileClick(2);
                 case R.id.click_to_9_16:
                     mVideoScale9_16.setActivated(true);
                     mVideoScale3_4.setActivated(false);
@@ -1685,6 +1707,15 @@ public class EditActivity extends Activity implements
         for (int i = 0; i < mOutProfileGroup.length; i++) {
             if (i != index) {
                 mOutProfileGroup[i].setActivated(false);
+            }
+        }
+    }
+
+    private void onOutputAudioEncodeProfileClick(int index) {
+        mOutAudioProfileGroup[index].setActivated(true);
+        for (int i = 0; i < mOutAudioProfileGroup.length; i++) {
+            if (i != index) {
+                mOutAudioProfileGroup[i].setActivated(false);
             }
         }
     }
@@ -2265,11 +2296,15 @@ public class EditActivity extends Activity implements
             public boolean onSelected(String path) {
                 if (ViewUtils.isForeground(EditActivity.this, EditActivity.class.getName()) &&
                         !isComposeWindowShow()) {
-                    mFirstPlay = true;
-                    setEnableBgmEdit(true);
-                    mEditKit.setBGMRanges(0, (long) mPreviewLength, false);
-                    mEditKit.startBgm(path, true);
-                    return true;
+                    if(mEditKit.startBgm(path, true)) {
+                        mFirstPlay = true;
+                        setEnableBgmEdit(true);
+                        mEditKit.setBGMRanges(0, (long) mPreviewLength, false);
+                        return true;
+                    } else {
+                        mBgmAdapter.clear();
+                    }
+                    return false;
                 } else {
                     if (ViewUtils.isForeground(EditActivity.this, EditActivity.class.getName())) {
                         mBgmAdapter.clearTask();

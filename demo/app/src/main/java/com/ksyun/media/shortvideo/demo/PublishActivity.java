@@ -32,9 +32,9 @@ import com.ksyun.ks3.services.handler.PutObjectResponseHandler;
 import com.ksyun.media.player.IMediaPlayer;
 import com.ksyun.media.player.KSYMediaPlayer;
 import com.ksyun.media.shortvideo.demo.util.HttpRequestTask;
+import com.ksyun.media.shortvideo.demo.util.KS3ClientWrap;
 import com.ksyun.media.shortvideo.demo.util.KS3TokenTask;
 import com.ksyun.media.shortvideo.utils.FileUtils;
-import com.ksyun.media.shortvideo.utils.KS3ClientWrap;
 import com.ksyun.media.shortvideo.utils.ProbeMediaInfoTools;
 
 import org.apache.http.Header;

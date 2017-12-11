@@ -5,7 +5,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.ksyun.media.shortvideo.utils.KS3ClientWrap;
 
 import org.json.JSONException;
 import org.json.JSONObject;

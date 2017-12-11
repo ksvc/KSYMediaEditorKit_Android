@@ -1165,7 +1165,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 
             /**
              * The user had previously been scrolling using touch and had performed a fling. The
-             * animation is now coasting to a stop
+             * animation is now coasting to a stopPreview
              */
             SCROLL_STATE_FLING
         }

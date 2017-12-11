@@ -155,7 +155,7 @@ public class RecordProgressController {
     }
 
     /**
-     * stop record
+     * stopPreview record
      */
     public void stopRecording() {
         mIsRecording = false;

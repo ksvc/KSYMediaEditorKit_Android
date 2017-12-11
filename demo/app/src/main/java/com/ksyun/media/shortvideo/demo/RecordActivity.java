@@ -1450,11 +1450,19 @@ public class RecordActivity extends Activity implements
                 if (file.exists()) {
                     if (mMVs.containsKey(data.text)) {
                         KSYMVInfo ksymvInfo = mMVs.get(data.text);
-                        mKSYRecordKit.applyMV(ksymvInfo);
+                        if(mKSYRecordKit.applyMV(ksymvInfo)) {
+                            mKSYRecordKit.applyMV(ksymvInfo);
+                        } else {
+                            mMVAdapter.clearState();
+                        }
                     } else {
                         KSYMVInfo ksymvInfo = new KSYMVInfo(mvPath);
                         mMVs.put(data.text, ksymvInfo);
-                        mKSYRecordKit.applyMV(ksymvInfo);
+                        if(mKSYRecordKit.applyMV(ksymvInfo)) {
+                            mKSYRecordKit.applyMV(ksymvInfo);
+                        } else {
+                            mMVAdapter.clearState();
+                        }
                     }
                 }
             }

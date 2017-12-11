@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion '25.0.0'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.1'
     defaultConfig {
         applicationId "com.ksyun.media.shortvideo.demo"
         minSdkVersion 19
-        targetSdkVersion 24
-        versionCode 153
-        versionName "1.5.3"
+        targetSdkVersion 27
+        versionCode 200
+        versionName "2.0.0.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     sourceSets {
@@ -25,24 +25,24 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.volley:volley:1.0.0'
-    compile 'com.android.support:recyclerview-v7:24.2.1'
-    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
-    compile 'com.ksyun.ks3:ks3androidsdk:1.4.1'
-    compile 'com.tencent.bugly:crashreport:latest.release'
-    compile 'com.tencent.bugly:nativecrashreport:latest.release'
+    api fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:27.0.1'
+    implementation 'com.android.volley:volley:1.0.0'
+    implementation 'com.android.support:recyclerview-v7:27.0.1'
+    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
+    implementation 'com.ksyun.ks3:ks3androidsdk:1.4.1'
+    implementation 'com.tencent.bugly:crashreport:latest.release'
+    implementation 'com.tencent.bugly:nativecrashreport:latest.release'
     //录制魔方动态贴纸依赖库，若不使用，可以不依赖
-    compile 'com.ksyun.mc:libkmcfilter_sensetime:1.0.5'
-    compile 'com.ksyun.mc:SenseTimeAR:1.0.4'
+    implementation 'com.ksyun.mc:libkmcfilter_sensetime:1.0.5'
+    implementation 'com.ksyun.mc:SenseTimeAR:1.0.4'
     //动态贴纸依赖库，若不使用，使用provided
-    compile 'com.facebook.fresco:fresco:1.4.0'
-    compile 'com.facebook.fresco:animated-gif:1.4.0'
-    compile 'com.facebook.fresco:animated-webp:1.4.0'
-    compile 'com.lht:paintview:1.17'
-    compile 'com.ksyun.media:libksysv-java:1.5.3'
-    compile 'com.ksyun.media:libksysv-arm64:1.5.3'
-    compile 'com.ksyun.media:libksysv-armv7a:1.5.3'
-    compile 'com.ksyun.media:libksysv-x86:1.5.3'
+    implementation 'com.facebook.fresco:fresco:1.4.0'
+    implementation 'com.facebook.fresco:animated-gif:1.4.0'
+    implementation 'com.facebook.fresco:animated-webp:1.4.0'
+    implementation 'com.lht:paintview:1.17'
+    compile 'com.ksyun.media:libksysv-java:2.0.0'
+    compile 'com.ksyun.media:libksysv-arm64:2.0.0'
+    compile 'com.ksyun.media:libksysv-armv7a:2.0.0'
+    compile 'com.ksyun.media:libksysv-x86:2.0.0'
 }

@@ -258,6 +258,57 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="65dp"
+            android:layout_height="wrap_content"
+            android:text="音频编码"
+            android:textColor="@drawable/config_text_color"
+            android:textSize="@dimen/config_text_size" />
+
+        <TextView
+            android:id="@+id/output_config_aac_lc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/config_text_bg"
+            android:gravity="center"
+            android:padding="@dimen/config_text_padding"
+            android:text="AAC LC"
+            android:textColor="@drawable/config_text_color"
+            android:textSize="@dimen/config_text_size" />
+
+        <TextView
+            android:id="@+id/output_config_aac_he"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/config_text_bg"
+            android:gravity="center"
+            android:padding="@dimen/config_text_padding"
+            android:text="AAC HE"
+            android:textColor="@drawable/config_text_color"
+            android:textSize="@dimen/config_text_size" />
+
+        <TextView
+            android:id="@+id/output_config_aac_he_v2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/config_text_bg"
+            android:gravity="center"
+            android:padding="@dimen/config_text_padding"
+            android:text="AAC HEv2"
+            android:textColor="@drawable/config_text_color"
+            android:textSize="@dimen/config_text_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:gravity="center_vertical"
