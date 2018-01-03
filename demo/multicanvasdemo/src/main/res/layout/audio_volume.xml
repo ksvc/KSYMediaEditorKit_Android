@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:alpha="0.8"
+              android:background="#07080B">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="43dp"
+        android:layout_marginRight="42dp"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="44dp"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text="左声道"
+            android:textColor="#ffffff"
+            android:textSize="14sp" />
+
+        <android.support.v7.widget.AppCompatSeekBar
+            android:id="@+id/left_audio_volume"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:progressBackgroundTint="#9b9b9b"
+            android:progressTint="@color/font_color_35"
+            android:thumbTint="#ffffff" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="43dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="42dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="44dp"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text="右声道"
+            android:textColor="#ffffff"
+            android:textSize="14sp" />
+
+        <android.support.v7.widget.AppCompatSeekBar
+            android:id="@+id/right_audio_volume"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:progressBackgroundTint="#9b9b9b"
+            android:progressTint="@color/font_color_35"
+            android:thumbTint="#ffffff" />
+    </LinearLayout>
+</LinearLayout>

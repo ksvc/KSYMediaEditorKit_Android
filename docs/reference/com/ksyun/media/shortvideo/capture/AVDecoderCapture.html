@@ -170,10 +170,12 @@
               
     <li><h2>Classes</h2>
       <ul>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/capture/AudioDummyCapture.html">AudioDummyCapture</a></li>
           <li class="selected api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.html">AVDecoderCapture</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.MediaInfo.html">AVDecoderCapture.MediaInfo</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.PinAdapter.html">AVDecoderCapture.PinAdapter</a>&lt;T&gt;</li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.PinAdapter.PinAdapterSinkPin.html">AVDecoderCapture.PinAdapter.PinAdapterSinkPin</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/capture/PictureCapture.html">PictureCapture</a></li>
       </ul>
     </li>
               
@@ -585,6 +587,22 @@ Summary:
             
             
             
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.html#createDummyCapture()">createDummyCapture</a></span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
             AVDemuxerCapture
         </td>
         <td class="jd-linkcol" width="100%">
@@ -594,7 +612,7 @@ Summary:
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -610,7 +628,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -621,6 +639,22 @@ Summary:
         </td>
         <td class="jd-linkcol" width="100%">
         <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.html#getDecoderUrl()">getDecoderUrl</a></span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            int
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.html#getDuration()">getDuration</a></span>()
         
   </td></tr>
 
@@ -748,6 +782,74 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.html#setAudioDecodeMethod(int)">setAudioDecodeMethod</a></span>(int decodeMethod)
+        
+        <div class="jd-descrdiv">Set encode method for audio.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.html#setAutoStart(boolean)">setAutoStart</a></span>(boolean autoStart)
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.html#setAvDemuxerCaptureRanges(long, long)">setAvDemuxerCaptureRanges</a></span>(long startTimeMs, long endTimeMs)
+        
+        <div class="jd-descrdiv">set demux ranges</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.html#setDataSource(java.lang.String)">setDataSource</a></span>(String url)
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
         <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.html#setNeedSendEos(boolean)">setNeedSendEos</a></span>(boolean needSendEos)
         
   </td></tr>
@@ -796,10 +898,8 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.html#setVideoDecodeMethod(int)">setVideoDecodeMethod</a></span>(int decodeMethod)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.html#setSpeed(float)">setSpeed</a></span>(float speed)
         
-        <div class="jd-descrdiv">Set decode method for video.</div>
-  
   </td></tr>
 
 
@@ -814,13 +914,31 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.html#start(java.lang.String)">start</a></span>(String url)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.html#setVideoDecodeMethod(int)">setVideoDecodeMethod</a></span>(int decodeMethod)
         
+        <div class="jd-descrdiv">Set decode method for video.</div>
+  
   </td></tr>
 
 
 	 
     <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.html#start()">start</a></span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1414,8 +1532,8 @@ From class
         <span class="jd-tagtitle">Constant Value: </span>
         <span>
             
-                102
-                (0x00000066)
+                100
+                (0x00000064)
             
         </span>
         </div>
@@ -1454,8 +1572,8 @@ From class
         <span class="jd-tagtitle">Constant Value: </span>
         <span>
             
-                100
-                (0x00000064)
+                101
+                (0x00000065)
             
         </span>
         </div>
@@ -1494,8 +1612,8 @@ From class
         <span class="jd-tagtitle">Constant Value: </span>
         <span>
             
-                101
-                (0x00000065)
+                102
+                (0x00000066)
             
         </span>
         </div>
@@ -1534,8 +1652,8 @@ From class
         <span class="jd-tagtitle">Constant Value: </span>
         <span>
             
-                102
-                (0x00000066)
+                100
+                (0x00000064)
             
         </span>
         </div>
@@ -1643,6 +1761,37 @@ From class
 
 
 
+<a id="createDummyCapture()"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">createDummyCapture</span>
+      <span class="normal">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
 <a id="getAVDemuxerCapture()"></a>
 
 <div class="jd-details api apilevel-"> 
@@ -1718,6 +1867,37 @@ From class
         String
       </span>
       <span class="sympad">getDecoderUrl</span>
+      <span class="normal">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+<a id="getDuration()"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        int
+      </span>
+      <span class="sympad">getDuration</span>
       <span class="normal">()</span>
     </h4>
       <div class="api-level">
@@ -1953,6 +2133,176 @@ From class
 </div>
 
 
+<a id="setAudioDecodeMethod(int)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">setAudioDecodeMethod</span>
+      <span class="normal">(int decodeMethod)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Set encode method for audio.<br/>
+ Must not be set while decoding.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>decodeMethod</th>
+          <td>Decode method.<br/></td>
+        </tr>
+      </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Throws</h5>
+      <table class="jd-tagtable">  
+        <tr>
+            <th></td>
+            <td>IllegalStateException</td>
+        </tr>  
+        <tr>
+            <th>IllegalArgumentException</td>
+            <td></td>
+        </tr>  
+        <tr>
+            <th>IllegalStateException</td>
+            <td></td>
+        </tr>
+      </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">See Also</h5>
+      <ul class="nolist"><li>StreamerConstants#DECODE_METHOD_SOFTWARE</li><li>StreamerConstants#DECODE_METHOD_HARDWARE</li>
+      </ul>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="setAutoStart(boolean)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">setAutoStart</span>
+      <span class="normal">(boolean autoStart)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+<a id="setAvDemuxerCaptureRanges(long, long)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">setAvDemuxerCaptureRanges</span>
+      <span class="normal">(long startTimeMs, long endTimeMs)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>set demux ranges</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>startTimeMs</th>
+          <td>Demuxer start ts (ms)</td>
+        </tr>
+        <tr>
+          <th>endTimeMs</th>
+          <td>Demuxer end ts (ms)
+</td>
+        </tr>
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="setDataSource(java.lang.String)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">setDataSource</span>
+      <span class="normal">(String url)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
 <a id="setNeedSendEos(boolean)"></a>
 
 <div class="jd-details api apilevel-"> 
@@ -2046,6 +2396,37 @@ From class
 </div>
 
 
+<a id="setSpeed(float)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">setSpeed</span>
+      <span class="normal">(float speed)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
 <a id="setVideoDecodeMethod(int)"></a>
 
 <div class="jd-details api apilevel-"> 
@@ -2109,7 +2490,7 @@ From class
 </div>
 
 
-<a id="start(java.lang.String)"></a>
+<a id="start()"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -2122,7 +2503,7 @@ From class
         void
       </span>
       <span class="sympad">start</span>
-      <span class="normal">(String url)</span>
+      <span class="normal">()</span>
     </h4>
       <div class="api-level">
         <div>

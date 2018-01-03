@@ -7,8 +7,8 @@ android {
         applicationId "com.ksyun.media.shortvideo.demo"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 200
-        versionName "2.0.0.2"
+        versionCode 210
+        versionName "2.1.0.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     sourceSets {
@@ -41,8 +41,8 @@ dependencies {
     implementation 'com.facebook.fresco:animated-gif:1.4.0'
     implementation 'com.facebook.fresco:animated-webp:1.4.0'
     implementation 'com.lht:paintview:1.17'
-    compile 'com.ksyun.media:libksysv-java:2.0.0'
-    compile 'com.ksyun.media:libksysv-arm64:2.0.0'
-    compile 'com.ksyun.media:libksysv-armv7a:2.0.0'
-    compile 'com.ksyun.media:libksysv-x86:2.0.0'
+    compile 'com.ksyun.media:libksysv-java:2.1.0'
+    compile 'com.ksyun.media:libksysv-arm64:2.1.0'
+    compile 'com.ksyun.media:libksysv-armv7a:2.1.0'
+    compile 'com.ksyun.media:libksysv-x86:2.1.0'
 }

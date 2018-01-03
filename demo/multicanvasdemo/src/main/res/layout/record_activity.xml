@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+    <include
+        android:id="@+id/actionbar"
+        layout="@layout/record_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_gravity="top"/>
+
+    <RelativeLayout
+        android:id="@+id/record_preview"
+        android:layout_below="@id/actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.opengl.GLSurfaceView
+            android:id="@+id/camera_preview"
+            android:layout_width="1dp"
+            android:layout_height="1dp"/>
+
+        <SurfaceView
+            android:id="@+id/player_preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <com.ksyun.media.shortvideo.multicanvasdemo.view.CameraHintView
+            android:id="@+id/camera_hint"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true" />
+    </RelativeLayout>
+
+    <include
+        android:id="@+id/bar_bottom"
+        android:layout_below="@id/record_preview"
+        layout="@layout/record_bar_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"/>
+
+    <ImageView
+        android:id="@+id/count_down_image"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+</RelativeLayout>
