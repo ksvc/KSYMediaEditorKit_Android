@@ -175,12 +175,17 @@
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEasyMergeKit.html">KSYEasyMergeKit</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html">KSYEditKit</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMergeKit.html">KSYMergeKit</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMultiCanvasComposeKit.html">KSYMultiCanvasComposeKit</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMultiCanvasComposeKit.MediaInfo.html">KSYMultiCanvasComposeKit.MediaInfo</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMultiComposeKit.html">KSYMultiComposeKit</a></li>
           <li class="selected api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMultiEditKit.html">KSYMultiEditKit</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMultiEditKit.ComposeProgressInfo.html">KSYMultiEditKit.ComposeProgressInfo</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRecordKit.html">KSYRecordKit</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRemuxKit.html">KSYRemuxKit</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYTranscodeKit.html">KSYTranscodeKit</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYTransitionKit.html">KSYTransitionKit</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/MultiComposeBase.html">MultiComposeBase</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/MultiComposeBase.MediaContext.html">MultiComposeBase.MediaContext</a></li>
       </ul>
     </li>
               
@@ -675,9 +680,9 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMultiEditKit.html#setAudioKBitrate(int)">setAudioKBitrate</a></span>(int kBitrate)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMultiEditKit.html#setAudioDecodeMethod(int)">setAudioDecodeMethod</a></span>(int decodeMethod)
         
-        <div class="jd-descrdiv">Set audio bitrate in kbps.</div>
+        <div class="jd-descrdiv">Set decode method for video.</div>
   
   </td></tr>
 
@@ -693,9 +698,45 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMultiEditKit.html#setAudioKBitrate(int)">setAudioKBitrate</a></span>(int kBitrate)
+        
+        <div class="jd-descrdiv">Set audio bitrate in kbps.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
         <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMultiEditKit.html#setAudioSampleRate(int)">setAudioSampleRate</a></span>(int sampleRate)
         
         <div class="jd-descrdiv">Set audio sample rate while streaming.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMultiEditKit.html#setDecodeMethod(int)">setDecodeMethod</a></span>(int decodeMethod)
+        
+        <div class="jd-descrdiv">Set decode method for video and audio.</div>
   
   </td></tr>
 
@@ -1828,6 +1869,52 @@ From class
 </div>
 
 
+<a id="setAudioDecodeMethod(int)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">setAudioDecodeMethod</span>
+      <span class="normal">(int decodeMethod)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Set decode method for video.<br/>
+ Must not be set while transcoding.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>decodeMethod</th>
+          <td>Decode method.<br/></td>
+        </tr>
+      </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">See Also</h5>
+      <ul class="nolist"><li>StreamerConstants#DECODE_METHOD_SOFTWARE</li><li>StreamerConstants#DECODE_METHOD_HARDWARE</li>
+      </ul>
+  </div>
+
+    </div>
+</div>
+
+
 <a id="setAudioKBitrate(int)"></a>
 
 <div class="jd-details api apilevel-"> 
@@ -1905,6 +1992,52 @@ From class
 </td>
         </tr>
       </table>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="setDecodeMethod(int)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">setDecodeMethod</span>
+      <span class="normal">(int decodeMethod)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Set decode method for video and audio.<br/>
+ Must not be set while transcoding.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>decodeMethod</th>
+          <td>Decode method.<br/></td>
+        </tr>
+      </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">See Also</h5>
+      <ul class="nolist"><li>StreamerConstants#DECODE_METHOD_SOFTWARE</li><li>StreamerConstants#DECODE_METHOD_HARDWARE</li>
+      </ul>
   </div>
 
     </div>

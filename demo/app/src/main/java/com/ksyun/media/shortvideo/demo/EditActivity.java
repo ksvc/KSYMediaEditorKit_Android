@@ -704,6 +704,7 @@ public class EditActivity extends Activity implements
         mPreviewLayout.setLayoutParams(previewParams);
     }
 
+    @Override
     public void onResume() {
         super.onResume();
         mPaused = false;

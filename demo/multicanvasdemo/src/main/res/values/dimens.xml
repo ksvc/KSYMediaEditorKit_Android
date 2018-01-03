@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <dimen name="config_text_size">14sp</dimen>
+    <dimen name="config_text_padding">5dp</dimen>
+    <dimen name="config_text_type_width">80dp</dimen>
+    <dimen name="config_text_width">60dp</dimen>
+</resources>

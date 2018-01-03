@@ -19,6 +19,17 @@
 <parameter name="glRender" type="GLRender">
 </parameter>
 </constructor>
+<method name="createDummyCapture"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
 <method name="getAVDemuxerCapture"
  return="AVDemuxerCapture"
  abstract="false"
@@ -43,6 +54,17 @@
 </method>
 <method name="getDecoderUrl"
  return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getDuration"
+ return="int"
  abstract="false"
  native="false"
  synchronized="false"
@@ -146,6 +168,64 @@
 <parameter name="listener" type="com.ksyun.media.shortvideo.capture.AVDecoderCapture.AVDecoderListener">
 </parameter>
 </method>
+<method name="setAudioDecodeMethod"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="decodeMethod" type="int">
+</parameter>
+<exception name="IllegalArgumentException" type="java.lang.IllegalArgumentException">
+</exception>
+<exception name="IllegalStateException" type="java.lang.IllegalStateException">
+</exception>
+</method>
+<method name="setAutoStart"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="autoStart" type="boolean">
+</parameter>
+</method>
+<method name="setAvDemuxerCaptureRanges"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="startTimeMs" type="long">
+</parameter>
+<parameter name="endTimeMs" type="long">
+</parameter>
+</method>
+<method name="setDataSource"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="url" type="java.lang.String">
+</parameter>
+</method>
 <method name="setNeedSendEos"
  return="void"
  abstract="false"
@@ -185,6 +265,19 @@
 <parameter name="listener" type="com.ksyun.media.shortvideo.capture.AVDecoderCapture.OnVideoPtsChangedListener">
 </parameter>
 </method>
+<method name="setSpeed"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="speed" type="float">
+</parameter>
+</method>
 <method name="setVideoDecodeMethod"
  return="void"
  abstract="false"
@@ -212,8 +305,6 @@
  deprecated="not deprecated"
  visibility="public"
 >
-<parameter name="url" type="java.lang.String">
-</parameter>
 </method>
 <method name="stop"
  return="void"
@@ -307,7 +398,7 @@
  type="int"
  transient="false"
  volatile="false"
- value="102"
+ value="100"
  static="true"
  final="true"
  deprecated="not deprecated"
@@ -318,7 +409,7 @@
  type="int"
  transient="false"
  volatile="false"
- value="100"
+ value="101"
  static="true"
  final="true"
  deprecated="not deprecated"
@@ -329,7 +420,7 @@
  type="int"
  transient="false"
  volatile="false"
- value="101"
+ value="102"
  static="true"
  final="true"
  deprecated="not deprecated"
@@ -340,7 +431,7 @@
  type="int"
  transient="false"
  volatile="false"
- value="102"
+ value="100"
  static="true"
  final="true"
  deprecated="not deprecated"
@@ -453,6 +544,26 @@
  visibility="public"
 >
 </field>
+<field name="degree"
+ type="int"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="duration"
+ type="int"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
 <field name="frameRate"
  type="int"
  transient="false"
@@ -465,6 +576,26 @@
 </field>
 <field name="height"
  type="int"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="isOnlyAudio"
+ type="boolean"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="isOnlyVideo"
+ type="boolean"
  transient="false"
  volatile="false"
  static="false"
@@ -652,6 +783,80 @@
 <parameter name="frame" type="T">
 </parameter>
 </method>
+</class>
+<class name="AudioDummyCapture"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="AudioDummyCapture"
+ type="com.ksyun.media.shortvideo.capture.AudioDummyCapture"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<constructor name="AudioDummyCapture"
+ type="com.ksyun.media.shortvideo.capture.AudioDummyCapture"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="sampleRate" type="int">
+</parameter>
+<parameter name="channels" type="int">
+</parameter>
+</constructor>
+<method name="read"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="pts" type="long">
+</parameter>
+</method>
+<method name="start"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="stop"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<field name="mSrcPin"
+ type="&lt;any&gt;"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
 </class>
 <class name="MediaPlayerCapture"
  extends="java.lang.Object"
@@ -1127,6 +1332,98 @@
  visibility="public"
 >
 </field>
+</class>
+<class name="PictureCapture"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="PictureCapture"
+ type="com.ksyun.media.shortvideo.capture.PictureCapture"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="context" type="Context">
+</parameter>
+<parameter name="glRender" type="GLRender">
+</parameter>
+</constructor>
+<constructor name="PictureCapture"
+ type="com.ksyun.media.shortvideo.capture.PictureCapture"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="context" type="Context">
+</parameter>
+<parameter name="glRender" type="GLRender">
+</parameter>
+<parameter name="uri" type="java.lang.String">
+</parameter>
+</constructor>
+<method name="getSrcPin"
+ return="&lt;any&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="release"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="start"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="uri" type="java.lang.String">
+</parameter>
+</method>
+<method name="start"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="stop"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
 </class>
 </package>
 <package name="com.ksyun.media.shortvideo.filter"
@@ -2569,6 +2866,23 @@
 <exception name="IllegalStateException" type="java.lang.IllegalStateException">
 </exception>
 </method>
+<method name="setDecoderMethod"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="decodeMethod" type="int">
+</parameter>
+<exception name="IllegalArgumentException" type="java.lang.IllegalArgumentException">
+</exception>
+<exception name="IllegalStateException" type="java.lang.IllegalStateException">
+</exception>
+</method>
 <method name="setDisplayPreview"
  return="void"
  abstract="false"
@@ -2720,6 +3034,21 @@
  visibility="public"
 >
 <parameter name="volume" type="float">
+</parameter>
+</method>
+<method name="setOriginAudioVolume"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="leftVolume" type="float">
+</parameter>
+<parameter name="rightVolume" type="float">
 </parameter>
 </method>
 <method name="setPreviewCrop"
@@ -3689,6 +4018,331 @@
 </parameter>
 </method>
 </interface>
+<class name="KSYMultiCanvasComposeKit"
+ extends="com.ksyun.media.shortvideo.kit.MultiComposeBase"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="KSYMultiCanvasComposeKit"
+ type="com.ksyun.media.shortvideo.kit.KSYMultiCanvasComposeKit"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="context" type="Context">
+</parameter>
+</constructor>
+<method name="getProgress"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="setOnErrorListener"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="onErrorListener" type="com.ksyun.media.shortvideo.kit.KSYMultiCanvasComposeKit.OnErrorListener">
+</parameter>
+</method>
+<method name="setOnInfoListener"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="onInfoListener" type="com.ksyun.media.shortvideo.kit.KSYMultiCanvasComposeKit.OnInfoListener">
+</parameter>
+</method>
+<method name="start"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="srcInfo" type="java.util.List&lt;com.ksyun.media.shortvideo.kit.KSYMultiCanvasComposeKit.MediaInfo&gt;">
+</parameter>
+<parameter name="desUrl" type="java.lang.String">
+</parameter>
+</method>
+<method name="stop"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<field name="MEDIA_TYPE_BITMAP"
+ type="int"
+ transient="false"
+ volatile="false"
+ value="1"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="MEDIA_TYPE_VIDEO"
+ type="int"
+ transient="false"
+ volatile="false"
+ value="0"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="mComposeErrorListener"
+ type="com.ksyun.media.shortvideo.kit.MultiComposeBase.OnErrorListener"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="mComposeInfoListener"
+ type="com.ksyun.media.shortvideo.kit.MultiComposeBase.OnInfoListener"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<class name="KSYMultiCanvasComposeKit.MediaInfo"
+ extends="java.lang.Object"
+ abstract="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="MediaInfo"
+ type="com.ksyun.media.shortvideo.kit.KSYMultiCanvasComposeKit.MediaInfo"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<constructor name="MediaInfo"
+ type="com.ksyun.media.shortvideo.kit.KSYMultiCanvasComposeKit.MediaInfo"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="path" type="java.lang.String">
+</parameter>
+<parameter name="leftVolume" type="float">
+</parameter>
+<parameter name="rightVolume" type="float">
+</parameter>
+<parameter name="x" type="float">
+</parameter>
+<parameter name="y" type="float">
+</parameter>
+<parameter name="w" type="float">
+</parameter>
+<parameter name="h" type="float">
+</parameter>
+<parameter name="alpha" type="float">
+</parameter>
+<parameter name="z_order" type="int">
+</parameter>
+<parameter name="type" type="int">
+</parameter>
+</constructor>
+<field name="alpha"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="h"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="isEdit"
+ type="boolean"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="leftVolume"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="path"
+ type="java.lang.String"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="rightVolume"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="type"
+ type="int"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="w"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="x"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="y"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="z_order"
+ type="int"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<interface name="KSYMultiCanvasComposeKit.OnErrorListener"
+ abstract="true"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="onError"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="type" type="int">
+</parameter>
+<parameter name="msg" type="long">
+</parameter>
+</method>
+</interface>
+<interface name="KSYMultiCanvasComposeKit.OnInfoListener"
+ abstract="true"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="onInfo"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="type" type="int">
+</parameter>
+<parameter name="msg" type="java.lang.String">
+</parameter>
+</method>
+</interface>
 <class name="KSYMultiComposeKit"
  extends="java.lang.Object"
  abstract="false"
@@ -4191,8 +4845,6 @@
  deprecated="not deprecated"
  visibility="public"
 >
-<parameter name="ksyTranscodeKit" type="com.ksyun.media.shortvideo.kit.KSYMultiComposeKit">
-</parameter>
 <parameter name="type" type="int">
 </parameter>
 <parameter name="msg" type="long">
@@ -4216,8 +4868,6 @@
  deprecated="not deprecated"
  visibility="public"
 >
-<parameter name="ksyTranscodeKit" type="com.ksyun.media.shortvideo.kit.KSYMultiComposeKit">
-</parameter>
 <parameter name="type" type="int">
 </parameter>
 <parameter name="msg" type="java.lang.String">
@@ -4347,6 +4997,19 @@
 <parameter name="channels" type="int">
 </parameter>
 </method>
+<method name="setAudioDecodeMethod"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="decodeMethod" type="int">
+</parameter>
+</method>
 <method name="setAudioKBitrate"
  return="void"
  abstract="false"
@@ -4371,6 +5034,19 @@
  visibility="public"
 >
 <parameter name="sampleRate" type="int">
+</parameter>
+</method>
+<method name="setDecodeMethod"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="decodeMethod" type="int">
 </parameter>
 </method>
 <method name="setDisplayPreview"
@@ -5815,7 +6491,7 @@
  type="int"
  transient="false"
  volatile="false"
- value="100"
+ value="101"
  static="true"
  final="true"
  deprecated="not deprecated"
@@ -5826,7 +6502,7 @@
  type="int"
  transient="false"
  volatile="false"
- value="101"
+ value="102"
  static="true"
  final="true"
  deprecated="not deprecated"
@@ -5931,6 +6607,1079 @@
 >
 <parameter name="ksyTranscodeKit" type="com.ksyun.media.shortvideo.kit.KSYTranscodeKit">
 </parameter>
+<parameter name="type" type="int">
+</parameter>
+<parameter name="msg" type="java.lang.String">
+</parameter>
+</method>
+</interface>
+<class name="KSYTransitionKit"
+ extends="com.ksyun.media.shortvideo.kit.MultiComposeBase"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="KSYTransitionKit"
+ type="com.ksyun.media.shortvideo.kit.KSYTransitionKit"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="context" type="Context">
+</parameter>
+</constructor>
+<method name="getCurrentTransFileId"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getCurrentTransFilePath"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getProgress"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="setOnErrorListener"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="onErrorListener" type="com.ksyun.media.shortvideo.kit.KSYTransitionKit.OnErrorListener">
+</parameter>
+</method>
+<method name="setOnInfoListener"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="onInfoListener" type="com.ksyun.media.shortvideo.kit.KSYTransitionKit.OnInfoListener">
+</parameter>
+</method>
+<method name="setTransitionInfo"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="transitionParams" type="java.util.Map&lt;java.lang.Integer, com.ksyun.media.shortvideo.transition.TransitionInfoControl&gt;">
+</parameter>
+</method>
+<method name="start"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="srcUrls" type="java.util.List&lt;java.lang.String&gt;">
+</parameter>
+<parameter name="desUrl" type="java.lang.String">
+</parameter>
+</method>
+<method name="stop"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<field name="mComposeErrorListener"
+ type="com.ksyun.media.shortvideo.kit.MultiComposeBase.OnErrorListener"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="mComposeInfoListener"
+ type="com.ksyun.media.shortvideo.kit.MultiComposeBase.OnInfoListener"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<interface name="KSYTransitionKit.OnErrorListener"
+ abstract="true"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="onError"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="type" type="int">
+</parameter>
+<parameter name="msg" type="long">
+</parameter>
+</method>
+</interface>
+<interface name="KSYTransitionKit.OnInfoListener"
+ abstract="true"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="onInfo"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="type" type="int">
+</parameter>
+<parameter name="msg" type="java.lang.String">
+</parameter>
+</method>
+</interface>
+<class name="MultiComposeBase"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="MultiComposeBase"
+ type="com.ksyun.media.shortvideo.kit.MultiComposeBase"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="context" type="Context">
+</parameter>
+</constructor>
+<method name="abort"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+</method>
+<method name="config"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+<parameter name="context" type="com.ksyun.media.shortvideo.kit.MultiComposeBase.MediaContext">
+</parameter>
+</method>
+<method name="config"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+<parameter name="context" type="com.ksyun.media.shortvideo.kit.MultiComposeBase.MediaContext">
+</parameter>
+<parameter name="index" type="int">
+</parameter>
+</method>
+<method name="createMediaContext"
+ return="com.ksyun.media.shortvideo.kit.MultiComposeBase.MediaContext"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+<parameter name="isMain" type="boolean">
+</parameter>
+</method>
+<method name="getAudioBitrate"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getAudioEncodeProfile"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getGLRender"
+ return="GLRender"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getImgTexFilterMgt"
+ return="ImgTexFilterMgt"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getVideoBitrate"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getVideoCodecId"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getVideoEncodeMethod"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getVideoEncodeProfile"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getVideoFps"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="release"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="setAudioBitrate"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="bitrate" type="int">
+</parameter>
+<exception name="IllegalArgumentException" type="java.lang.IllegalArgumentException">
+</exception>
+</method>
+<method name="setAudioChannels"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="channels" type="int">
+</parameter>
+<exception name="IllegalArgumentException" type="java.lang.IllegalArgumentException">
+</exception>
+</method>
+<method name="setAudioDecodeMethod"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="decodeMethod" type="int">
+</parameter>
+<exception name="IllegalArgumentException" type="java.lang.IllegalArgumentException">
+</exception>
+<exception name="IllegalStateException" type="java.lang.IllegalStateException">
+</exception>
+</method>
+<method name="setAudioEncodeProfile"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="profile" type="int">
+</parameter>
+</method>
+<method name="setAudioKBitrate"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="kBitrate" type="int">
+</parameter>
+<exception name="IllegalArgumentException" type="java.lang.IllegalArgumentException">
+</exception>
+</method>
+<method name="setAudioParams"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+</method>
+<method name="setAudioSampleRate"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="sampleRate" type="int">
+</parameter>
+<exception name="IllegalArgumentException" type="java.lang.IllegalArgumentException">
+</exception>
+</method>
+<method name="setAudioVolume"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="idx" type="int">
+</parameter>
+<parameter name="leftVolume" type="float">
+</parameter>
+<parameter name="rightVolume" type="float">
+</parameter>
+</method>
+<method name="setDecodeMethod"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="decodeMethod" type="int">
+</parameter>
+<exception name="IllegalArgumentException" type="java.lang.IllegalArgumentException">
+</exception>
+<exception name="IllegalStateException" type="java.lang.IllegalStateException">
+</exception>
+</method>
+<method name="setEncodeMethod"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="encodeMethod" type="int">
+</parameter>
+<exception name="IllegalArgumentException" type="java.lang.IllegalArgumentException">
+</exception>
+<exception name="IllegalStateException" type="java.lang.IllegalStateException">
+</exception>
+</method>
+<method name="setIFrameInterval"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="interval" type="float">
+</parameter>
+</method>
+<method name="setOnBaseErrorListener"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="onErrorListener" type="com.ksyun.media.shortvideo.kit.MultiComposeBase.OnErrorListener">
+</parameter>
+</method>
+<method name="setOnBaseInfoListener"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="onInfoListener" type="com.ksyun.media.shortvideo.kit.MultiComposeBase.OnInfoListener">
+</parameter>
+</method>
+<method name="setScaleMode"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="scaleMode" type="int">
+</parameter>
+</method>
+<method name="setTargetResolution"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="width" type="int">
+</parameter>
+<parameter name="height" type="int">
+</parameter>
+<exception name="IllegalArgumentException" type="java.lang.IllegalArgumentException">
+</exception>
+</method>
+<method name="setVideoBitrate"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="bitrate" type="int">
+</parameter>
+<exception name="IllegalArgumentException" type="java.lang.IllegalArgumentException">
+</exception>
+</method>
+<method name="setVideoCodecId"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="codecId" type="int">
+</parameter>
+<exception name="IllegalArgumentException" type="java.lang.IllegalArgumentException">
+</exception>
+</method>
+<method name="setVideoCrf"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="crf" type="int">
+</parameter>
+</method>
+<method name="setVideoDecodeMethod"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="decodeMethod" type="int">
+</parameter>
+<exception name="IllegalArgumentException" type="java.lang.IllegalArgumentException">
+</exception>
+<exception name="IllegalStateException" type="java.lang.IllegalStateException">
+</exception>
+</method>
+<method name="setVideoEncodeMethod"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="encodeMethod" type="int">
+</parameter>
+<exception name="IllegalArgumentException" type="java.lang.IllegalArgumentException">
+</exception>
+<exception name="IllegalStateException" type="java.lang.IllegalStateException">
+</exception>
+</method>
+<method name="setVideoEncodeProfile"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="profile" type="int">
+</parameter>
+</method>
+<method name="setVideoFps"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="fps" type="float">
+</parameter>
+</method>
+<method name="setVideoKBitrate"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="kBitrate" type="int">
+</parameter>
+<exception name="IllegalArgumentException" type="java.lang.IllegalArgumentException">
+</exception>
+</method>
+<method name="startCompose"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+<parameter name="desUrl" type="java.lang.String">
+</parameter>
+<parameter name="checkAuthFeature" type="int">
+</parameter>
+</method>
+<method name="stopCompose"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+</method>
+<field name="DEFAULT_IFRAME_INTERVAL"
+ type="float"
+ transient="false"
+ volatile="false"
+ value="1.0f"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="DEFAULT_VIDEO_BIRATERATE"
+ type="int"
+ transient="false"
+ volatile="false"
+ value="4000000"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="mAudioChannels"
+ type="int"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+</field>
+<field name="mAudioDecodeMethod"
+ type="int"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+</field>
+<field name="mAudioMixer"
+ type="AudioMixer"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+</field>
+<field name="mAudioPtsFilter"
+ type="com.ksyun.media.shortvideo.transition.PTSFilter"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+</field>
+<field name="mContext"
+ type="Context"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+</field>
+<field name="mCount"
+ type="int"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+</field>
+<field name="mFilePublisherListener"
+ type="FilePublisher.PubListener"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="mGLRender"
+ type="GLRender"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+</field>
+<field name="mImgTexFilterMgt"
+ type="ImgTexFilterMgt"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+</field>
+<field name="mImgTexMixer"
+ type="ImgTexMixer"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+</field>
+<field name="mInit"
+ type="boolean"
+ transient="false"
+ volatile="true"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+</field>
+<field name="mMainHandler"
+ type="Handler"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+</field>
+<field name="mMediaContexts"
+ type="java.util.List"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+</field>
+<field name="mScaleMode"
+ type="int"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+</field>
+<field name="mStopped"
+ type="boolean"
+ transient="false"
+ volatile="true"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+</field>
+<field name="mVideoDecodeMethod"
+ type="int"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+</field>
+<field name="mVideoPtsFilter"
+ type="com.ksyun.media.shortvideo.transition.PTSFilter"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+</field>
+</class>
+<class name="MultiComposeBase.MediaContext"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="MediaContext"
+ type="com.ksyun.media.shortvideo.kit.MultiComposeBase.MediaContext"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="glRender" type="GLRender">
+</parameter>
+</constructor>
+<method name="getAudioSrcPin"
+ return="&lt;any&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getSrcUrl"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getVideoFormat"
+ return="ImgTexFormat"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getVideoSrcPin"
+ return="&lt;any&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="setSrcUrl"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="url" type="java.lang.String">
+</parameter>
+</method>
+<field name="mAudioResampleFilter"
+ type="AudioResampleFilter"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+</field>
+<field name="mDecoderCapture"
+ type="com.ksyun.media.shortvideo.capture.AVDecoderCapture"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+</field>
+<field name="mImgTexScaleFilter"
+ type="ImgTexScaleFilter"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+</field>
+</class>
+<interface name="MultiComposeBase.OnErrorListener"
+ abstract="true"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="onError"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="type" type="int">
+</parameter>
+<parameter name="msg" type="long">
+</parameter>
+</method>
+</interface>
+<interface name="MultiComposeBase.OnInfoListener"
+ abstract="true"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="onInfo"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
 <parameter name="type" type="int">
 </parameter>
 <parameter name="msg" type="java.lang.String">
@@ -8806,6 +10555,8 @@
  deprecated="not deprecated"
  visibility="public"
 >
+<parameter name="glRender" type="GLRender">
+</parameter>
 </constructor>
 <method name="getAudioSinkPin"
  return="&lt;any&gt;"
@@ -9089,16 +10840,6 @@
  visibility="public"
 >
 </field>
-<field name="FEA_EDIT_SCALE"
- type="int"
- transient="false"
- volatile="false"
- static="true"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</field>
 <field name="FEA_EDIT_TEXT_BITMAP_STICKER"
  type="int"
  transient="false"
@@ -9111,6 +10852,16 @@
 </field>
 <field name="FEA_FAILED_LOG"
  type="java.lang.String"
+ transient="false"
+ volatile="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="FEA_MULTI_CANVAS"
+ type="int"
  transient="false"
  volatile="false"
  static="true"
@@ -9679,7 +11430,7 @@
  type="java.lang.String"
  transient="false"
  volatile="false"
- value="&quot;2.0.0.2&quot;"
+ value="&quot;2.1.0.2&quot;"
  static="true"
  final="true"
  deprecated="not deprecated"

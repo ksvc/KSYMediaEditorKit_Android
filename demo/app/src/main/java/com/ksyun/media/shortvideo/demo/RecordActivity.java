@@ -514,6 +514,10 @@ public class RecordActivity extends Activity implements
             mMainHandler = null;
         }
 
+        if (mAnimatorSet != null) {
+            mAnimatorSet.cancel();
+        }
+
         mBgmAdapter.setOnItemClickListener(null);
         mBgmAdapter.clearTask();
         stopBgm();
@@ -528,9 +532,6 @@ public class RecordActivity extends Activity implements
         if (mKMCInitThread != null) {
             mKMCInitThread.interrupt();
             mKMCInitThread = null;
-        }
-        if (mAnimatorSet != null) {
-            mAnimatorSet.cancel();
         }
 
         KMCAuthManager.getInstance().release();
@@ -580,7 +581,9 @@ public class RecordActivity extends Activity implements
             @Override
             public void onAnimationEnd(Animator animation) {
                 mCountDownImage.setVisibility(View.GONE);
-                startRecord();
+                if(!RecordActivity.this.isFinishing()) {
+                    startRecord();
+                }
             }
 
             @Override
@@ -978,11 +981,10 @@ public class RecordActivity extends Activity implements
      * 进入编辑页面
      */
     private void onNextClick() {
-        clearBackoff();
-        clearRecordState();
-        mRecordView.getDrawable().setLevel(1);
         //进行编辑前需要停止录制，并且结束断点拍摄
         stopRecord(true);
+        clearBackoff();
+        clearRecordState();
     }
 
     private VerticalSeekBar.OnSeekBarChangeListener getVerticalSeekListener() {
@@ -1599,7 +1601,6 @@ public class RecordActivity extends Activity implements
         onMVCancel();
         stopBgm();
         clearKMC();
-        mKSYRecordKit.getImgTexFilterMgt().setFilter((ImgFilterBase) null);
         mImgBeautyTypeIndex = BEAUTY_DISABLE;
         mEffectFilterIndex = FILTER_DISABLE;
         mFilterOriginImage.callOnClick();
