@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.ksyun.media.shortvideo.kit.KSYRemuxKit;
 import com.ksyun.media.streamer.encoder.VideoEncodeFormat;
 import com.ksyun.media.streamer.framework.AVConst;
+import com.ksyun.media.streamer.framework.VideoCodecFormat;
 import com.ksyun.media.streamer.kit.StreamerConstants;
 
 import java.util.ArrayList;
@@ -63,8 +64,8 @@ public class ConfigActivity extends Activity {
 
     private static final int[] RECORD_PROFILE_ID = {R.id.record_config_low_power,
             R.id.record_config_balance, R.id.record_config_high_performance};
-    private static final int[] ENCODE_PROFILE_TYPE = {VideoEncodeFormat.ENCODE_PROFILE_LOW_POWER,
-            VideoEncodeFormat.ENCODE_PROFILE_BALANCE, VideoEncodeFormat.ENCODE_PROFILE_HIGH_PERFORMANCE};
+    private static final int[] ENCODE_PROFILE_TYPE = {VideoCodecFormat.ENCODE_PROFILE_LOW_POWER,
+            VideoCodecFormat.ENCODE_PROFILE_BALANCE, VideoCodecFormat.ENCODE_PROFILE_HIGH_PERFORMANCE};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -7,8 +7,8 @@ android {
         applicationId "com.ksyun.media.shortvideo.multicanvasdemo"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 210
-        versionName "2.1.0.2"
+        versionCode 220
+        versionName "2.2.0.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
@@ -35,8 +35,8 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:27.0.1'
     implementation 'com.tencent.bugly:crashreport:latest.release'
     implementation 'com.tencent.bugly:nativecrashreport:latest.release'
-    compile 'com.ksyun.media:libksysv-java:2.1.0'
-    compile 'com.ksyun.media:libksysv-arm64:2.1.0'
-    compile 'com.ksyun.media:libksysv-armv7a:2.1.0'
-    compile 'com.ksyun.media:libksysv-x86:2.1.0'
+    compile 'com.ksyun.media:libksysv-java:2.2.0'
+    compile 'com.ksyun.media:libksysv-arm64:2.2.0'
+    compile 'com.ksyun.media:libksysv-armv7a:2.2.0'
+    compile 'com.ksyun.media:libksysv-x86:2.2.0'
 }

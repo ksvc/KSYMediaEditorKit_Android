@@ -26,8 +26,6 @@ import com.ksyun.media.streamer.filter.imgtex.ImgBeautySoftFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgBeautySpecialEffectsFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgBeautyStylizeFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgFilterBase;
-import com.ksyun.media.streamer.filter.imgtex.ImgTexFilter;
-import com.ksyun.media.streamer.filter.imgtex.ImgTexFilterBase;
 import com.ksyun.media.streamer.kit.KSYStreamer;
 import com.ksyun.media.streamer.kit.StreamerConstants;
 import com.ksyun.media.streamer.logstats.StatsLogReport;
@@ -464,6 +462,9 @@ public class RecordActivity extends Activity implements
         mKSYRecordKit.setOnInfoListener(mOnInfoListener);
         mKSYRecordKit.setOnErrorListener(mOnErrorListener);
         mKSYRecordKit.setOnLogEventListener(mOnLogEventListener);
+        //设置是否混音，即如果添加了背景音乐，将背景音乐的声音mix到音频文件中
+        mKSYRecordKit.setEnableAudioMix(true);
+
         initBeautyUI(); //初始化美颜界面
         initStickerUI();  //初始化动态贴纸界面
         initFilterUI();  //初始化滤镜界面
@@ -1169,7 +1170,7 @@ public class RecordActivity extends Activity implements
                 ImgFilterBase lastFilter = mBeautyFilters.get
                         (mLastImgBeautyTypeIndex);
                 if (mKSYRecordKit.getImgTexFilterMgt().getFilter().contains(lastFilter)) {
-                    mKSYRecordKit.getImgTexFilterMgt().replaceFilter(lastFilter, null);
+                    mKSYRecordKit.getImgTexFilterMgt().replaceFilter(lastFilter, null, false);
                 }
             }
             mLastImgBeautyTypeIndex = mImgBeautyTypeIndex;
@@ -1182,7 +1183,7 @@ public class RecordActivity extends Activity implements
             if (mBeautyFilters.containsKey(mLastImgBeautyTypeIndex)) {
                 ImgFilterBase lastFilter = mBeautyFilters.get(mLastImgBeautyTypeIndex);
                 if (mKSYRecordKit.getImgTexFilterMgt().getFilter().contains(lastFilter)) {
-                    mKSYRecordKit.getImgTexFilterMgt().replaceFilter(lastFilter, filterBase);
+                    mKSYRecordKit.getImgTexFilterMgt().replaceFilter(lastFilter, filterBase, false);
                 }
             } else {
                 if (!mKSYRecordKit.getImgTexFilterMgt().getFilter().contains(filterBase)) {
@@ -1239,7 +1240,7 @@ public class RecordActivity extends Activity implements
             mBeautyFilters.put(mImgBeautyTypeIndex, filterBase);
             if (lastFilter != null && mKSYRecordKit.getImgTexFilterMgt().getFilter().contains
                     (lastFilter)) {
-                mKSYRecordKit.getImgTexFilterMgt().replaceFilter(lastFilter, filterBase);
+                mKSYRecordKit.getImgTexFilterMgt().replaceFilter(lastFilter, filterBase, false);
             } else {
                 mKSYRecordKit.getImgTexFilterMgt().addFilter(filterBase);
             }
@@ -1260,7 +1261,7 @@ public class RecordActivity extends Activity implements
             if (mEffectFilters.containsKey(mLastEffectFilterIndex)) {
                 ImgFilterBase lastFilter = mEffectFilters.get(mLastEffectFilterIndex);
                 if (mKSYRecordKit.getImgTexFilterMgt().getFilter().contains(lastFilter)) {
-                    mKSYRecordKit.getImgTexFilterMgt().replaceFilter(lastFilter, null);
+                    mKSYRecordKit.getImgTexFilterMgt().replaceFilter(lastFilter, null, false);
                 }
             }
             mLastEffectFilterIndex = mEffectFilterIndex;
@@ -1271,7 +1272,7 @@ public class RecordActivity extends Activity implements
             if (mEffectFilters.containsKey(mLastEffectFilterIndex)) {
                 ImgFilterBase lastfilter = mEffectFilters.get(mLastEffectFilterIndex);
                 if (mKSYRecordKit.getImgTexFilterMgt().getFilter().contains(lastfilter)) {
-                    mKSYRecordKit.getImgTexFilterMgt().replaceFilter(lastfilter, filter);
+                    mKSYRecordKit.getImgTexFilterMgt().replaceFilter(lastfilter, filter, false);
                 }
             } else {
                 if (!mKSYRecordKit.getImgTexFilterMgt().getFilter().contains(filter)) {
@@ -1295,7 +1296,7 @@ public class RecordActivity extends Activity implements
             }
             if (lastFilter != null && mKSYRecordKit.getImgTexFilterMgt().getFilter().contains
                     (lastFilter)) {
-                mKSYRecordKit.getImgTexFilterMgt().replaceFilter(lastFilter, filter);
+                mKSYRecordKit.getImgTexFilterMgt().replaceFilter(lastFilter, filter, false);
             } else {
                 mKSYRecordKit.getImgTexFilterMgt().addFilter(filter);
             }
@@ -2503,7 +2504,7 @@ public class RecordActivity extends Activity implements
             if (mKMCFilter == null) {
                 mKMCFilter = new KMCFilter(getApplicationContext(),
                         mKSYRecordKit.getGLRender());
-                mKSYRecordKit.getImgTexFilterMgt().setExtraFilter(mKMCFilter);
+                mKSYRecordKit.getImgTexFilterMgt().addFilter(mKMCFilter);
             }
 
             mKMCFilter.startShowingMaterial(mMaterial);

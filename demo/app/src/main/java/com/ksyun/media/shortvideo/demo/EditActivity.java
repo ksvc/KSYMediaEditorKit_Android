@@ -6,6 +6,7 @@ import com.ksyun.media.shortvideo.demo.adapter.BottomTitleAdapter;
 import com.ksyun.media.shortvideo.demo.adapter.ImageTextAdapter;
 import com.ksyun.media.shortvideo.demo.adapter.SoundEffectAdapter;
 import com.ksyun.media.shortvideo.demo.audiorange.AudioSeekLayout;
+import com.ksyun.media.shortvideo.demo.filter.ImgTexGPUImageFilter;
 import com.ksyun.media.shortvideo.demo.paint.PaintMenu;
 import com.ksyun.media.shortvideo.demo.sticker.ColorPicker;
 import com.ksyun.media.shortvideo.demo.sticker.StickerAdapter;
@@ -17,7 +18,10 @@ import com.ksyun.media.shortvideo.demo.videorange.HorizontalListView;
 import com.ksyun.media.shortvideo.demo.videorange.VideoRangeSeekBar;
 import com.ksyun.media.shortvideo.demo.videorange.VideoThumbnailAdapter;
 import com.ksyun.media.shortvideo.demo.videorange.VideoThumbnailInfo;
+import com.ksyun.media.shortvideo.demo.view.FilterEffectsView;
 import com.ksyun.media.shortvideo.demo.view.SectionSeekLayout;
+import com.ksyun.media.shortvideo.timereffect.TimerEffectFilter;
+import com.ksyun.media.shortvideo.timereffect.TimerEffectInfo;
 import com.ksyun.media.shortvideo.utils.FileUtils;
 import com.ksyun.media.shortvideo.kit.KSYEditKit;
 import com.ksyun.media.shortvideo.utils.ShortVideoConstants;
@@ -25,7 +29,6 @@ import com.ksyun.media.shortvideo.sticker.KSYStickerView;
 import com.ksyun.media.shortvideo.sticker.StickerHelpBoxInfo;
 import com.ksyun.media.shortvideo.sticker.DrawTextParams;
 import com.ksyun.media.shortvideo.sticker.KSYStickerInfo;
-import com.ksyun.media.streamer.encoder.VideoEncodeFormat;
 import com.ksyun.media.streamer.filter.audio.AudioFilterBase;
 import com.ksyun.media.streamer.filter.audio.AudioReverbFilter;
 import com.ksyun.media.streamer.filter.audio.KSYAudioEffectFilter;
@@ -34,9 +37,13 @@ import com.ksyun.media.streamer.filter.imgtex.ImgBeautySoftFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgBeautySpecialEffectsFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgBeautyStylizeFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgFilterBase;
+import com.ksyun.media.streamer.filter.imgtex.ImgShakeColorFilter;
+import com.ksyun.media.streamer.filter.imgtex.ImgShakeShockWaveFilter;
+import com.ksyun.media.streamer.filter.imgtex.ImgShakeZoomFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgTexFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgTexFilterBase;
 import com.ksyun.media.streamer.framework.AVConst;
+import com.ksyun.media.streamer.framework.VideoCodecFormat;
 import com.ksyun.media.streamer.kit.StreamerConstants;
 import com.lht.paintview.PaintView;
 
@@ -88,10 +95,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import jp.co.cyberagent.android.gpuimage.GPUImageSobelEdgeDetection;
 
 /**
  * 编辑合成示例窗口
@@ -116,17 +127,19 @@ public class EditActivity extends Activity implements
 
     private static final int BEAUTY_LAYOUT_INDEX = 0;
     private static final int FILTER_LAYOUT_INDEX = 1;
-    private static final int WATER_MARK_INDEX = 2;
-    private static final int SPEED_LAYOUT_INDEX = 3;
-    private static final int VIDEO_RANGE_INDEX = 4;
-    private static final int VIDEO_SCALE_INDEX = 5;
-    private static final int MUSIC_LAYOUT_INDEX = 6;
-    private static final int SOUND_CHANGE_INDEX = 7;
-    private static final int REVERB_LAYOUT_INDEX = 8;
-    private static final int PAINT_MENU_LAYOUT_INDEX = 9;
-    private static final int ANIMATED_STICKER_LAYOUT_INDEX = 10;
-    private static final int STICKER_LAYOUT_INDEX = 11;
-    private static final int SUBTITLE_LAYOUT_INDEX = 12;
+    private static final int FILTER_EFFECTS_INDEX = 2;
+    private static final int WATER_MARK_INDEX = 3;
+    private static final int SPEED_LAYOUT_INDEX = 4;
+    private static final int VIDEO_RANGE_INDEX = 5;
+    private static final int VIDEO_SCALE_INDEX = 6;
+    private static final int MUSIC_LAYOUT_INDEX = 7;
+    private static final int SOUND_CHANGE_INDEX = 8;
+    private static final int REVERB_LAYOUT_INDEX = 9;
+    private static final int PAINT_MENU_LAYOUT_INDEX = 10;
+    private static final int ANIMATED_STICKER_LAYOUT_INDEX = 11;
+    private static final int STICKER_LAYOUT_INDEX = 12;
+    private static final int SUBTITLE_LAYOUT_INDEX = 13;
+
 
     private RelativeLayout mPreviewLayout;
     private GLSurfaceView mEditPreviewView;
@@ -200,6 +213,7 @@ public class EditActivity extends Activity implements
     private ImageView mTextColorSelect; //字幕贴纸颜色选择按钮
     private ColorPicker mColorPicker;  //字幕贴纸字体颜色选择器
     private InputMethodManager mInputMethodManager;  //输入
+    private FilterEffectsView mEffectsView;
 
     private SectionSeekLayout mSectionView;  //片段编辑UI
     private Timer mPreviewRefreshTimer;
@@ -245,6 +259,10 @@ public class EditActivity extends Activity implements
     private KSYEditKit mEditKit; //编辑合成kit类
     private int mImgBeautyTypeIndex = BEAUTY_DISABLE;  //美颜type
     private int mEffectFilterIndex = FILTER_DISABLE;  //滤镜filter type
+    private int mLastImgBeautyTypeIndex = BEAUTY_DISABLE;  //美颜type
+    private int mLastEffectFilterIndex = FILTER_DISABLE;  //滤镜filter type
+    private Map<Integer, ImgFilterBase> mBeautyFilters;
+    private Map<Integer, ImgFilterBase> mEffectFilters;
 
     private boolean mComposeFinished = false;
     /*******编辑后合成参数配置示例******/
@@ -271,8 +289,8 @@ public class EditActivity extends Activity implements
     private DownloadAndHandleTask mTailLoadTask;
     private static final int[] OUTPUT_PROFILE_ID = {R.id.output_config_low_power,
             R.id.output_config_balance, R.id.output_config_high_performance};
-    private static final int[] ENCODE_PROFILE_TYPE = {VideoEncodeFormat.ENCODE_PROFILE_LOW_POWER,
-            VideoEncodeFormat.ENCODE_PROFILE_BALANCE, VideoEncodeFormat.ENCODE_PROFILE_HIGH_PERFORMANCE};
+    private static final int[] ENCODE_PROFILE_TYPE = {VideoCodecFormat.ENCODE_PROFILE_LOW_POWER,
+            VideoCodecFormat.ENCODE_PROFILE_BALANCE, VideoCodecFormat.ENCODE_PROFILE_HIGH_PERFORMANCE};
     private static final int[] AUDIO_OUTPUT_PROFILE_ID = {R.id.output_config_aac_lc,
             R.id.output_config_aac_he, R.id.output_config_aac_he_v2};
     private static final int[] AUDIO_ENCODE_PROFILE = {AVConst.PROFILE_AAC_LOW, AVConst.PROFILE_AAC_HE,
@@ -392,7 +410,70 @@ public class EditActivity extends Activity implements
         mPaintMenuLayout = findViewById(R.id.paint_menu_choose);
         mBottomViewList[PAINT_MENU_LAYOUT_INDEX] = mPaintMenuLayout;
 
-        mPaintView = (PaintView) findViewById(R.id.edit_paint_view);
+        mEffectsView = findViewById(R.id.edit_filter_effects);
+        mBottomViewList[FILTER_EFFECTS_INDEX] = mEffectsView;
+
+        mEffectsView.setOnEffectsChangeListener(new FilterEffectsView.OnEffectsChangeListener() {
+            @Override
+            public int onAddFilterStart(int type) {
+                ImgFilterBase filterBase = null;
+                switch (type) {
+                    case 0:
+                        filterBase = new ImgShakeZoomFilter(mEditKit.getGLRender());
+                        break;
+                    case 1:
+                        filterBase = new ImgShakeColorFilter(mEditKit.getGLRender());
+                        break;
+                    case 2:
+                        filterBase = new ImgShakeShockWaveFilter(mEditKit.getGLRender());
+                        break;
+                    case 3:
+                        filterBase = new ImgBeautySpecialEffectsFilter(mEditKit.getGLRender(), EditActivity.this,
+                                ImgBeautySpecialEffectsFilter.KSY_SPECIAL_EFFECT_LIGHTING);
+                        break;
+                    case 4:
+                        GPUImageSobelEdgeDetection sobelEdgeDetection = new GPUImageSobelEdgeDetection();
+                        filterBase = new ImgTexGPUImageFilter(mEditKit.getGLRender(), sobelEdgeDetection);
+                        break;
+                    default:
+                        break;
+                }
+                TimerEffectInfo effectInfo = new TimerEffectInfo(mEditKit.getEditPreviewCurrentPosition(),
+                        mEditPreviewDuration, new TimerEffectFilter(filterBase));
+
+                int filterId = mEditKit.addTimerEffectFilter(effectInfo);
+                return filterId;
+            }
+
+            @Override
+            public void onUpdateFilter(int index) {
+                resumePreview();
+            }
+
+            @Override
+            public void onAddFilterEnd(int index, long position) {
+                //pause
+                pausePreview();
+                mEditKit.updateTimerEffectEndTime(index, position);
+            }
+
+            @Override
+            public void onDelete(int index) {
+                mEditKit.removeTimerEffectFilter(index);
+                //pause
+                pausePreview();
+            }
+
+            @Override
+            public void onProgressChanged(long position) {
+                mEditKit.seekTo(position);
+                mEffectsView.setProgress(mEditKit.getMediaPlayer().getCurrentPosition());
+
+                mSectionView.scrollAuto(position);
+            }
+        });
+
+        mPaintView = findViewById(R.id.edit_paint_view);
         mPaintView.setBgColor(Color.TRANSPARENT);
         mPaintView.setPaintEnable(false);
         mIsPainting = false;
@@ -473,6 +554,7 @@ public class EditActivity extends Activity implements
         mEditKit.setOnInfoListener(mOnInfoListener);
         //添加贴纸View到SDK
         mEditKit.addStickerView(mKSYStickerView);
+        mEditKit.setTimerEffectOverlying(false);
 
         mSpeedInfo.setText(String.valueOf(mEditKit.getNomalSpeed()));
         Bundle bundle = getIntent().getExtras();
@@ -480,6 +562,7 @@ public class EditActivity extends Activity implements
         if (!TextUtils.isEmpty(url)) {
             mEditKit.setEditPreviewUrl(url);
         }
+        mEditKit.setTimerEffectOverlying(false);
 
         initTitleRecycleView();
         initBeautyUI();
@@ -886,6 +969,9 @@ public class EditActivity extends Activity implements
             public void onSeekTo(long time) {
                 mEditKit.seekTo(time);
                 mEditKit.updateStickerDraw();
+                if (mEffectsView.getVisibility() == View.VISIBLE) {
+                    mEffectsView.setProgress(mEditKit.getMediaPlayer().getCurrentPosition());
+                }
             }
         });
 
@@ -983,12 +1069,12 @@ public class EditActivity extends Activity implements
 
             info.startTime = Long.MIN_VALUE;
             info.duration = mEditKit.getEditDuration();
-            info.animateUrl = urlInfo.toString();
+            info.animateUrl = "http://media.mustage.net/upload/image/stickers/gif/dynamic_image3.gif";//urlInfo.toString();
             info.stickerType = KSYStickerInfo.STICKER_TYPE_IMAGE_ANIMATE; //是否是字幕贴纸
             //添加一个贴纸
 
             int index = mKSYStickerView.addSticker(info, mStickerHelpBoxInfo);
-            if(index >= 0) {
+            if (index >= 0) {
                 //进入贴纸编辑状态，需要先暂停预览播放
                 pausePreview();
                 // 选择下一个贴纸时让前一个贴纸生效（如果之前已选择一个贴纸）
@@ -1022,7 +1108,7 @@ public class EditActivity extends Activity implements
             info.stickerType = KSYStickerInfo.STICKER_TYPE_IMAGE; //是否是字幕贴纸
             //添加一个贴纸
             int index = mKSYStickerView.addSticker(info, mStickerHelpBoxInfo);
-            if(index >= 0) {
+            if (index >= 0) {
                 //进入贴纸编辑状态，需要先暂停预览播放
                 pausePreview();
                 // 选择下一个贴纸时让前一个贴纸生效（如果之前已选择一个贴纸）
@@ -1113,7 +1199,7 @@ public class EditActivity extends Activity implements
 
             int index = mKSYStickerView.addSticker(params, mStickerHelpBoxInfo);
 
-            if(index >= 0) {
+            if (index >= 0) {
                 //进入贴纸编辑状态，需要先暂停预览播放
                 pausePreview();
                 // 选择下一个贴纸时让前一个贴纸生效（如果之前已选择一个贴纸）
@@ -1136,6 +1222,17 @@ public class EditActivity extends Activity implements
             mEditKit.pausePlay(true);
             mPauseView.getDrawable().setLevel(1);
             stopPreviewTimerTask();
+        }
+    }
+
+    private void resumePreview() {
+        if (mPauseView.getDrawable().getLevel() != 2) {
+            mEditKit.pausePlay(false);
+            mPauseView.getDrawable().setLevel(2);
+            mSectionView.calculateRange();
+            startPreviewTimerTask();
+            //恢复播放的时候，需要调用setDrawHelpTool隐藏当前编辑态的贴纸的辅助绘制区域
+            mKSYStickerView.setDrawHelpTool(false);
         }
     }
 
@@ -1217,16 +1314,9 @@ public class EditActivity extends Activity implements
 
     private void onPauseClick() {
         if (mPauseView.getDrawable().getLevel() == 2) {
-            mEditKit.pausePlay(true);
-            mPauseView.getDrawable().setLevel(1);
-            stopPreviewTimerTask();
+            pausePreview();
         } else {
-            mEditKit.pausePlay(false);
-            mPauseView.getDrawable().setLevel(2);
-            mSectionView.calculateRange();
-            startPreviewTimerTask();
-            //恢复播放的时候，需要调用setDrawHelpTool隐藏当前编辑态的贴纸的辅助绘制区域
-            mKSYStickerView.setDrawHelpTool(false);
+            resumePreview();
         }
     }
 
@@ -1459,7 +1549,7 @@ public class EditActivity extends Activity implements
 
     private KSYEditKit.OnInfoListener mOnInfoListener = new KSYEditKit.OnInfoListener() {
         @Override
-        public Object onInfo(int type, String... msgs) {
+        public void onInfo(int type, String... msgs) {
             switch (type) {
                 case ShortVideoConstants.SHORTVIDEO_EDIT_PREPARED:
                     Log.d(TAG, "preview player prepared");
@@ -1469,20 +1559,26 @@ public class EditActivity extends Activity implements
                     initThumbnailAdapter();
                     // 启动预览后，开始片段编辑UI初始化
                     mSectionView.init(mEditPreviewDuration, mEditKit);
+                    mEffectsView.initView(mEditPreviewDuration, mEditKit);
                     startPreviewTimerTask();
+                    break;
+                case ShortVideoConstants.SHORTVIDEO_EDIT_PREVIEW_ONE_LOOP_END:
+                    if(mEffectsView.getVisibility() == View.VISIBLE) {
+                        mEffectsView.setProgress(mEditKit.getEditDuration());
+                    }
                     break;
                 case ShortVideoConstants.SHORTVIDEO_COMPOSE_START: {
                     Log.d(TAG, "compose started");
+                    //合成开始null，再次预览时重新创建
+                    clearImgFilter();
                     mEditKit.pauseEditPreview();
                     if (mComposeDialog != null && mComposeDialog.isShowing()) {
                         mComposeDialog.composeStarted();
                     }
-                    return null;
+                    break;
                 }
                 case ShortVideoConstants.SHORTVIDEO_COMPOSE_FINISHED: {
                     Log.d(TAG, "compose finished");
-                    //合成结束需要置为null，再次预览时重新创建
-                    clearImgFilter();
                     if (mComposeDialog != null && mComposeDialog.isShowing()) {
                         mComposeDialog.composeFinished(msgs[0]);
                     }
@@ -1502,7 +1598,7 @@ public class EditActivity extends Activity implements
 //                    });
 //                    //get thumbnail for first frame
 //                    probeMediaInfoTools.getVideoThumbnailAtTime(msgs[0],0,0,0);
-                    return null;
+                    break;
                 }
                 case ShortVideoConstants.SHORTVIDEO_COMPOSE_ABORTED:
                     Log.d(TAG, "compose aborted by user");
@@ -1516,9 +1612,9 @@ public class EditActivity extends Activity implements
                 case ShortVideoConstants.SHORTVIDEO_COMPOSE_TITLE_STARTED:
                     Log.d(TAG, "title video compose started");
                 default:
-                    return null;
+                    break;
             }
-            return null;
+            return;
         }
     };
 
@@ -1553,6 +1649,9 @@ public class EditActivity extends Activity implements
             public void run() {
                 long curTime = mEditKit.getEditPreviewCurrentPosition();
                 mSectionView.scrollAuto(curTime);
+                if (mEffectsView.getVisibility() == View.VISIBLE) {
+                    mEffectsView.setProgress(curTime);
+                }
             }
         });
     }
@@ -1596,7 +1695,7 @@ public class EditActivity extends Activity implements
                     mOutEncodeByHW.setActivated(true);
                     mOutEncodeBySW.setActivated(false);
                     mOutVideoCRF.setEnabled(false);
-                    if(Integer.parseInt(mOutVideoBitrate.getText().toString()) == 0) {
+                    if (Integer.parseInt(mOutVideoBitrate.getText().toString()) == 0) {
                         mOutVideoBitrate.setText(String.valueOf(2000));
                     }
                     break;
@@ -2006,7 +2105,7 @@ public class EditActivity extends Activity implements
     private void initTitleRecycleView() {
         View pitchLayout = findViewById(R.id.bgm_pitch);
         pitchLayout.setVisibility(View.GONE);
-        String[] items = {"美颜", "滤镜", "水印", "变速", "时长裁剪", "画布裁剪", "音乐", "变声", "混响",
+        String[] items = {"美颜", "滤镜", "滤镜特效", "水印", "变速", "时长裁剪", "画布裁剪", "音乐", "变声", "混响",
                 "涂鸦", "动态贴纸", "贴纸", "字幕"};
         mTitleData = Arrays.asList(items);
         mTitleView = (RecyclerView) findViewById(R.id.edit_title_recyclerView);
@@ -2017,30 +2116,39 @@ public class EditActivity extends Activity implements
                 mBottomViewPreIndex = curIndex;
                 if (curIndex != WATER_MARK_INDEX) {
                     mBottomViewList[curIndex].setVisibility(View.VISIBLE);
+                    if (curIndex == FILTER_EFFECTS_INDEX) {
+                        //暂停播放
+                        pausePreview();
+                        //更新进度条位置
+                        mEffectsView.setProgress(mEditKit.getEditPreviewCurrentPosition());
+                    } else {
+
+                    }
+                    //贴纸相关需要显示贴纸的预览view
                     if (curIndex >= ANIMATED_STICKER_LAYOUT_INDEX && curIndex <=
                             SUBTITLE_LAYOUT_INDEX && mKSYStickerView.getVisibility() != View.VISIBLE) {
                         mKSYStickerView.setVisibility(View.VISIBLE);
                     }
 
                     if (curIndex == PAINT_MENU_LAYOUT_INDEX) {
-                        if(mPaintView.getVisibility() != View.VISIBLE) {
+                        if (mPaintView.getVisibility() != View.VISIBLE) {
                             mPaintView.setVisibility(View.VISIBLE);
                         }
                         mPaintView.setPaintEnable(true);
                         mIsPainting = true;
                     }
 
-                    if(curIndex == VIDEO_SCALE_INDEX ||
+                    if (curIndex == VIDEO_SCALE_INDEX ||
                             curIndex >= ANIMATED_STICKER_LAYOUT_INDEX && curIndex <=
                                     SUBTITLE_LAYOUT_INDEX) {
                         //裁剪和贴纸模式时需要隐藏涂鸦，否则接收不到touch时间，
                         //PaintView的bug，已经提issues：https://github.com/LiuHongtao/PaintView/issues/4
-                        if(mPaintView.getVisibility() == View.VISIBLE) {
+                        if (mPaintView.getVisibility() == View.VISIBLE) {
                             mPaintView.setVisibility(View.GONE);
                         }
                         Toast.makeText(EditActivity.this, "暂时隐藏涂鸦", Toast.LENGTH_SHORT).show();
                     } else {
-                        if(mPaintView.getVisibility() != View.VISIBLE) {
+                        if (mPaintView.getVisibility() != View.VISIBLE) {
                             mPaintView.setVisibility(View.VISIBLE);
                         }
                     }
@@ -2062,7 +2170,7 @@ public class EditActivity extends Activity implements
                     }
                 }
                 if ((preIndex == STICKER_LAYOUT_INDEX || preIndex == SUBTITLE_LAYOUT_INDEX ||
-                        preIndex == ANIMATED_STICKER_LAYOUT_INDEX)) {
+                        preIndex == ANIMATED_STICKER_LAYOUT_INDEX) || preIndex == FILTER_EFFECTS_INDEX) {
                     if (mSectionView.isSeeking()) {
                         mSectionView.calculateRange();
                     }
@@ -2083,68 +2191,175 @@ public class EditActivity extends Activity implements
     private void clearImgFilter() {
         mImgBeautyTypeIndex = BEAUTY_DISABLE;
         mEffectFilterIndex = FILTER_DISABLE;
+        if(mBeautyFilters != null) {
+            mBeautyFilters.clear();
+        }
+        if(mEffectFilters != null) {
+            mEffectFilters.clear();
+        }
     }
 
-    private void addImgFilter() {
-        ImgBeautyProFilter proFilter;
-        ImgBeautySpecialEffectsFilter specialEffectsFilter;
-        ImgTexFilter texFilter;
-        List<ImgFilterBase> filters = new LinkedList<>();
+    private void addBeautyFiler() {
+        if (mImgBeautyTypeIndex == mLastImgBeautyTypeIndex) {
+            return;
+        }
+        if (mBeautyFilters == null) {
+            mBeautyFilters = new LinkedHashMap<>();
+        }
+
+        //disable beauty
+        if (mImgBeautyTypeIndex == BEAUTY_DISABLE) {
+            if (mBeautyFilters.containsKey(mLastImgBeautyTypeIndex)) {
+                ImgFilterBase lastFilter = mBeautyFilters.get
+                        (mLastImgBeautyTypeIndex);
+                if (mEditKit.getImgTexFilterMgt().getFilter().contains(lastFilter)) {
+                    mEditKit.getImgTexFilterMgt().replaceFilter(lastFilter, null, false);
+                }
+            }
+            mLastImgBeautyTypeIndex = mImgBeautyTypeIndex;
+            //暂停状态时，使得滤镜在预览区域立即生效
+            mEditKit.queueLastFrame();
+            return;
+        }
+        //enable filter
+        if (mBeautyFilters.containsKey(mImgBeautyTypeIndex)) {
+            ImgFilterBase filterBase = mBeautyFilters.get
+                    (mImgBeautyTypeIndex);
+            if (mBeautyFilters.containsKey(mLastImgBeautyTypeIndex)) {
+                ImgFilterBase lastFilter = mBeautyFilters.get(mLastImgBeautyTypeIndex);
+                if (mEditKit.getImgTexFilterMgt().getFilter().contains(lastFilter)) {
+                    mEditKit.getImgTexFilterMgt().replaceFilter(lastFilter, filterBase, false);
+                }
+            } else {
+                if (!mEditKit.getImgTexFilterMgt().getFilter().contains(filterBase)) {
+                    mEditKit.getImgTexFilterMgt().addFilter(filterBase);
+                }
+            }
+            mLastImgBeautyTypeIndex = mImgBeautyTypeIndex;
+            //暂停状态时，使得滤镜在预览区域立即生效
+            mEditKit.queueLastFrame();
+            return;
+        }
+        ImgFilterBase filterBase = null;
         switch (mImgBeautyTypeIndex) {
             case BEAUTY_NATURE:
                 ImgBeautySoftFilter softFilter = new ImgBeautySoftFilter(mEditKit.getGLRender());
                 softFilter.setGrindRatio(0.5f);
-                filters.add(softFilter);
+                filterBase = softFilter;
                 break;
             case BEAUTY_PRO:
-                proFilter = new ImgBeautyProFilter(mEditKit.getGLRender(), getApplicationContext());
+                ImgBeautyProFilter proFilter = new ImgBeautyProFilter(mEditKit.getGLRender()
+                        , getApplicationContext());
                 proFilter.setGrindRatio(0.5f);
                 proFilter.setWhitenRatio(0.5f);
                 proFilter.setRuddyRatio(0);
-                filters.add(proFilter);
+                filterBase = proFilter;
                 break;
             case BEAUTY_FLOWER_LIKE:
-                proFilter = new ImgBeautyProFilter(mEditKit.getGLRender(), getApplicationContext(), 3);
-                proFilter.setGrindRatio(0.5f);
-                proFilter.setWhitenRatio(0.5f);
-                proFilter.setRuddyRatio(0.15f);
-                filters.add(proFilter);
+                ImgBeautyProFilter pro1Filter = new ImgBeautyProFilter(mEditKit.getGLRender()
+                        , getApplicationContext(), 3);
+                pro1Filter.setGrindRatio(0.5f);
+                pro1Filter.setWhitenRatio(0.5f);
+                pro1Filter.setRuddyRatio(0.15f);
+                mBeautyFilters.put(BEAUTY_FLOWER_LIKE, pro1Filter);
+                filterBase = pro1Filter;
                 break;
             case BEAUTY_DELICATE:
-                proFilter = new ImgBeautyProFilter(mEditKit.getGLRender(), getApplicationContext(), 3);
-                proFilter.setGrindRatio(0.5f);
-                proFilter.setWhitenRatio(0.5f);
-                proFilter.setRuddyRatio(0.3f);
-                filters.add(proFilter);
+                ImgBeautyProFilter pro2Filter = new ImgBeautyProFilter(mEditKit.getGLRender()
+                        , getApplicationContext(), 3);
+                pro2Filter.setGrindRatio(0.5f);
+                pro2Filter.setWhitenRatio(0.5f);
+                pro2Filter.setRuddyRatio(0.3f);
+                filterBase = pro2Filter;
                 break;
-            case FILTER_DISABLE:
+            case BEAUTY_DISABLE:
                 break;
             default:
                 break;
         }
-        if (mFilterTypeIndex != -1 && mEffectFilterIndex != FILTER_DISABLE) {
-            if (mFilterTypeIndex < 13) {
-                specialEffectsFilter = new ImgBeautySpecialEffectsFilter(mEditKit.getGLRender(),
-                        getApplicationContext(), mEffectFilterIndex);
-                filters.add(specialEffectsFilter);
-            } else {
-                texFilter = new ImgBeautyStylizeFilter(mEditKit.getGLRender(), getApplicationContext(),
-                        mEffectFilterIndex);
-                filters.add(texFilter);
+
+        if (filterBase != null) {
+            ImgFilterBase lastFilter = null;
+            if (mBeautyFilters.containsKey(mLastImgBeautyTypeIndex)) {
+                lastFilter = mBeautyFilters.get(mLastImgBeautyTypeIndex);
+
             }
+            mBeautyFilters.put(mImgBeautyTypeIndex, filterBase);
+            if (lastFilter != null && mEditKit.getImgTexFilterMgt().getFilter().contains
+                    (lastFilter)) {
+                mEditKit.getImgTexFilterMgt().replaceFilter(lastFilter, filterBase, false);
+            } else {
+                mEditKit.getImgTexFilterMgt().addFilter(filterBase);
+            }
+
         }
-        if (filters.size() > 0) {
+        mLastImgBeautyTypeIndex = mImgBeautyTypeIndex;
+        //暂停状态时，使得滤镜在预览区域立即生效
+        mEditKit.queueLastFrame();
+    }
 
-            mEditKit.getImgTexFilterMgt().setFilter(filters);
+    private void addEffectFilter() {
+        if (mLastEffectFilterIndex == mEffectFilterIndex) {
+            return;
+        }
+        if (mEffectFilters == null) {
+            mEffectFilters = new LinkedHashMap<>();
+        }
 
+        if (mEffectFilterIndex == FILTER_DISABLE) {
+            if (mEffectFilters.containsKey(mLastEffectFilterIndex)) {
+                ImgFilterBase lastFilter = mEffectFilters.get(mLastEffectFilterIndex);
+                if (mEditKit.getImgTexFilterMgt().getFilter().contains(lastFilter)) {
+                    mEditKit.getImgTexFilterMgt().replaceFilter(lastFilter, null, false);
+                }
+            }
+            mLastEffectFilterIndex = mEffectFilterIndex;
+            //暂停状态时，使得滤镜在预览区域立即生效
+            mEditKit.queueLastFrame();
+            return;
+        }
+        if (mEffectFilters.containsKey(mEffectFilterIndex)) {
+            ImgFilterBase filter = mEffectFilters.get(mEffectFilterIndex);
+            if (mEffectFilters.containsKey(mLastEffectFilterIndex)) {
+                ImgFilterBase lastfilter = mEffectFilters.get(mLastEffectFilterIndex);
+                if (mEditKit.getImgTexFilterMgt().getFilter().contains(lastfilter)) {
+                    mEditKit.getImgTexFilterMgt().replaceFilter(lastfilter, filter, false);
+                }
+            } else {
+                if (!mEditKit.getImgTexFilterMgt().getFilter().contains(filter)) {
+                    mEditKit.getImgTexFilterMgt().addFilter(filter);
+                }
+            }
+            mLastEffectFilterIndex = mEffectFilterIndex;
         } else {
-            mEditKit.getImgTexFilterMgt().setFilter((ImgTexFilterBase) null);
+            ImgFilterBase filter;
+            if (mFilterTypeIndex < 13) {
+                filter = new ImgBeautySpecialEffectsFilter(mEditKit.getGLRender(),
+                        getApplicationContext(), mEffectFilterIndex);
+            } else {
+                filter = new ImgBeautyStylizeFilter(mEditKit
+                        .getGLRender(), getApplicationContext(), mEffectFilterIndex);
+            }
+            mEffectFilters.put(mEffectFilterIndex, filter);
+            ImgFilterBase lastFilter = null;
+            if (mEffectFilters.containsKey(mLastEffectFilterIndex)) {
+                lastFilter = mEffectFilters.get(mLastEffectFilterIndex);
+            }
+            if (lastFilter != null && mEditKit.getImgTexFilterMgt().getFilter().contains
+                    (lastFilter)) {
+                mEditKit.getImgTexFilterMgt().replaceFilter(lastFilter, filter, false);
+            } else {
+                mEditKit.getImgTexFilterMgt().addFilter(filter);
+            }
+            mLastEffectFilterIndex = mEffectFilterIndex;
         }
+        //暂停状态时，使得滤镜在预览区域立即生效
+        mEditKit.queueLastFrame();
     }
 
     private void setEffectFilter(int type) {
         mEffectFilterIndex = type;
-        addImgFilter();
+        addEffectFilter();
     }
 
     private void initBeautyUI() {
@@ -2166,7 +2381,7 @@ public class EditActivity extends Activity implements
                     changeOriginalBeautyState(false);
                 }
                 mImgBeautyTypeIndex = BEAUTY_TYPE[index];
-                addImgFilter();
+                addBeautyFiler();
             }
         };
         mBeautyOriginalView.setOnClickListener(new View.OnClickListener() {
@@ -2175,7 +2390,7 @@ public class EditActivity extends Activity implements
                 beautyAdapter.clear();
                 changeOriginalBeautyState(true);
                 mImgBeautyTypeIndex = BEAUTY_DISABLE;
-                addImgFilter();
+                addBeautyFiler();
             }
         });
         beautyAdapter.setOnImageItemClick(listener);
@@ -2272,6 +2487,7 @@ public class EditActivity extends Activity implements
 
         mEditKit.resumeEditPreview();
         mFilterOriginImage.callOnClick();
+        startPreviewTimerTask();
     }
 
     private void initBgmView() {
@@ -2297,7 +2513,7 @@ public class EditActivity extends Activity implements
             public boolean onSelected(String path) {
                 if (ViewUtils.isForeground(EditActivity.this, EditActivity.class.getName()) &&
                         !isComposeWindowShow()) {
-                    if(mEditKit.startBgm(path, true)) {
+                    if (mEditKit.startBgm(path, true)) {
                         mFirstPlay = true;
                         setEnableBgmEdit(true);
                         mEditKit.setBGMRanges(0, (long) mPreviewLength, false);
@@ -2493,18 +2709,21 @@ public class EditActivity extends Activity implements
                         mConfimDialog = new AlertDialog.Builder(EditActivity.this).setCancelable
                                 (true)
                                 .setTitle("中止合成?")
-                                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                .setNegativeButton("取消", new OnClickListener() {
 
                                     @Override
                                     public void onClick(DialogInterface arg0, int arg1) {
                                         mConfimDialog = null;
                                     }
                                 })
-                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                .setPositiveButton("确定", new OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface arg0, int arg1) {
                                         if (!mComposeFinished) {
                                             mEditKit.stopCompose();
+                                            //合成开始后，之前的特效滤镜无效了，不能再次被使用
+                                            mEditKit.removeAllTimeEffectFilter();
+                                            mEffectsView.clear();
                                             mComposeFinished = false;
                                             closeDialog();
                                             resumeEditPreview();

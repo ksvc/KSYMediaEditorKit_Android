@@ -30,6 +30,10 @@ public class VideoThumbnailTask extends AsyncTask<Long, Void, Bitmap> {
     private KSYEditKit mRetriever;
     private boolean mH265File;
     private Bitmap mBitmap;
+    private ThumbnailLoadListener mListener;
+    private int mWidth;
+    private int mHeight;
+    private int mIndex;
 
     private final WeakReference<View> mNext;
 
@@ -43,6 +47,21 @@ public class VideoThumbnailTask extends AsyncTask<Long, Void, Bitmap> {
         mVideoThumbnailData = videoThumbnailData;
         mRetriever = retriever;
         mH265File = h265file;
+    }
+
+    public VideoThumbnailTask(Context context, int index,long ms,
+                              int width, int height,  KSYEditKit retriever,
+                              boolean h265file, ThumbnailLoadListener listener) {
+        mContext = context;
+        mImageViewReference = null;
+        mNext = null;
+        mMS = ms;
+        mWidth = width;
+        mHeight = height;
+        mRetriever = retriever;
+        mH265File = h265file;
+        mListener = listener;
+        mIndex = index;
     }
 
     private static int mWorkTaskNum = 0;
@@ -71,15 +90,34 @@ public class VideoThumbnailTask extends AsyncTask<Long, Void, Bitmap> {
         }
     }
 
+    public static void loadBitmap(Context context, int index, long ms, int width, int height, KSYEditKit retriever, ThumbnailLoadListener listener) {
+        boolean h265File = false;
+        String vcodec = retriever.getVideoCodecMeta();
+        if (!TextUtils.isEmpty(vcodec) && vcodec.equals("hevc") || vcodec.equals("h265")) {
+            h265File = true;
+        }
+
+        final VideoThumbnailTask task = new VideoThumbnailTask(context, index, ms, width, height,
+                retriever, h265File, listener);
+        task.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, ms);
+        mWorkTaskNum++;
+    }
+
     @Override
     protected Bitmap doInBackground(Long... params) {
+        int width = mWidth;
+        int height = mHeight;
+        if(mVideoThumbnailData != null) {
+            width = mVideoThumbnailData.mWidth;
+            height = 0;
+        }
 
         if (!mH265File) {
             //精准seek比较耗时，同时存在获取到黑帧的情况，暂时不使用
-            mBitmap = mRetriever.getVideoThumbnailAtTime(mMS, mVideoThumbnailData.mWidth, 0, false);
+            mBitmap = mRetriever.getVideoThumbnailAtTime(mMS, width, height, false);
         } else {
             //h265的视频暂时不支持精准seek
-            mBitmap = mRetriever.getVideoThumbnailAtTime(mMS, mVideoThumbnailData.mWidth, 0, false);
+            mBitmap = mRetriever.getVideoThumbnailAtTime(mMS, width, height, false);
         }
         if (mBitmap == null) {
             Log.w(TAG, "can't get frame at" + mMS);
@@ -101,11 +139,15 @@ public class VideoThumbnailTask extends AsyncTask<Long, Void, Bitmap> {
         }
 
         // if cancel was called on this task or the "exit early" flag is set then we're done
-        final ImageView imageView = mImageViewReference.get();
-        if (value != null && imageView != null && !((Activity) mContext).isFinishing()) {
-            imageView.setImageBitmap(value);
+        if(mImageViewReference != null) {
+            final ImageView imageView = mImageViewReference.get();
+            if (value != null && imageView != null && !((Activity) mContext).isFinishing()) {
+                imageView.setImageBitmap(value);
+            }
         }
-
+        if(mListener != null) {
+            mListener.onFinished(value, mIndex);
+        }
     }
 
     static class AsyncDrawable extends BitmapDrawable {
@@ -150,6 +192,10 @@ public class VideoThumbnailTask extends AsyncTask<Long, Void, Bitmap> {
         }
 
         return true;
+    }
+
+    public interface ThumbnailLoadListener {
+        void onFinished(Bitmap bitmap, int index);
     }
 
 }

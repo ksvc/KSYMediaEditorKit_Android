@@ -151,6 +151,8 @@
     <li class="api apilevel-">
   <a href="../../../../../com/ksyun/media/shortvideo/sticker/package-summary.html">com.ksyun.media.shortvideo.sticker</a></li>
     <li class="api apilevel-">
+  <a href="../../../../../com/ksyun/media/shortvideo/timereffect/package-summary.html">com.ksyun.media.shortvideo.timereffect</a></li>
+    <li class="api apilevel-">
   <a href="../../../../../com/ksyun/media/shortvideo/transition/package-summary.html">com.ksyun.media.shortvideo.transition</a></li>
     <li class="api apilevel-">
   <a href="../../../../../com/ksyun/media/shortvideo/utils/package-summary.html">com.ksyun.media.shortvideo.utils</a></li>
@@ -162,7 +164,6 @@
               
     <li><h2>Interfaces</h2>
       <ul>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/AnimatedImageCapture.ImageUpdateListener.html">AnimatedImageCapture.ImageUpdateListener</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.OnErrorListener.html">KSYEditKit.OnErrorListener</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.OnInfoListener.html">KSYEditKit.OnInfoListener</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRecordKit.MergeFilesFinishedListener.html">KSYRecordKit.MergeFilesFinishedListener</a></li>
@@ -171,13 +172,11 @@
               
     <li><h2>Classes</h2>
       <ul>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/AnimatedImageCapture.html">AnimatedImageCapture</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEasyMergeKit.html">KSYEasyMergeKit</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html">KSYEditKit</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMergeKit.html">KSYMergeKit</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMultiCanvasComposeKit.html">KSYMultiCanvasComposeKit</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMultiCanvasComposeKit.MediaInfo.html">KSYMultiCanvasComposeKit.MediaInfo</a></li>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMultiComposeKit.html">KSYMultiComposeKit</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMultiEditKit.html">KSYMultiEditKit</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMultiEditKit.ComposeProgressInfo.html">KSYMultiEditKit.ComposeProgressInfo</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRecordKit.html">KSYRecordKit</a></li>
@@ -773,9 +772,9 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYTranscodeKit.html#setEncodeMethod(int)">setEncodeMethod</a></span>(int encodeMethod)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYTranscodeKit.html#setEnableMp4FastStart(boolean)">setEnableMp4FastStart</a></span>(boolean enable)
         
-        <div class="jd-descrdiv">Set encode method for both video and audio.</div>
+        <div class="jd-descrdiv">Run a second pass moving the index (moov atom) to the beginning of the mp4 file.</div>
   
   </td></tr>
 
@@ -791,13 +790,31 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYTranscodeKit.html#setEncodeMethod(int)">setEncodeMethod</a></span>(int encodeMethod)
+        
+        <div class="jd-descrdiv">Set encode method for both video and audio.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
         <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYTranscodeKit.html#setIFrameInterval(float)">setIFrameInterval</a></span>(float interval)
         
   </td></tr>
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -815,7 +832,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -833,7 +850,7 @@ Summary:
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -849,7 +866,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -867,7 +884,7 @@ Summary:
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -885,7 +902,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -903,7 +920,7 @@ Summary:
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -921,7 +938,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -939,7 +956,7 @@ Summary:
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -957,7 +974,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -975,7 +992,7 @@ Summary:
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -993,7 +1010,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1011,7 +1028,7 @@ Summary:
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1027,7 +1044,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -2359,6 +2376,50 @@ From class
         <tr>
             <th>IllegalArgumentException</td>
             <td></td>
+        </tr>
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="setEnableMp4FastStart(boolean)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">setEnableMp4FastStart</span>
+      <span class="normal">(boolean enable)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Run a second pass moving the index (moov atom) to the beginning of the mp4 file.
+
+ This operation can take a while, and will not work in various situations such as
+ fragmented output, thus it is not enabled by default.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>enable</th>
+          <td>true to enable, false to disable
+</td>
         </tr>
       </table>
   </div>
