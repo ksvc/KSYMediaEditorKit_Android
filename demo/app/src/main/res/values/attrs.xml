@@ -25,6 +25,23 @@
         <attr name="android:fadingEdgeLength" />
     </declare-styleable>
 
+    <declare-styleable name="ColorFulSeekbar">
+        <attr name="cThumbTint" format="reference" />
+        <attr name="cProgressTint" format="color|reference" />
+        <attr name="cBackground" format="color|reference" />
+        <attr name="cMaxHeight" format="dimension" />
+        <attr name="cMinHeight" format="dimension" />
+        <attr name="cMaxWidth" format="dimension" />
+        <attr name="cMinWidth" format="dimension" />
+        <attr name="cMax" format="integer" />
+        <attr name="cProgress" format="integer" />
+    </declare-styleable>
+    <declare-styleable name="ColorSeekbar">
+        <attr name="ColorMaxHeight" format="dimension" />
+        <attr name="ColorMinHeight" format="dimension" />
+        <attr name="ColorBackground" format="color|reference" />
+    </declare-styleable>
+
     <array name="paint_colors">
         <item>#FFFFFF</item>
         <item>#000000</item>

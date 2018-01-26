@@ -151,6 +151,8 @@
     <li class="api apilevel-">
   <a href="../../../../../com/ksyun/media/shortvideo/sticker/package-summary.html">com.ksyun.media.shortvideo.sticker</a></li>
     <li class="api apilevel-">
+  <a href="../../../../../com/ksyun/media/shortvideo/timereffect/package-summary.html">com.ksyun.media.shortvideo.timereffect</a></li>
+    <li class="api apilevel-">
   <a href="../../../../../com/ksyun/media/shortvideo/transition/package-summary.html">com.ksyun.media.shortvideo.transition</a></li>
     <li class="api apilevel-">
   <a href="../../../../../com/ksyun/media/shortvideo/utils/package-summary.html">com.ksyun.media.shortvideo.utils</a></li>
@@ -162,7 +164,6 @@
               
     <li><h2>Interfaces</h2>
       <ul>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/AnimatedImageCapture.ImageUpdateListener.html">AnimatedImageCapture.ImageUpdateListener</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.OnErrorListener.html">KSYEditKit.OnErrorListener</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.OnInfoListener.html">KSYEditKit.OnInfoListener</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRecordKit.MergeFilesFinishedListener.html">KSYRecordKit.MergeFilesFinishedListener</a></li>
@@ -171,13 +172,11 @@
               
     <li><h2>Classes</h2>
       <ul>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/AnimatedImageCapture.html">AnimatedImageCapture</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEasyMergeKit.html">KSYEasyMergeKit</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html">KSYEditKit</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMergeKit.html">KSYMergeKit</a></li>
           <li class="selected api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMultiCanvasComposeKit.html">KSYMultiCanvasComposeKit</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMultiCanvasComposeKit.MediaInfo.html">KSYMultiCanvasComposeKit.MediaInfo</a></li>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMultiComposeKit.html">KSYMultiComposeKit</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMultiEditKit.html">KSYMultiEditKit</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMultiEditKit.ComposeProgressInfo.html">KSYMultiEditKit.ComposeProgressInfo</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRecordKit.html">KSYRecordKit</a></li>
@@ -606,7 +605,7 @@ Summary:
           protected
           
           
-          <a href="../../../../../com/ksyun/media/shortvideo/transition/PTSFilter.html">PTSFilter</a></td>
+          AVPtsFilter</td>
           <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/MultiComposeBase.html#mAudioPtsFilter">mAudioPtsFilter</a></td>
           <td class="jd-descrcol" width="100%"></td>
       </tr>
@@ -749,7 +748,7 @@ Summary:
           protected
           
           
-          <a href="../../../../../com/ksyun/media/shortvideo/transition/PTSFilter.html">PTSFilter</a></td>
+          AVPtsFilter</td>
           <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/MultiComposeBase.html#mVideoPtsFilter">mVideoPtsFilter</a></td>
           <td class="jd-descrcol" width="100%"></td>
       </tr>
@@ -1337,9 +1336,9 @@ From class
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/MultiComposeBase.html#setEncodeMethod(int)">setEncodeMethod</a></span>(int encodeMethod)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/MultiComposeBase.html#setEnableMp4FastStart(boolean)">setEnableMp4FastStart</a></span>(boolean enable)
         
-        <div class="jd-descrdiv">Set encode method for both video and audio.</div>
+        <div class="jd-descrdiv">Run a second pass moving the index (moov atom) to the beginning of the mp4 file.</div>
   
   </td></tr>
 
@@ -1355,13 +1354,31 @@ From class
             void
         </td>
         <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/MultiComposeBase.html#setEncodeMethod(int)">setEncodeMethod</a></span>(int encodeMethod)
+        
+        <div class="jd-descrdiv">Set encode method for both video and audio.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
         <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/MultiComposeBase.html#setIFrameInterval(float)">setIFrameInterval</a></span>(float interval)
         
   </td></tr>
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1379,7 +1396,7 @@ From class
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1397,7 +1414,7 @@ From class
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1415,7 +1432,7 @@ From class
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1433,7 +1450,7 @@ From class
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1451,7 +1468,7 @@ From class
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1469,7 +1486,7 @@ From class
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1487,7 +1504,7 @@ From class
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1505,7 +1522,7 @@ From class
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1523,7 +1540,7 @@ From class
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1541,7 +1558,7 @@ From class
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1559,7 +1576,7 @@ From class
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1577,7 +1594,7 @@ From class
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1593,7 +1610,7 @@ From class
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             

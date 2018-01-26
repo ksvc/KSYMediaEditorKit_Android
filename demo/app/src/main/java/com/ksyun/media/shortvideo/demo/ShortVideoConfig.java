@@ -1,7 +1,7 @@
 package com.ksyun.media.shortvideo.demo;
 
-import com.ksyun.media.streamer.encoder.VideoEncodeFormat;
 import com.ksyun.media.streamer.framework.AVConst;
+import com.ksyun.media.streamer.framework.VideoCodecFormat;
 import com.ksyun.media.streamer.kit.StreamerConstants;
 
 /**
@@ -16,7 +16,7 @@ public class ShortVideoConfig {
     public int audioBitrate = StreamerConstants.DEFAULT_AUDIO_BITRATE;
     public int encodeType = AVConst.CODEC_ID_AVC;
     public int encodeMethod = StreamerConstants.ENCODE_METHOD_SOFTWARE;
-    public int encodeProfile = VideoEncodeFormat.ENCODE_PROFILE_LOW_POWER;
+    public int encodeProfile = VideoCodecFormat.ENCODE_PROFILE_LOW_POWER;
     public int decodeMethod = StreamerConstants.DECODE_METHOD_HARDWARE;
     public int audioEncodeProfile = AVConst.PROFILE_AAC_LOW;
     public int videoCRF = 24;

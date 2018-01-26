@@ -7,8 +7,8 @@ android {
         applicationId "com.ksyun.media.shortvideo.demo"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 210
-        versionName "2.1.0.2"
+        versionCode 220
+        versionName "2.2.0.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     sourceSets {
@@ -34,15 +34,15 @@ dependencies {
     implementation 'com.tencent.bugly:crashreport:latest.release'
     implementation 'com.tencent.bugly:nativecrashreport:latest.release'
     //录制魔方动态贴纸依赖库，若不使用，可以不依赖
-    implementation 'com.ksyun.mc:libkmcfilter_sensetime:1.0.5'
+    implementation 'com.ksyun.mc:libkmcfilter_sensetime:1.0.7'
     implementation 'com.ksyun.mc:SenseTimeAR:1.0.4'
     //动态贴纸依赖库，若不使用，使用provided
     implementation 'com.facebook.fresco:fresco:1.4.0'
     implementation 'com.facebook.fresco:animated-gif:1.4.0'
     implementation 'com.facebook.fresco:animated-webp:1.4.0'
     implementation 'com.lht:paintview:1.17'
-    compile 'com.ksyun.media:libksysv-java:2.1.0'
-    compile 'com.ksyun.media:libksysv-arm64:2.1.0'
-    compile 'com.ksyun.media:libksysv-armv7a:2.1.0'
-    compile 'com.ksyun.media:libksysv-x86:2.1.0'
+    compile 'com.ksyun.media:libksysv-java:2.2.0'
+    compile 'com.ksyun.media:libksysv-arm64:2.2.0'
+    compile 'com.ksyun.media:libksysv-armv7a:2.2.0'
+    compile 'com.ksyun.media:libksysv-x86:2.2.0'
 }

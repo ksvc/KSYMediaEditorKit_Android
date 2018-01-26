@@ -784,6 +784,104 @@
 </parameter>
 </method>
 </class>
+<class name="AnimatedImageCapture"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="AnimatedImageCapture"
+ type="com.ksyun.media.shortvideo.capture.AnimatedImageCapture"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="context" type="Context">
+</parameter>
+</constructor>
+<method name="release"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="setImageUpdateListener"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="listener" type="com.ksyun.media.shortvideo.capture.AnimatedImageCapture.ImageUpdateListener">
+</parameter>
+</method>
+<method name="start"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="url" type="java.lang.String">
+</parameter>
+</method>
+<method name="stop"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<field name="mDataSubscriber"
+ type="DataSubscriber"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<interface name="AnimatedImageCapture.ImageUpdateListener"
+ abstract="true"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="onImageUpdate"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="bitmap" type="Bitmap">
+</parameter>
+</method>
+</interface>
 <class name="AudioDummyCapture"
  extends="java.lang.Object"
  abstract="false"
@@ -890,6 +988,17 @@
 >
 <parameter name="isEnable" type="boolean">
 </parameter>
+</method>
+<method name="getAutoRestart"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
 </method>
 <method name="getCurrentVideoPts"
  return="long"
@@ -1185,6 +1294,19 @@
  visibility="public"
 >
 <parameter name="volume" type="float">
+</parameter>
+</method>
+<method name="shouldAutoRestart"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="shouldAutoPlay" type="boolean">
 </parameter>
 </method>
 <method name="start"
@@ -1531,6 +1653,17 @@
  visibility="public"
 >
 </method>
+<method name="getSinkPinNum"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
 <method name="getVSinkPin"
  return="&lt;any&gt;"
  abstract="false"
@@ -1554,6 +1687,19 @@
  deprecated="not deprecated"
  visibility="protected"
 >
+</method>
+<method name="onDraw"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="frames" type="ImgTexFrame[]">
+</parameter>
 </method>
 <method name="onDrawArraysAfter"
  return="void"
@@ -1745,64 +1891,6 @@
  visibility="public"
 >
 </field>
-</class>
-<class name="ImgEffectFilterBase.VImgTexFilterSinkPin"
- extends="<any>"
- abstract="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<constructor name="VImgTexFilterSinkPin"
- type="com.ksyun.media.shortvideo.filter.ImgEffectFilterBase.VImgTexFilterSinkPin"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="idx" type="int">
-</parameter>
-</constructor>
-<method name="onDisconnect"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="recursive" type="boolean">
-</parameter>
-</method>
-<method name="onFormatChanged"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="format" type="java.lang.Object">
-</parameter>
-</method>
-<method name="onFrameAvailable"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="frame" type="ImgTexFrame">
-</parameter>
-</method>
 </class>
 <class name="ImgFadesInOutFilter"
  extends="com.ksyun.media.shortvideo.filter.ImgEffectFilterBase"
@@ -2000,104 +2088,6 @@
 </package>
 <package name="com.ksyun.media.shortvideo.kit"
 >
-<class name="AnimatedImageCapture"
- extends="java.lang.Object"
- abstract="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<constructor name="AnimatedImageCapture"
- type="com.ksyun.media.shortvideo.kit.AnimatedImageCapture"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="context" type="Context">
-</parameter>
-</constructor>
-<method name="release"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="setImageUpdateListener"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="listener" type="com.ksyun.media.shortvideo.kit.AnimatedImageCapture.ImageUpdateListener">
-</parameter>
-</method>
-<method name="start"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="url" type="java.lang.String">
-</parameter>
-</method>
-<method name="stop"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<field name="mDataSubscriber"
- type="DataSubscriber"
- transient="false"
- volatile="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</field>
-</class>
-<interface name="AnimatedImageCapture.ImageUpdateListener"
- abstract="true"
- static="true"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<method name="onImageUpdate"
- return="void"
- abstract="true"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="bitmap" type="Bitmap">
-</parameter>
-</method>
-</interface>
 <class name="KSYEasyMergeKit"
  extends="java.lang.Object"
  abstract="false"
@@ -2346,6 +2336,19 @@
  visibility="public"
 >
 <parameter name="view" type="com.ksyun.media.shortvideo.sticker.KSYStickerView">
+</parameter>
+</method>
+<method name="addTimerEffectFilter"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="effectInfo" type="com.ksyun.media.shortvideo.timereffect.TimerEffectInfo">
 </parameter>
 </method>
 <method name="enableOriginAudio"
@@ -2681,6 +2684,17 @@
 <parameter name="pause" type="boolean">
 </parameter>
 </method>
+<method name="queueLastFrame"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
 <method name="release"
  return="void"
  abstract="false"
@@ -2691,6 +2705,30 @@
  deprecated="not deprecated"
  visibility="public"
 >
+</method>
+<method name="removeAllTimeEffectFilter"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="removeTimerEffectFilter"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="index" type="int">
+</parameter>
 </method>
 <method name="resumeEditPreview"
  return="void"
@@ -2941,6 +2979,19 @@
 <exception name="IllegalArgumentException" type="java.lang.IllegalArgumentException">
 </exception>
 </method>
+<method name="setEnableMp4FastStart"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="enable" type="boolean">
+</parameter>
+</method>
 <method name="setEncodeMethod"
  return="void"
  abstract="false"
@@ -3168,6 +3219,19 @@
 </exception>
 <exception name="IllegalStateException" type="java.lang.IllegalStateException">
 </exception>
+</method>
+<method name="setTimerEffectOverlying"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="overlying" type="boolean">
+</parameter>
 </method>
 <method name="setTitleUrl"
  return="void"
@@ -3423,6 +3487,21 @@
  visibility="public"
 >
 </method>
+<method name="updateTimerEffectEndTime"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="id" type="int">
+</parameter>
+<parameter name="endTime" type="long">
+</parameter>
+</method>
 <field name="DEFAULT_SCALE"
  type="float"
  transient="false"
@@ -3545,7 +3624,7 @@
  visibility="public"
 >
 <method name="onInfo"
- return="java.lang.Object"
+ return="void"
  abstract="true"
  native="false"
  synchronized="false"
@@ -4343,537 +4422,6 @@
 </parameter>
 </method>
 </interface>
-<class name="KSYMultiComposeKit"
- extends="java.lang.Object"
- abstract="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<constructor name="KSYMultiComposeKit"
- type="com.ksyun.media.shortvideo.kit.KSYMultiComposeKit"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="context" type="Context">
-</parameter>
-</constructor>
-<method name="abort"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="getAudioBitrate"
- return="int"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="getCurrentTransFileId"
- return="int"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="getCurrentTransFilePath"
- return="java.lang.String"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="getProgress"
- return="float"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="getVideoBitrate"
- return="int"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="getVideoCodecId"
- return="int"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="getVideoEncodeMethod"
- return="int"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="getVideoEncodeProfile"
- return="int"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="getVideoFps"
- return="float"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="release"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<method name="setAudioBitrate"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="bitrate" type="int">
-</parameter>
-<exception name="IllegalArgumentException" type="java.lang.IllegalArgumentException">
-</exception>
-</method>
-<method name="setAudioChannels"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="channels" type="int">
-</parameter>
-<exception name="IllegalArgumentException" type="java.lang.IllegalArgumentException">
-</exception>
-</method>
-<method name="setAudioKBitrate"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="kBitrate" type="int">
-</parameter>
-<exception name="IllegalArgumentException" type="java.lang.IllegalArgumentException">
-</exception>
-</method>
-<method name="setAudioParams"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="protected"
->
-</method>
-<method name="setAudioSampleRate"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="sampleRate" type="int">
-</parameter>
-<exception name="IllegalArgumentException" type="java.lang.IllegalArgumentException">
-</exception>
-</method>
-<method name="setEncodeMethod"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="encodeMethod" type="int">
-</parameter>
-<exception name="IllegalArgumentException" type="java.lang.IllegalArgumentException">
-</exception>
-<exception name="IllegalStateException" type="java.lang.IllegalStateException">
-</exception>
-</method>
-<method name="setIFrameInterval"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="interval" type="float">
-</parameter>
-</method>
-<method name="setOnErrorListener"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="onErrorListener" type="com.ksyun.media.shortvideo.kit.KSYMultiComposeKit.OnErrorListener">
-</parameter>
-</method>
-<method name="setOnInfoListener"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="onInfoListener" type="com.ksyun.media.shortvideo.kit.KSYMultiComposeKit.OnInfoListener">
-</parameter>
-</method>
-<method name="setScaleMode"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="scaleMode" type="int">
-</parameter>
-</method>
-<method name="setTargetResolution"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="width" type="int">
-</parameter>
-<parameter name="height" type="int">
-</parameter>
-<exception name="IllegalArgumentException" type="java.lang.IllegalArgumentException">
-</exception>
-</method>
-<method name="setTransitionInfo"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="transitionParams" type="java.util.Map&lt;java.lang.Integer, com.ksyun.media.shortvideo.transition.TransitionInfoControl&gt;">
-</parameter>
-</method>
-<method name="setVideoBitrate"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="bitrate" type="int">
-</parameter>
-<exception name="IllegalArgumentException" type="java.lang.IllegalArgumentException">
-</exception>
-</method>
-<method name="setVideoCodecId"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="codecId" type="int">
-</parameter>
-<exception name="IllegalArgumentException" type="java.lang.IllegalArgumentException">
-</exception>
-</method>
-<method name="setVideoCrf"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="crf" type="int">
-</parameter>
-</method>
-<method name="setVideoDecodeMethod"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="decodeMethod" type="int">
-</parameter>
-<exception name="IllegalArgumentException" type="java.lang.IllegalArgumentException">
-</exception>
-<exception name="IllegalStateException" type="java.lang.IllegalStateException">
-</exception>
-</method>
-<method name="setVideoEncodeMethod"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="encodeMethod" type="int">
-</parameter>
-<exception name="IllegalArgumentException" type="java.lang.IllegalArgumentException">
-</exception>
-<exception name="IllegalStateException" type="java.lang.IllegalStateException">
-</exception>
-</method>
-<method name="setVideoEncodeProfile"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="profile" type="int">
-</parameter>
-</method>
-<method name="setVideoFps"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="fps" type="float">
-</parameter>
-</method>
-<method name="setVideoKBitrate"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="kBitrate" type="int">
-</parameter>
-<exception name="IllegalArgumentException" type="java.lang.IllegalArgumentException">
-</exception>
-</method>
-<method name="start"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="srcUrls" type="java.util.List&lt;java.lang.String&gt;">
-</parameter>
-<parameter name="desUrl" type="java.lang.String">
-</parameter>
-</method>
-<method name="stop"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</method>
-<field name="DEFAULT_IFRAME_INTERVAL"
- type="float"
- transient="false"
- volatile="false"
- value="1.0f"
- static="true"
- final="true"
- deprecated="not deprecated"
- visibility="public"
->
-</field>
-<field name="mAudioChannels"
- type="int"
- transient="false"
- volatile="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="protected"
->
-</field>
-<field name="mFilePublisherListener"
- type="FilePublisher.PubListener"
- transient="false"
- volatile="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-</field>
-</class>
-<interface name="KSYMultiComposeKit.OnErrorListener"
- abstract="true"
- static="true"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<method name="onError"
- return="void"
- abstract="true"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="type" type="int">
-</parameter>
-<parameter name="msg" type="long">
-</parameter>
-</method>
-</interface>
-<interface name="KSYMultiComposeKit.OnInfoListener"
- abstract="true"
- static="true"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<method name="onInfo"
- return="void"
- abstract="true"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="type" type="int">
-</parameter>
-<parameter name="msg" type="java.lang.String">
-</parameter>
-</method>
-</interface>
 <class name="KSYMultiEditKit"
  extends="java.lang.Object"
  abstract="false"
@@ -5060,6 +4608,19 @@
  visibility="public"
 >
 <parameter name="surfaceView" type="GLSurfaceView">
+</parameter>
+</method>
+<method name="setEnableMp4FastStart"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="enable" type="boolean">
 </parameter>
 </method>
 <method name="setEncodeMethod"
@@ -5727,6 +5288,16 @@
  visibility="protected"
 >
 </field>
+<field name="mVideoSpeedFilter"
+ type="AVPtsFilter"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="protected"
+>
+</field>
 </class>
 <interface name="KSYRecordKit.MergeFilesFinishedListener"
  abstract="true"
@@ -6190,6 +5761,19 @@
 </parameter>
 <exception name="IllegalArgumentException" type="java.lang.IllegalArgumentException">
 </exception>
+</method>
+<method name="setEnableMp4FastStart"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="enable" type="boolean">
+</parameter>
 </method>
 <method name="setEncodeMethod"
  return="void"
@@ -7111,6 +6695,19 @@
 <exception name="IllegalStateException" type="java.lang.IllegalStateException">
 </exception>
 </method>
+<method name="setEnableMp4FastStart"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="enable" type="boolean">
+</parameter>
+</method>
 <method name="setEncodeMethod"
  return="void"
  abstract="false"
@@ -7394,7 +6991,7 @@
 >
 </field>
 <field name="mAudioPtsFilter"
- type="com.ksyun.media.shortvideo.transition.PTSFilter"
+ type="AVPtsFilter"
  transient="false"
  volatile="false"
  static="false"
@@ -7524,7 +7121,7 @@
 >
 </field>
 <field name="mVideoPtsFilter"
- type="com.ksyun.media.shortvideo.transition.PTSFilter"
+ type="AVPtsFilter"
  transient="false"
  volatile="false"
  static="false"
@@ -8781,6 +8378,17 @@
 <parameter name="glRender" type="GLRender">
 </parameter>
 </constructor>
+<method name="getSinkPinNum"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
 <method name="getVSinkPin"
  return="&lt;any&gt;"
  abstract="false"
@@ -8791,6 +8399,19 @@
  deprecated="not deprecated"
  visibility="public"
 >
+</method>
+<method name="onDraw"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="frames" type="ImgTexFrame[]">
+</parameter>
 </method>
 <method name="onDrawArraysAfter"
  return="void"
@@ -10068,9 +9689,41 @@
 </field>
 </class>
 </package>
-<package name="com.ksyun.media.shortvideo.transition"
+<package name="com.ksyun.media.shortvideo.timereffect"
 >
-<class name="PTSFilter"
+<interface name="ITimerEffectData"
+ abstract="true"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="getId"
+ return="int"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="setId"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="id" type="int">
+</parameter>
+</method>
+</interface>
+<class name="TimerEffectFilter"
  extends="java.lang.Object"
  abstract="false"
  static="false"
@@ -10078,15 +9731,42 @@
  deprecated="not deprecated"
  visibility="public"
 >
-<constructor name="PTSFilter"
- type="com.ksyun.media.shortvideo.transition.PTSFilter"
+<implements name="com.ksyun.media.shortvideo.timereffect.ITimerEffectData">
+</implements>
+<constructor name="TimerEffectFilter"
+ type="com.ksyun.media.shortvideo.timereffect.TimerEffectFilter"
  static="false"
  final="false"
  deprecated="not deprecated"
  visibility="public"
 >
+<parameter name="filter" type="ImgFilterBase">
+</parameter>
+<parameter name="overlying" type="boolean">
+</parameter>
 </constructor>
-<method name="onDisconnect"
+<constructor name="TimerEffectFilter"
+ type="com.ksyun.media.shortvideo.timereffect.TimerEffectFilter"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="filter" type="ImgFilterBase">
+</parameter>
+</constructor>
+<method name="getId"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="setId"
  return="void"
  abstract="false"
  native="false"
@@ -10096,24 +9776,11 @@
  deprecated="not deprecated"
  visibility="public"
 >
-<parameter name="recursive" type="boolean">
+<parameter name="id" type="int">
 </parameter>
 </method>
-<method name="setOffSet"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
- static="false"
- final="false"
- deprecated="not deprecated"
- visibility="public"
->
-<parameter name="offSet" type="long">
-</parameter>
-</method>
-<field name="mSinkPin"
- type="&lt;any&gt;"
+<field name="filter"
+ type="ImgFilterBase"
  transient="false"
  volatile="false"
  static="false"
@@ -10122,8 +9789,18 @@
  visibility="public"
 >
 </field>
-<field name="mSrcPin"
- type="&lt;any&gt;"
+<field name="id"
+ type="int"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="overlying"
+ type="boolean"
  transient="false"
  volatile="false"
  static="false"
@@ -10133,62 +9810,151 @@
 >
 </field>
 </class>
-<class name="PTSFilter.PTSFilterSinkPin"
- extends="<any>"
+<class name="TimerEffectFrame"
+ extends="java.lang.Object"
  abstract="false"
  static="false"
  final="false"
  deprecated="not deprecated"
  visibility="public"
 >
-<constructor name="PTSFilterSinkPin"
- type="com.ksyun.media.shortvideo.transition.PTSFilter.PTSFilterSinkPin"
+<constructor name="TimerEffectFrame"
+ type="com.ksyun.media.shortvideo.timereffect.TimerEffectFrame"
  static="false"
  final="false"
  deprecated="not deprecated"
  visibility="public"
 >
+<parameter name="t" type="long">
+</parameter>
+<parameter name="isShow" type="boolean">
+</parameter>
+<parameter name="data" type="com.ksyun.media.shortvideo.timereffect.ITimerEffectData">
+</parameter>
 </constructor>
-<method name="onDisconnect"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
+<field name="data"
+ type="com.ksyun.media.shortvideo.timereffect.ITimerEffectData"
+ transient="false"
+ volatile="false"
  static="false"
  final="false"
  deprecated="not deprecated"
  visibility="public"
 >
-<parameter name="recursive" type="boolean">
-</parameter>
-</method>
-<method name="onFormatChanged"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
+</field>
+<field name="isShow"
+ type="boolean"
+ transient="false"
+ volatile="false"
  static="false"
  final="false"
  deprecated="not deprecated"
  visibility="public"
 >
-<parameter name="format" type="java.lang.Object">
-</parameter>
-</method>
-<method name="onFrameAvailable"
- return="void"
- abstract="false"
- native="false"
- synchronized="false"
+</field>
+<field name="t"
+ type="long"
+ transient="false"
+ volatile="false"
  static="false"
  final="false"
  deprecated="not deprecated"
  visibility="public"
 >
-<parameter name="frame" type="T">
-</parameter>
-</method>
+</field>
 </class>
+<class name="TimerEffectInfo"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="TimerEffectInfo"
+ type="com.ksyun.media.shortvideo.timereffect.TimerEffectInfo"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="startTime" type="long">
+</parameter>
+<parameter name="endTime" type="long">
+</parameter>
+<parameter name="data" type="com.ksyun.media.shortvideo.timereffect.ITimerEffectData">
+</parameter>
+</constructor>
+<method name="updateEndTime"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="endTime" type="long">
+</parameter>
+</method>
+<method name="updateStartTime"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="startTime" type="long">
+</parameter>
+</method>
+<field name="effectData"
+ type="com.ksyun.media.shortvideo.timereffect.ITimerEffectData"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="endTime"
+ type="long"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="id"
+ type="int"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="startTime"
+ type="long"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+</package>
+<package name="com.ksyun.media.shortvideo.transition"
+>
 <class name="TransitionInfoControl"
  extends="java.lang.Object"
  abstract="false"
@@ -11305,6 +11071,17 @@
  visibility="public"
 >
 </field>
+<field name="SHORTVIDEO_EDIT_PREVIEW_ONE_LOOP_END"
+ type="int"
+ transient="false"
+ volatile="false"
+ value="9"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
 <field name="SHORTVIDEO_EDIT_PREVIEW_PLAYER_ERROR"
  type="int"
  transient="false"
@@ -11430,7 +11207,7 @@
  type="java.lang.String"
  transient="false"
  volatile="false"
- value="&quot;2.1.0.2&quot;"
+ value="&quot;2.2.0.4&quot;"
  static="true"
  final="true"
  deprecated="not deprecated"

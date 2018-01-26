@@ -28,9 +28,9 @@ import com.ksyun.media.shortvideo.demo.adapter.TransitionAdapter;
 import com.ksyun.media.shortvideo.demo.adapter.TransitionTypeAdapter;
 import com.ksyun.media.shortvideo.kit.KSYMultiEditKit;
 import com.ksyun.media.shortvideo.utils.ShortVideoConstants;
-import com.ksyun.media.streamer.encoder.VideoEncodeFormat;
 import com.ksyun.media.streamer.filter.imgtex.ImgTexScaleFilter;
 import com.ksyun.media.streamer.framework.AVConst;
+import com.ksyun.media.streamer.framework.VideoCodecFormat;
 import com.ksyun.media.streamer.kit.StreamerConstants;
 
 import java.io.File;
@@ -45,8 +45,8 @@ public class MultiImportActivity extends Activity {
 
     private static final int[] OUTPUT_PROFILE_ID = {R.id.trans_output_config_low_power,
             R.id.trans_output_config_balance, R.id.trans_output_config_high_performance};
-    private static final int[] ENCODE_PROFILE_TYPE = {VideoEncodeFormat.ENCODE_PROFILE_LOW_POWER,
-            VideoEncodeFormat.ENCODE_PROFILE_BALANCE, VideoEncodeFormat.ENCODE_PROFILE_HIGH_PERFORMANCE};
+    private static final int[] ENCODE_PROFILE_TYPE = {VideoCodecFormat.ENCODE_PROFILE_LOW_POWER,
+            VideoCodecFormat.ENCODE_PROFILE_BALANCE, VideoCodecFormat.ENCODE_PROFILE_HIGH_PERFORMANCE};
 
     private RelativeLayout mPreviewLayout;
     private GLSurfaceView mTransPreviewView;

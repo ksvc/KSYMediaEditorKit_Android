@@ -11,7 +11,6 @@ import com.ksyun.media.shortvideo.multicanvasdemo.util.DensityUtil;
 import com.ksyun.media.shortvideo.multicanvasdemo.util.SystemStateObtainUtil;
 import com.ksyun.media.shortvideo.multicanvasdemo.view.CanvasViewBase;
 import com.ksyun.media.shortvideo.utils.ShortVideoConstants;
-import com.ksyun.media.streamer.encoder.VideoEncodeFormat;
 import com.ksyun.media.streamer.filter.imgtex.ImgBeautyProFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgBeautySoftFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgBeautySpecialEffectsFilter;
@@ -20,6 +19,7 @@ import com.ksyun.media.streamer.filter.imgtex.ImgFilterBase;
 import com.ksyun.media.streamer.filter.imgtex.ImgTexFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgTexFilterBase;
 import com.ksyun.media.streamer.framework.AVConst;
+import com.ksyun.media.streamer.framework.VideoCodecFormat;
 import com.ksyun.media.streamer.kit.StreamerConstants;
 
 import android.app.Activity;
@@ -175,8 +175,8 @@ public class MultiCanvasEditActivity extends Activity {
 
     private static final int[] OUTPUT_PROFILE_ID = {R.id.output_config_low_power,
             R.id.output_config_balance, R.id.output_config_high_performance};
-    private static final int[] ENCODE_PROFILE_TYPE = {VideoEncodeFormat.ENCODE_PROFILE_LOW_POWER,
-            VideoEncodeFormat.ENCODE_PROFILE_BALANCE, VideoEncodeFormat.ENCODE_PROFILE_HIGH_PERFORMANCE};
+    private static final int[] ENCODE_PROFILE_TYPE = {VideoCodecFormat.ENCODE_PROFILE_LOW_POWER,
+            VideoCodecFormat.ENCODE_PROFILE_BALANCE, VideoCodecFormat.ENCODE_PROFILE_HIGH_PERFORMANCE};
     private static final int[] AUDIO_OUTPUT_PROFILE_ID = {R.id.output_config_aac_lc,
             R.id.output_config_aac_he, R.id.output_config_aac_he_v2};
     private static final int[] AUDIO_ENCODE_PROFILE = {AVConst.PROFILE_AAC_LOW, AVConst.PROFILE_AAC_HE,
@@ -457,7 +457,7 @@ public class MultiCanvasEditActivity extends Activity {
 
     private KSYEditKit.OnInfoListener mOnInfoListener = new KSYEditKit.OnInfoListener() {
         @Override
-        public Object onInfo(int type, String... msgs) {
+        public void onInfo(int type, String... msgs) {
             switch (type) {
                 case ShortVideoConstants.SHORTVIDEO_EDIT_PREPARED:
                     Log.d(TAG, "preview player prepared");
@@ -474,9 +474,8 @@ public class MultiCanvasEditActivity extends Activity {
                     Log.d(TAG, "KSYEditKit preview player info:" + type + "_" + msgs[0]);
                     break;
                 default:
-                    return null;
+                    break;
             }
-            return null;
         }
     };
 
@@ -561,7 +560,7 @@ public class MultiCanvasEditActivity extends Activity {
         } else {
             if (mComposeBeautyFilter != null && mComposeKit.getImgTexFilterMgt().getFilter().
                     contains(mComposeBeautyFilter)) {
-                mComposeKit.getImgTexFilterMgt().replaceFilter(mComposeBeautyFilter, null);
+                mComposeKit.getImgTexFilterMgt().replaceFilter(mComposeBeautyFilter, null, false);
             }
         }
 
@@ -579,7 +578,7 @@ public class MultiCanvasEditActivity extends Activity {
         } else {
             if (mComposeBeautyFilter != null && mComposeKit.getImgTexFilterMgt().getFilter().
                     contains(mComposeEffectFilter)) {
-                mComposeKit.getImgTexFilterMgt().replaceFilter(mComposeEffectFilter, null);
+                mComposeKit.getImgTexFilterMgt().replaceFilter(mComposeEffectFilter, null, false);
             }
         }
     }

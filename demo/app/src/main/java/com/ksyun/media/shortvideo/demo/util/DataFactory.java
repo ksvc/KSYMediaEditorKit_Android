@@ -46,6 +46,22 @@ public class DataFactory {
     private static final int[] REVERB_IMG_ID = {R.drawable.close, R.drawable.record_studio,
             R.drawable.woodwing, R.drawable.concert, R.drawable.ktv};
 
+    private static final String[] EFFECTS_NAME = {"抖动", "冲击波", "灵魂出窍", "闪电", "Black magic"};
+    private static final int[] EFFECTS_IMG_ID = {R.drawable.effects_shake, R.drawable.effects_shock_wave, R.drawable.effects_soul, R.drawable.effects_lightning, R.drawable.black_magic};
+
+    public static List<ImageTextAdapter.Data> getEffectsTypeDate(Context context) {
+        List<ImageTextAdapter.Data> effectsDate = new ArrayList<>();
+        for (int i = 0; i < EFFECTS_NAME.length; i++) {
+            Drawable image = context.getResources().getDrawable(EFFECTS_IMG_ID[i]);
+            String type = EFFECTS_NAME[i];
+            ImageTextAdapter.Data data = new ImageTextAdapter.Data(image, type);
+            effectsDate.add(data);
+        }
+        return effectsDate;
+    }
+
+
+
     public static List<ImageTextAdapter.Data> getBeautyTypeDate(Context context) {
         List<ImageTextAdapter.Data> beautyDate = new ArrayList<>();
         for (int i = 0; i < BEAUTY_TYPE_NAME.length; i++) {
