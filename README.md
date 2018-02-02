@@ -44,6 +44,7 @@ Charge Type:<b> nonfree</b></pre>
 * [x] [片头片尾](https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/add_title_tail)  
 * [x] [MV](https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/mv)  
 * [x] [涂鸦](https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/scrawl)  
+* [x] [抖动、冲击波、灵魂出窍等特效滤镜](https://github.com/ksvc/KSYMediaEditorKit_Android/wiki/edit_effect_filter)
 
 ## 1.1 运行环境  
 - 最低支持版本为Android 4.4 (API level 19)
