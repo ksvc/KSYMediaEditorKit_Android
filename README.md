@@ -96,6 +96,9 @@ License说明请见[wiki][license]
 ## 3. demo试用
 请见[版本下载说明](https://github.com/ksvc/KSYMediaEditorKit_Android/releases)。
 
+### 3.1 仓库镜像
+国内[gitee](https://gitee.com/ksvc/ksymediaeditorkit_android) 有完整的[KSYMediaEditorKit][KSYMediaEditorKit]仓库镜像，可以加速国内访问。
+
 ## 4. 商务合作
 Demo中的鉴权串等只能供Demo使用,正式上线需要申请金山云账号，请联系金山云商务。
 
