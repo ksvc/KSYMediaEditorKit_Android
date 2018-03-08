@@ -37,11 +37,12 @@ import com.ksyun.media.streamer.filter.imgtex.ImgBeautySoftFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgBeautySpecialEffectsFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgBeautyStylizeFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgFilterBase;
+import com.ksyun.media.streamer.filter.imgtex.ImgShaderXSingleFilter;
+import com.ksyun.media.streamer.filter.imgtex.ImgShake70sFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgShakeColorFilter;
+import com.ksyun.media.streamer.filter.imgtex.ImgShakeIllusionFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgShakeShockWaveFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgShakeZoomFilter;
-import com.ksyun.media.streamer.filter.imgtex.ImgTexFilter;
-import com.ksyun.media.streamer.filter.imgtex.ImgTexFilterBase;
 import com.ksyun.media.streamer.framework.AVConst;
 import com.ksyun.media.streamer.framework.VideoCodecFormat;
 import com.ksyun.media.streamer.kit.StreamerConstants;
@@ -178,6 +179,7 @@ public class EditActivity extends Activity implements
     private ImageView mFilterBorder;
     private TextView mFilterOriginText;
     private RecyclerView mFilterRecyclerView;
+    private ImageTextAdapter mFilterAdapter;
     private View[] mBottomViewList;
     private int mFilterTypeIndex = -1;
 
@@ -191,6 +193,7 @@ public class EditActivity extends Activity implements
     private ImageView mBeautyBorder;
     private TextView mBeautyOriginalText;
     private RecyclerView mBeautyRecyclerView;
+    private ImageTextAdapter mBeautyAdapter;
 
     //涂鸦
     private PaintView mPaintView;
@@ -434,6 +437,16 @@ public class EditActivity extends Activity implements
                     case 4:
                         GPUImageSobelEdgeDetection sobelEdgeDetection = new GPUImageSobelEdgeDetection();
                         filterBase = new ImgTexGPUImageFilter(mEditKit.getGLRender(), sobelEdgeDetection);
+                        break;
+                    case 5:
+                        filterBase = new ImgShake70sFilter(mEditKit.getGLRender());
+                        break;
+                    case 6:
+                        filterBase = new ImgShakeIllusionFilter(mEditKit.getGLRender());
+
+                        break;
+                    case 7:
+                        filterBase = new ImgShaderXSingleFilter(mEditKit.getGLRender());
                         break;
                     default:
                         break;
@@ -1069,7 +1082,7 @@ public class EditActivity extends Activity implements
 
             info.startTime = Long.MIN_VALUE;
             info.duration = mEditKit.getEditDuration();
-            info.animateUrl = "http://media.mustage.net/upload/image/stickers/gif/dynamic_image3.gif";//urlInfo.toString();
+            info.animateUrl = urlInfo.toString();
             info.stickerType = KSYStickerInfo.STICKER_TYPE_IMAGE_ANIMATE; //是否是字幕贴纸
             //添加一个贴纸
 
@@ -1563,7 +1576,7 @@ public class EditActivity extends Activity implements
                     startPreviewTimerTask();
                     break;
                 case ShortVideoConstants.SHORTVIDEO_EDIT_PREVIEW_ONE_LOOP_END:
-                    if(mEffectsView.getVisibility() == View.VISIBLE) {
+                    if (mEffectsView.getVisibility() == View.VISIBLE) {
                         mEffectsView.setProgress(mEditKit.getEditDuration());
                     }
                     break;
@@ -2191,12 +2204,18 @@ public class EditActivity extends Activity implements
     private void clearImgFilter() {
         mImgBeautyTypeIndex = BEAUTY_DISABLE;
         mEffectFilterIndex = FILTER_DISABLE;
-        if(mBeautyFilters != null) {
+        if (mBeautyFilters != null) {
             mBeautyFilters.clear();
         }
-        if(mEffectFilters != null) {
+        if (mEffectFilters != null) {
             mEffectFilters.clear();
         }
+        mBeautyAdapter.clear();
+        changeOriginalBeautyState(true);
+
+        mFilterAdapter.clear();
+        changeOriginalImageState(true);
+
     }
 
     private void addBeautyFiler() {
@@ -2370,7 +2389,7 @@ public class EditActivity extends Activity implements
         mBeautyRecyclerView = (RecyclerView) findViewById(R.id.beauty_recyclerView);
         changeOriginalBeautyState(true);
         List<ImageTextAdapter.Data> beautyData = DataFactory.getBeautyTypeDate(this);
-        final ImageTextAdapter beautyAdapter = new ImageTextAdapter(this, beautyData);
+        mBeautyAdapter = new ImageTextAdapter(this, beautyData);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         mBeautyRecyclerView.setLayoutManager(layoutManager);
@@ -2387,14 +2406,14 @@ public class EditActivity extends Activity implements
         mBeautyOriginalView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                beautyAdapter.clear();
+                mBeautyAdapter.clear();
                 changeOriginalBeautyState(true);
                 mImgBeautyTypeIndex = BEAUTY_DISABLE;
                 addBeautyFiler();
             }
         });
-        beautyAdapter.setOnImageItemClick(listener);
-        mBeautyRecyclerView.setAdapter(beautyAdapter);
+        mBeautyAdapter.setOnImageItemClick(listener);
+        mBeautyRecyclerView.setAdapter(mBeautyAdapter);
     }
 
     private void changeOriginalBeautyState(boolean isSelected) {
@@ -2442,7 +2461,7 @@ public class EditActivity extends Activity implements
         mFilterOriginText = (TextView) findViewById(R.id.tv_filter_origin);
         changeOriginalImageState(true);
         mFilterRecyclerView = (RecyclerView) findViewById(R.id.filter_recyclerView);
-        final ImageTextAdapter adapter = new ImageTextAdapter(this, filterData);
+        mFilterAdapter = new ImageTextAdapter(this, filterData);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         mFilterRecyclerView.setLayoutManager(layoutManager);
@@ -2460,12 +2479,12 @@ public class EditActivity extends Activity implements
             @Override
             public void onClick(View v) {
                 setEffectFilter(FILTER_DISABLE);
-                adapter.clear();
+                mFilterAdapter.clear();
                 changeOriginalImageState(true);
             }
         });
-        adapter.setOnImageItemClick(listener);
-        mFilterRecyclerView.setAdapter(adapter);
+        mFilterAdapter.setOnImageItemClick(listener);
+        mFilterRecyclerView.setAdapter(mFilterAdapter);
     }
 
     public void changeOriginalImageState(boolean isSelected) {
@@ -2634,7 +2653,7 @@ public class EditActivity extends Activity implements
         private TextView mProgressText;
         private View mSystemState;
         private TextView mCpuRate;
-        private AlertDialog mConfimDialog;
+        private AlertDialog mConfirmDialog;
         private Timer mTimer;
 
         protected ComposeDialog(Context context, int themeResId) {
@@ -2706,14 +2725,14 @@ public class EditActivity extends Activity implements
             switch (keyCode) {
                 case KeyEvent.KEYCODE_BACK:
                     if (!mComposeFinished) {
-                        mConfimDialog = new AlertDialog.Builder(EditActivity.this).setCancelable
+                        mConfirmDialog = new AlertDialog.Builder(EditActivity.this).setCancelable
                                 (true)
                                 .setTitle("中止合成?")
                                 .setNegativeButton("取消", new OnClickListener() {
 
                                     @Override
                                     public void onClick(DialogInterface arg0, int arg1) {
-                                        mConfimDialog = null;
+                                        mConfirmDialog = null;
                                     }
                                 })
                                 .setPositiveButton("确定", new OnClickListener() {
@@ -2728,7 +2747,7 @@ public class EditActivity extends Activity implements
                                             closeDialog();
                                             resumeEditPreview();
                                         }
-                                        mConfimDialog = null;
+                                        mConfirmDialog = null;
                                     }
                                 }).show();
                     } else {
@@ -2749,9 +2768,9 @@ public class EditActivity extends Activity implements
                 mTimer = null;
             }
 
-            if (mConfimDialog != null && mConfimDialog.isShowing()) {
-                mConfimDialog.dismiss();
-                mConfimDialog = null;
+            if (mConfirmDialog != null && mConfirmDialog.isShowing()) {
+                mConfirmDialog.dismiss();
+                mConfirmDialog = null;
             }
 
             EditActivity.ComposeDialog.this.dismiss();

@@ -292,6 +292,7 @@ public class MultiCanvasEditActivity extends Activity {
         params.width = mEditModelPos.w_preview;
         params.height = mEditModelPos.h_preview;
         mEditPreviewView.setLayoutParams(params);
+        mEditPreviewView.setZOrderOnTop(true);
 
         mMainHandler = new Handler();
         //init kit

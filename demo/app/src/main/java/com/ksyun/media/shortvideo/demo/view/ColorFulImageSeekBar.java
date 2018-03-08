@@ -94,7 +94,7 @@ public class ColorFulImageSeekBar extends ColorFulSeekbar {
         ColorScope scope = super.deleteColor(index);
         mColorForProgress = new int[getMax()];
         for (ColorScope colorScope : mColorList.values()) {
-            for (int i = colorScope.mStartProgress; i <= colorScope.mEndProgress; i++) {
+            for (int i = colorScope.mStartProgress; i < colorScope.mEndProgress; i++) {
                 mColorForProgress[i] = colorScope.mColor;
             }
         }

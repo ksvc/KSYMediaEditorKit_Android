@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.opengl.GLSurfaceView;
 import android.os.Build;
@@ -145,6 +146,7 @@ public class MultiCanvasRecordActivity extends Activity implements
 
         mPreviewLayout = findViewById(R.id.record_preview);
         mCameraPreviewView = findViewById(R.id.camera_preview);
+        mCameraPreviewView.setZOrderOnTop(true);
         mPlayerPreview = findViewById(R.id.player_preview);
         mBottomLayout = findViewById(R.id.bar_bottom);
         mTopLayout = findViewById(R.id.actionbar);

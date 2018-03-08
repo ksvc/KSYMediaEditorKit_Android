@@ -37,7 +37,8 @@ public class FilterEffectsView extends FrameLayout {
     private ImageTextAdapter mImgTextAdapter;
     private ImageView mCancel;
     private RecyclerView mRecycler;
-    private static final int[] EFFECTS_COLOR = {0xAAFFF687, 0xAA8AC0FF, 0xAAFF2E4E, 0xAA9FFF6E, 0xAAFFAE66};
+    private static final int[] EFFECTS_COLOR = {0xAAFFF687, 0xAA8AC0FF, 0xAAFF2E4E, 0xAA9FFF6E, 0xAAFFAE66,
+            0xAA9013FE, 0xAA4A4BE2, 0xAA1FA20A};
     private OnEffectsChangeListener mOnChangeListener;
     private int mThumbnailCount = 0;
     private long mEditDuration = 0;
@@ -89,6 +90,9 @@ public class FilterEffectsView extends FrameLayout {
             VideoThumbnailTask.loadBitmap(mContext, i, unitTimer * i, 100, 100, kit, new VideoThumbnailTask.ThumbnailLoadListener() {
                 @Override
                 public void onFinished(Bitmap bitmap, int index) {
+                    if (bitmap == null) {
+                        bitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.RGB_565);
+                    }
                     bitmaps[index] = bitmap;
                     mThumbnailCount++;
                     if (mThumbnailCount == 14) {
