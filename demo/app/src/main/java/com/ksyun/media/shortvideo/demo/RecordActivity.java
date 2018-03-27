@@ -26,6 +26,9 @@ import com.ksyun.media.streamer.filter.imgtex.ImgBeautySoftFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgBeautySpecialEffectsFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgBeautyStylizeFilter;
 import com.ksyun.media.streamer.filter.imgtex.ImgFilterBase;
+import com.ksyun.media.streamer.filter.imgtex.ImgShaderXSingleFilter;
+import com.ksyun.media.streamer.filter.imgtex.ImgShake70sFilter;
+import com.ksyun.media.streamer.filter.imgtex.ImgShakeIllusionFilter;
 import com.ksyun.media.streamer.kit.KSYStreamer;
 import com.ksyun.media.streamer.kit.StreamerConstants;
 import com.ksyun.media.streamer.logstats.StatsLogReport;
@@ -582,7 +585,7 @@ public class RecordActivity extends Activity implements
             @Override
             public void onAnimationEnd(Animator animation) {
                 mCountDownImage.setVisibility(View.GONE);
-                if(!RecordActivity.this.isFinishing()) {
+                if (!RecordActivity.this.isFinishing()) {
                     startRecord();
                 }
             }
@@ -865,7 +868,7 @@ public class RecordActivity extends Activity implements
                         public void run() {
                             startRecord();
                         }
-                    }, 3000);
+                    }, 200);
                 }
                 break;
                 default:
@@ -1453,7 +1456,7 @@ public class RecordActivity extends Activity implements
                 if (file.exists()) {
                     if (mMVs.containsKey(data.text)) {
                         KSYMVInfo ksymvInfo = mMVs.get(data.text);
-                        if(mKSYRecordKit.applyMV(ksymvInfo)) {
+                        if (mKSYRecordKit.applyMV(ksymvInfo)) {
                             mKSYRecordKit.applyMV(ksymvInfo);
                         } else {
                             mMVAdapter.clearState();
@@ -1461,7 +1464,7 @@ public class RecordActivity extends Activity implements
                     } else {
                         KSYMVInfo ksymvInfo = new KSYMVInfo(mvPath);
                         mMVs.put(data.text, ksymvInfo);
-                        if(mKSYRecordKit.applyMV(ksymvInfo)) {
+                        if (mKSYRecordKit.applyMV(ksymvInfo)) {
                             mKSYRecordKit.applyMV(ksymvInfo);
                         } else {
                             mMVAdapter.clearState();
@@ -2473,7 +2476,7 @@ public class RecordActivity extends Activity implements
     private void clearKMC() {
         mMaterial = null;
         saveSelectedIndex(0);
-        if(mKMCAdapter != null) {
+        if (mKMCAdapter != null) {
             mKMCAdapter.setSelectIndex(0);
             mKMCAdapter.notifyDataSetChanged();
         }

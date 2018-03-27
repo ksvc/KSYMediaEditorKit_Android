@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 
 /**
  * @Author: [xiaoqiang]
@@ -60,6 +61,7 @@ public class ColorFulImageSeekBar extends ColorFulSeekbar {
 
     protected synchronized void setProgressColor(int index, int color) {
         int progress = getProgress();
+
         if (progress <= getMax()) {
             if (mColorForProgress == null || mColorForProgress.length != getMax()) {
                 mColorForProgress = new int[getMax()];
@@ -82,6 +84,15 @@ public class ColorFulImageSeekBar extends ColorFulSeekbar {
             if (endColorIndex >= mColorForProgress.length) {
                 endColorIndex = mColorForProgress.length - 1;
             }
+
+            if(startColorIndex > endColorIndex) {
+                int temp = startColorIndex;
+                startColorIndex = endColorIndex;
+                endColorIndex = temp;
+            }
+            colorScope.mStartProgress = startColorIndex;
+            colorScope.mEndProgress = endColorIndex;
+
             for (int i = startColorIndex; i <= endColorIndex; i++) {
                 mColorForProgress[i] = color;
             }
