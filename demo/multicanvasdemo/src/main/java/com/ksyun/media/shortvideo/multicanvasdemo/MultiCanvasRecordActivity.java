@@ -2,6 +2,7 @@ package com.ksyun.media.shortvideo.multicanvasdemo;
 
 import com.ksyun.media.player.IMediaPlayer;
 import com.ksyun.media.player.KSYMediaPlayer;
+import com.ksyun.media.player.KSYTextureView;
 import com.ksyun.media.shortvideo.kit.KSYRecordKit;
 import com.ksyun.media.shortvideo.multicanvasdemo.data.MultiCanvasInfo;
 import com.ksyun.media.shortvideo.multicanvasdemo.util.DensityUtil;
@@ -39,6 +40,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.TextureView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -48,6 +50,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * demo for model record
@@ -62,9 +65,8 @@ public class MultiCanvasRecordActivity extends Activity implements
     public static final int MIN_DURATION = 5 * 1000;  //最短拍摄时长
     public static final int EDIT_REQUEST_CODE = 100;
 
-    private GLSurfaceView mCameraPreviewView;
-    private SurfaceView mPlayerPreview;
-    private SurfaceHolder mSurfaceHolder;
+    private TextureView mCameraPreviewView;
+    private KSYTextureView mPlayerPreview;
     private CameraHintView mCameraHintView;
     private View mSwitchCameraView;
     private View mFlashView;
@@ -89,7 +91,6 @@ public class MultiCanvasRecordActivity extends Activity implements
 
     //录制kit
     private KSYRecordKit mKSYRecordKit;
-    private KSYMediaPlayer mMediaPlayer;
 
     private Handler mMainHandler;
 
@@ -146,7 +147,6 @@ public class MultiCanvasRecordActivity extends Activity implements
 
         mPreviewLayout = findViewById(R.id.record_preview);
         mCameraPreviewView = findViewById(R.id.camera_preview);
-        mCameraPreviewView.setZOrderOnTop(true);
         mPlayerPreview = findViewById(R.id.player_preview);
         mBottomLayout = findViewById(R.id.bar_bottom);
         mTopLayout = findViewById(R.id.actionbar);
@@ -250,9 +250,6 @@ public class MultiCanvasRecordActivity extends Activity implements
         //init
         mMainHandler = new Handler();
         mKSYRecordKit = new KSYRecordKit(this);
-        mMediaPlayer = new KSYMediaPlayer.Builder(this).build();
-        mSurfaceHolder = mPlayerPreview.getHolder();
-        mSurfaceHolder.addCallback(mSurfaceCallback);
 
         float frameRate = mRecordConfig.fps;
         if (frameRate > 0) {
@@ -314,6 +311,7 @@ public class MultiCanvasRecordActivity extends Activity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case EDIT_REQUEST_CODE:
+                Log.e(TAG, "on onActivityResult");
                 //从编辑窗口返回，判断是否有编辑后的视频
                 if (data != null) {
                     Bundle bundle = data.getExtras();
@@ -331,7 +329,7 @@ public class MultiCanvasRecordActivity extends Activity implements
                 mCameraPreviewView.setLayoutParams(previewParams);
                 //更新添加录制icon的显示
                 mCanvasView.updateRecordView(mModelPos);
-                if (!TextUtils.isEmpty(mPlayUrl) && !mMediaPlayer.isPlaying()) {
+                if (!TextUtils.isEmpty(mPlayUrl) && !mPlayerPreview.isPlaying()) {
                     startPlay(mPlayUrl);
                 }
                 break;
@@ -351,9 +349,10 @@ public class MultiCanvasRecordActivity extends Activity implements
         // camera may be occupied by other app in background
         checkPermission();
 
+        mPlayerPreview.runInForeground();
         //如果当前正在录制，恢复播放
         if (mIsFileRecording && !TextUtils.isEmpty(mPlayUrl)) {
-            mMediaPlayer.start();
+            mPlayerPreview.start();
         }
     }
 
@@ -361,9 +360,11 @@ public class MultiCanvasRecordActivity extends Activity implements
     public void onPause() {
         super.onPause();
         mKSYRecordKit.onPause();
-        if (mMediaPlayer.isPlaying()) {
-            mMediaPlayer.pause();
+        mPlayerPreview.runInBackground(false);
+        if (mPlayerPreview.isPlaying()) {
+            mPlayerPreview.pause();
         }
+
     }
 
     @Override
@@ -488,7 +489,8 @@ public class MultiCanvasRecordActivity extends Activity implements
 
             //开始之前视频的播放
             if (!TextUtils.isEmpty(mPlayUrl)) {
-                mMediaPlayer.start();
+                //mMediaPlayer.start();
+                mPlayerPreview.start();
             }
         }
     }
@@ -901,31 +903,6 @@ public class MultiCanvasRecordActivity extends Activity implements
     }
 
     /**************************player begin**************************************/
-    private final SurfaceHolder.Callback mSurfaceCallback = new SurfaceHolder.Callback() {
-        @Override
-        public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-            Log.d(TAG, "mediaplayer surfaceChanged");
-
-        }
-
-        @Override
-        public void surfaceCreated(SurfaceHolder holder) {
-            Log.d(TAG, "mediaplayer surfaceCreated");
-            if (mMediaPlayer != null) {
-                mMediaPlayer.setDisplay(holder);
-                mMediaPlayer.setScreenOnWhilePlaying(true);
-            }
-        }
-
-        @Override
-        public void surfaceDestroyed(SurfaceHolder holder) {
-            Log.d(TAG, "mediaplayer surfaceDestroyed");
-            // 此处非常重要，必须调用!!!
-            if (mMediaPlayer != null) {
-                mMediaPlayer.setDisplay(null);
-            }
-        }
-    };
     private IMediaPlayer.OnCompletionListener mOnCompletionListener = new IMediaPlayer.OnCompletionListener() {
         @Override
         public void onCompletion(IMediaPlayer mp) {
@@ -936,13 +913,10 @@ public class MultiCanvasRecordActivity extends Activity implements
     private IMediaPlayer.OnPreparedListener mOnPreparedListener = new IMediaPlayer.OnPreparedListener() {
         @Override
         public void onPrepared(IMediaPlayer mp) {
-            if (mMediaPlayer != null) {
-                Log.d(TAG, "mediaplayer onPrepared");
-                // 设置视频伸缩模式，此模式为填充模式
-                mMediaPlayer.setVideoScalingMode(KSYMediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT);
-                // 开始播放视频
-                mMediaPlayer.start();
-            }
+            // 设置视频伸缩模式，此模式为填充模式
+            mPlayerPreview.setVideoScalingMode(KSYMediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT);
+            // 开始播放视频
+            mPlayerPreview.start();
         }
     };
 
@@ -960,7 +934,7 @@ public class MultiCanvasRecordActivity extends Activity implements
             switch (what) {
                 case KSYMediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START:
                     //首帧视频来以后，暂停，开始录制后在启动播放
-                    mMediaPlayer.pause();
+                    mPlayerPreview.pause();
                     break;
                 default:
                     break;
@@ -970,43 +944,34 @@ public class MultiCanvasRecordActivity extends Activity implements
     };
 
     private void startPlay(String path) {
-        mMediaPlayer.setLooping(true);
-        mMediaPlayer.shouldAutoPlay(false);
-        mMediaPlayer.setOnCompletionListener(mOnCompletionListener);
-        mMediaPlayer.setOnPreparedListener(mOnPreparedListener);
-        mMediaPlayer.setOnInfoListener(mOnMediaInfoListener);
-        mMediaPlayer.setOnErrorListener(mOnMediaErrorListener);
-        mMediaPlayer.setDisplay(mSurfaceHolder);
         try {
-            mMediaPlayer.setDataSource(path);
-            mMediaPlayer.prepareAsync();
-        } catch (Exception e) {
+            mPlayerPreview.setLooping(true);
+            mPlayerPreview.shouldAutoPlay(false);
+            mPlayerPreview.setOnCompletionListener(mOnCompletionListener);
+            mPlayerPreview.setOnPreparedListener(mOnPreparedListener);
+            mPlayerPreview.setOnInfoListener(mOnMediaInfoListener);
+            mPlayerPreview.setOnErrorListener(mOnMediaErrorListener);
+            mPlayerPreview.setDataSource(path);
+            mPlayerPreview.prepareAsync();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     private void stopPlay() {
-        if (mMediaPlayer != null) {
-            mMediaPlayer.setOnCompletionListener(null);
-            mMediaPlayer.setOnPreparedListener(null);
-            mMediaPlayer.setOnInfoListener(null);
-            mMediaPlayer.setOnErrorListener(null);
-            mMediaPlayer.stop();
-        }
+        mPlayerPreview.setOnCompletionListener(null);
+        mPlayerPreview.setOnPreparedListener(null);
+        mPlayerPreview.setOnInfoListener(null);
+        mPlayerPreview.setOnErrorListener(null);
+        mPlayerPreview.stop();
     }
 
     private void resetPlay() {
-        if (mMediaPlayer != null) {
-            mMediaPlayer.reset();
-            mMediaPlayer.setDisplay(mSurfaceHolder);
-        }
+        mPlayerPreview.reset();
     }
 
     private void releasePlay() {
-        if (mMediaPlayer != null) {
-            mMediaPlayer.release();
-            mMediaPlayer = null;
-        }
+        mPlayerPreview.release();
     }
 
     /**************************player end**************************************/

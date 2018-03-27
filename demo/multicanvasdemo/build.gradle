@@ -35,8 +35,8 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:27.0.1'
     implementation 'com.tencent.bugly:crashreport:latest.release'
     implementation 'com.tencent.bugly:nativecrashreport:latest.release'
-    compile 'com.ksyun.media:libksysv-java:2.2.1'
-    compile 'com.ksyun.media:libksysv-arm64:2.2.1'
-    compile 'com.ksyun.media:libksysv-armv7a:2.2.1'
-    compile 'com.ksyun.media:libksysv-x86:2.2.1'
+    compile 'com.ksyun.media:libksysv-java:2.2.2'
+    compile 'com.ksyun.media:libksysv-arm64:2.2.2'
+    compile 'com.ksyun.media:libksysv-armv7a:2.2.2'
+    compile 'com.ksyun.media:libksysv-x86:2.2.2'
 }

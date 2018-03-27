@@ -16,16 +16,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.opengl.GLSurfaceView
-            android:id="@+id/edit_preview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
         <SurfaceView
             android:id="@+id/player_preview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
+        <TextureView
+            android:id="@+id/edit_preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
     </RelativeLayout>
 
     <include

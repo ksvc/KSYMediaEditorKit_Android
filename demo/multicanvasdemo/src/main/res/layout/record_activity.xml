@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="#000000">
     <include
         android:id="@+id/actionbar"
         layout="@layout/record_title_bar"
@@ -15,15 +16,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.opengl.GLSurfaceView
+        <com.ksyun.media.player.KSYTextureView
+            android:id="@+id/player_preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextureView
             android:id="@+id/camera_preview"
             android:layout_width="1dp"
             android:layout_height="1dp"/>
-
-        <SurfaceView
-            android:id="@+id/player_preview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
 
         <com.ksyun.media.shortvideo.multicanvasdemo.view.CameraHintView
             android:id="@+id/camera_hint"

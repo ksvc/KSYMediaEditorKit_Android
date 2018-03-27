@@ -43,6 +43,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -119,7 +120,7 @@ public class MultiCanvasEditActivity extends Activity {
     private ImgFilterBase mComposeBeautyFilter;
     private ImgFilterBase mComposeEffectFilter;
 
-    private GLSurfaceView mEditPreviewView;
+    private TextureView mEditPreviewView;
     private SurfaceView mPlayerPreview;
     private SurfaceHolder mSurfaceHolder;
     private Timer mEditPreviewProgressTimer;
@@ -292,7 +293,6 @@ public class MultiCanvasEditActivity extends Activity {
         params.width = mEditModelPos.w_preview;
         params.height = mEditModelPos.h_preview;
         mEditPreviewView.setLayoutParams(params);
-        mEditPreviewView.setZOrderOnTop(true);
 
         mMainHandler = new Handler();
         //init kit
@@ -807,9 +807,7 @@ public class MultiCanvasEditActivity extends Activity {
                             if (!mIsPreviewSeekBarChanging) {
                                 long currentPosition = 0;
                                 if (!mModelFinished) {
-                                    if(MultiCanvasEditActivity.this.mEditKit.getMediaPlayer() != null) {
-                                        currentPosition = MultiCanvasEditActivity.this.mEditKit.getMediaPlayer().getCurrentPosition();
-                                    }
+                                    currentPosition = MultiCanvasEditActivity.this.mEditKit.getCurrentPosition();
                                 } else {
                                     if (mMediaPlayer != null) {
                                         currentPosition = mMediaPlayer.getCurrentPosition();
@@ -841,9 +839,9 @@ public class MultiCanvasEditActivity extends Activity {
             //配置合成参数
             //当前模版示范比例是1:1，需要根据模版比例计算对应的resolution
             //例如若模版比例是4:3，480p,对应的resolution就应该设置为(480,480*3/4)
-            if(mComposeConfig.resolution == StreamerConstants.VIDEO_RESOLUTION_720P) {
+            if (mComposeConfig.resolution == StreamerConstants.VIDEO_RESOLUTION_720P) {
                 mComposeKit.setTargetResolution(720, 720);
-            } else if(mComposeConfig.resolution == StreamerConstants.VIDEO_RESOLUTION_1080P) {
+            } else if (mComposeConfig.resolution == StreamerConstants.VIDEO_RESOLUTION_1080P) {
                 mComposeKit.setTargetResolution(1080, 1080);
             }
 
@@ -1026,7 +1024,7 @@ public class MultiCanvasEditActivity extends Activity {
                     mOutEncodeByHW.setActivated(true);
                     mOutEncodeBySW.setActivated(false);
                     mOutVideoCRF.setEnabled(false);
-                    if(Integer.parseInt(mOutVideoBitrate.getText().toString()) == 0) {
+                    if (Integer.parseInt(mOutVideoBitrate.getText().toString()) == 0) {
                         mOutVideoBitrate.setText(String.valueOf(4000));
                     }
                     break;
@@ -1134,7 +1132,7 @@ public class MultiCanvasEditActivity extends Activity {
                 case R.id.edit_preview_SeekBar:
                     int progress = seekBar.getProgress();
                     if (!mModelFinished) {
-                        MultiCanvasEditActivity.this.mEditKit.getMediaPlayer().seekTo(progress, true);
+                        MultiCanvasEditActivity.this.mEditKit.seekTo(progress);
                     } else {
                         if (mMediaPlayer != null) {
                             mMediaPlayer.seekTo(seekBar.getProgress());
@@ -1150,10 +1148,10 @@ public class MultiCanvasEditActivity extends Activity {
     }
 
     private void confirmConfig() {
-        if(mConfigDialog == null) {
+        if (mConfigDialog == null) {
             mComposeConfig = new ShortVideoConfig();
         }
-        if(mConfigDialog != null) {
+        if (mConfigDialog != null) {
             if (mOutRes720p.isActivated()) {
                 mComposeConfig.resolution = StreamerConstants.VIDEO_RESOLUTION_720P;
             } else if (mOutRes1080p.isActivated()) {
@@ -1196,7 +1194,7 @@ public class MultiCanvasEditActivity extends Activity {
             mComposeConfig.videoCRF = Integer.parseInt(mOutVideoCRF.getText().toString());
         } else {
             //每次都使用推荐参数进行合成
-            if(!mModelFinished) {
+            if (!mModelFinished) {
                 mComposeConfig.resolution = StreamerConstants.VIDEO_RESOLUTION_1080P;
             } else {
                 //最后一次可适当降低分辨率
