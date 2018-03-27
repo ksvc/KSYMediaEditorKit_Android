@@ -140,13 +140,14 @@ public class EditActivity extends Activity implements
     private static final int ANIMATED_STICKER_LAYOUT_INDEX = 11;
     private static final int STICKER_LAYOUT_INDEX = 12;
     private static final int SUBTITLE_LAYOUT_INDEX = 13;
-
+    private static final int REVERSE_PLAY_INDEX = 14;
 
     private RelativeLayout mPreviewLayout;
     private GLSurfaceView mEditPreviewView;
     private RelativeLayout mBarBottomLayout;
     private ImageView mNextView;
     private ImageView mPauseView;
+    private ImageView mRotateView;
     private List<String> mTitleData;
     private RecyclerView mTitleView;
     private BottomTitleAdapter mTitleAdapter;
@@ -228,6 +229,7 @@ public class EditActivity extends Activity implements
 
     private boolean mFirstPlay = true;
     private boolean mWaterMarkChecked;
+    private boolean mReversePlayChecked;
     private AudioSeekLayout.OnAudioSeekChecked mAudioSeekListener;
     private long mAudioLength;  //背景音乐时长
     private long mPreviewLength; //视频裁剪后的时长
@@ -316,6 +318,9 @@ public class EditActivity extends Activity implements
     private TextView mVideoRangeEnd;
     private float mLastX = 0;
 
+    private boolean mHWEncoderUnsupported;  //硬编支持标志位
+    private boolean mSWEncoderUnsupported;  //软编支持标志位
+
     //for scale
     private int mScaleMode = KSYEditKit.SCALING_MODE_BEST_FIT;
     private int mScaleType = KSYEditKit.SCALE_TYPE_9_16;
@@ -332,6 +337,8 @@ public class EditActivity extends Activity implements
 
     private int mScreenWidth;
     private int mScreenHeight;
+
+    private int mRotateDegrees = 0;
 
     public static void startActivity(Context context, String srcurl) {
         Intent intent = new Intent(context, EditActivity.class);
@@ -371,6 +378,8 @@ public class EditActivity extends Activity implements
         mPauseView = (ImageView) findViewById(R.id.click_to_pause);
         mPauseView.setOnClickListener(mButtonObserver);
         mPauseView.getDrawable().setLevel(2);
+        mRotateView = findViewById(R.id.click_to_rotate);
+        mRotateView.setOnClickListener(mButtonObserver);
         mBeautyLayout = findViewById(R.id.beauty_choose);
         mBottomViewList[BEAUTY_LAYOUT_INDEX] = mBeautyLayout;
         mFilterLayout = findViewById(R.id.edit_filter_choose);
@@ -422,13 +431,13 @@ public class EditActivity extends Activity implements
                 ImgFilterBase filterBase = null;
                 switch (type) {
                     case 0:
-                        filterBase = new ImgShakeZoomFilter(mEditKit.getGLRender());
-                        break;
-                    case 1:
                         filterBase = new ImgShakeColorFilter(mEditKit.getGLRender());
                         break;
-                    case 2:
+                    case 1:
                         filterBase = new ImgShakeShockWaveFilter(mEditKit.getGLRender());
+                        break;
+                    case 2:
+                        filterBase = new ImgShakeZoomFilter(mEditKit.getGLRender());
                         break;
                     case 3:
                         filterBase = new ImgBeautySpecialEffectsFilter(mEditKit.getGLRender(), EditActivity.this,
@@ -443,7 +452,6 @@ public class EditActivity extends Activity implements
                         break;
                     case 6:
                         filterBase = new ImgShakeIllusionFilter(mEditKit.getGLRender());
-
                         break;
                     case 7:
                         filterBase = new ImgShaderXSingleFilter(mEditKit.getGLRender());
@@ -472,16 +480,23 @@ public class EditActivity extends Activity implements
 
             @Override
             public void onDelete(int index) {
-                mEditKit.removeTimerEffectFilter(index);
+                TimerEffectInfo info = mEditKit.getTimerEffectInfo(index);
+                if (mEditKit.getReversePlay()) {
+                    //在倒放状态添加时间特效时，由于ui 是seek到正序的时间，因此需要配合seek到结束时间,并且需要把结束时间算折算一下
+                    long endTime = mEditKit.getEditDuration() - info.endTime;
+                    mEditKit.seekTo(endTime);
+                } else {
+                    mEditKit.seekTo(info.startTime);
+                }
+
                 //pause
                 pausePreview();
+                mEditKit.removeTimerEffectFilter(index);
             }
 
             @Override
             public void onProgressChanged(long position) {
                 mEditKit.seekTo(position);
-                mEffectsView.setProgress(mEditKit.getMediaPlayer().getCurrentPosition());
-
                 mSectionView.scrollAuto(position);
             }
         });
@@ -599,14 +614,19 @@ public class EditActivity extends Activity implements
                         mEditKit.setBGMRanges(start, end, true);
                     }
                 };
-                if (mAudioSeekLayout.getVisibility() != View.VISIBLE) {
-                    mAudioSeekLayout.setVisibility(View.VISIBLE);
-                    mAudioSeekLayout.setOnAudioSeekCheckedListener(mAudioSeekListener);
-                }
-                if (mFirstPlay) {
-                    mFirstPlay = false;
-                    mAudioSeekLayout.updateAudioSeekUI(mAudioLength, mPreviewLength);
-                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mAudioSeekLayout.getVisibility() != View.VISIBLE) {
+                            mAudioSeekLayout.setVisibility(View.VISIBLE);
+                            mAudioSeekLayout.setOnAudioSeekCheckedListener(mAudioSeekListener);
+                        }
+                        if (mFirstPlay) {
+                            mFirstPlay = false;
+                            mAudioSeekLayout.updateAudioSeekUI(mAudioLength, mPreviewLength);
+                        }
+                    }
+                });
             }
         });
 
@@ -873,7 +893,7 @@ public class EditActivity extends Activity implements
 
     private void updateBottomVisible(int x, int y) {
         if (!isTouchPointInView(mBarBottomLayout, x, y)) {
-            if (mBottomViewPreIndex != WATER_MARK_INDEX) {
+            if (mBottomViewPreIndex != WATER_MARK_INDEX && mBottomViewPreIndex != REVERSE_PLAY_INDEX) {
                 mBottomViewList[mBottomViewPreIndex].setVisibility(View.INVISIBLE);
                 if (mBottomViewPreIndex == PAINT_MENU_LAYOUT_INDEX) {
                     mPaintView.setPaintEnable(false);
@@ -963,7 +983,7 @@ public class EditActivity extends Activity implements
             @Override
             public void onRangeChanged(int index, long start, long end) {
                 // 更新贴纸显示时间区间
-                Log.d(TAG, "update sticker range:" + start + "~" + "end - start");
+                Log.d(TAG, "update sticker range:" + start + "~" + (end - start));
                 mKSYStickerView.updateStickerInfo(index, start, end - start);
             }
 
@@ -983,7 +1003,7 @@ public class EditActivity extends Activity implements
                 mEditKit.seekTo(time);
                 mEditKit.updateStickerDraw();
                 if (mEffectsView.getVisibility() == View.VISIBLE) {
-                    mEffectsView.setProgress(mEditKit.getMediaPlayer().getCurrentPosition());
+                    mEffectsView.setProgress(mEditKit.getCurrentPosition());
                 }
             }
         });
@@ -1325,6 +1345,17 @@ public class EditActivity extends Activity implements
         }
     }
 
+    private void onReversePlayClick(boolean isCheck) {
+        mEditKit.stopEditPreview();
+        if (isCheck) {
+            mEditKit.enableReversePlay(true);
+        } else {
+            mEditKit.enableReversePlay(false);
+        }
+        mEditKit.setLooping(true);
+        mEditKit.startEditPreview();
+    }
+
     private void onPauseClick() {
         if (mPauseView.getDrawable().getLevel() == 2) {
             pausePreview();
@@ -1341,8 +1372,8 @@ public class EditActivity extends Activity implements
     }
 
     private void onBackoffClick() {
-        if ((mBottomViewPreIndex == WATER_MARK_INDEX) ||
-                (mBottomViewPreIndex != WATER_MARK_INDEX &&
+        if ((mBottomViewPreIndex == WATER_MARK_INDEX) || mBottomViewPreIndex == REVERSE_PLAY_INDEX ||
+                (mBottomViewPreIndex != WATER_MARK_INDEX && mBottomViewPreIndex != REVERSE_PLAY_INDEX &&
                         mBottomViewList[mBottomViewPreIndex].getVisibility() != View.VISIBLE)) {
             EditActivity.this.finish();
         } else {
@@ -1458,26 +1489,30 @@ public class EditActivity extends Activity implements
             mEditKit.setTailUrl(mTailVideoPath);
             mEditKit.addPaintView(mPaintView);
             mEditKit.setAudioEncodeProfile(mComposeConfig.audioEncodeProfile);
-            //设置合成路径
-            String fileFolder = Environment.getExternalStorageDirectory().
-                    getAbsolutePath() + "/ksy_sv_compose_test";
-            File file = new File(fileFolder);
-            if (!file.exists()) {
-                file.mkdir();
-            }
-
-            StringBuilder composeUrl = new StringBuilder(fileFolder).append("/").append(System
-                    .currentTimeMillis());
-            if (mComposeConfig.encodeType == AVConst.CODEC_ID_GIF) {
-                composeUrl.append(".gif");
-            } else {
-                composeUrl.append(".mp4");
-            }
-            Log.d(TAG, "compose Url:" + composeUrl);
-            //开始合成
-            mComposeFinished = false;
-            mEditKit.startCompose(composeUrl.toString());
+            startCompose();
         }
+    }
+
+    private void startCompose() {
+        //设置合成路径
+        String fileFolder = Environment.getExternalStorageDirectory().
+                getAbsolutePath() + "/ksy_sv_compose_test";
+        File file = new File(fileFolder);
+        if (!file.exists()) {
+            file.mkdir();
+        }
+
+        StringBuilder composeUrl = new StringBuilder(fileFolder).append("/").append(System
+                .currentTimeMillis());
+        if (mComposeConfig.encodeType == AVConst.CODEC_ID_GIF) {
+            composeUrl.append(".gif");
+        } else {
+            composeUrl.append(".mp4");
+        }
+        Log.d(TAG, "compose Url:" + composeUrl);
+        //开始合成
+        mComposeFinished = false;
+        mEditKit.startCompose(composeUrl.toString());
     }
 
     private void confirmConfig() {
@@ -1526,6 +1561,33 @@ public class EditActivity extends Activity implements
         mComposeConfig.videoCRF = Integer.parseInt(mOutVideoCRF.getText().toString());
     }
 
+    /**
+     * 不支持硬编的设备，fallback到软编
+     */
+    private boolean handleEncodeError() {
+        int encodeMethod = mEditKit.getVideoEncodeMethod();
+        if (encodeMethod == StreamerConstants.ENCODE_METHOD_HARDWARE) {
+            mHWEncoderUnsupported = true;
+            if (mSWEncoderUnsupported) {
+                Log.e(TAG, "Got HW and SW encoder error, compose failed");
+                return false;
+            } else {
+                mEditKit.setEncodeMethod(StreamerConstants.ENCODE_METHOD_SOFTWARE);
+                Log.e(TAG, "Got HW encoder error, switch to SOFTWARE mode");
+            }
+        } else if (encodeMethod == StreamerConstants.ENCODE_METHOD_SOFTWARE) {
+            mSWEncoderUnsupported = true;
+            if (mHWEncoderUnsupported) {
+                Log.e(TAG, "Got SW and HW encoder error, compose failed");
+                return false;
+            } else {
+                mEditKit.setEncodeMethod(StreamerConstants.ENCODE_METHOD_HARDWARE);
+                Log.e(TAG, "Got SW encoder error, switch to HARDWARE mode");
+            }
+        }
+        return true;
+    }
+
     private KSYEditKit.OnErrorListener mOnErrorListener = new KSYEditKit.OnErrorListener() {
         @Override
         public void onError(int type, long msg) {
@@ -1554,6 +1616,23 @@ public class EditActivity extends Activity implements
                     break;
                 case ShortVideoConstants.SHORTVIDEO_EDIT_PREVIEW_PLAYER_ERROR:
                     Log.d(TAG, "KSYEditKit preview player error:" + type + "_" + msg);
+                    break;
+                case ShortVideoConstants.SHORTVIDEO_ERROR_EDIT_FEATURE_NOT_SUPPORTED:
+                    Toast.makeText(EditActivity.this,
+                            "This Feature not support:" + type, Toast.LENGTH_LONG).show();
+                    break;
+                case StreamerConstants.KSY_STREAMER_VIDEO_ENCODER_ERROR_UNSUPPORTED:
+                case StreamerConstants.KSY_STREAMER_VIDEO_ENCODER_ERROR_UNKNOWN:
+                    boolean result = handleEncodeError();
+                    if(result) {
+                        mMainHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                startCompose();
+                            }
+                        }, 200);
+                    }
+                    break;
                 default:
                     break;
             }
@@ -1568,17 +1647,27 @@ public class EditActivity extends Activity implements
                     Log.d(TAG, "preview player prepared");
                     mEditPreviewDuration = mEditKit.getEditDuration();
                     mPreviewLength = mEditPreviewDuration;
-                    initSeekBar();
-                    initThumbnailAdapter();
-                    // 启动预览后，开始片段编辑UI初始化
-                    mSectionView.init(mEditPreviewDuration, mEditKit);
-                    mEffectsView.initView(mEditPreviewDuration, mEditKit);
-                    startPreviewTimerTask();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            initSeekBar();
+                            initThumbnailAdapter();
+                            // 启动预览后，开始片段编辑UI初始化
+                            mSectionView.init(mEditPreviewDuration, mEditKit);
+                            mEffectsView.initView(mEditPreviewDuration, mEditKit);
+                            startPreviewTimerTask();
+                        }
+                    });
                     break;
                 case ShortVideoConstants.SHORTVIDEO_EDIT_PREVIEW_ONE_LOOP_END:
-                    if (mEffectsView.getVisibility() == View.VISIBLE) {
-                        mEffectsView.setProgress(mEditKit.getEditDuration());
-                    }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (mEffectsView.getVisibility() == View.VISIBLE) {
+                                mEffectsView.setProgress(mEditKit.getEditDuration());
+                            }
+                        }
+                    });
                     break;
                 case ShortVideoConstants.SHORTVIDEO_COMPOSE_START: {
                     Log.d(TAG, "compose started");
@@ -1763,6 +1852,7 @@ public class EditActivity extends Activity implements
                     break;
                 case R.id.output_config_aac_he_v2:
                     onOutputAudioEncodeProfileClick(2);
+                    break;
                 case R.id.click_to_9_16:
                     mVideoScale9_16.setActivated(true);
                     mVideoScale3_4.setActivated(false);
@@ -1809,10 +1899,21 @@ public class EditActivity extends Activity implements
                     }
                     resizePreview(mScaleType, KSYEditKit.SCALING_MODE_CROP);
                     break;
+                case R.id.click_to_rotate:
+                    onClickRotate();
+                    break;
                 default:
                     break;
             }
         }
+    }
+
+    private void onClickRotate() {
+        mRotateDegrees += 90;
+        if(mRotateDegrees == 360) {
+            mRotateDegrees = 0;
+        }
+        mEditKit.setRotateDegrees(mRotateDegrees);
     }
 
     private void onOutputEncodeProfileClick(int index) {
@@ -2036,7 +2137,7 @@ public class EditActivity extends Activity implements
         }
 
         Log.d(TAG, "seekto:" + seekTo);
-        mEditKit.seekEditPreview(seekTo);
+        mEditKit.seekTo(seekTo);
 
         if (mVideoRangeSeekBar != null) {
             mVideoRangeSeekBar.setIndicatorOffsetSec((mEditKit.getEditPreviewCurrentPosition() * 1.0f - mHLVOffsetX * 1000) /
@@ -2119,7 +2220,7 @@ public class EditActivity extends Activity implements
         View pitchLayout = findViewById(R.id.bgm_pitch);
         pitchLayout.setVisibility(View.GONE);
         String[] items = {"美颜", "滤镜", "滤镜特效", "水印", "变速", "时长裁剪", "画布裁剪", "音乐", "变声", "混响",
-                "涂鸦", "动态贴纸", "贴纸", "字幕"};
+                "涂鸦", "动态贴纸", "贴纸", "字幕","倒放"};
         mTitleData = Arrays.asList(items);
         mTitleView = (RecyclerView) findViewById(R.id.edit_title_recyclerView);
         mTitleAdapter = new BottomTitleAdapter(this, mTitleData);
@@ -2127,7 +2228,7 @@ public class EditActivity extends Activity implements
             @Override
             public void onClick(int curIndex, int preIndex) {
                 mBottomViewPreIndex = curIndex;
-                if (curIndex != WATER_MARK_INDEX) {
+                if (curIndex != WATER_MARK_INDEX && curIndex != REVERSE_PLAY_INDEX) {
                     mBottomViewList[curIndex].setVisibility(View.VISIBLE);
                     if (curIndex == FILTER_EFFECTS_INDEX) {
                         //暂停播放
@@ -2165,7 +2266,7 @@ public class EditActivity extends Activity implements
                             mPaintView.setVisibility(View.VISIBLE);
                         }
                     }
-                } else {
+                } else  if (curIndex == WATER_MARK_INDEX) {
                     if (curIndex != preIndex) {
                         mWaterMarkChecked = true;
                         onWaterMarkLogoClick(mWaterMarkChecked);
@@ -2173,9 +2274,19 @@ public class EditActivity extends Activity implements
                         mWaterMarkChecked = !mWaterMarkChecked;
                         onWaterMarkLogoClick(mWaterMarkChecked);
                     }
+                } else {
+                    if (curIndex != preIndex) {
+                        if (!mReversePlayChecked) {
+                            mReversePlayChecked = true;
+                            onReversePlayClick(mReversePlayChecked);
+                        }
+                    } else {
+                        mReversePlayChecked = !mReversePlayChecked;
+                        onReversePlayClick(mReversePlayChecked);
+                    }
                 }
-                if (preIndex != WATER_MARK_INDEX && preIndex != -1 &&
-                        curIndex != preIndex) {
+                if (preIndex != WATER_MARK_INDEX && preIndex != REVERSE_PLAY_INDEX &&
+                        preIndex != -1 && curIndex != preIndex) {
                     mBottomViewList[preIndex].setVisibility(View.GONE);
                     if (preIndex == PAINT_MENU_LAYOUT_INDEX) {
                         mPaintView.setPaintEnable(false);

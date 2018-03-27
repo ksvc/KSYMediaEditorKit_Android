@@ -143,16 +143,7 @@ public class ColorFulSeekbar extends View {
                 mColorList.remove(index);
             }
 
-            int progress = 0;
-            if (mColorList.size() > 0) {
-                Object[] colorScopes = mColorList.values().toArray();
-                ColorScope lastScope = (ColorScope) colorScopes[colorScopes.length - 1];
-                if (lastScope != null) {
-                    progress = lastScope.mEndProgress;
-                }
-            } else {
-                progress = scope.mStartProgress;
-            }
+            int progress = scope.mStartProgress;
 
             moveThumb(progress);
             return scope;
