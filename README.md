@@ -125,7 +125,7 @@ Demo中的鉴权串等只能供Demo使用,正式上线需要申请金山云账�
 
 ### 5.3 联系方式
 - 主页：[金山云](http://www.ksyun.com/)
-- 邮箱：<zengfanping@kingsoft.com>
+- 邮箱：<sujia@kingsoft.com>
 - QQ讨论群：
   - 574179720 [视频云技术交流群]
   - 620036233 [视频云Android技术交流]
