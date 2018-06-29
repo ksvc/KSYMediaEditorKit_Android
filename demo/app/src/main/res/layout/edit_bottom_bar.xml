@@ -37,13 +37,14 @@
             android:layout_height="match_parent"
             android:visibility="invisible" />
 
-        <com.ksyun.media.shortvideo.demo.view.FilterEffectsView
+        <com.ksyun.media.shortvideo.demo.view.effect.EditorEffectWindow
             android:id="@+id/edit_filter_effects"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/effect_popup_window_height"
+            android:layout_alignParentBottom="true"
             android:visibility="invisible">
 
-        </com.ksyun.media.shortvideo.demo.view.FilterEffectsView>
+        </com.ksyun.media.shortvideo.demo.view.effect.EditorEffectWindow>
 
         <include
             android:id="@+id/speed_layout"

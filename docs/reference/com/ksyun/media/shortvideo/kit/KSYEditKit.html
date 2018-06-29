@@ -164,16 +164,19 @@
               
     <li><h2>Interfaces</h2>
       <ul>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.OnErrorListener.html">KSYEditKit.OnErrorListener</a></li>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.OnInfoListener.html">KSYEditKit.OnInfoListener</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.OnErrorListener.html">EditBase.OnErrorListener</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.OnInfoListener.html">EditBase.OnInfoListener</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRecordKit.MergeFilesFinishedListener.html">KSYRecordKit.MergeFilesFinishedListener</a></li>
       </ul>
     </li>
               
     <li><h2>Classes</h2>
       <ul>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html">EditBase</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.TimeEffectParams.html">EditBase.TimeEffectParams</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEasyMergeKit.html">KSYEasyMergeKit</a></li>
           <li class="selected api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html">KSYEditKit</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMediaEditKit.html">KSYMediaEditKit</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMergeKit.html">KSYMergeKit</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMultiCanvasComposeKit.html">KSYMultiCanvasComposeKit</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMultiCanvasComposeKit.MediaInfo.html">KSYMultiCanvasComposeKit.MediaInfo</a></li>
@@ -183,6 +186,9 @@
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRemuxKit.html">KSYRemuxKit</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYTranscodeKit.html">KSYTranscodeKit</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYTransitionKit.html">KSYTransitionKit</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/MultiComposeBase.html">MultiComposeBase</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/MultiComposeBase.MediaContext.html">MultiComposeBase.MediaContext</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/PlayRanges.html">PlayRanges</a></li>
       </ul>
     </li>
               
@@ -230,6 +236,17 @@
    
   
   
+   
+  
+  
+   
+  
+  
+
+  
+   
+  
+  
   
   
 
@@ -239,18 +256,18 @@
 
 Summary:
 
-  <a href="#nestedclasses">Nested Classes</a>
+
+
+
+
+
+  <a href="#inhconstants">Inherited Constants</a>
   
 
 
 
-
-
-
-
-  &#124; <a href="#lfields">Fields</a>
+  &#124; <a href="#inhfields">Inherited Fields</a>
   
-
 
 
   &#124; <a href="#pubctors">Ctors</a>
@@ -261,6 +278,9 @@ Summary:
   &#124; <a href="#pubmethods">Methods</a>
   
 
+
+  &#124; <a href="#promethods">Protected Methods</a>
+  
 
 
   &#124; <a href="#inhmethods">Inherited Methods</a>
@@ -292,7 +312,11 @@ Summary:
 
 
   
-    extends Object<br/>
+  
+  
+
+  
+    extends <a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html">EditBase</a><br/>
   
   
   
@@ -312,11 +336,21 @@ Summary:
 
     <tr>
          	
-        <td colspan="2" class="jd-inheritance-class-cell">java.lang.Object</td>
+        <td colspan="3" class="jd-inheritance-class-cell">java.lang.Object</td>
     </tr>
     
 
     <tr>
+        
+            <td class="jd-inheritance-space">&nbsp;&nbsp;&nbsp;&#x21b3;</td>
+         	
+        <td colspan="2" class="jd-inheritance-class-cell"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html">com.ksyun.media.shortvideo.kit.EditBase</a></td>
+    </tr>
+    
+
+    <tr>
+        
+            <td class="jd-inheritance-space">&nbsp;</td>
         
             <td class="jd-inheritance-space">&nbsp;&nbsp;&nbsp;&#x21b3;</td>
          	
@@ -367,47 +401,107 @@ Summary:
 
 
 
-<!-- ======== NESTED CLASS SUMMARY ======== -->
-<table id="nestedclasses" class="jd-sumtable"><tr><th colspan="12">Nested Classes</th></tr>
 
 
-  
+
+
+
+
+
+
+
+
+
+
+
+<!-- =========== ENUM CONSTANT SUMMARY =========== -->
+<table id="inhconstants" class="jd-sumtable"><tr><th>
+  <a href="#" class="toggle-all" onclick="return toggleAllInherited(this, null)">[Expand]</a>
+  <div style="clear:left;">Inherited Constants</div></th></tr>
+
+
+<tr class="api apilevel-" >
+<td colspan="12">
+
+  <a href="#" onclick="return toggleInherited(this, null)" id="inherited-constants-com.ksyun.media.shortvideo.kit.EditBase" class="jd-expando-trigger closed"
+          ><img id="inherited-constants-com.ksyun.media.shortvideo.kit.EditBase-trigger"
+          src="../../../../../../assets/images/triangle-closed.png"
+          class="jd-expando-trigger-img" /></a>From class
+<a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html">com.ksyun.media.shortvideo.kit.EditBase</a>
+<div id="inherited-constants-com.ksyun.media.shortvideo.kit.EditBase">
+  <div id="inherited-constants-com.ksyun.media.shortvideo.kit.EditBase-list"
+        class="jd-inheritedlinks">
+  </div>
+  <div id="inherited-constants-com.ksyun.media.shortvideo.kit.EditBase-summary" style="display: none;">
+    <table class="jd-sumtable-expando">
+    
+
+    
     <tr class="alt-color api apilevel-" >
-      <td class="jd-typecol">
-        
-         
-         
-        
-        interface</td>
-      <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.OnErrorListener.html">KSYEditKit.OnErrorListener</a></td>
-      <td class="jd-descrcol" width="100%">&nbsp;</td>
+        <td class="jd-typecol">float</td>
+        <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#DEFAULT_SCALE">DEFAULT_SCALE</a></td>
+        <td class="jd-descrcol" width="100%"></td>
     </tr>
     
     
     <tr class=" api apilevel-" >
-      <td class="jd-typecol">
-        
-         
-         
-        
-        interface</td>
-      <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.OnInfoListener.html">KSYEditKit.OnInfoListener</a></td>
-      <td class="jd-descrcol" width="100%">&nbsp;</td>
+        <td class="jd-typecol">int</td>
+        <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#SCALE_TYPE_1_1">SCALE_TYPE_1_1</a></td>
+        <td class="jd-descrcol" width="100%"></td>
     </tr>
     
     
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">int</td>
+        <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#SCALE_TYPE_3_4">SCALE_TYPE_3_4</a></td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">int</td>
+        <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#SCALE_TYPE_9_16">SCALE_TYPE_9_16</a></td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">int</td>
+        <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#TIME_EFFECT_NONE">TIME_EFFECT_NONE</a></td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">int</td>
+        <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#TIME_EFFECT_REPEAT">TIME_EFFECT_REPEAT</a></td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">int</td>
+        <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#TIME_EFFECT_REVERSE">TIME_EFFECT_REVERSE</a></td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">int</td>
+        <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#TIME_EFFECT_SLOW">TIME_EFFECT_SLOW</a></td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+</table>
+  </div>
+</div>
+</td></tr>
+
+
+
 
 </table>
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -416,114 +510,367 @@ Summary:
 
 
 <!-- =========== FIELD SUMMARY =========== -->
-<table id="lfields" class="jd-sumtable"><tr><th colspan="12">Fields</th></tr>
+<table id="inhfields" class="jd-sumtable"><tr><th>
+  <a href="#" class="toggle-all" onclick="return toggleAllInherited(this, null)">[Expand]</a>
+  <div style="clear:left;">Inherited Fields</div></th></tr>
 
+
+<tr class="api apilevel-" >
+<td colspan="12">
+
+  <a href="#" onclick="return toggleInherited(this, null)" id="inherited-fields-com.ksyun.media.shortvideo.kit.EditBase" class="jd-expando-trigger closed"
+          ><img id="inherited-fields-com.ksyun.media.shortvideo.kit.EditBase-trigger"
+          src="../../../../../../assets/images/triangle-closed.png"
+          class="jd-expando-trigger-img" /></a>From class
+<a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html">com.ksyun.media.shortvideo.kit.EditBase</a>
+<div id="inherited-fields-com.ksyun.media.shortvideo.kit.EditBase">
+  <div id="inherited-fields-com.ksyun.media.shortvideo.kit.EditBase-list"
+        class="jd-inheritedlinks">
+  </div>
+  <div id="inherited-fields-com.ksyun.media.shortvideo.kit.EditBase-summary" style="display: none;">
+    <table class="jd-sumtable-expando">
+    
 
     
       <tr class="alt-color api apilevel-" >
           <td class="jd-typecol">
           public
+          static
+          final
+          int</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#SCALING_MODE_BEST_FIT">SCALING_MODE_BEST_FIT</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class=" api apilevel-" >
+          <td class="jd-typecol">
+          public
+          static
+          final
+          int</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#SCALING_MODE_CROP">SCALING_MODE_CROP</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class="alt-color api apilevel-" >
+          <td class="jd-typecol">
+          public
+          static
+          final
+          int</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#SCALING_MODE_FULL_FILL">SCALING_MODE_FULL_FILL</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class=" api apilevel-" >
+          <td class="jd-typecol">
+          protected
           static
           
           float</td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#DEFAULT_SCALE">DEFAULT_SCALE</a></td>
-          <td class="jd-descrcol" width="100%"></td>
-      </tr>
-      
-    
-      <tr class=" api apilevel-" >
-          <td class="jd-typecol">
-          public
-          static
-          
-          int</td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#SCALE_TYPE_1_1">SCALE_TYPE_1_1</a></td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#SPEED_MAX_VALUE">SPEED_MAX_VALUE</a></td>
           <td class="jd-descrcol" width="100%"></td>
       </tr>
       
     
       <tr class="alt-color api apilevel-" >
           <td class="jd-typecol">
-          public
+          protected
           static
           
-          int</td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#SCALE_TYPE_3_4">SCALE_TYPE_3_4</a></td>
+          float</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#SPEED_MIN_VALUE">SPEED_MIN_VALUE</a></td>
           <td class="jd-descrcol" width="100%"></td>
       </tr>
       
     
       <tr class=" api apilevel-" >
           <td class="jd-typecol">
-          public
-          static
+          protected
           
-          int</td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#SCALE_TYPE_9_16">SCALE_TYPE_9_16</a></td>
+          
+          AudioFilterMgt</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#mAudioFilterMgt">mAudioFilterMgt</a></td>
           <td class="jd-descrcol" width="100%"></td>
       </tr>
       
     
       <tr class="alt-color api apilevel-" >
           <td class="jd-typecol">
-          public
-          static
-          final
-          int</td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#SCALING_MODE_BEST_FIT">SCALING_MODE_BEST_FIT</a></td>
+          protected
+          
+          
+          AudioMixer</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#mAudioMixer">mAudioMixer</a></td>
           <td class="jd-descrcol" width="100%"></td>
       </tr>
       
     
       <tr class=" api apilevel-" >
           <td class="jd-typecol">
-          public
-          static
-          final
-          int</td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#SCALING_MODE_CROP">SCALING_MODE_CROP</a></td>
+          protected
+          
+          
+          AudioPlayerCapture</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#mAudioPlayerCapture">mAudioPlayerCapture</a></td>
           <td class="jd-descrcol" width="100%"></td>
       </tr>
       
     
       <tr class="alt-color api apilevel-" >
           <td class="jd-typecol">
-          public
-          static
-          final
-          int</td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#SCALING_MODE_FULL_FILL">SCALING_MODE_FULL_FILL</a></td>
+          protected
+          
+          
+          <a href="../../../../../com/ksyun/media/shortvideo/kit/KSYComposeKit.html">KSYComposeKit</a></td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#mComposeKit">mComposeKit</a></td>
           <td class="jd-descrcol" width="100%"></td>
       </tr>
       
     
       <tr class=" api apilevel-" >
           <td class="jd-typecol">
-          public
+          protected
           
           
-          IMediaPlayer.OnErrorListener</td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#mMediaPlayerOnErrorListener">mMediaPlayerOnErrorListener</a></td>
+          String</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#mComposeTmpUrl">mComposeTmpUrl</a></td>
           <td class="jd-descrcol" width="100%"></td>
       </tr>
       
     
       <tr class="alt-color api apilevel-" >
           <td class="jd-typecol">
-          public
+          protected
           
           
-          IMediaPlayer.OnInfoListener</td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#mMediaPlayerOnInfoListener">mMediaPlayerOnInfoListener</a></td>
+          String</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#mComposeUrl">mComposeUrl</a></td>
           <td class="jd-descrcol" width="100%"></td>
       </tr>
       
     
+      <tr class=" api apilevel-" >
+          <td class="jd-typecol">
+          protected
+          
+          
+          Context</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#mContext">mContext</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class="alt-color api apilevel-" >
+          <td class="jd-typecol">
+          protected
+          
+          
+          boolean</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#mDelayedStartEditPreview">mDelayedStartEditPreview</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class=" api apilevel-" >
+          <td class="jd-typecol">
+          protected
+          
+          
+          long</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#mEditDuration">mEditDuration</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class="alt-color api apilevel-" >
+          <td class="jd-typecol">
+          protected
+          
+          
+          String</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#mEditUri">mEditUri</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class=" api apilevel-" >
+          <td class="jd-typecol">
+          protected
+          
+          
+          GLRender</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#mGLRender">mGLRender</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class="alt-color api apilevel-" >
+          <td class="jd-typecol">
+          protected
+          
+          
+          ImgTexFilterMgt</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#mImgTexFilterMgt">mImgTexFilterMgt</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class=" api apilevel-" >
+          <td class="jd-typecol">
+          protected
+          
+          
+          ImgTexMixer</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#mImgTexPreviewMixer">mImgTexPreviewMixer</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class="alt-color api apilevel-" >
+          <td class="jd-typecol">
+          protected
+          
+          
+          ImgTexScaleFilter</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#mImgTexScaleFilter">mImgTexScaleFilter</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class=" api apilevel-" >
+          <td class="jd-typecol">
+          protected
+          
+          
+          Handler</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#mMainHandler">mMainHandler</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class="alt-color api apilevel-" >
+          <td class="jd-typecol">
+          protected
+          
+          
+          <a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMergeKit.html">KSYMergeKit</a></td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#mMergeKit">mMergeKit</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class=" api apilevel-" >
+          <td class="jd-typecol">
+          protected
+          
+          
+          float</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#mOriginAudioVolume">mOriginAudioVolume</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class="alt-color api apilevel-" >
+          <td class="jd-typecol">
+          protected
+          
+          
+          boolean</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#mPlayPaused">mPlayPaused</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class=" api apilevel-" >
+          <td class="jd-typecol">
+          protected
+          
+          
+          <a href="../../../../../com/ksyun/media/shortvideo/sticker/KSYStickerView.html">KSYStickerView</a></td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#mStickerView">mStickerView</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class="alt-color api apilevel-" >
+          <td class="jd-typecol">
+          protected
+          
+          
+          int</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#mTimeEffectPreviewKey">mTimeEffectPreviewKey</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class=" api apilevel-" >
+          <td class="jd-typecol">
+          protected
+          
+          
+          int</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#mTimeEffectType">mTimeEffectType</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class="alt-color api apilevel-" >
+          <td class="jd-typecol">
+          protected
+          
+          
+          List&lt;<a href="../../../../../com/ksyun/media/shortvideo/timereffect/TimerEffectFrame.html">TimerEffectFrame</a>&gt;</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#mTimerEffectFrames">mTimerEffectFrames</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class=" api apilevel-" >
+          <td class="jd-typecol">
+          protected
+          
+          
+          int</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#mVideoHeight">mVideoHeight</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class="alt-color api apilevel-" >
+          <td class="jd-typecol">
+          protected
+          
+          
+          int</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#mVideoWidth">mVideoWidth</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class=" api apilevel-" >
+          <td class="jd-typecol">
+          protected
+          
+          
+          WaterMarkCapture</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#mWaterMarkCapture">mWaterMarkCapture</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+</table>
+  </div>
+</div>
+</td></tr>
+
+
+
 
 </table>
-
-
-
 
 
 
@@ -570,260 +917,10 @@ Summary:
             
             
             
-            void
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#addPaintView(View)">addPaintView</a></span>(View view)
-        
-        <div class="jd-descrdiv">add paint view</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class=" api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            void
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#addStickerView(com.ksyun.media.shortvideo.sticker.KSYStickerView)">addStickerView</a></span>(<a href="../../../../../com/ksyun/media/shortvideo/sticker/KSYStickerView.html">KSYStickerView</a> view)
-        
-        <div class="jd-descrdiv">add static sticker view for preview and add/remove stickers</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            int
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#addTimerEffectFilter(com.ksyun.media.shortvideo.timereffect.TimerEffectInfo)">addTimerEffectFilter</a></span>(<a href="../../../../../com/ksyun/media/shortvideo/timereffect/TimerEffectInfo.html">TimerEffectInfo</a> effectInfo)
-        
-        <div class="jd-descrdiv">add timer effect for filter</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class=" api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            void
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#enableOriginAudio(boolean)">enableOriginAudio</a></span>(boolean enable)
-        
-        <div class="jd-descrdiv">enable origin audio</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            AudioFilterMgt
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#getAudioFilterMgt()">getAudioFilterMgt</a></span>()
-        
-        <div class="jd-descrdiv">Get AudioFilterMgt instance to manage audio filters.</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class=" api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            AudioPlayerCapture
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#getAudioPlayerCapture()">getAudioPlayerCapture</a></span>()
-        
-        <div class="jd-descrdiv">Get <code><a href="../../../../../AudioPlayerCapture/package-summary.html">AudioPlayerCapture</a></code> instance which could handle BGM related operations.</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            float
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#getBgmVolume()">getBgmVolume</a></span>()
-        
-        <div class="jd-descrdiv">get bgm volume</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class=" api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            float
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#getCropScale()">getCropScale</a></span>()
-        
-        <div class="jd-descrdiv">the max size for@return</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
             long
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#getEditDuration()">getEditDuration</a></span>()
-        
-        <div class="jd-descrdiv">return valid value after <code><a href="../../../../../com/ksyun/media/shortvideo/utils/ShortVideoConstants.html#SHORTVIDEO_EDIT_PREPARED">SHORTVIDEO_EDIT_PREPARED</a></code></div>
-  
-  </td></tr>
-
-
-	 
-    <tr class=" api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            long
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#getEditPreviewCurrentPosition()">getEditPreviewCurrentPosition</a></span>()
-        
-  </td></tr>
-
-
-	 
-    <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            String
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#getEditUrl()">getEditUrl</a></span>()
-        
-        <div class="jd-descrdiv">get edit url</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class=" api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            GLRender
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#getGLRender()">getGLRender</a></span>()
-        
-        <div class="jd-descrdiv">Get <code><a href="../../../../../GLRender/package-summary.html">GLRender</a></code> instance.</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            ImgTexFilterMgt
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#getImgTexFilterMgt()">getImgTexFilterMgt</a></span>()
-        
-        <div class="jd-descrdiv">Get ImgTexFilterMgt instance to manage GPU filters.</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class=" api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            ImgTexMixer
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#getImgTexPreviewMixer()">getImgTexPreviewMixer</a></span>()
-        
-        <div class="jd-descrdiv">Get ImgTexMixer instance which could handle PIP related operations for preview.</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            boolean
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#getIsLandscape()">getIsLandscape</a></span>()
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#getCurrentPosition()">getCurrentPosition</a></span>()
         
   </td></tr>
 
@@ -836,46 +933,10 @@ Summary:
             
             
             
-            float
+            <a href="../../../../../com/ksyun/media/shortvideo/capture/MediaCapture.html">MediaCapture</a>
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#getMAXSpeed()">getMAXSpeed</a></span>()
-        
-        <div class="jd-descrdiv">return the max speed for preview</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            float
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#getMINSpeed()">getMINSpeed</a></span>()
-        
-        <div class="jd-descrdiv">return the min speed for preview</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class=" api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            KSYMediaPlayer
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#getMediaPlayer()">getMediaPlayer</a></span>()
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#getMediaCapture()">getMediaCapture</a></span>()
         
   </td></tr>
 
@@ -888,70 +949,16 @@ Summary:
             
             
             
-            float
+            <a href="../../../../../com/ksyun/media/shortvideo/kit/PlayRanges.html">PlayRanges</a>
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#getNomalSpeed()">getNomalSpeed</a></span>()
-        
-        <div class="jd-descrdiv">return the nomal speed for preview</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class=" api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            float
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#getOriginAudioVolume()">getOriginAudioVolume</a></span>()
-        
-        <div class="jd-descrdiv">get mic volume</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            RectF
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#getPreviewCropRect()">getPreviewCropRect</a></span>()
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#getPlayableRanges()">getPlayableRanges</a></span>()
         
   </td></tr>
 
 
 	 
     <tr class=" api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            int
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#getProgress()">getProgress</a></span>()
-        
-        <div class="jd-descrdiv">return compose progress</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -969,77 +976,7 @@ Summary:
 
 
 	 
-    <tr class=" api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            int
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#getTimeEffectCount()">getTimeEffectCount</a></span>()
-        
-        <div class="jd-descrdiv">return timer effect count</div>
-  
-  </td></tr>
-
-
-	 
     <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            <a href="../../../../../com/ksyun/media/shortvideo/timereffect/TimerEffectInfo.html">TimerEffectInfo</a>
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#getTimerEffectInfo(int)">getTimerEffectInfo</a></span>(int id)
-        
-        <div class="jd-descrdiv">return timer effect depend id</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class=" api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            String
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#getTmpComposePath(java.lang.String)">getTmpComposePath</a></span>(String url)
-        
-  </td></tr>
-
-
-	 
-    <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            static
-            
-            String
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#getVersion()">getVersion</a></span>()
-        
-        <div class="jd-descrdiv">Get current sdk version.</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1057,24 +994,6 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            int
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#getVideoEncodeMethod()">getVideoEncodeMethod</a></span>()
-        
-        <div class="jd-descrdiv">Get video encode method.</div>
-  
-  </td></tr>
-
-
-	 
     <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
@@ -1082,36 +1001,16 @@ Summary:
             
             
             
-            Bitmap
+            boolean
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#getVideoThumbnailAtTime(long, int, int, boolean)">getVideoThumbnailAtTime</a></span>(long seekTime, int width, int height, boolean accurate)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#isPaused()">isPaused</a></span>()
         
-        <div class="jd-descrdiv">get thumbnail on time</div>
-  
   </td></tr>
 
 
 	 
     <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            void
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#hideWaterMarkLogo()">hideWaterMarkLogo</a></span>()
-        
-        <div class="jd-descrdiv">Hide watermark logo.</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1130,7 +1029,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1149,7 +1048,7 @@ Summary:
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1168,7 +1067,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1186,7 +1085,7 @@ Summary:
 
 
 	 
-    <tr class=" api apilevel-" >
+    <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1202,7 +1101,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1220,44 +1119,7 @@ Summary:
 
 
 	 
-    <tr class=" api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            void
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#removeAllTimeEffectFilter()">removeAllTimeEffectFilter</a></span>()
-        
-        <div class="jd-descrdiv">remove all effect filter
-</div>
-  
-  </td></tr>
-
-
-	 
     <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            void
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#removeTimerEffectFilter(int)">removeTimerEffectFilter</a></span>(int index)
-        
-        <div class="jd-descrdiv">移除特效滤镜</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1276,24 +1138,6 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            void
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#seekBGM(long)">seekBGM</a></span>(long seekto)
-        
-        <div class="jd-descrdiv">seek bgm to targart time</div>
-  
-  </td></tr>
-
-
-	 
     <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
@@ -1304,213 +1148,15 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#seekEditPreview(long)">seekEditPreview</a></span>(long seekto)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#seekTo(long)">seekTo</a></span>(long position)
         
-        <div class="jd-descrdiv">seek preview to target time</div>
+        <div class="jd-descrdiv">seek to position for preview</div>
   
   </td></tr>
 
 
 	 
     <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            void
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#seekTo(long)">seekTo</a></span>(long seekto)
-        
-        <div class="jd-descrdiv">seek to position for previewView</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class=" api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            void
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setAudioBitrate(int)">setAudioBitrate</a></span>(int bitrate)
-        
-        <div class="jd-descrdiv">Set compose audio bitrate in bps.</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            void
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setAudioEncodeMethod(int)">setAudioEncodeMethod</a></span>(int encodeMethod)
-        
-        <div class="jd-descrdiv">Set compose encode method for audio.</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class=" api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            void
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setAudioEncodeProfile(int)">setAudioEncodeProfile</a></span>(int profile)
-        
-        <div class="jd-descrdiv">Set audio encode profile.</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            void
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setAudioKBitrate(int)">setAudioKBitrate</a></span>(int kBitrate)
-        
-        <div class="jd-descrdiv">Set compose audio bitrate in kbps.</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class=" api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            void
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setAuidoDecodeMethod(int)">setAuidoDecodeMethod</a></span>(int decodeMethod)
-        
-        <div class="jd-descrdiv">Set compose decode method for audio.</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            void
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setBGMRanges(long, long, boolean)">setBGMRanges</a></span>(long startTime, long endTime, boolean immediately)
-        
-        <div class="jd-descrdiv">set bgm playable ranges</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class=" api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            void
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setBgmVolume(float)">setBgmVolume</a></span>(float volume)
-        
-        <div class="jd-descrdiv">set bgm volume</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            void
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setDecodeMethod(int)">setDecodeMethod</a></span>(int decodeMethod)
-        
-        <div class="jd-descrdiv">Set compose decode method for both video and audio.</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class=" api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            void
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setDecoderMethod(int)">setDecoderMethod</a></span>(int decodeMethod)
-        
-        <div class="jd-descrdiv">Set compose decode method for video and audio.</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            void
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setDisplayPreview(GLSurfaceView)">setDisplayPreview</a></span>(GLSurfaceView surfaceView)
-        
-        <div class="jd-descrdiv">Set GLSurfaceView as camera previewer.</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1528,24 +1174,6 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            void
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setEditPreviewRanges(long, long, boolean)">setEditPreviewRanges</a></span>(long startTime, long endTime, boolean immediately)
-        
-        <div class="jd-descrdiv">set preview interval</div>
-  
-  </td></tr>
-
-
-	 
     <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
@@ -1556,81 +1184,9 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setEditPreviewUrl(java.lang.String)">setEditPreviewUrl</a></span>(String url)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setDisplayPreview(GLSurfaceView)">setDisplayPreview</a></span>(GLSurfaceView surfaceView)
         
-        <div class="jd-descrdiv">Set edit url.</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            void
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setEnableMp4FastStart(boolean)">setEnableMp4FastStart</a></span>(boolean enable)
-        
-        <div class="jd-descrdiv">Run a second pass moving the index (moov atom) to the beginning of the mp4 file.</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class=" api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            void
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setEncodeMethod(int)">setEncodeMethod</a></span>(int encodeMethod)
-        
-        <div class="jd-descrdiv">Set compose encode method for both video and audio.</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            void
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setForceVideoFrameFirst(boolean)">setForceVideoFrameFirst</a></span>(boolean videoFirst)
-        
-        <div class="jd-descrdiv">force first frame to be video， must be called before startCompose</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class=" api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            void
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setIFrameInterval(float)">setIFrameInterval</a></span>(float interval)
-        
-        <div class="jd-descrdiv">set I frame interval</div>
+        <div class="jd-descrdiv">Set GLSurfaceView as camera previewer.</div>
   
   </td></tr>
 
@@ -1664,139 +1220,13 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setOnErrorListener(com.ksyun.media.shortvideo.kit.KSYEditKit.OnErrorListener)">setOnErrorListener</a></span>(<a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.OnErrorListener.html">KSYEditKit.OnErrorListener</a> onErrorListener)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setPlayableRanges(long, long)">setPlayableRanges</a></span>(long startTime, long endTime)
         
-        <div class="jd-descrdiv">Set error listener.</div>
-  
   </td></tr>
 
 
 	 
     <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            void
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setOnInfoListener(com.ksyun.media.shortvideo.kit.KSYEditKit.OnInfoListener)">setOnInfoListener</a></span>(<a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.OnInfoListener.html">KSYEditKit.OnInfoListener</a> onInfoListener)
-        
-        <div class="jd-descrdiv">Set info listener.</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class=" api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            void
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setOriginAudioVolume(float)">setOriginAudioVolume</a></span>(float volume)
-        
-        <div class="jd-descrdiv">Set mic volume.</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            void
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setOriginAudioVolume(float, float)">setOriginAudioVolume</a></span>(float leftVolume, float rightVolume)
-        
-  </td></tr>
-
-
-	 
-    <tr class=" api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            void
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setPreviewCrop(float, float, float, float)">setPreviewCrop</a></span>(float left, float top, float w, float h)
-        
-        <div class="jd-descrdiv">crop preview</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            void
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setScale(float)">setScale</a></span>(float scale)
-        
-        <div class="jd-descrdiv">任意比例裁剪模式</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class=" api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            void
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setScaleType(int)">setScaleType</a></span>(int type)
-        
-        <div class="jd-descrdiv">set crop type</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            void
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setScalingMode(int)">setScalingMode</a></span>(int mode)
-        
-        <div class="jd-descrdiv">set crop mode</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1814,6 +1244,22 @@ Summary:
 
 
 	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            boolean
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setTimeEffectType(int, com.ksyun.media.shortvideo.kit.EditBase.TimeEffectParams)">setTimeEffectType</a></span>(int type, <a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.TimeEffectParams.html">EditBase.TimeEffectParams</a> params)
+        
+  </td></tr>
+
+
+	 
     <tr class="alt-color api apilevel-" >
         <td class="jd-typecol">
             
@@ -1824,7 +1270,7 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setTailUrl(java.lang.String)">setTailUrl</a></span>(String tailUrl)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#startPreview()">startPreview</a></span>()
         
   </td></tr>
 
@@ -1840,7 +1286,1504 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setTargetResolution(int)">setTargetResolution</a></span>(int idx)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#stopPreview()">stopPreview</a></span>()
+        
+        <div class="jd-descrdiv">stop edit preview
+</div>
+  
+  </td></tr>
+
+
+
+</table>
+
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+<table id="promethods" class="jd-sumtable"><tr><th colspan="12">Protected Methods</th></tr>
+
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            int
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#getWorkMode()">getWorkMode</a></span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#initModules()">initModules</a></span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#restartPreview()">restartPreview</a></span>()
+        
+  </td></tr>
+
+
+
+</table>
+
+
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+<table id="inhmethods" class="jd-sumtable"><tr><th>
+  <a href="#" class="toggle-all" onclick="return toggleAllInherited(this, null)">[Expand]</a>
+  <div style="clear:left;">Inherited Methods</div></th></tr>
+
+
+<tr class="api apilevel-" >
+<td colspan="12">
+  <a href="#" onclick="return toggleInherited(this, null)" id="inherited-methods-com.ksyun.media.shortvideo.kit.EditBase" class="jd-expando-trigger closed"
+          ><img id="inherited-methods-com.ksyun.media.shortvideo.kit.EditBase-trigger"
+          src="../../../../../../assets/images/triangle-closed.png"
+          class="jd-expando-trigger-img" /></a>
+From class
+
+  <a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html">com.ksyun.media.shortvideo.kit.EditBase</a>
+
+<div id="inherited-methods-com.ksyun.media.shortvideo.kit.EditBase">
+  <div id="inherited-methods-com.ksyun.media.shortvideo.kit.EditBase-list"
+        class="jd-inheritedlinks">
+  </div>
+  <div id="inherited-methods-com.ksyun.media.shortvideo.kit.EditBase-summary" style="display: none;">
+    <table class="jd-sumtable-expando">
+    
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#addPaintView(View)">addPaintView</a></span>(View view)
+        
+        <div class="jd-descrdiv">add paint view</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#addStickerView(com.ksyun.media.shortvideo.sticker.KSYStickerView)">addStickerView</a></span>(<a href="../../../../../com/ksyun/media/shortvideo/sticker/KSYStickerView.html">KSYStickerView</a> view)
+        
+        <div class="jd-descrdiv">add static sticker view for preview and add/remove stickers</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            int
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#addTimerEffectFilter(com.ksyun.media.shortvideo.timereffect.TimerEffectInfo)">addTimerEffectFilter</a></span>(<a href="../../../../../com/ksyun/media/shortvideo/timereffect/TimerEffectInfo.html">TimerEffectInfo</a> effectInfo)
+        
+        <div class="jd-descrdiv">add timer effect for filter</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            long
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#checkAndGetSeekPosition(long)">checkAndGetSeekPosition</a></span>(long position)
+        
+        <div class="jd-descrdiv">检查position，不能超过裁剪区间</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#doPrepared(long, int, int, int)">doPrepared</a></span>(long duration, int width, int height, int degree)
+        
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#doStopped()">doStopped</a></span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#enableOriginAudio(boolean)">enableOriginAudio</a></span>(boolean enable)
+        
+        <div class="jd-descrdiv">enable origin audio</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            AudioFilterMgt
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#getAudioFilterMgt()">getAudioFilterMgt</a></span>()
+        
+        <div class="jd-descrdiv">Get AudioFilterMgt instance to manage audio filters.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            AudioPlayerCapture
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#getAudioPlayerCapture()">getAudioPlayerCapture</a></span>()
+        
+        <div class="jd-descrdiv">Get <code><a href="../../../../../AudioPlayerCapture/package-summary.html">AudioPlayerCapture</a></code> instance which could handle BGM related operations.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            float
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#getBgmVolume()">getBgmVolume</a></span>()
+        
+        <div class="jd-descrdiv">get bgm volume</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            float
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#getCropScale()">getCropScale</a></span>()
+        
+        <div class="jd-descrdiv">the max size for@return</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            abstract
+            
+            
+            
+            
+            long
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#getCurrentPosition()">getCurrentPosition</a></span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            long
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#getEditDuration()">getEditDuration</a></span>()
+        
+        <div class="jd-descrdiv">return valid value after <code><a href="../../../../../com/ksyun/media/shortvideo/utils/ShortVideoConstants.html#SHORTVIDEO_EDIT_PREPARED">SHORTVIDEO_EDIT_PREPARED</a></code></div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            String
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#getEditUrl()">getEditUrl</a></span>()
+        
+        <div class="jd-descrdiv">get edit url</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            GLRender
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#getGLRender()">getGLRender</a></span>()
+        
+        <div class="jd-descrdiv">Get <code><a href="../../../../../GLRender/package-summary.html">GLRender</a></code> instance.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            ImgTexFilterMgt
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#getImgTexFilterMgt()">getImgTexFilterMgt</a></span>()
+        
+        <div class="jd-descrdiv">Get ImgTexFilterMgt instance to manage GPU filters.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            ImgTexMixer
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#getImgTexPreviewMixer()">getImgTexPreviewMixer</a></span>()
+        
+        <div class="jd-descrdiv">Get ImgTexMixer instance which could handle PIP related operations for preview.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            boolean
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#getIsLandscape()">getIsLandscape</a></span>()
+        
+        <div class="jd-descrdiv">return src video landscape info</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            float
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#getMAXSpeed()">getMAXSpeed</a></span>()
+        
+        <div class="jd-descrdiv">return the max speed for preview</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            float
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#getMINSpeed()">getMINSpeed</a></span>()
+        
+        <div class="jd-descrdiv">return the min speed for preview</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            abstract
+            
+            
+            
+            
+            <a href="../../../../../com/ksyun/media/shortvideo/capture/MediaCapture.html">MediaCapture</a>
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#getMediaCapture()">getMediaCapture</a></span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            KSYMediaPlayer
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#getMediaPlayer()">getMediaPlayer</a></span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            float
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#getNomalSpeed()">getNomalSpeed</a></span>()
+        
+        <div class="jd-descrdiv">return the nomal speed for preview</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            float
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#getOriginAudioVolume()">getOriginAudioVolume</a></span>()
+        
+        <div class="jd-descrdiv">get mic volume</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            abstract
+            
+            
+            
+            
+            <a href="../../../../../com/ksyun/media/shortvideo/kit/PlayRanges.html">PlayRanges</a>
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#getPlayableRanges()">getPlayableRanges</a></span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            RectF
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#getPreviewCropRect()">getPreviewCropRect</a></span>()
+        
+        <div class="jd-descrdiv">return crop info for preview</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            int
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#getProgress()">getProgress</a></span>()
+        
+        <div class="jd-descrdiv">return compose progress</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            boolean
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#getReversePlay()">getReversePlay</a></span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            int
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#getTimeEffectCount()">getTimeEffectCount</a></span>()
+        
+        <div class="jd-descrdiv">return timer effect count</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            <a href="../../../../../com/ksyun/media/shortvideo/timereffect/TimerEffectInfo.html">TimerEffectInfo</a>
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#getTimerEffectInfo(int)">getTimerEffectInfo</a></span>(int id)
+        
+        <div class="jd-descrdiv">return timer effect depend id</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            static
+            
+            String
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#getVersion()">getVersion</a></span>()
+        
+        <div class="jd-descrdiv">Get current sdk version.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            abstract
+            
+            
+            
+            
+            String
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#getVideoCodecMeta()">getVideoCodecMeta</a></span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            int
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#getVideoEncodeMethod()">getVideoEncodeMethod</a></span>()
+        
+        <div class="jd-descrdiv">Get video encode method.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            Bitmap
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#getVideoThumbnailAtTime(long, int, int, boolean)">getVideoThumbnailAtTime</a></span>(long seekTime, int width, int height, boolean accurate)
+        
+        <div class="jd-descrdiv">get thumbnail on time</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            abstract
+            
+            
+            
+            
+            int
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#getWorkMode()">getWorkMode</a></span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#hideWaterMarkLogo()">hideWaterMarkLogo</a></span>()
+        
+        <div class="jd-descrdiv">Hide watermark logo.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#initModules()">initModules</a></span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            abstract
+            
+            
+            
+            
+            boolean
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#isPaused()">isPaused</a></span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#onPause()">onPause</a></span>()
+        
+        <div class="jd-descrdiv">pause edit preview
+ Should be called on Activity.onPause or Fragment.onPause.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#onResume()">onResume</a></span>()
+        
+        <div class="jd-descrdiv">pause edit preview
+ Should be called on Activity.onResume or Fragment.onResume.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#pauseEditPreview()">pauseEditPreview</a></span>()
+        
+        <div class="jd-descrdiv">pause all edit preview included bgm play
+</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            abstract
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#pausePlay(boolean)">pausePlay</a></span>(boolean pause)
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#postError(int, long)">postError</a></span>(int type, long msg)
+        
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#postInfo(int, java.lang.String)">postInfo</a></span>(int type, String msg)
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            abstract
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#queueLastFrame()">queueLastFrame</a></span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#release()">release</a></span>()
+        
+        <div class="jd-descrdiv">Release all resources used by KSYEditKit.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#removeAllTimeEffectFilter()">removeAllTimeEffectFilter</a></span>()
+        
+        <div class="jd-descrdiv">remove all effect filter
+</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#removeTimerEffectFilter(int)">removeTimerEffectFilter</a></span>(int index)
+        
+        <div class="jd-descrdiv">移除特效滤镜</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            abstract
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#restartPreview()">restartPreview</a></span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#resumeEditPreview()">resumeEditPreview</a></span>()
+        
+        <div class="jd-descrdiv">resume all edit preview included bgm play
+</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#seekBGM(long)">seekBGM</a></span>(long seekto)
+        
+        <div class="jd-descrdiv">seek bgm to target time</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            abstract
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#seekTo(long)">seekTo</a></span>(long position)
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setAudioBitrate(int)">setAudioBitrate</a></span>(int bitrate)
+        
+        <div class="jd-descrdiv">Set compose audio bitrate in bps.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setAudioEncodeMethod(int)">setAudioEncodeMethod</a></span>(int encodeMethod)
+        
+        <div class="jd-descrdiv">Set compose encode method for audio.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setAudioEncodeProfile(int)">setAudioEncodeProfile</a></span>(int profile)
+        
+        <div class="jd-descrdiv">Set audio encode profile.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setAudioKBitrate(int)">setAudioKBitrate</a></span>(int kBitrate)
+        
+        <div class="jd-descrdiv">Set compose audio bitrate in kbps.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setAuidoDecodeMethod(int)">setAuidoDecodeMethod</a></span>(int decodeMethod)
+        
+        <div class="jd-descrdiv">Set compose decode method for audio.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setBGMRanges(long, long, boolean)">setBGMRanges</a></span>(long startTime, long endTime, boolean immediately)
+        
+        <div class="jd-descrdiv">set bgm playable ranges</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setBgmVolume(float)">setBgmVolume</a></span>(float volume)
+        
+        <div class="jd-descrdiv">set bgm volume</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setDecodeMethod(int)">setDecodeMethod</a></span>(int decodeMethod)
+        
+        <div class="jd-descrdiv">Set compose decode method for both video and audio.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setDecoderMethod(int)">setDecoderMethod</a></span>(int decodeMethod)
+        
+        <div class="jd-descrdiv">Set compose decode method for video and audio.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setEditPreviewRanges(long, long, boolean)">setEditPreviewRanges</a></span>(long startTime, long endTime, boolean immediately)
+        
+        <div class="jd-descrdiv">set preview interval</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setEditPreviewUrl(java.lang.String)">setEditPreviewUrl</a></span>(String url)
+        
+        <div class="jd-descrdiv">Set edit url.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setEnableMp4FastStart(boolean)">setEnableMp4FastStart</a></span>(boolean enable)
+        
+        <div class="jd-descrdiv">Run a second pass moving the index (moov atom) to the beginning of the mp4 file.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setEncodeMethod(int)">setEncodeMethod</a></span>(int encodeMethod)
+        
+        <div class="jd-descrdiv">Set compose encode method for both video and audio.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setForceVideoFrameFirst(boolean)">setForceVideoFrameFirst</a></span>(boolean videoFirst)
+        
+        <div class="jd-descrdiv">force first frame to be video， must be called before startCompose</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setIFrameInterval(float)">setIFrameInterval</a></span>(float interval)
+        
+        <div class="jd-descrdiv">set I frame interval</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            abstract
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setLooping(boolean)">setLooping</a></span>(boolean loop)
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setOnErrorListener(com.ksyun.media.shortvideo.kit.EditBase.OnErrorListener)">setOnErrorListener</a></span>(<a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.OnErrorListener.html">EditBase.OnErrorListener</a> onErrorListener)
+        
+        <div class="jd-descrdiv">Set error listener.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setOnInfoListener(com.ksyun.media.shortvideo.kit.EditBase.OnInfoListener)">setOnInfoListener</a></span>(<a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.OnInfoListener.html">EditBase.OnInfoListener</a> onInfoListener)
+        
+        <div class="jd-descrdiv">Set info listener.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setOriginAudioVolume(float)">setOriginAudioVolume</a></span>(float volume)
+        
+        <div class="jd-descrdiv">Set mic volume.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setOriginAudioVolume(float, float)">setOriginAudioVolume</a></span>(float leftVolume, float rightVolume)
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            abstract
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setPlayableRanges(long, long)">setPlayableRanges</a></span>(long startTime, long endTime)
+        
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setPreviewCrop(float, float, float, float)">setPreviewCrop</a></span>(float left, float top, float w, float h)
+        
+        <div class="jd-descrdiv">crop preview</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setRotateDegrees(int)">setRotateDegrees</a></span>(int degrees)
+        
+        <div class="jd-descrdiv">Set rotate degrees in anti-clockwise of current video.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setScale(float)">setScale</a></span>(float scale)
+        
+        <div class="jd-descrdiv">任意比例裁剪模式</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setScaleType(int)">setScaleType</a></span>(int type)
+        
+        <div class="jd-descrdiv">set crop type</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setScalingMode(int)">setScalingMode</a></span>(int mode)
+        
+        <div class="jd-descrdiv">set crop mode</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setTailUrl(java.lang.String)">setTailUrl</a></span>(String tailUrl)
+        
+        <div class="jd-descrdiv">set tail url</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setTargetResolution(int)">setTargetResolution</a></span>(int idx)
         
         <div class="jd-descrdiv">Set compose target resolution index.</div>
   
@@ -1858,7 +2801,7 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setTargetResolution(int, int)">setTargetResolution</a></span>(int width, int height)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setTargetResolution(int, int)">setTargetResolution</a></span>(int width, int height)
         
         <div class="jd-descrdiv">Set compose target resolution.</div>
   
@@ -1876,7 +2819,7 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setTimerEffectOverlying(boolean)">setTimerEffectOverlying</a></span>(boolean overlying)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setTimerEffectOverlying(boolean)">setTimerEffectOverlying</a></span>(boolean overlying)
         
         <div class="jd-descrdiv">特效滤镜是否重叠，最好在添加第一个特效滤镜前设置，不建议动态设置</div>
   
@@ -1894,8 +2837,10 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setTitleUrl(java.lang.String)">setTitleUrl</a></span>(String titleUrl)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setTitleUrl(java.lang.String)">setTitleUrl</a></span>(String titleUrl)
         
+        <div class="jd-descrdiv">set title url</div>
+  
   </td></tr>
 
 
@@ -1910,10 +2855,10 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setVideoBitrate(int)">setVideoBitrate</a></span>(int bitrate)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setVideoBitrate(int)">setVideoBitrate</a></span>(int bitrate)
         
         <div class="jd-descrdiv">Set compose video bitrate in bps<br/>
- Would take effect on next <code><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#startCompose(java.lang.String)">startCompose(String)</a></code> ()} call.</div>
+ Would take effect on next <code><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#startCompose(java.lang.String)">startCompose(String)</a></code> ()} call.</div>
   
   </td></tr>
 
@@ -1929,7 +2874,7 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setVideoCodecId(int)">setVideoCodecId</a></span>(int codecId)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setVideoCodecId(int)">setVideoCodecId</a></span>(int codecId)
         
         <div class="jd-descrdiv">Set compose codec id to video encoder.</div>
   
@@ -1947,7 +2892,7 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setVideoCrf(int)">setVideoCrf</a></span>(int crf)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setVideoCrf(int)">setVideoCrf</a></span>(int crf)
         
         <div class="jd-descrdiv">set Constant Rate Factor
  do not effect on StreamerConstants#ENCODE_METHOD_HARDWARE
@@ -1968,7 +2913,7 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setVideoDecodeMethod(int)">setVideoDecodeMethod</a></span>(int decodeMethod)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setVideoDecodeMethod(int)">setVideoDecodeMethod</a></span>(int decodeMethod)
         
         <div class="jd-descrdiv">Set compose decode method for video.</div>
   
@@ -1986,7 +2931,7 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setVideoEncodeMethod(int)">setVideoEncodeMethod</a></span>(int encodeMethod)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setVideoEncodeMethod(int)">setVideoEncodeMethod</a></span>(int encodeMethod)
         
         <div class="jd-descrdiv">Set compose encode method for video.</div>
   
@@ -2004,7 +2949,7 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setVideoEncodeProfile(int)">setVideoEncodeProfile</a></span>(int profile)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setVideoEncodeProfile(int)">setVideoEncodeProfile</a></span>(int profile)
         
         <div class="jd-descrdiv">Set encode profile to video encoder.</div>
   
@@ -2022,7 +2967,7 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setVideoFps(float)">setVideoFps</a></span>(float fps)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setVideoFps(float)">setVideoFps</a></span>(float fps)
         
         <div class="jd-descrdiv">set compose video fps.</div>
   
@@ -2040,10 +2985,10 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setVideoKBitrate(int)">setVideoKBitrate</a></span>(int kBitrate)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setVideoKBitrate(int)">setVideoKBitrate</a></span>(int kBitrate)
         
         <div class="jd-descrdiv">Set compose video bitrate in kbps<br/>
- Would take effect on next <code><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#startCompose(java.lang.String)">startCompose(String)</a></code> ()} call.</div>
+ Would take effect on next <code><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#startCompose(java.lang.String)">startCompose(String)</a></code> ()} call.</div>
   
   </td></tr>
 
@@ -2059,7 +3004,7 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#showWaterMarkLogo(java.lang.String, float, float, float, float, float)">showWaterMarkLogo</a></span>(String path, float x, float y, float w, float h, float alpha)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#showWaterMarkLogo(java.lang.String, float, float, float, float, float)">showWaterMarkLogo</a></span>(String path, float x, float y, float w, float h, float alpha)
         
         <div class="jd-descrdiv">Set and show watermark logo both on preview and compose.</div>
   
@@ -2077,7 +3022,7 @@ Summary:
             boolean
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#startBgm(java.lang.String, boolean)">startBgm</a></span>(String path, boolean loop)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#startBgm(java.lang.String, boolean)">startBgm</a></span>(String path, boolean loop)
         
         <div class="jd-descrdiv">Start bgm play.</div>
   
@@ -2095,7 +3040,7 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#startCompose(java.lang.String)">startCompose</a></span>(String desUrl)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#startCompose(java.lang.String)">startCompose</a></span>(String desUrl)
         
         <div class="jd-descrdiv">start compose</div>
   
@@ -2113,10 +3058,44 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#startEditPreview()">startEditPreview</a></span>()
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#startEditPreview()">startEditPreview</a></span>()
         
         <div class="jd-descrdiv">start edit preview
- must  <code><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setEditPreviewUrl(java.lang.String)">setEditPreviewUrl(String)</a></code> before call</div>
+ must  <code><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#setEditPreviewUrl(java.lang.String)">setEditPreviewUrl(String)</a></code> before call</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            abstract
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#startPreview()">startPreview</a></span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#stopBgm()">stopBgm</a></span>()
+        
+        <div class="jd-descrdiv">Stop bgm play.</div>
   
   </td></tr>
 
@@ -2132,25 +3111,7 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#stopBgm()">stopBgm</a></span>()
-        
-        <div class="jd-descrdiv">Stop bgm play.</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class="alt-color api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
-            void
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#stopCompose()">stopCompose</a></span>()
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#stopCompose()">stopCompose</a></span>()
         
         <div class="jd-descrdiv">stop compose
 </div>
@@ -2159,6 +3120,57 @@ Summary:
 
 
 	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#stopEditPreview()">stopEditPreview</a></span>()
+        
+        <div class="jd-descrdiv">stop edit preview
+</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            abstract
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#stopPreview()">stopPreview</a></span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#updateFilterEffect()">updateFilterEffect</a></span>()
+        
+  </td></tr>
+
+
+	 
     <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
@@ -2169,10 +3181,9 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#stopEditPreview()">stopEditPreview</a></span>()
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#updateSpeed(boolean)">updateSpeed</a></span>(boolean plus)
         
-        <div class="jd-descrdiv">stop edit preview
-</div>
+        <div class="jd-descrdiv">update speed of preview</div>
   
   </td></tr>
 
@@ -2188,9 +3199,9 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#updateSpeed(boolean)">updateSpeed</a></span>(boolean plus)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#updateSticker(long)">updateSticker</a></span>(long pts)
         
-        <div class="jd-descrdiv">update speed of preview</div>
+        <div class="jd-descrdiv">合成时更新贴纸显示</div>
   
   </td></tr>
 
@@ -2206,7 +3217,7 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#updateStickerDraw()">updateStickerDraw</a></span>()
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#updateStickerDraw()">updateStickerDraw</a></span>()
         
         <div class="jd-descrdiv">update sticker draw
  立即生效当前预览时间点的贴纸绘制状态时调用，例如：暂停状态时seek后
@@ -2226,26 +3237,36 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#updateTimerEffectEndTime(int, long)">updateTimerEffectEndTime</a></span>(int id, long endTime)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#updateStickerDraw(long)">updateStickerDraw</a></span>(long currentPosition)
+        
+        <div class="jd-descrdiv">预览更新贴纸显示</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html#updateTimerEffectEndTime(int, long)">updateTimerEffectEndTime</a></span>(int id, long endTime)
         
         <div class="jd-descrdiv">更新滤镜的结束事件</div>
   
   </td></tr>
 
 
-
 </table>
+  </div>
+</div>
+</td></tr>
 
-
-
-
-
-
-
-<!-- ========== METHOD SUMMARY =========== -->
-<table id="inhmethods" class="jd-sumtable"><tr><th>
-  <a href="#" class="toggle-all" onclick="return toggleAllInherited(this, null)">[Expand]</a>
-  <div style="clear:left;">Inherited Methods</div></th></tr>
 
 
 <tr class="api apilevel-" >
@@ -2475,283 +3496,6 @@ From class
 <!-- Fields -->
 
 
-<!-- ========= FIELD DETAIL ======== -->
-<h2>Fields</h2>
-
-
-
-
-<a id="DEFAULT_SCALE"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-        static 
-         
-        float
-      </span>
-        DEFAULT_SCALE
-    </h4>
-      <div class="api-level">
-        
-
-
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
-
-    
-    </div>
-</div>
-
-
-
-<a id="SCALE_TYPE_1_1"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-        static 
-         
-        int
-      </span>
-        SCALE_TYPE_1_1
-    </h4>
-      <div class="api-level">
-        
-
-
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
-
-    
-    </div>
-</div>
-
-
-
-<a id="SCALE_TYPE_3_4"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-        static 
-         
-        int
-      </span>
-        SCALE_TYPE_3_4
-    </h4>
-      <div class="api-level">
-        
-
-
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
-
-    
-    </div>
-</div>
-
-
-
-<a id="SCALE_TYPE_9_16"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-        static 
-         
-        int
-      </span>
-        SCALE_TYPE_9_16
-    </h4>
-      <div class="api-level">
-        
-
-
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
-
-    
-    </div>
-</div>
-
-
-
-<a id="SCALING_MODE_BEST_FIT"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-        static 
-        final 
-        int
-      </span>
-        SCALING_MODE_BEST_FIT
-    </h4>
-      <div class="api-level">
-        
-
-
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
-
-    
-    </div>
-</div>
-
-
-
-<a id="SCALING_MODE_CROP"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-        static 
-        final 
-        int
-      </span>
-        SCALING_MODE_CROP
-    </h4>
-      <div class="api-level">
-        
-
-
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
-
-    
-    </div>
-</div>
-
-
-
-<a id="SCALING_MODE_FULL_FILL"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-        static 
-        final 
-        int
-      </span>
-        SCALING_MODE_FULL_FILL
-    </h4>
-      <div class="api-level">
-        
-
-
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
-
-    
-    </div>
-</div>
-
-
-
-<a id="mMediaPlayerOnErrorListener"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-        IMediaPlayer.OnErrorListener
-      </span>
-        mMediaPlayerOnErrorListener
-    </h4>
-      <div class="api-level">
-        
-
-
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
-
-    
-    </div>
-</div>
-
-
-
-<a id="mMediaPlayerOnInfoListener"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-        IMediaPlayer.OnInfoListener
-      </span>
-        mMediaPlayerOnInfoListener
-    </h4>
-      <div class="api-level">
-        
-
-
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
-
-    
-    </div>
-</div>
-
-
-
-
 <!-- Public ctors -->
 
 
@@ -2806,275 +3550,7 @@ From class
 
 
 
-<a id="addPaintView(View)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">addPaintView</span>
-      <span class="normal">(View view)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>add paint view</p></div>
-
-    </div>
-</div>
-
-
-<a id="addStickerView(com.ksyun.media.shortvideo.sticker.KSYStickerView)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">addStickerView</span>
-      <span class="normal">(<a href="../../../../../com/ksyun/media/shortvideo/sticker/KSYStickerView.html">KSYStickerView</a> view)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>add static sticker view for preview and add/remove stickers</p></div>
-
-    </div>
-</div>
-
-
-<a id="addTimerEffectFilter(com.ksyun.media.shortvideo.timereffect.TimerEffectInfo)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        int
-      </span>
-      <span class="sympad">addTimerEffectFilter</span>
-      <span class="normal">(<a href="../../../../../com/ksyun/media/shortvideo/timereffect/TimerEffectInfo.html">TimerEffectInfo</a> effectInfo)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>add timer effect for filter</p></div>
-
-    </div>
-</div>
-
-
-<a id="enableOriginAudio(boolean)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">enableOriginAudio</span>
-      <span class="normal">(boolean enable)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>enable origin audio</p></div>
-
-    </div>
-</div>
-
-
-<a id="getAudioFilterMgt()"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        AudioFilterMgt
-      </span>
-      <span class="sympad">getAudioFilterMgt</span>
-      <span class="normal">()</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>Get AudioFilterMgt instance to manage audio filters.</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Returns</h5>
-      <ul class="nolist"><li>AudioFilterMgt instance
-</li></ul>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="getAudioPlayerCapture()"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        AudioPlayerCapture
-      </span>
-      <span class="sympad">getAudioPlayerCapture</span>
-      <span class="normal">()</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>Get <code><a href="../../../../../AudioPlayerCapture/package-summary.html">AudioPlayerCapture</a></code> instance which could handle BGM related operations.</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Returns</h5>
-      <ul class="nolist"><li>AudioPlayerCapture instance
-</li></ul>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="getBgmVolume()"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        float
-      </span>
-      <span class="sympad">getBgmVolume</span>
-      <span class="normal">()</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>get bgm volume</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Returns</h5>
-      <ul class="nolist"><li>volume in 0~2.0f.
-</li></ul>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="getCropScale()"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        float
-      </span>
-      <span class="sympad">getCropScale</span>
-      <span class="normal">()</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>the max size for@return</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">See Also</h5>
-      <ul class="nolist"><li><code><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#SCALING_MODE_CROP">SCALING_MODE_CROP</a></code></li>
-      </ul>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="getEditDuration()"></a>
+<a id="getCurrentPosition()"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -3086,43 +3562,7 @@ From class
          
         long
       </span>
-      <span class="sympad">getEditDuration</span>
-      <span class="normal">()</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>return valid value after <code><a href="../../../../../com/ksyun/media/shortvideo/utils/ShortVideoConstants.html#SHORTVIDEO_EDIT_PREPARED">SHORTVIDEO_EDIT_PREPARED</a></code></p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Returns</h5>
-      <ul class="nolist"><li>the origin media duration
-</li></ul>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="getEditPreviewCurrentPosition()"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        long
-      </span>
-      <span class="sympad">getEditPreviewCurrentPosition</span>
+      <span class="sympad">getCurrentPosition</span>
       <span class="normal">()</span>
     </h4>
       <div class="api-level">
@@ -3141,7 +3581,7 @@ From class
 </div>
 
 
-<a id="getEditUrl()"></a>
+<a id="getMediaCapture()"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -3151,153 +3591,9 @@ From class
          
          
          
-        String
+        <a href="../../../../../com/ksyun/media/shortvideo/capture/MediaCapture.html">MediaCapture</a>
       </span>
-      <span class="sympad">getEditUrl</span>
-      <span class="normal">()</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>get edit url</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Returns</h5>
-      <ul class="nolist"><li>edit url
-</li></ul>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="getGLRender()"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        GLRender
-      </span>
-      <span class="sympad">getGLRender</span>
-      <span class="normal">()</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>Get <code><a href="../../../../../GLRender/package-summary.html">GLRender</a></code> instance.</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Returns</h5>
-      <ul class="nolist"><li>GLRender instance.
-</li></ul>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="getImgTexFilterMgt()"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        ImgTexFilterMgt
-      </span>
-      <span class="sympad">getImgTexFilterMgt</span>
-      <span class="normal">()</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>Get ImgTexFilterMgt instance to manage GPU filters.</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Returns</h5>
-      <ul class="nolist"><li>ImgTexFilterMgt instance.
-</li></ul>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="getImgTexPreviewMixer()"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        ImgTexMixer
-      </span>
-      <span class="sympad">getImgTexPreviewMixer</span>
-      <span class="normal">()</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>Get ImgTexMixer instance which could handle PIP related operations for preview.</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Returns</h5>
-      <ul class="nolist"><li>ImgTexMixer instance.
-</li></ul>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="getIsLandscape()"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        boolean
-      </span>
-      <span class="sympad">getIsLandscape</span>
+      <span class="sympad">getMediaCapture</span>
       <span class="normal">()</span>
     </h4>
       <div class="api-level">
@@ -3316,7 +3612,7 @@ From class
 </div>
 
 
-<a id="getMAXSpeed()"></a>
+<a id="getPlayableRanges()"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -3326,71 +3622,9 @@ From class
          
          
          
-        float
+        <a href="../../../../../com/ksyun/media/shortvideo/kit/PlayRanges.html">PlayRanges</a>
       </span>
-      <span class="sympad">getMAXSpeed</span>
-      <span class="normal">()</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>return the max speed for preview</p></div>
-
-    </div>
-</div>
-
-
-<a id="getMINSpeed()"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        float
-      </span>
-      <span class="sympad">getMINSpeed</span>
-      <span class="normal">()</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>return the min speed for preview</p></div>
-
-    </div>
-</div>
-
-
-<a id="getMediaPlayer()"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        KSYMediaPlayer
-      </span>
-      <span class="sympad">getMediaPlayer</span>
+      <span class="sympad">getPlayableRanges</span>
       <span class="normal">()</span>
     </h4>
       <div class="api-level">
@@ -3404,135 +3638,6 @@ From class
     <div class="jd-details-descr">
       
   <div class="jd-tagdata jd-tagdescr"><p></p></div>
-
-    </div>
-</div>
-
-
-<a id="getNomalSpeed()"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        float
-      </span>
-      <span class="sympad">getNomalSpeed</span>
-      <span class="normal">()</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>return the nomal speed for preview</p></div>
-
-    </div>
-</div>
-
-
-<a id="getOriginAudioVolume()"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        float
-      </span>
-      <span class="sympad">getOriginAudioVolume</span>
-      <span class="normal">()</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>get mic volume</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Returns</h5>
-      <ul class="nolist"><li>volume in 0~2.0f.
-</li></ul>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="getPreviewCropRect()"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        RectF
-      </span>
-      <span class="sympad">getPreviewCropRect</span>
-      <span class="normal">()</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
-
-    </div>
-</div>
-
-
-<a id="getProgress()"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        int
-      </span>
-      <span class="sympad">getProgress</span>
-      <span class="normal">()</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>return compose progress</p></div>
 
     </div>
 </div>
@@ -3569,135 +3674,6 @@ From class
 </div>
 
 
-<a id="getTimeEffectCount()"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        int
-      </span>
-      <span class="sympad">getTimeEffectCount</span>
-      <span class="normal">()</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>return timer effect count</p></div>
-
-    </div>
-</div>
-
-
-<a id="getTimerEffectInfo(int)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        <a href="../../../../../com/ksyun/media/shortvideo/timereffect/TimerEffectInfo.html">TimerEffectInfo</a>
-      </span>
-      <span class="sympad">getTimerEffectInfo</span>
-      <span class="normal">(int id)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>return timer effect depend id</p></div>
-
-    </div>
-</div>
-
-
-<a id="getTmpComposePath(java.lang.String)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        String
-      </span>
-      <span class="sympad">getTmpComposePath</span>
-      <span class="normal">(String url)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
-
-    </div>
-</div>
-
-
-<a id="getVersion()"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-        static 
-         
-         
-         
-        String
-      </span>
-      <span class="sympad">getVersion</span>
-      <span class="normal">()</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>Get current sdk version.</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Returns</h5>
-      <ul class="nolist"><li>version number as 1.0.0.0
-</li></ul>
-  </div>
-
-    </div>
-</div>
-
-
 <a id="getVideoCodecMeta()"></a>
 
 <div class="jd-details api apilevel-"> 
@@ -3729,7 +3705,7 @@ From class
 </div>
 
 
-<a id="getVideoEncodeMethod()"></a>
+<a id="isPaused()"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -3739,9 +3715,9 @@ From class
          
          
          
-        int
+        boolean
       </span>
-      <span class="sympad">getVideoEncodeMethod</span>
+      <span class="sympad">isPaused</span>
       <span class="normal">()</span>
     </h4>
       <div class="api-level">
@@ -3754,79 +3730,7 @@ From class
       </div>
     <div class="jd-details-descr">
       
-  <div class="jd-tagdata jd-tagdescr"><p>Get video encode method.</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Returns</h5>
-      <ul class="nolist"><li>video encode method.</li></ul>
-  </div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">See Also</h5>
-      <ul class="nolist"><li>StreamerConstants#ENCODE_METHOD_SOFTWARE</li><li>StreamerConstants#ENCODE_METHOD_SOFTWARE_COMPAT</li><li>StreamerConstants#ENCODE_METHOD_HARDWARE</li>
-      </ul>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="getVideoThumbnailAtTime(long, int, int, boolean)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        Bitmap
-      </span>
-      <span class="sympad">getVideoThumbnailAtTime</span>
-      <span class="normal">(long seekTime, int width, int height, boolean accurate)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>get thumbnail on time</p></div>
-
-    </div>
-</div>
-
-
-<a id="hideWaterMarkLogo()"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">hideWaterMarkLogo</span>
-      <span class="normal">()</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>Hide watermark logo.
-</p></div>
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
 
     </div>
 </div>
@@ -4024,79 +3928,6 @@ From class
 </div>
 
 
-<a id="removeAllTimeEffectFilter()"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">removeAllTimeEffectFilter</span>
-      <span class="normal">()</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>remove all effect filter
-</p></div>
-
-    </div>
-</div>
-
-
-<a id="removeTimerEffectFilter(int)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">removeTimerEffectFilter</span>
-      <span class="normal">(int index)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>移除特效滤镜</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>index</th>
-          <td>移除滤镜的唯一标识，在addTimerEffectFilter产生
-</td>
-        </tr>
-      </table>
-  </div>
-
-    </div>
-</div>
-
-
 <a id="resumeEditPreview()"></a>
 
 <div class="jd-details api apilevel-"> 
@@ -4129,68 +3960,6 @@ From class
 </div>
 
 
-<a id="seekBGM(long)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">seekBGM</span>
-      <span class="normal">(long seekto)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>seek bgm to targart time</p></div>
-
-    </div>
-</div>
-
-
-<a id="seekEditPreview(long)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">seekEditPreview</span>
-      <span class="normal">(long seekto)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>seek preview to target time</p></div>
-
-    </div>
-</div>
-
-
 <a id="seekTo(long)"></a>
 
 <div class="jd-details api apilevel-"> 
@@ -4204,7 +3973,7 @@ From class
         void
       </span>
       <span class="sympad">seekTo</span>
-      <span class="normal">(long seekto)</span>
+      <span class="normal">(long position)</span>
     </h4>
       <div class="api-level">
         <div>
@@ -4216,13 +3985,13 @@ From class
       </div>
     <div class="jd-details-descr">
       
-  <div class="jd-tagdata jd-tagdescr"><p>seek to position for previewView</p></div>
+  <div class="jd-tagdata jd-tagdescr"><p>seek to position for preview</p></div>
 
     </div>
 </div>
 
 
-<a id="setAudioBitrate(int)"></a>
+<a id="setDisplayPreview(TextureView)"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -4234,8 +4003,8 @@ From class
          
         void
       </span>
-      <span class="sympad">setAudioBitrate</span>
-      <span class="normal">(int bitrate)</span>
+      <span class="sympad">setDisplayPreview</span>
+      <span class="normal">(TextureView textureView)</span>
     </h4>
       <div class="api-level">
         <div>
@@ -4247,456 +4016,17 @@ From class
       </div>
     <div class="jd-details-descr">
       
-  <div class="jd-tagdata jd-tagdescr"><p>Set compose audio bitrate in bps.<br/>
- Would take effect on next <code><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#startCompose(java.lang.String)">startCompose(String)</a></code> ()} call.
- default value : 48 * 1000</p></div>
+  <div class="jd-tagdata jd-tagdescr"><p>Set TextureView as camera previewer.<br/>
+ Must set once before the TextureView ready.</p></div>
   <div class="jd-tagdata">
       <h5 class="jd-tagtitle">Parameters</h5>
       <table class="jd-tagtable">
         <tr>
-          <th>bitrate</th>
-          <td>audio bitrate in bps.</td>
-        </tr>
-      </table>
-  </div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Throws</h5>
-      <table class="jd-tagtable">  
-        <tr>
-            <th>IllegalArgumentException</td>
-            <td></td>
-        </tr>
-      </table>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="setAudioEncodeMethod(int)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">setAudioEncodeMethod</span>
-      <span class="normal">(int encodeMethod)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>Set compose encode method for audio.<br/>
- Must not be set while encoding.</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>encodeMethod</th>
-          <td>Encode method.<br/></td>
-        </tr>
-      </table>
-  </div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Throws</h5>
-      <table class="jd-tagtable">  
-        <tr>
-            <th></td>
-            <td>IllegalStateException</td>
-        </tr>  
-        <tr>
-            <th>IllegalArgumentException</td>
-            <td></td>
-        </tr>  
-        <tr>
-            <th>IllegalStateException</td>
-            <td></td>
-        </tr>
-      </table>
-  </div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">See Also</h5>
-      <ul class="nolist"><li>StreamerConstants#ENCODE_METHOD_SOFTWARE</li><li>StreamerConstants#ENCODE_METHOD_HARDWARE</li>
-      </ul>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="setAudioEncodeProfile(int)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">setAudioEncodeProfile</span>
-      <span class="normal">(int profile)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>Set audio encode profile.</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>profile</th>
-          <td>profile to set.</td>
-        </tr>
-      </table>
-  </div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">See Also</h5>
-      <ul class="nolist"><li>AVConst#PROFILE_AAC_LOW</li><li>AVConst#PROFILE_AAC_HE</li><li>AVConst#PROFILE_AAC_HE_V2</li>
-      </ul>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="setAudioKBitrate(int)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">setAudioKBitrate</span>
-      <span class="normal">(int kBitrate)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>Set compose audio bitrate in kbps.<br/>
- Would take effect on next <code><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#startCompose(java.lang.String)">startCompose(String)</a></code> ()} call.</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>kBitrate</th>
-          <td>audio bitrate in kbps.</td>
-        </tr>
-      </table>
-  </div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Throws</h5>
-      <table class="jd-tagtable">  
-        <tr>
-            <th>IllegalArgumentException</td>
-            <td></td>
-        </tr>
-      </table>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="setAuidoDecodeMethod(int)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">setAuidoDecodeMethod</span>
-      <span class="normal">(int decodeMethod)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>Set compose decode method for audio.<br/>
- Must not be set while decoding.</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>decodeMethod</th>
-          <td>Decode method.<br/></td>
-        </tr>
-      </table>
-  </div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Throws</h5>
-      <table class="jd-tagtable">  
-        <tr>
-            <th></td>
-            <td>IllegalStateException</td>
-        </tr>  
-        <tr>
-            <th>IllegalArgumentException</td>
-            <td></td>
-        </tr>  
-        <tr>
-            <th>IllegalStateException</td>
-            <td></td>
-        </tr>
-      </table>
-  </div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">See Also</h5>
-      <ul class="nolist"><li>StreamerConstants#DECODE_METHOD_SOFTWARE</li><li>StreamerConstants#DECODE_METHOD_HARDWARE</li>
-      </ul>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="setBGMRanges(long, long, boolean)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">setBGMRanges</span>
-      <span class="normal">(long startTime, long endTime, boolean immediately)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>set bgm playable ranges</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>immediately</th>
-          <td>是否立即生效
+          <th>textureView</th>
+          <td>TextureView to be set.
 </td>
         </tr>
       </table>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="setBgmVolume(float)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">setBgmVolume</span>
-      <span class="normal">(float volume)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>set bgm volume</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>volume</th>
-          <td>in 0~2.0f.
-</td>
-        </tr>
-      </table>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="setDecodeMethod(int)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">setDecodeMethod</span>
-      <span class="normal">(int decodeMethod)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>Set compose decode method for both video and audio.<br/>
- Must not be set while encoding.
- default value:ENCODE_METHOD_SOFTWARE</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>decodeMethod</th>
-          <td>Decode method.<br/></td>
-        </tr>
-      </table>
-  </div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Throws</h5>
-      <table class="jd-tagtable">  
-        <tr>
-            <th></td>
-            <td>IllegalStateException</td>
-        </tr>  
-        <tr>
-            <th>IllegalArgumentException</td>
-            <td></td>
-        </tr>  
-        <tr>
-            <th>IllegalStateException</td>
-            <td></td>
-        </tr>
-      </table>
-  </div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">See Also</h5>
-      <ul class="nolist"><li>StreamerConstants#DECODE_METHOD_SOFTWARE</li><li>StreamerConstants#DECODE_METHOD_HARDWARE</li>
-      </ul>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="setDecoderMethod(int)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">setDecoderMethod</span>
-      <span class="normal">(int decodeMethod)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>Set compose decode method for video and audio.<br/>
- Must not be set while decoding.</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>decodeMethod</th>
-          <td>Decode method.<br/></td>
-        </tr>
-      </table>
-  </div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Throws</h5>
-      <table class="jd-tagtable">  
-        <tr>
-            <th></td>
-            <td>IllegalStateException</td>
-        </tr>  
-        <tr>
-            <th>IllegalArgumentException</td>
-            <td></td>
-        </tr>  
-        <tr>
-            <th>IllegalStateException</td>
-            <td></td>
-        </tr>
-      </table>
-  </div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">See Also</h5>
-      <ul class="nolist"><li>StreamerConstants#DECODE_METHOD_SOFTWARE</li><li>StreamerConstants#DECODE_METHOD_HARDWARE</li>
-      </ul>
   </div>
 
     </div>
@@ -4745,320 +4075,6 @@ From class
 </div>
 
 
-<a id="setDisplayPreview(TextureView)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">setDisplayPreview</span>
-      <span class="normal">(TextureView textureView)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>Set TextureView as camera previewer.<br/>
- Must set once before the TextureView ready.</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>textureView</th>
-          <td>TextureView to be set.
-</td>
-        </tr>
-      </table>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="setEditPreviewRanges(long, long, boolean)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">setEditPreviewRanges</span>
-      <span class="normal">(long startTime, long endTime, boolean immediately)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>set preview interval</p></div>
-
-    </div>
-</div>
-
-
-<a id="setEditPreviewUrl(java.lang.String)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">setEditPreviewUrl</span>
-      <span class="normal">(String url)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>Set edit url.<br/>
- must set before startEditPreview, must not be null
- The set url would take effect on the next <code><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#startEditPreview()">startEditPreview()</a></code> call.</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>url</th>
-          <td>edit url to set.</td>
-        </tr>
-      </table>
-  </div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Throws</h5>
-      <table class="jd-tagtable">  
-        <tr>
-            <th>IllegalArgumentException</td>
-            <td></td>
-        </tr>
-      </table>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="setEnableMp4FastStart(boolean)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">setEnableMp4FastStart</span>
-      <span class="normal">(boolean enable)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>Run a second pass moving the index (moov atom) to the beginning of the mp4 file.
- <p>
- This operation can take a while, and will not work in various situations such as
- fragmented output, thus it is not enabled by default.</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>enable</th>
-          <td>true to enable, false to disable
-</td>
-        </tr>
-      </table>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="setEncodeMethod(int)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">setEncodeMethod</span>
-      <span class="normal">(int encodeMethod)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>Set compose encode method for both video and audio.<br/>
- Must not be set while encoding.
- default value:ENCODE_METHOD_SOFTWARE</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>encodeMethod</th>
-          <td>Encode method.<br/></td>
-        </tr>
-      </table>
-  </div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Throws</h5>
-      <table class="jd-tagtable">  
-        <tr>
-            <th></td>
-            <td>IllegalStateException</td>
-        </tr>  
-        <tr>
-            <th>IllegalArgumentException</td>
-            <td></td>
-        </tr>  
-        <tr>
-            <th>IllegalStateException</td>
-            <td></td>
-        </tr>
-      </table>
-  </div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">See Also</h5>
-      <ul class="nolist"><li>StreamerConstants#ENCODE_METHOD_SOFTWARE</li><li>StreamerConstants#ENCODE_METHOD_HARDWARE</li>
-      </ul>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="setForceVideoFrameFirst(boolean)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">setForceVideoFrameFirst</span>
-      <span class="normal">(boolean videoFirst)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>force first frame to be video， must be called before startCompose</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>videoFirst</th>
-          <td>video first or not
-</td>
-        </tr>
-      </table>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="setIFrameInterval(float)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">setIFrameInterval</span>
-      <span class="normal">(float interval)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>set I frame interval</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>interval</th>
-          <td>I frame interval
-</td>
-        </tr>
-      </table>
-  </div>
-
-    </div>
-</div>
-
-
 <a id="setLooping(boolean)"></a>
 
 <div class="jd-details api apilevel-"> 
@@ -5090,7 +4106,7 @@ From class
 </div>
 
 
-<a id="setOnErrorListener(com.ksyun.media.shortvideo.kit.KSYEditKit.OnErrorListener)"></a>
+<a id="setPlayableRanges(long, long)"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -5102,131 +4118,8 @@ From class
          
         void
       </span>
-      <span class="sympad">setOnErrorListener</span>
-      <span class="normal">(<a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.OnErrorListener.html">KSYEditKit.OnErrorListener</a> onErrorListener)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>Set error listener.</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>onErrorListener</th>
-          <td>error listener
-</td>
-        </tr>
-      </table>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="setOnInfoListener(com.ksyun.media.shortvideo.kit.KSYEditKit.OnInfoListener)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">setOnInfoListener</span>
-      <span class="normal">(<a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.OnInfoListener.html">KSYEditKit.OnInfoListener</a> onInfoListener)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>Set info listener.</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>onInfoListener</th>
-          <td>info listener
-</td>
-        </tr>
-      </table>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="setOriginAudioVolume(float)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">setOriginAudioVolume</span>
-      <span class="normal">(float volume)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>Set mic volume.</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>volume</th>
-          <td>volume in 0~2.0f.
-</td>
-        </tr>
-      </table>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="setOriginAudioVolume(float, float)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">setOriginAudioVolume</span>
-      <span class="normal">(float leftVolume, float rightVolume)</span>
+      <span class="sympad">setPlayableRanges</span>
+      <span class="normal">(long startTime, long endTime)</span>
     </h4>
       <div class="api-level">
         <div>
@@ -5239,154 +4132,6 @@ From class
     <div class="jd-details-descr">
       
   <div class="jd-tagdata jd-tagdescr"><p></p></div>
-
-    </div>
-</div>
-
-
-<a id="setPreviewCrop(float, float, float, float)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">setPreviewCrop</span>
-      <span class="normal">(float left, float top, float w, float h)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>crop preview</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>left</th>
-          <td>The percentage of the video clipping to the left</td>
-        </tr>
-        <tr>
-          <th>top</th>
-          <td>The percentage of the video clipping to the top
-</td>
-        </tr>
-      </table>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="setScale(float)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">setScale</span>
-      <span class="normal">(float scale)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>任意比例裁剪模式</p></div>
-
-    </div>
-</div>
-
-
-<a id="setScaleType(int)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">setScaleType</span>
-      <span class="normal">(int type)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>set crop type</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">See Also</h5>
-      <ul class="nolist"><li><code><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#SCALE_TYPE_9_16">SCALE_TYPE_9_16</a></code></li><li><code><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#SCALE_TYPE_3_4">SCALE_TYPE_3_4</a></code></li><li><code><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#SCALE_TYPE_1_1">SCALE_TYPE_1_1</a></code></li>
-      </ul>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="setScalingMode(int)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">setScalingMode</span>
-      <span class="normal">(int mode)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>set crop mode</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">See Also</h5>
-      <ul class="nolist"><li><code><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#SCALING_MODE_BEST_FIT">SCALING_MODE_BEST_FIT</a></code></li><li><code><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#SCALING_MODE_CROP">SCALING_MODE_CROP</a></code></li>
-      </ul>
-  </div>
 
     </div>
 </div>
@@ -5433,711 +4178,7 @@ From class
 </div>
 
 
-<a id="setTailUrl(java.lang.String)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">setTailUrl</span>
-      <span class="normal">(String tailUrl)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
-
-    </div>
-</div>
-
-
-<a id="setTargetResolution(int)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">setTargetResolution</span>
-      <span class="normal">(int idx)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>Set compose target resolution index.<br/>
- <p>
- The set resolution would take effect immediately if compose started.<br/></p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>idx</th>
-          <td>Resolution index.<br/></td>
-        </tr>
-      </table>
-  </div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Throws</h5>
-      <table class="jd-tagtable">  
-        <tr>
-            <th></td>
-            <td>IllegalArgumentException</td>
-        </tr>  
-        <tr>
-            <th>IllegalArgumentException</td>
-            <td></td>
-        </tr>  
-        <tr>
-            <th>IllegalStateException</td>
-            <td></td>
-        </tr>
-      </table>
-  </div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">See Also</h5>
-      <ul class="nolist"><li>StreamerConstants#VIDEO_RESOLUTION_360P</li><li>StreamerConstants#VIDEO_RESOLUTION_480P</li><li>StreamerConstants#VIDEO_RESOLUTION_540P</li><li>StreamerConstants#VIDEO_RESOLUTION_720P</li>
-      </ul>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="setTargetResolution(int, int)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">setTargetResolution</span>
-      <span class="normal">(int width, int height)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>Set compose target resolution.<br/>
- <p>
- The set resolution would take effect immediately if compose started.<br/>
- <p>
- The set width and height must not be 0 at same time.
- If one of the params is 0, the other would calculated by the actual preview view size
- to keep the ratio of the preview view.</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>width</th>
-          <td>streaming width.</td>
-        </tr>
-        <tr>
-          <th>height</th>
-          <td>streaming height.</td>
-        </tr>
-      </table>
-  </div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Throws</h5>
-      <table class="jd-tagtable">  
-        <tr>
-            <th>IllegalArgumentException</td>
-            <td></td>
-        </tr>
-      </table>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="setTimerEffectOverlying(boolean)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">setTimerEffectOverlying</span>
-      <span class="normal">(boolean overlying)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>特效滤镜是否重叠，最好在添加第一个特效滤镜前设置，不建议动态设置</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>overlying</th>
-          <td>default:true
-</td>
-        </tr>
-      </table>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="setTitleUrl(java.lang.String)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">setTitleUrl</span>
-      <span class="normal">(String titleUrl)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
-
-    </div>
-</div>
-
-
-<a id="setVideoBitrate(int)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">setVideoBitrate</span>
-      <span class="normal">(int bitrate)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>Set compose video bitrate in bps<br/>
- Would take effect on next <code><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#startCompose(java.lang.String)">startCompose(String)</a></code> ()} call.
- default value : 600 * 1000</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>bitrate</th>
-          <td>video bitrate in bps</td>
-        </tr>
-      </table>
-  </div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Throws</h5>
-      <table class="jd-tagtable">  
-        <tr>
-            <th>IllegalArgumentException</td>
-            <td></td>
-        </tr>
-      </table>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="setVideoCodecId(int)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">setVideoCodecId</span>
-      <span class="normal">(int codecId)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>Set compose codec id to video encoder.</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>codecId</th>
-          <td>video codec id to set.</td>
-        </tr>
-      </table>
-  </div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Throws</h5>
-      <table class="jd-tagtable">  
-        <tr>
-            <th>IllegalArgumentException</td>
-            <td></td>
-        </tr>
-      </table>
-  </div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">See Also</h5>
-      <ul class="nolist"><li>AVConst#CODEC_ID_AVC</li><li>AVConst#CODEC_ID_HEVC</li><li>AVConst#CODEC_ID_GIF</li>
-      </ul>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="setVideoCrf(int)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">setVideoCrf</span>
-      <span class="normal">(int crf)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>set Constant Rate Factor
- do not effect on StreamerConstants#ENCODE_METHOD_HARDWARE
- valid value: 0~51
- default value: 24</p></div>
-
-    </div>
-</div>
-
-
-<a id="setVideoDecodeMethod(int)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">setVideoDecodeMethod</span>
-      <span class="normal">(int decodeMethod)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>Set compose decode method for video.<br/>
- Must not be set while decoding.</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>decodeMethod</th>
-          <td>Decode method.<br/></td>
-        </tr>
-      </table>
-  </div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Throws</h5>
-      <table class="jd-tagtable">  
-        <tr>
-            <th></td>
-            <td>IllegalStateException</td>
-        </tr>  
-        <tr>
-            <th>IllegalArgumentException</td>
-            <td></td>
-        </tr>  
-        <tr>
-            <th>IllegalStateException</td>
-            <td></td>
-        </tr>
-      </table>
-  </div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">See Also</h5>
-      <ul class="nolist"><li>StreamerConstants#DECODE_METHOD_SOFTWARE</li><li>StreamerConstants#DECODE_METHOD_HARDWARE</li>
-      </ul>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="setVideoEncodeMethod(int)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">setVideoEncodeMethod</span>
-      <span class="normal">(int encodeMethod)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>Set compose encode method for video.<br/>
- Must not be set while encoding.</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>encodeMethod</th>
-          <td>Encode method.<br/></td>
-        </tr>
-      </table>
-  </div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Throws</h5>
-      <table class="jd-tagtable">  
-        <tr>
-            <th></td>
-            <td>IllegalStateException</td>
-        </tr>  
-        <tr>
-            <th>IllegalArgumentException</td>
-            <td></td>
-        </tr>  
-        <tr>
-            <th>IllegalStateException</td>
-            <td></td>
-        </tr>
-      </table>
-  </div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">See Also</h5>
-      <ul class="nolist"><li>StreamerConstants#ENCODE_METHOD_SOFTWARE</li><li>StreamerConstants#ENCODE_METHOD_HARDWARE</li>
-      </ul>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="setVideoEncodeProfile(int)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">setVideoEncodeProfile</span>
-      <span class="normal">(int profile)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>Set encode profile to video encoder.
- <p>
- Only valid in ENCODE_METHOD_SOFTWARE and ENCODE_METHOD_SOFTWARE_COMPAT mode.</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>profile</th>
-          <td>encode profile mode to be set,
-                default value VideoEncodeFormat#ENCODE_PROFILE_LOW_POWER</td>
-        </tr>
-      </table>
-  </div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">See Also</h5>
-      <ul class="nolist"><li>VideoEncodeFormat#ENCODE_PROFILE_LOW_POWER</li><li>VideoEncodeFormat#ENCODE_PROFILE_BALANCE</li><li>VideoEncodeFormat#ENCODE_PROFILE_HIGH_PERFORMANCE</li>
-      </ul>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="setVideoFps(float)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">setVideoFps</span>
-      <span class="normal">(float fps)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>set compose video fps.</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>fps</th>
-          <td>the fps
-</td>
-        </tr>
-      </table>
-  </div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Throws</h5>
-      <table class="jd-tagtable">  
-        <tr>
-            <th>IllegalArgumentException</td>
-            <td></td>
-        </tr>
-      </table>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="setVideoKBitrate(int)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">setVideoKBitrate</span>
-      <span class="normal">(int kBitrate)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>Set compose video bitrate in kbps<br/>
- Would take effect on next <code><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#startCompose(java.lang.String)">startCompose(String)</a></code> ()} call.</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>kBitrate</th>
-          <td>video bitrate in kbps</td>
-        </tr>
-      </table>
-  </div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Throws</h5>
-      <table class="jd-tagtable">  
-        <tr>
-            <th>IllegalArgumentException</td>
-            <td></td>
-        </tr>
-      </table>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="showWaterMarkLogo(java.lang.String, float, float, float, float, float)"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">showWaterMarkLogo</span>
-      <span class="normal">(String path, float x, float y, float w, float h, float alpha)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>Set and show watermark logo both on preview and compose. Support jpeg, png.</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>path</th>
-          <td>logo file path.
-              prefix "file://" for absolute path,
-              and prefix "assets://" for image resource in assets folder.</td>
-        </tr>
-        <tr>
-          <th>x</th>
-          <td>x position for left top of logo relative to the video, between 0~1.0.</td>
-        </tr>
-        <tr>
-          <th>y</th>
-          <td>y position for left top of logo relative to the video, between 0~1.0.</td>
-        </tr>
-        <tr>
-          <th>w</th>
-          <td>width of logo relative to the video, between 0~1.0, if set to 0,
-              width would be calculated by h and logo image radio.</td>
-        </tr>
-        <tr>
-          <th>h</th>
-          <td>height of logo relative to the video, between 0~1.0, if set to 0,
-              height would be calculated by w and logo image radio.</td>
-        </tr>
-        <tr>
-          <th>alpha</th>
-          <td>alpha value, between 0~1.0
-</td>
-        </tr>
-      </table>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="startBgm(java.lang.String, boolean)"></a>
+<a id="setTimeEffectType(int, com.ksyun.media.shortvideo.kit.EditBase.TimeEffectParams)"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -6149,8 +4190,8 @@ From class
          
         boolean
       </span>
-      <span class="sympad">startBgm</span>
-      <span class="normal">(String path, boolean loop)</span>
+      <span class="sympad">setTimeEffectType</span>
+      <span class="normal">(int type, <a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.TimeEffectParams.html">EditBase.TimeEffectParams</a> params)</span>
     </h4>
       <div class="api-level">
         <div>
@@ -6162,27 +4203,13 @@ From class
       </div>
     <div class="jd-details-descr">
       
-  <div class="jd-tagdata jd-tagdescr"><p>Start bgm play.</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>path</th>
-          <td>bgm path.</td>
-        </tr>
-        <tr>
-          <th>loop</th>
-          <td>true if loop this music, false if not.
-</td>
-        </tr>
-      </table>
-  </div>
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
 
     </div>
 </div>
 
 
-<a id="startCompose(java.lang.String)"></a>
+<a id="startPreview()"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -6194,48 +4221,7 @@ From class
          
         void
       </span>
-      <span class="sympad">startCompose</span>
-      <span class="normal">(String desUrl)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>start compose</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>desUrl</th>
-          <td>the path for the compose file
-</td>
-        </tr>
-      </table>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="startEditPreview()"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">startEditPreview</span>
+      <span class="sympad">startPreview</span>
       <span class="normal">()</span>
     </h4>
       <div class="api-level">
@@ -6248,23 +4234,13 @@ From class
       </div>
     <div class="jd-details-descr">
       
-  <div class="jd-tagdata jd-tagdescr"><p>start edit preview
- must  <code><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html#setEditPreviewUrl(java.lang.String)">setEditPreviewUrl(String)</a></code> before call</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Throws</h5>
-      <table class="jd-tagtable">  
-        <tr>
-            <th>IllegalArgumentException</td>
-            <td></td>
-        </tr>
-      </table>
-  </div>
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
 
     </div>
 </div>
 
 
-<a id="stopBgm()"></a>
+<a id="stopPreview()"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -6276,71 +4252,7 @@ From class
          
         void
       </span>
-      <span class="sympad">stopBgm</span>
-      <span class="normal">()</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>Stop bgm play.
-</p></div>
-
-    </div>
-</div>
-
-
-<a id="stopCompose()"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">stopCompose</span>
-      <span class="normal">()</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>stop compose
-</p></div>
-
-    </div>
-</div>
-
-
-<a id="stopEditPreview()"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">stopEditPreview</span>
+      <span class="sympad">stopPreview</span>
       <span class="normal">()</span>
     </h4>
       <div class="api-level">
@@ -6360,61 +4272,28 @@ From class
 </div>
 
 
-<a id="updateSpeed(boolean)"></a>
+
+
+
+<!-- ========= METHOD DETAIL ======== -->
+
+<h2>Protected Methods</h2>
+
+
+
+<a id="getWorkMode()"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
       <span class="normal">
-        public 
+        protected 
          
          
          
          
-        void
+        int
       </span>
-      <span class="sympad">updateSpeed</span>
-      <span class="normal">(boolean plus)</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>update speed of preview</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>plus</th>
-          <td>true: up; false: down;
-             unit:0.1;
-</td>
-        </tr>
-      </table>
-  </div>
-
-    </div>
-</div>
-
-
-<a id="updateStickerDraw()"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        void
-      </span>
-      <span class="sympad">updateStickerDraw</span>
+      <span class="sympad">getWorkMode</span>
       <span class="normal">()</span>
     </h4>
       <div class="api-level">
@@ -6427,28 +4306,26 @@ From class
       </div>
     <div class="jd-details-descr">
       
-  <div class="jd-tagdata jd-tagdescr"><p>update sticker draw
- 立即生效当前预览时间点的贴纸绘制状态时调用，例如：暂停状态时seek后
-</p></div>
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
 
     </div>
 </div>
 
 
-<a id="updateTimerEffectEndTime(int, long)"></a>
+<a id="initModules()"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
       <span class="normal">
-        public 
+        protected 
          
          
          
          
         void
       </span>
-      <span class="sympad">updateTimerEffectEndTime</span>
-      <span class="normal">(int id, long endTime)</span>
+      <span class="sympad">initModules</span>
+      <span class="normal">()</span>
     </h4>
       <div class="api-level">
         <div>
@@ -6460,30 +4337,43 @@ From class
       </div>
     <div class="jd-details-descr">
       
-  <div class="jd-tagdata jd-tagdescr"><p>更新滤镜的结束事件</p></div>
-  <div class="jd-tagdata">
-      <h5 class="jd-tagtitle">Parameters</h5>
-      <table class="jd-tagtable">
-        <tr>
-          <th>id</th>
-          <td>待更新滤镜的唯一标识，在addTimerEffectFilter时产生</td>
-        </tr>
-        <tr>
-          <th>endTime</th>
-          <td>更新后的结束时间
-</td>
-        </tr>
-      </table>
-  </div>
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
 
     </div>
 </div>
 
 
+<a id="restartPreview()"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        protected 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">restartPreview</span>
+      <span class="normal">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
 
 
-
-<!-- ========= METHOD DETAIL ======== -->
 
 
 

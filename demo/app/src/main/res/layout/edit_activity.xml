@@ -56,7 +56,6 @@
             android:layout_alignParentBottom="true"
             android:background="#919191" />
     </RelativeLayout>
-
     <include
         android:id="@+id/edit_bar_bottom"
         layout="@layout/edit_bottom_bar"

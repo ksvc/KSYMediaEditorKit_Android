@@ -164,16 +164,19 @@
               
     <li><h2>Interfaces</h2>
       <ul>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.OnErrorListener.html">KSYEditKit.OnErrorListener</a></li>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.OnInfoListener.html">KSYEditKit.OnInfoListener</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.OnErrorListener.html">EditBase.OnErrorListener</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.OnInfoListener.html">EditBase.OnInfoListener</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRecordKit.MergeFilesFinishedListener.html">KSYRecordKit.MergeFilesFinishedListener</a></li>
       </ul>
     </li>
               
     <li><h2>Classes</h2>
       <ul>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.html">EditBase</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/EditBase.TimeEffectParams.html">EditBase.TimeEffectParams</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEasyMergeKit.html">KSYEasyMergeKit</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYEditKit.html">KSYEditKit</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMediaEditKit.html">KSYMediaEditKit</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMergeKit.html">KSYMergeKit</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMultiCanvasComposeKit.html">KSYMultiCanvasComposeKit</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYMultiCanvasComposeKit.MediaInfo.html">KSYMultiCanvasComposeKit.MediaInfo</a></li>
@@ -183,6 +186,9 @@
           <li class="selected api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRemuxKit.html">KSYRemuxKit</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYTranscodeKit.html">KSYTranscodeKit</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYTransitionKit.html">KSYTransitionKit</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/MultiComposeBase.html">MultiComposeBase</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/MultiComposeBase.MediaContext.html">MultiComposeBase.MediaContext</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/kit/PlayRanges.html">PlayRanges</a></li>
       </ul>
     </li>
               
@@ -444,7 +450,29 @@ Summary:
           
           
           FilePublisher.PubListener</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRemuxKit.html#mAudioPubListener">mAudioPubListener</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class=" api apilevel-" >
+          <td class="jd-typecol">
+          public
+          
+          
+          FilePublisher.PubListener</td>
           <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRemuxKit.html#mFilePublisherListener">mFilePublisherListener</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class="alt-color api apilevel-" >
+          <td class="jd-typecol">
+          public
+          
+          
+          FilePublisher.PubListener</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRemuxKit.html#mVideoPubListener">mVideoPubListener</a></td>
           <td class="jd-descrcol" width="100%"></td>
       </tr>
       
@@ -476,6 +504,24 @@ Summary:
         <td class="jd-linkcol" width="100%">
         <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRemuxKit.html#KSYRemuxKit()">KSYRemuxKit</a></span>()
         
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/kit/KSYRemuxKit.html#KSYRemuxKit(java.lang.String, java.lang.String)">KSYRemuxKit</a></span>(String splitVideoUrl, String splitAudioUrl)
+        
+        <div class="jd-descrdiv">Remux Mp4 to pure audio and pure video</div>
+  
   </td></tr>
 
 
@@ -1147,6 +1193,36 @@ From class
 
 
 
+<a id="mAudioPubListener"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+        FilePublisher.PubListener
+      </span>
+        mAudioPubListener
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+    </div>
+</div>
+
+
+
 <a id="mFilePublisherListener"></a>
 
 <div class="jd-details api apilevel-"> 
@@ -1158,6 +1234,36 @@ From class
         FilePublisher.PubListener
       </span>
         mFilePublisherListener
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+    </div>
+</div>
+
+
+
+<a id="mVideoPubListener"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+        FilePublisher.PubListener
+      </span>
+        mVideoPubListener
     </h4>
       <div class="api-level">
         
@@ -1212,6 +1318,37 @@ From class
     <div class="jd-details-descr">
       
   <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+<a id="KSYRemuxKit(java.lang.String, java.lang.String)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        
+      </span>
+      <span class="sympad">KSYRemuxKit</span>
+      <span class="normal">(String splitVideoUrl, String splitAudioUrl)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Remux Mp4 to pure audio and pure video</p></div>
 
     </div>
 </div>

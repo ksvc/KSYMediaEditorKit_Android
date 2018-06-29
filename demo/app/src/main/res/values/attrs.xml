@@ -42,6 +42,10 @@
         <attr name="ColorBackground" format="color|reference" />
     </declare-styleable>
 
+    <declare-styleable name="EffectSeekBar">
+        <attr name="EffectImageHeight" format="dimension|reference" />
+    </declare-styleable>
+
     <array name="paint_colors">
         <item>#FFFFFF</item>
         <item>#000000</item>
