@@ -165,13 +165,13 @@
     <li><h2>Interfaces</h2>
       <ul>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/ProbeMediaInfoTools.ProbeMediaInfoListener.html">ProbeMediaInfoTools.ProbeMediaInfoListener</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/VideoFrameCache.CacheListener.html">VideoFrameCache.CacheListener</a></li>
       </ul>
     </li>
               
     <li><h2>Classes</h2>
       <ul>
           <li class="selected api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/AuthInfoManager.html">AuthInfoManager</a></li>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/AuthInfoManager.AuthInfo.html">AuthInfoManager.AuthInfo</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/AVSync.html">AVSync</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/AVSync.AudioSinkPin.html">AVSync.AudioSinkPin</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/AVSync.VideoSinkPin.html">AVSync.VideoSinkPin</a></li>
@@ -180,6 +180,8 @@
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/ProbeMediaInfoTools.html">ProbeMediaInfoTools</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/ProbeMediaInfoTools.MediaInfo.html">ProbeMediaInfoTools.MediaInfo</a></li>
           <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/ShortVideoConstants.html">ShortVideoConstants</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/VideoFrameCache.html">VideoFrameCache</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/VideoFrameCache.CacheRanges.html">VideoFrameCache.CacheRanges</a></li>
       </ul>
     </li>
               
@@ -236,16 +238,13 @@
 
 Summary:
 
-  <a href="#nestedclasses">Nested Classes</a>
-  
 
 
 
 
 
 
-
-  &#124; <a href="#lfields">Fields</a>
+  <a href="#lfields">Fields</a>
   
 
 
@@ -359,29 +358,6 @@ Summary:
 
 <h2>Summary</h2>
 
-
-
-<!-- ======== NESTED CLASS SUMMARY ======== -->
-<table id="nestedclasses" class="jd-sumtable"><tr><th colspan="12">Nested Classes</th></tr>
-
-
-  
-    <tr class="alt-color api apilevel-" >
-      <td class="jd-typecol">
-        
-         
-         
-        
-        class</td>
-      <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/utils/AuthInfoManager.AuthInfo.html">AuthInfoManager.AuthInfo</a></td>
-      <td class="jd-descrcol" width="100%">authentication info<br/>
- data class
-&nbsp;</td>
-    </tr>
-    
-    
-
-</table>
 
 
 
@@ -511,7 +487,29 @@ Summary:
           static
           
           int</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/utils/AuthInfoManager.html#FEA_TIME_EFFECT">FEA_TIME_EFFECT</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class="alt-color api apilevel-" >
+          <td class="jd-typecol">
+          public
+          static
+          
+          int</td>
           <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/utils/AuthInfoManager.html#FEA_TRANSITION">FEA_TRANSITION</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class=" api apilevel-" >
+          <td class="jd-typecol">
+          protected
+          
+          
+          int</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/utils/AuthInfoManager.html#mAuthState">mAuthState</a></td>
           <td class="jd-descrcol" width="100%"></td>
       </tr>
       
@@ -580,24 +578,6 @@ Summary:
             
             
             
-            String
-        </td>
-        <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/utils/AuthInfoManager.html#getAuthExpiredData()">getAuthExpiredData</a></span>()
-        
-        <div class="jd-descrdiv">return auth expired data</div>
-  
-  </td></tr>
-
-
-	 
-    <tr class=" api apilevel-" >
-        <td class="jd-typecol">
-            
-            
-            
-            
-            
             boolean
         </td>
         <td class="jd-linkcol" width="100%">
@@ -609,7 +589,7 @@ Summary:
 
 
 	 
-    <tr class="alt-color api apilevel-" >
+    <tr class=" api apilevel-" >
         <td class="jd-typecol">
             
             
@@ -1146,6 +1126,36 @@ From class
 
 
 
+<a id="FEA_TIME_EFFECT"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+         
+        int
+      </span>
+        FEA_TIME_EFFECT
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+    </div>
+</div>
+
+
+
 <a id="FEA_TRANSITION"></a>
 
 <div class="jd-details api apilevel-"> 
@@ -1157,6 +1167,36 @@ From class
         int
       </span>
         FEA_TRANSITION
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+    </div>
+</div>
+
+
+
+<a id="mAuthState"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        protected 
+         
+         
+        int
+      </span>
+        mAuthState
     </h4>
       <div class="api-level">
         
@@ -1254,37 +1294,6 @@ From class
     <div class="jd-details-descr">
       
   <div class="jd-tagdata jd-tagdescr"><p></p></div>
-
-    </div>
-</div>
-
-
-<a id="getAuthExpiredData()"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-         
-         
-        String
-      </span>
-      <span class="sympad">getAuthExpiredData</span>
-      <span class="normal">()</span>
-    </h4>
-      <div class="api-level">
-        <div>
-
-</div>
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p>return auth expired data</p></div>
 
     </div>
 </div>

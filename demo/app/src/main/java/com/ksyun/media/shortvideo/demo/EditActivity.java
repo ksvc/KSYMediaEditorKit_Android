@@ -18,8 +18,9 @@ import com.ksyun.media.shortvideo.demo.videorange.HorizontalListView;
 import com.ksyun.media.shortvideo.demo.videorange.VideoRangeSeekBar;
 import com.ksyun.media.shortvideo.demo.videorange.VideoThumbnailAdapter;
 import com.ksyun.media.shortvideo.demo.videorange.VideoThumbnailInfo;
-import com.ksyun.media.shortvideo.demo.view.FilterEffectsView;
 import com.ksyun.media.shortvideo.demo.view.SectionSeekLayout;
+import com.ksyun.media.shortvideo.demo.view.effect.EditorEffectWindow;
+import com.ksyun.media.shortvideo.kit.EditBase;
 import com.ksyun.media.shortvideo.timereffect.TimerEffectFilter;
 import com.ksyun.media.shortvideo.timereffect.TimerEffectInfo;
 import com.ksyun.media.shortvideo.utils.FileUtils;
@@ -82,6 +83,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -127,20 +129,20 @@ public class EditActivity extends Activity implements
     private static final int FILTER_DISABLE = 0;
 
     private static final int BEAUTY_LAYOUT_INDEX = 0;
-    private static final int FILTER_LAYOUT_INDEX = 1;
-    private static final int FILTER_EFFECTS_INDEX = 2;
-    private static final int WATER_MARK_INDEX = 3;
-    private static final int SPEED_LAYOUT_INDEX = 4;
-    private static final int VIDEO_RANGE_INDEX = 5;
-    private static final int VIDEO_SCALE_INDEX = 6;
-    private static final int MUSIC_LAYOUT_INDEX = 7;
-    private static final int SOUND_CHANGE_INDEX = 8;
-    private static final int REVERB_LAYOUT_INDEX = 9;
-    private static final int PAINT_MENU_LAYOUT_INDEX = 10;
-    private static final int ANIMATED_STICKER_LAYOUT_INDEX = 11;
-    private static final int STICKER_LAYOUT_INDEX = 12;
-    private static final int SUBTITLE_LAYOUT_INDEX = 13;
-    private static final int REVERSE_PLAY_INDEX = 14;
+    private static final int FILTER_LAYOUT_INDEX = BEAUTY_LAYOUT_INDEX + 1;
+    private static final int FILTER_EFFECTS_INDEX = FILTER_LAYOUT_INDEX + 1;
+    private static final int FILTER_TIME_EFFECT_INDEX = FILTER_EFFECTS_INDEX + 1;
+    private static final int WATER_MARK_INDEX = FILTER_TIME_EFFECT_INDEX + 1;
+    private static final int SPEED_LAYOUT_INDEX = WATER_MARK_INDEX + 1;
+    private static final int VIDEO_RANGE_INDEX = SPEED_LAYOUT_INDEX + 1;
+    private static final int VIDEO_SCALE_INDEX = VIDEO_RANGE_INDEX + 1;
+    private static final int MUSIC_LAYOUT_INDEX = VIDEO_SCALE_INDEX + 1;
+    private static final int SOUND_CHANGE_INDEX = MUSIC_LAYOUT_INDEX + 1;
+    private static final int REVERB_LAYOUT_INDEX = SOUND_CHANGE_INDEX + 1;
+    private static final int PAINT_MENU_LAYOUT_INDEX = REVERB_LAYOUT_INDEX + 1;
+    private static final int ANIMATED_STICKER_LAYOUT_INDEX = PAINT_MENU_LAYOUT_INDEX + 1;
+    private static final int STICKER_LAYOUT_INDEX = ANIMATED_STICKER_LAYOUT_INDEX + 1;
+    private static final int SUBTITLE_LAYOUT_INDEX = STICKER_LAYOUT_INDEX + 1;
 
     private RelativeLayout mPreviewLayout;
     private GLSurfaceView mEditPreviewView;
@@ -217,7 +219,7 @@ public class EditActivity extends Activity implements
     private ImageView mTextColorSelect; //字幕贴纸颜色选择按钮
     private ColorPicker mColorPicker;  //字幕贴纸字体颜色选择器
     private InputMethodManager mInputMethodManager;  //输入
-    private FilterEffectsView mEffectsView;
+    private EditorEffectWindow mEffectsView;
 
     private SectionSeekLayout mSectionView;  //片段编辑UI
     private Timer mPreviewRefreshTimer;
@@ -255,7 +257,7 @@ public class EditActivity extends Activity implements
     private static final int[] REVERB_TYPE = {AudioReverbFilter.AUDIO_REVERB_LEVEL_1, AudioReverbFilter.AUDIO_REVERB_LEVEL_3,
             AudioReverbFilter.AUDIO_REVERB_LEVEL_4, AudioReverbFilter.AUDIO_REVERB_LEVEL_2};
 
-    private static final int BOTTOM_VIEW_NUM = 14;
+    private static final int BOTTOM_VIEW_NUM = 15;
     private String mLogoPath = "assets://KSYLogo/logo.png";
     private String mAnimateStickerPath = "AnimatedStickers/Thumbnail";
     private String mStickerPath = "Stickers";  //贴纸加载地址默认在Assets目录，如果修改加载地址需要修改StickerAdapter的图片加载
@@ -424,82 +426,7 @@ public class EditActivity extends Activity implements
 
         mEffectsView = findViewById(R.id.edit_filter_effects);
         mBottomViewList[FILTER_EFFECTS_INDEX] = mEffectsView;
-
-        mEffectsView.setOnEffectsChangeListener(new FilterEffectsView.OnEffectsChangeListener() {
-            @Override
-            public int onAddFilterStart(int type) {
-                ImgFilterBase filterBase = null;
-                switch (type) {
-                    case 0:
-                        filterBase = new ImgShakeColorFilter(mEditKit.getGLRender());
-                        break;
-                    case 1:
-                        filterBase = new ImgShakeShockWaveFilter(mEditKit.getGLRender());
-                        break;
-                    case 2:
-                        filterBase = new ImgShakeZoomFilter(mEditKit.getGLRender());
-                        break;
-                    case 3:
-                        filterBase = new ImgBeautySpecialEffectsFilter(mEditKit.getGLRender(), EditActivity.this,
-                                ImgBeautySpecialEffectsFilter.KSY_SPECIAL_EFFECT_LIGHTING);
-                        break;
-                    case 4:
-                        GPUImageSobelEdgeDetection sobelEdgeDetection = new GPUImageSobelEdgeDetection();
-                        filterBase = new ImgTexGPUImageFilter(mEditKit.getGLRender(), sobelEdgeDetection);
-                        break;
-                    case 5:
-                        filterBase = new ImgShake70sFilter(mEditKit.getGLRender());
-                        break;
-                    case 6:
-                        filterBase = new ImgShakeIllusionFilter(mEditKit.getGLRender());
-                        break;
-                    case 7:
-                        filterBase = new ImgShaderXSingleFilter(mEditKit.getGLRender());
-                        break;
-                    default:
-                        break;
-                }
-                TimerEffectInfo effectInfo = new TimerEffectInfo(mEditKit.getEditPreviewCurrentPosition(),
-                        mEditPreviewDuration, new TimerEffectFilter(filterBase));
-
-                int filterId = mEditKit.addTimerEffectFilter(effectInfo);
-                return filterId;
-            }
-
-            @Override
-            public void onUpdateFilter(int index) {
-                resumePreview();
-            }
-
-            @Override
-            public void onAddFilterEnd(int index, long position) {
-                //pause
-                pausePreview();
-                mEditKit.updateTimerEffectEndTime(index, position);
-            }
-
-            @Override
-            public void onDelete(int index) {
-                TimerEffectInfo info = mEditKit.getTimerEffectInfo(index);
-                if (mEditKit.getReversePlay()) {
-                    //在倒放状态添加时间特效时，由于ui 是seek到正序的时间，因此需要配合seek到结束时间,并且需要把结束时间算折算一下
-                    long endTime = mEditKit.getEditDuration() - info.endTime;
-                    mEditKit.seekTo(endTime);
-                } else {
-                    mEditKit.seekTo(info.startTime);
-                }
-
-                //pause
-                pausePreview();
-                mEditKit.removeTimerEffectFilter(index);
-            }
-
-            @Override
-            public void onProgressChanged(long position) {
-                mEditKit.seekTo(position);
-                mSectionView.scrollAuto(position);
-            }
-        });
+        mBottomViewList[FILTER_TIME_EFFECT_INDEX] = mEffectsView;
 
         mPaintView = findViewById(R.id.edit_paint_view);
         mPaintView.setBgColor(Color.TRANSPARENT);
@@ -631,6 +558,8 @@ public class EditActivity extends Activity implements
         });
 
         mEditPreviewView.setOnTouchListener(mPreviewViewTouchListener);
+        mEffectsView.bindKSYEditKit(mEditKit);
+        mEffectsView.setEffectsChangeListener(mEffectsListener);
 
         //下载片尾视频，在startCompose前执行即可
         File tailMp4 = new File(mTailVideoPath);
@@ -707,6 +636,92 @@ public class EditActivity extends Activity implements
             return true;
         }
     };
+
+    private EditorEffectWindow.OnEffectsChangeListener mEffectsListener =
+            new EditorEffectWindow.OnEffectsChangeListener() {
+                @Override
+                public int onAddFilterStart(int type) {
+                    ImgFilterBase filterBase = null;
+                    switch (type) {
+                        case 0:
+                            filterBase = new ImgShakeZoomFilter(mEditKit.getGLRender());
+                            break;
+                        case 1:
+                            filterBase = new ImgShakeColorFilter(mEditKit.getGLRender());
+                            break;
+                        case 2:
+                            filterBase = new ImgShakeShockWaveFilter(mEditKit.getGLRender());
+                            break;
+                        case 3:
+                            filterBase = new ImgBeautySpecialEffectsFilter(mEditKit.getGLRender(), EditActivity.this,
+                                    ImgBeautySpecialEffectsFilter.KSY_SPECIAL_EFFECT_LIGHTING);
+                            break;
+                        case 4:
+                            GPUImageSobelEdgeDetection sobelEdgeDetection = new GPUImageSobelEdgeDetection();
+                            filterBase = new ImgTexGPUImageFilter(mEditKit.getGLRender(), sobelEdgeDetection);
+                            break;
+                        case 5:
+                            filterBase = new ImgShake70sFilter(mEditKit.getGLRender());
+                            break;
+                        case 6:
+                            filterBase = new ImgShakeIllusionFilter(mEditKit.getGLRender());
+                            break;
+                        case 7:
+                            filterBase = new ImgShaderXSingleFilter(mEditKit.getGLRender());
+                            break;
+                        default:
+                            break;
+                    }
+                    TimerEffectFilter timerEffectFilter = new TimerEffectFilter(filterBase);
+                    TimerEffectInfo effectInfo = new TimerEffectInfo(mEditKit.getCurrentPosition(),
+                            mEditKit.getEditDuration(), timerEffectFilter);
+
+                    int filterId = mEditKit.addTimerEffectFilter(effectInfo);
+
+                    resumePreview();
+                    return filterId;
+                }
+
+                @Override
+                public void onUpdateFilter(int index) {
+                    long curTime = mEditKit.getCurrentPosition();
+                    mSectionView.scrollAuto(curTime);
+                }
+
+                @Override
+                public void onAddFilterEnd(int index, long position) {
+                    pausePreview();
+                    mEditKit.updateTimerEffectEndTime(index, position);
+                }
+
+                @Override
+                public void onDelete(int index) {
+                    mEditKit.removeTimerEffectFilter(index);
+                    //pause
+                    pausePreview();
+                }
+
+                @Override
+                public void onTimeEffects(int type, int time) {
+                    switch (type) {
+                        case 0:
+                            //onReversePlayClick(false);
+                            setTimeEffectType(EditBase.TIME_EFFECT_NONE, time);
+                            break;
+                        case 1:
+//                            onReversePlayClick(true);
+                            setTimeEffectType(EditBase.TIME_EFFECT_REVERSE, time);
+                            break;
+                        case 2:
+                            setTimeEffectType(EditBase.TIME_EFFECT_REPEAT, time);
+                            break;
+                        case 3:
+                            setTimeEffectType(EditBase.TIME_EFFECT_SLOW, time);
+                            break;
+                    }
+                }
+            };
+
 
     /**
      * 是否在小窗区域移动
@@ -855,6 +870,7 @@ public class EditActivity extends Activity implements
         mKSYStickerView.setOnStickerSelected(null);
         stopPreviewTimerTask();
         mSectionView.stopPreview();
+        mEffectsView.stopPlayer();
         mEditKit.stopEditPreview();
         mEditKit.release();
     }
@@ -893,7 +909,7 @@ public class EditActivity extends Activity implements
 
     private void updateBottomVisible(int x, int y) {
         if (!isTouchPointInView(mBarBottomLayout, x, y)) {
-            if (mBottomViewPreIndex != WATER_MARK_INDEX && mBottomViewPreIndex != REVERSE_PLAY_INDEX) {
+            if (mBottomViewPreIndex != WATER_MARK_INDEX) {
                 mBottomViewList[mBottomViewPreIndex].setVisibility(View.INVISIBLE);
                 if (mBottomViewPreIndex == PAINT_MENU_LAYOUT_INDEX) {
                     mPaintView.setPaintEnable(false);
@@ -1003,7 +1019,7 @@ public class EditActivity extends Activity implements
                 mEditKit.seekTo(time);
                 mEditKit.updateStickerDraw();
                 if (mEffectsView.getVisibility() == View.VISIBLE) {
-                    mEffectsView.setProgress(mEditKit.getCurrentPosition());
+                    mEffectsView.setProgress((int) mEditKit.getCurrentPosition());
                 }
             }
         });
@@ -1255,6 +1271,9 @@ public class EditActivity extends Activity implements
             mEditKit.pausePlay(true);
             mPauseView.getDrawable().setLevel(1);
             stopPreviewTimerTask();
+            if (mEffectsView.getVisibility() == View.VISIBLE) {
+                mEffectsView.stopPlayer();
+            }
         }
     }
 
@@ -1266,6 +1285,9 @@ public class EditActivity extends Activity implements
             startPreviewTimerTask();
             //恢复播放的时候，需要调用setDrawHelpTool隐藏当前编辑态的贴纸的辅助绘制区域
             mKSYStickerView.setDrawHelpTool(false);
+            if (mEffectsView.getVisibility() == View.VISIBLE) {
+                mEffectsView.startPlayer();
+            }
         }
     }
 
@@ -1345,15 +1367,34 @@ public class EditActivity extends Activity implements
         }
     }
 
-    private void onReversePlayClick(boolean isCheck) {
-        mEditKit.stopEditPreview();
-        if (isCheck) {
-            mEditKit.enableReversePlay(true);
-        } else {
-            mEditKit.enableReversePlay(false);
+    private void setTimeEffectType(int type, long time) {
+        EditBase.TimeEffectParams params = null;
+        if (time != 0) {
+            params = new EditBase.TimeEffectParams();
+            params.startTime = time;
         }
-        mEditKit.setLooping(true);
-        mEditKit.startEditPreview();
+        mEditKit.setTimeEffectType(type, params);
+    }
+    private void onReversePlayClick(boolean isCheck) {
+//        mEditKit.stopEditPreview();
+        if (isCheck) {
+            mSectionView.scrollAuto(mEditKit.getEditDuration());
+            mEffectsView.setProgress((int) mEditKit.getEditDuration());
+            mEditKit.seekTo(mEditKit.getEditDuration());
+        } else {
+            mSectionView.scrollAuto(0);
+            mEffectsView.setProgress(0);
+            mEditKit.seekTo(0);
+        }
+        if(isCheck) {
+            mEditKit.setTimeEffectType(KSYEditKit.TIME_EFFECT_REVERSE, null);
+        } else {
+            mEditKit.setTimeEffectType(KSYEditKit.TIME_EFFECT_NONE, null);
+        }
+//        mEditKit.enableReversePlay(isCheck);
+//        mEditKit.setLooping(true);
+//        mEditKit.startEditPreview();
+//        resumePreview();
     }
 
     private void onPauseClick() {
@@ -1372,8 +1413,8 @@ public class EditActivity extends Activity implements
     }
 
     private void onBackoffClick() {
-        if ((mBottomViewPreIndex == WATER_MARK_INDEX) || mBottomViewPreIndex == REVERSE_PLAY_INDEX ||
-                (mBottomViewPreIndex != WATER_MARK_INDEX && mBottomViewPreIndex != REVERSE_PLAY_INDEX &&
+        if ((mBottomViewPreIndex == WATER_MARK_INDEX) ||
+                (mBottomViewPreIndex != WATER_MARK_INDEX &&
                         mBottomViewList[mBottomViewPreIndex].getVisibility() != View.VISIBLE)) {
             EditActivity.this.finish();
         } else {
@@ -1624,7 +1665,7 @@ public class EditActivity extends Activity implements
                 case StreamerConstants.KSY_STREAMER_VIDEO_ENCODER_ERROR_UNSUPPORTED:
                 case StreamerConstants.KSY_STREAMER_VIDEO_ENCODER_ERROR_UNKNOWN:
                     boolean result = handleEncodeError();
-                    if(result) {
+                    if (result) {
                         mMainHandler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
@@ -1654,7 +1695,7 @@ public class EditActivity extends Activity implements
                             initThumbnailAdapter();
                             // 启动预览后，开始片段编辑UI初始化
                             mSectionView.init(mEditPreviewDuration, mEditKit);
-                            mEffectsView.initView(mEditPreviewDuration, mEditKit);
+                            mEffectsView.startPlayer();
                             startPreviewTimerTask();
                         }
                     });
@@ -1664,7 +1705,7 @@ public class EditActivity extends Activity implements
                         @Override
                         public void run() {
                             if (mEffectsView.getVisibility() == View.VISIBLE) {
-                                mEffectsView.setProgress(mEditKit.getEditDuration());
+                                mEffectsView.setProgress((int) mEditKit.getEditDuration());
                             }
                         }
                     });
@@ -1749,11 +1790,8 @@ public class EditActivity extends Activity implements
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                long curTime = mEditKit.getEditPreviewCurrentPosition();
+                long curTime = mEditKit.getCurrentPosition();
                 mSectionView.scrollAuto(curTime);
-                if (mEffectsView.getVisibility() == View.VISIBLE) {
-                    mEffectsView.setProgress(curTime);
-                }
             }
         });
     }
@@ -1910,7 +1948,7 @@ public class EditActivity extends Activity implements
 
     private void onClickRotate() {
         mRotateDegrees += 90;
-        if(mRotateDegrees == 360) {
+        if (mRotateDegrees == 360) {
             mRotateDegrees = 0;
         }
         mEditKit.setRotateDegrees(mRotateDegrees);
@@ -2140,11 +2178,11 @@ public class EditActivity extends Activity implements
         mEditKit.seekTo(seekTo);
 
         if (mVideoRangeSeekBar != null) {
-            mVideoRangeSeekBar.setIndicatorOffsetSec((mEditKit.getEditPreviewCurrentPosition() * 1.0f - mHLVOffsetX * 1000) /
+            mVideoRangeSeekBar.setIndicatorOffsetSec((mEditKit.getCurrentPosition() * 1.0f - mHLVOffsetX * 1000) /
                     1000);
         }
 
-        Log.d(TAG, "seek currentpostion:" + mEditKit.getEditPreviewCurrentPosition());
+        Log.d(TAG, "seek currentpostion:" + mEditKit.getCurrentPosition());
     }
 
     private void setRangeTextView(float offset) {
@@ -2219,8 +2257,8 @@ public class EditActivity extends Activity implements
     private void initTitleRecycleView() {
         View pitchLayout = findViewById(R.id.bgm_pitch);
         pitchLayout.setVisibility(View.GONE);
-        String[] items = {"美颜", "滤镜", "滤镜特效", "水印", "变速", "时长裁剪", "画布裁剪", "音乐", "变声", "混响",
-                "涂鸦", "动态贴纸", "贴纸", "字幕","倒放"};
+        String[] items = {"美颜", "滤镜", "滤镜特效", "时间特效", "水印", "变速", "时长裁剪", "画布裁剪", "音乐", "变声", "混响",
+                "涂鸦", "动态贴纸", "贴纸", "字幕",};
         mTitleData = Arrays.asList(items);
         mTitleView = (RecyclerView) findViewById(R.id.edit_title_recyclerView);
         mTitleAdapter = new BottomTitleAdapter(this, mTitleData);
@@ -2228,15 +2266,21 @@ public class EditActivity extends Activity implements
             @Override
             public void onClick(int curIndex, int preIndex) {
                 mBottomViewPreIndex = curIndex;
-                if (curIndex != WATER_MARK_INDEX && curIndex != REVERSE_PLAY_INDEX) {
-                    mBottomViewList[curIndex].setVisibility(View.VISIBLE);
-                    if (curIndex == FILTER_EFFECTS_INDEX) {
+                if (curIndex != WATER_MARK_INDEX) {
+                    if (curIndex == FILTER_EFFECTS_INDEX || curIndex == FILTER_TIME_EFFECT_INDEX) {
                         //暂停播放
                         pausePreview();
                         //更新进度条位置
-                        mEffectsView.setProgress(mEditKit.getEditPreviewCurrentPosition());
-                    } else {
-
+                        mEffectsView.openTimeEffect(curIndex == FILTER_TIME_EFFECT_INDEX);
+                        if (mEditKit.getReversePlay()) {
+                            mSectionView.scrollAuto(mEditKit.getEditDuration());
+                            mEffectsView.setProgress((int) mEditKit.getEditDuration());
+                            mEditKit.seekTo(mEditKit.getEditDuration());
+                        } else {
+                            mSectionView.scrollAuto(0);
+                            mEffectsView.setProgress(0);
+                            mEditKit.seekTo(0);
+                        }
                     }
                     //贴纸相关需要显示贴纸的预览view
                     if (curIndex >= ANIMATED_STICKER_LAYOUT_INDEX && curIndex <=
@@ -2260,13 +2304,13 @@ public class EditActivity extends Activity implements
                         if (mPaintView.getVisibility() == View.VISIBLE) {
                             mPaintView.setVisibility(View.GONE);
                         }
-                        Toast.makeText(EditActivity.this, "暂时隐藏涂鸦", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(EditActivity.this, "暂时隐藏涂鸦", Toast.LENGTH_SHORT).show();
                     } else {
                         if (mPaintView.getVisibility() != View.VISIBLE) {
                             mPaintView.setVisibility(View.VISIBLE);
                         }
                     }
-                } else  if (curIndex == WATER_MARK_INDEX) {
+                } else if (curIndex == WATER_MARK_INDEX) {
                     if (curIndex != preIndex) {
                         mWaterMarkChecked = true;
                         onWaterMarkLogoClick(mWaterMarkChecked);
@@ -2274,18 +2318,8 @@ public class EditActivity extends Activity implements
                         mWaterMarkChecked = !mWaterMarkChecked;
                         onWaterMarkLogoClick(mWaterMarkChecked);
                     }
-                } else {
-                    if (curIndex != preIndex) {
-                        if (!mReversePlayChecked) {
-                            mReversePlayChecked = true;
-                            onReversePlayClick(mReversePlayChecked);
-                        }
-                    } else {
-                        mReversePlayChecked = !mReversePlayChecked;
-                        onReversePlayClick(mReversePlayChecked);
-                    }
                 }
-                if (preIndex != WATER_MARK_INDEX && preIndex != REVERSE_PLAY_INDEX &&
+                if (preIndex != WATER_MARK_INDEX &&
                         preIndex != -1 && curIndex != preIndex) {
                     mBottomViewList[preIndex].setVisibility(View.GONE);
                     if (preIndex == PAINT_MENU_LAYOUT_INDEX) {
@@ -2293,8 +2327,11 @@ public class EditActivity extends Activity implements
                         mIsPainting = false;
                     }
                 }
-                if ((preIndex == STICKER_LAYOUT_INDEX || preIndex == SUBTITLE_LAYOUT_INDEX ||
-                        preIndex == ANIMATED_STICKER_LAYOUT_INDEX) || preIndex == FILTER_EFFECTS_INDEX) {
+                if ((preIndex == STICKER_LAYOUT_INDEX
+                        || preIndex == SUBTITLE_LAYOUT_INDEX
+                        || preIndex == ANIMATED_STICKER_LAYOUT_INDEX)
+                        && curIndex != FILTER_EFFECTS_INDEX
+                        && curIndex != FILTER_TIME_EFFECT_INDEX) {
                     if (mSectionView.isSeeking()) {
                         mSectionView.calculateRange();
                     }
@@ -2302,6 +2339,9 @@ public class EditActivity extends Activity implements
                     if (mPauseView.getDrawable().getLevel() == 1) {
                         onPauseClick();
                     }
+                }
+                if (curIndex != WATER_MARK_INDEX && mBottomViewList[curIndex].getVisibility() != View.VISIBLE) {
+                    mBottomViewList[curIndex].setVisibility(View.VISIBLE);
                 }
             }
         };
@@ -2853,7 +2893,7 @@ public class EditActivity extends Activity implements
                                             mEditKit.stopCompose();
                                             //合成开始后，之前的特效滤镜无效了，不能再次被使用
                                             mEditKit.removeAllTimeEffectFilter();
-                                            mEffectsView.clear();
+                                            mEffectsView.clearAllEffect();
                                             mComposeFinished = false;
                                             closeDialog();
                                             resumeEditPreview();

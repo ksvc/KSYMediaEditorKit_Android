@@ -57,7 +57,7 @@
 <link rel="shortcut icon" type="image/x-icon" href="../../../../../favicon.ico" />
 <title>
 
-  PTSFilter
+  TimerEffectSpeed
 
 
 </title>
@@ -151,6 +151,8 @@
     <li class="api apilevel-">
   <a href="../../../../../com/ksyun/media/shortvideo/sticker/package-summary.html">com.ksyun.media.shortvideo.sticker</a></li>
     <li class="selected api apilevel-">
+  <a href="../../../../../com/ksyun/media/shortvideo/timereffect/package-summary.html">com.ksyun.media.shortvideo.timereffect</a></li>
+    <li class="api apilevel-">
   <a href="../../../../../com/ksyun/media/shortvideo/transition/package-summary.html">com.ksyun.media.shortvideo.transition</a></li>
     <li class="api apilevel-">
   <a href="../../../../../com/ksyun/media/shortvideo/utils/package-summary.html">com.ksyun.media.shortvideo.utils</a></li>
@@ -160,12 +162,19 @@
           <div id="classes-nav">
             <ul>
               
+    <li><h2>Interfaces</h2>
+      <ul>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/timereffect/ITimerEffectData.html">ITimerEffectData</a></li>
+      </ul>
+    </li>
               
     <li><h2>Classes</h2>
       <ul>
-          <li class="selected api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/transition/PTSFilter.html">PTSFilter</a>&lt;T&gt;</li>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/transition/PTSFilter.PTSFilterSinkPin.html">PTSFilter.PTSFilterSinkPin</a></li>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/transition/TransitionInfoControl.html">TransitionInfoControl</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/timereffect/TimerEffectFilter.html">TimerEffectFilter</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/timereffect/TimerEffectFrame.html">TimerEffectFrame</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/timereffect/TimerEffectInfo.html">TimerEffectInfo</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/timereffect/TimerEffectRepeat.html">TimerEffectRepeat</a></li>
+          <li class="selected api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/timereffect/TimerEffectSpeed.html">TimerEffectSpeed</a></li>
       </ul>
     </li>
               
@@ -216,22 +225,26 @@
   
   
 
+  
+   
+  
+  
+  
+  
+
 
 <div class="sum-details-links">
 
 
 Summary:
 
-  <a href="#nestedclasses">Nested Classes</a>
-  
 
 
 
 
 
 
-
-  &#124; <a href="#lfields">Fields</a>
+  <a href="#lfields">Fields</a>
   
 
 
@@ -270,7 +283,7 @@ Summary:
      
     
     class
-<h1>PTSFilter</h1>
+<h1>TimerEffectSpeed</h1>
 
 
 
@@ -281,6 +294,11 @@ Summary:
   
 
   
+  
+      implements 
+      
+        <a href="../../../../../com/ksyun/media/shortvideo/timereffect/ITimerEffectData.html">ITimerEffectData</a> 
+      
   
   
 
@@ -303,7 +321,7 @@ Summary:
         
             <td class="jd-inheritance-space">&nbsp;&nbsp;&nbsp;&#x21b3;</td>
          	
-        <td colspan="1" class="jd-inheritance-class-cell">com.ksyun.media.shortvideo.transition.PTSFilter&lt;T&gt;</td>
+        <td colspan="1" class="jd-inheritance-class-cell">com.ksyun.media.shortvideo.timereffect.TimerEffectSpeed</td>
     </tr>
     
 
@@ -319,8 +337,7 @@ Summary:
 
 
 <h2>Class Overview</h2>
-<p>update pts using offset
- correcting pts for multi file compose
+<p>Created by zanxiaofei on 18/4/23.
 </p>
 
 
@@ -351,27 +368,6 @@ Summary:
 
 
 
-<!-- ======== NESTED CLASS SUMMARY ======== -->
-<table id="nestedclasses" class="jd-sumtable"><tr><th colspan="12">Nested Classes</th></tr>
-
-
-  
-    <tr class="alt-color api apilevel-" >
-      <td class="jd-typecol">
-        
-         
-         
-        
-        class</td>
-      <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/transition/PTSFilter.PTSFilterSinkPin.html">PTSFilter.PTSFilterSinkPin</a></td>
-      <td class="jd-descrcol" width="100%">&nbsp;</td>
-    </tr>
-    
-    
-
-</table>
-
-
 
 
 
@@ -397,8 +393,8 @@ Summary:
           public
           
           
-          <any></td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/transition/PTSFilter.html#mSinkPin">mSinkPin</a></td>
+          int</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/timereffect/TimerEffectSpeed.html#id">id</a></td>
           <td class="jd-descrcol" width="100%"></td>
       </tr>
       
@@ -408,8 +404,8 @@ Summary:
           public
           
           
-          <any></td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/transition/PTSFilter.html#mSrcPin">mSrcPin</a></td>
+          float</td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/timereffect/TimerEffectSpeed.html#speed">speed</a></td>
           <td class="jd-descrcol" width="100%"></td>
       </tr>
       
@@ -439,7 +435,7 @@ Summary:
             
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/transition/PTSFilter.html#PTSFilter()">PTSFilter</a></span>()
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/timereffect/TimerEffectSpeed.html#TimerEffectSpeed(float)">TimerEffectSpeed</a></span>(float speed)
         
   </td></tr>
 
@@ -465,10 +461,10 @@ Summary:
             
             
             
-            void
+            int
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/transition/PTSFilter.html#onDisconnect(boolean)">onDisconnect</a></span>(boolean recursive)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/timereffect/TimerEffectSpeed.html#getId()">getId</a></span>()
         
   </td></tr>
 
@@ -484,7 +480,7 @@ Summary:
             void
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/transition/PTSFilter.html#setOffSet(long)">setOffSet</a></span>(long offSet)
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/timereffect/TimerEffectSpeed.html#setId(int)">setId</a></span>(int id)
         
   </td></tr>
 
@@ -705,6 +701,64 @@ From class
 </td></tr>
 
 
+
+<tr class="api apilevel-" >
+<td colspan="12">
+  <a href="#" onclick="return toggleInherited(this, null)" id="inherited-methods-com.ksyun.media.shortvideo.timereffect.ITimerEffectData" class="jd-expando-trigger closed"
+          ><img id="inherited-methods-com.ksyun.media.shortvideo.timereffect.ITimerEffectData-trigger"
+          src="../../../../../../assets/images/triangle-closed.png"
+          class="jd-expando-trigger-img" /></a>
+From interface
+
+  <a href="../../../../../com/ksyun/media/shortvideo/timereffect/ITimerEffectData.html">com.ksyun.media.shortvideo.timereffect.ITimerEffectData</a>
+
+<div id="inherited-methods-com.ksyun.media.shortvideo.timereffect.ITimerEffectData">
+  <div id="inherited-methods-com.ksyun.media.shortvideo.timereffect.ITimerEffectData-list"
+        class="jd-inheritedlinks">
+  </div>
+  <div id="inherited-methods-com.ksyun.media.shortvideo.timereffect.ITimerEffectData-summary" style="display: none;">
+    <table class="jd-sumtable-expando">
+    
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            abstract
+            
+            
+            
+            
+            int
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/timereffect/ITimerEffectData.html#getId()">getId</a></span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            abstract
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/timereffect/ITimerEffectData.html#setId(int)">setId</a></span>(int id)
+        
+  </td></tr>
+
+
+</table>
+  </div>
+</div>
+</td></tr>
+
+
 </table>
 
 
@@ -737,7 +791,7 @@ From class
 
 
 
-<a id="mSinkPin"></a>
+<a id="id"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -745,9 +799,9 @@ From class
         public 
          
          
-        <any>
+        int
       </span>
-        mSinkPin
+        id
     </h4>
       <div class="api-level">
         
@@ -767,7 +821,7 @@ From class
 
 
 
-<a id="mSrcPin"></a>
+<a id="speed"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -775,9 +829,9 @@ From class
         public 
          
          
-        <any>
+        float
       </span>
-        mSrcPin
+        speed
     </h4>
       <div class="api-level">
         
@@ -806,7 +860,7 @@ From class
 
 
 
-<a id="PTSFilter()"></a>
+<a id="TimerEffectSpeed(float)"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -818,8 +872,8 @@ From class
          
         
       </span>
-      <span class="sympad">PTSFilter</span>
-      <span class="normal">()</span>
+      <span class="sympad">TimerEffectSpeed</span>
+      <span class="normal">(float speed)</span>
     </h4>
       <div class="api-level">
         <div>
@@ -852,7 +906,7 @@ From class
 
 
 
-<a id="onDisconnect(boolean)"></a>
+<a id="getId()"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -862,10 +916,10 @@ From class
          
          
          
-        void
+        int
       </span>
-      <span class="sympad">onDisconnect</span>
-      <span class="normal">(boolean recursive)</span>
+      <span class="sympad">getId</span>
+      <span class="normal">()</span>
     </h4>
       <div class="api-level">
         <div>
@@ -883,7 +937,7 @@ From class
 </div>
 
 
-<a id="setOffSet(long)"></a>
+<a id="setId(int)"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -895,8 +949,8 @@ From class
          
         void
       </span>
-      <span class="sympad">setOffSet</span>
-      <span class="normal">(long offSet)</span>
+      <span class="sympad">setId</span>
+      <span class="normal">(int id)</span>
     </h4>
       <div class="api-level">
         <div>

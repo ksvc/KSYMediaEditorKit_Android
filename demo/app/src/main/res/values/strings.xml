@@ -15,4 +15,8 @@
 
     <string name="app_name">KSYShortVideoDemo</string>
 
+    <string name="effect_hint">选择位置后，按住使用效果</string>
+    <string name="effect_time_hint">点击使用时间效果</string>
+    <string name="effect_time_repeatedly_hint">拖动调整反复位置</string>
+    <string name="effect_time_slow_hint">拖动调整慢动作开始时间</string>
 </resources>

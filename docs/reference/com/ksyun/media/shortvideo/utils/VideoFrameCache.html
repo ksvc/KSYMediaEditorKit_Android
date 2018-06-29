@@ -57,7 +57,7 @@
 <link rel="shortcut icon" type="image/x-icon" href="../../../../../favicon.ico" />
 <title>
 
-  AVDecoderCapture.MediaInfo
+  VideoFrameCache
 
 
 </title>
@@ -140,7 +140,7 @@
               </div>
               <ul>
                 
-    <li class="selected api apilevel-">
+    <li class="api apilevel-">
   <a href="../../../../../com/ksyun/media/shortvideo/capture/package-summary.html">com.ksyun.media.shortvideo.capture</a></li>
     <li class="api apilevel-">
   <a href="../../../../../com/ksyun/media/shortvideo/filter/package-summary.html">com.ksyun.media.shortvideo.filter</a></li>
@@ -154,7 +154,7 @@
   <a href="../../../../../com/ksyun/media/shortvideo/timereffect/package-summary.html">com.ksyun.media.shortvideo.timereffect</a></li>
     <li class="api apilevel-">
   <a href="../../../../../com/ksyun/media/shortvideo/transition/package-summary.html">com.ksyun.media.shortvideo.transition</a></li>
-    <li class="api apilevel-">
+    <li class="selected api apilevel-">
   <a href="../../../../../com/ksyun/media/shortvideo/utils/package-summary.html">com.ksyun.media.shortvideo.utils</a></li>
               </ul><br/>
             </div> <!-- end packages -->
@@ -164,22 +164,24 @@
               
     <li><h2>Interfaces</h2>
       <ul>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/capture/AnimatedImageCapture.ImageUpdateListener.html">AnimatedImageCapture.ImageUpdateListener</a></li>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.AVDecoderListener.html">AVDecoderCapture.AVDecoderListener</a></li>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.OnAudioPtsChangedListener.html">AVDecoderCapture.OnAudioPtsChangedListener</a></li>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.OnVideoPtsChangedListener.html">AVDecoderCapture.OnVideoPtsChangedListener</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/ProbeMediaInfoTools.ProbeMediaInfoListener.html">ProbeMediaInfoTools.ProbeMediaInfoListener</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/VideoFrameCache.CacheListener.html">VideoFrameCache.CacheListener</a></li>
       </ul>
     </li>
               
     <li><h2>Classes</h2>
       <ul>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/capture/AnimatedImageCapture.html">AnimatedImageCapture</a></li>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/capture/AudioDummyCapture.html">AudioDummyCapture</a></li>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.html">AVDecoderCapture</a></li>
-          <li class="selected api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.MediaInfo.html">AVDecoderCapture.MediaInfo</a></li>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.PinAdapter.html">AVDecoderCapture.PinAdapter</a>&lt;T&nbsp;extends&nbsp;AVFrameBase&gt;</li>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.PinAdapter.PinAdapterSinkPin.html">AVDecoderCapture.PinAdapter.PinAdapterSinkPin</a></li>
-          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/capture/PictureCapture.html">PictureCapture</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/AuthInfoManager.html">AuthInfoManager</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/AVSync.html">AVSync</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/AVSync.AudioSinkPin.html">AVSync.AudioSinkPin</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/AVSync.VideoSinkPin.html">AVSync.VideoSinkPin</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/ImgBufToTex.html">ImgBufToTex</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/ImgBufToTex.ImgBufSinPin.html">ImgBufToTex.ImgBufSinPin</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/ProbeMediaInfoTools.html">ProbeMediaInfoTools</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/ProbeMediaInfoTools.MediaInfo.html">ProbeMediaInfoTools.MediaInfo</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/ShortVideoConstants.html">ShortVideoConstants</a></li>
+          <li class="selected api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/VideoFrameCache.html">VideoFrameCache</a></li>
+          <li class="api apilevel-"><a href="../../../../../com/ksyun/media/shortvideo/utils/VideoFrameCache.CacheRanges.html">VideoFrameCache.CacheRanges</a></li>
       </ul>
     </li>
               
@@ -236,13 +238,19 @@
 
 Summary:
 
+  <a href="#nestedclasses">Nested Classes</a>
+  
 
 
 
 
 
+  &#124; <a href="#constants">Constants</a>
+  
 
-  <a href="#lfields">Fields</a>
+
+
+  &#124; <a href="#lfields">Fields</a>
   
 
 
@@ -251,6 +259,9 @@ Summary:
   
 
 
+
+  &#124; <a href="#pubmethods">Methods</a>
+  
 
 
 
@@ -278,7 +289,7 @@ Summary:
      
     
     class
-<h1>AVDecoderCapture.MediaInfo</h1>
+<h1>VideoFrameCache</h1>
 
 
 
@@ -311,7 +322,7 @@ Summary:
         
             <td class="jd-inheritance-space">&nbsp;&nbsp;&nbsp;&#x21b3;</td>
          	
-        <td colspan="1" class="jd-inheritance-class-cell">com.ksyun.media.shortvideo.capture.AVDecoderCapture.MediaInfo</td>
+        <td colspan="1" class="jd-inheritance-class-cell">com.ksyun.media.shortvideo.utils.VideoFrameCache</td>
     </tr>
     
 
@@ -325,6 +336,10 @@ Summary:
 
 <div class="jd-descr">
 
+
+<h2>Class Overview</h2>
+<p>video frame cache.
+</p>
 
 
 
@@ -354,6 +369,37 @@ Summary:
 
 
 
+<!-- ======== NESTED CLASS SUMMARY ======== -->
+<table id="nestedclasses" class="jd-sumtable"><tr><th colspan="12">Nested Classes</th></tr>
+
+
+  
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+        
+         
+         
+        
+        interface</td>
+      <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/utils/VideoFrameCache.CacheListener.html">VideoFrameCache.CacheListener</a></td>
+      <td class="jd-descrcol" width="100%">&nbsp;</td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+        
+         
+         
+        
+        class</td>
+      <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/utils/VideoFrameCache.CacheRanges.html">VideoFrameCache.CacheRanges</a></td>
+      <td class="jd-descrcol" width="100%">&nbsp;</td>
+    </tr>
+    
+    
+
+</table>
 
 
 
@@ -362,6 +408,45 @@ Summary:
 
 
 
+
+
+
+
+<!-- =========== ENUM CONSTANT SUMMARY =========== -->
+<table id="constants" class="jd-sumtable"><tr><th colspan="12">Constants</th></tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">int</td>
+        <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/utils/VideoFrameCache.html#INFO_CACHE_NEED_FRAME">INFO_CACHE_NEED_FRAME</a></td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">int</td>
+        <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/utils/VideoFrameCache.html#INFO_CACHE_PREPARED">INFO_CACHE_PREPARED</a></td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">int</td>
+        <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/utils/VideoFrameCache.html#INFO_CACHE_REQUEST_GOP">INFO_CACHE_REQUEST_GOP</a></td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">int</td>
+        <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/utils/VideoFrameCache.html#INFO_SEEK_FRAME_GOT">INFO_SEEK_FRAME_GOT</a></td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+
+</table>
 
 
 
@@ -379,8 +464,8 @@ Summary:
           public
           
           
-          int</td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.MediaInfo.html#audioBitrate">audioBitrate</a></td>
+          <any></td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/utils/VideoFrameCache.html#mSinkPin">mSinkPin</a></td>
           <td class="jd-descrcol" width="100%"></td>
       </tr>
       
@@ -390,118 +475,8 @@ Summary:
           public
           
           
-          int</td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.MediaInfo.html#audioChannels">audioChannels</a></td>
-          <td class="jd-descrcol" width="100%"></td>
-      </tr>
-      
-    
-      <tr class="alt-color api apilevel-" >
-          <td class="jd-typecol">
-          public
-          
-          
-          int</td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.MediaInfo.html#audioSampleFormat">audioSampleFormat</a></td>
-          <td class="jd-descrcol" width="100%"></td>
-      </tr>
-      
-    
-      <tr class=" api apilevel-" >
-          <td class="jd-typecol">
-          public
-          
-          
-          int</td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.MediaInfo.html#audioSampleRate">audioSampleRate</a></td>
-          <td class="jd-descrcol" width="100%"></td>
-      </tr>
-      
-    
-      <tr class="alt-color api apilevel-" >
-          <td class="jd-typecol">
-          public
-          
-          
-          int</td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.MediaInfo.html#degree">degree</a></td>
-          <td class="jd-descrcol" width="100%"></td>
-      </tr>
-      
-    
-      <tr class=" api apilevel-" >
-          <td class="jd-typecol">
-          public
-          
-          
-          int</td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.MediaInfo.html#duration">duration</a></td>
-          <td class="jd-descrcol" width="100%"></td>
-      </tr>
-      
-    
-      <tr class="alt-color api apilevel-" >
-          <td class="jd-typecol">
-          public
-          
-          
-          int</td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.MediaInfo.html#frameRate">frameRate</a></td>
-          <td class="jd-descrcol" width="100%"></td>
-      </tr>
-      
-    
-      <tr class=" api apilevel-" >
-          <td class="jd-typecol">
-          public
-          
-          
-          int</td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.MediaInfo.html#height">height</a></td>
-          <td class="jd-descrcol" width="100%"></td>
-      </tr>
-      
-    
-      <tr class="alt-color api apilevel-" >
-          <td class="jd-typecol">
-          public
-          
-          
-          boolean</td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.MediaInfo.html#isOnlyAudio">isOnlyAudio</a></td>
-          <td class="jd-descrcol" width="100%"></td>
-      </tr>
-      
-    
-      <tr class=" api apilevel-" >
-          <td class="jd-typecol">
-          public
-          
-          
-          boolean</td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.MediaInfo.html#isOnlyVideo">isOnlyVideo</a></td>
-          <td class="jd-descrcol" width="100%"></td>
-      </tr>
-      
-    
-      <tr class="alt-color api apilevel-" >
-          <td class="jd-typecol">
-          public
-          
-          
-          int</td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.MediaInfo.html#videoBitrate">videoBitrate</a></td>
-          <td class="jd-descrcol" width="100%"></td>
-      </tr>
-      
-    
-      <tr class=" api apilevel-" >
-          <td class="jd-typecol">
-          public
-          
-          
-          int</td>
-          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.MediaInfo.html#width">width</a></td>
+          <any></td>
+          <td class="jd-linkcol"><a href="../../../../../com/ksyun/media/shortvideo/utils/VideoFrameCache.html#mSrcPin">mSrcPin</a></td>
           <td class="jd-descrcol" width="100%"></td>
       </tr>
       
@@ -531,7 +506,7 @@ Summary:
             
         </td>
         <td class="jd-linkcol" width="100%">
-        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/capture/AVDecoderCapture.MediaInfo.html#MediaInfo()">MediaInfo</a></span>()
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/utils/VideoFrameCache.html#VideoFrameCache(GLRender)">VideoFrameCache</a></span>(GLRender glRender)
         
   </td></tr>
 
@@ -542,6 +517,191 @@ Summary:
 
 
 
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+<table id="pubmethods" class="jd-sumtable"><tr><th colspan="12">Public Methods</th></tr>
+
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            <a href="../../../../../com/ksyun/media/shortvideo/utils/VideoFrameCache.CacheRanges.html">VideoFrameCache.CacheRanges</a>
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/utils/VideoFrameCache.html#getCacheRanges()">getCacheRanges</a></span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/utils/VideoFrameCache.html#getVideoFrame()">getVideoFrame</a></span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            boolean
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/utils/VideoFrameCache.html#isCacheFull()">isCacheFull</a></span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            boolean
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/utils/VideoFrameCache.html#isCachePrepared()">isCachePrepared</a></span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/utils/VideoFrameCache.html#release()">release</a></span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/utils/VideoFrameCache.html#reset()">reset</a></span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/utils/VideoFrameCache.html#seekTo(long)">seekTo</a></span>(long ms)
+        
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/utils/VideoFrameCache.html#setCacheListener(com.ksyun.media.shortvideo.utils.VideoFrameCache.CacheListener)">setCacheListener</a></span>(<a href="../../../../../com/ksyun/media/shortvideo/utils/VideoFrameCache.CacheListener.html">VideoFrameCache.CacheListener</a> listener)
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/utils/VideoFrameCache.html#setCacheMode(boolean)">setCacheMode</a></span>(boolean cacheMode)
+        
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/utils/VideoFrameCache.html#setSeekStatus(long)">setSeekStatus</a></span>(long seekTo)
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../../../com/ksyun/media/shortvideo/utils/VideoFrameCache.html#stop()">stop</a></span>()
+        
+  </td></tr>
+
+
+
+</table>
 
 
 
@@ -779,6 +939,173 @@ From class
 <!-- Constants -->
 
 
+<!-- ========= ENUM CONSTANTS DETAIL ======== -->
+<h2>Constants</h2>
+
+
+
+
+<a id="INFO_CACHE_NEED_FRAME"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        int
+      </span>
+        INFO_CACHE_NEED_FRAME
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                2
+                (0x00000002)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<a id="INFO_CACHE_PREPARED"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        int
+      </span>
+        INFO_CACHE_PREPARED
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                3
+                (0x00000003)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<a id="INFO_CACHE_REQUEST_GOP"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        int
+      </span>
+        INFO_CACHE_REQUEST_GOP
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                1
+                (0x00000001)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<a id="INFO_SEEK_FRAME_GOT"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        int
+      </span>
+        INFO_SEEK_FRAME_GOT
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                4
+                (0x00000004)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+
 <!-- Fields -->
 
 
@@ -788,7 +1115,7 @@ From class
 
 
 
-<a id="audioBitrate"></a>
+<a id="mSinkPin"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -796,9 +1123,9 @@ From class
         public 
          
          
-        int
+        <any>
       </span>
-        audioBitrate
+        mSinkPin
     </h4>
       <div class="api-level">
         
@@ -818,7 +1145,7 @@ From class
 
 
 
-<a id="audioChannels"></a>
+<a id="mSrcPin"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -826,309 +1153,9 @@ From class
         public 
          
          
-        int
+        <any>
       </span>
-        audioChannels
-    </h4>
-      <div class="api-level">
-        
-
-
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
-
-    
-    </div>
-</div>
-
-
-
-<a id="audioSampleFormat"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-        int
-      </span>
-        audioSampleFormat
-    </h4>
-      <div class="api-level">
-        
-
-
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
-
-    
-    </div>
-</div>
-
-
-
-<a id="audioSampleRate"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-        int
-      </span>
-        audioSampleRate
-    </h4>
-      <div class="api-level">
-        
-
-
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
-
-    
-    </div>
-</div>
-
-
-
-<a id="degree"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-        int
-      </span>
-        degree
-    </h4>
-      <div class="api-level">
-        
-
-
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
-
-    
-    </div>
-</div>
-
-
-
-<a id="duration"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-        int
-      </span>
-        duration
-    </h4>
-      <div class="api-level">
-        
-
-
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
-
-    
-    </div>
-</div>
-
-
-
-<a id="frameRate"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-        int
-      </span>
-        frameRate
-    </h4>
-      <div class="api-level">
-        
-
-
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
-
-    
-    </div>
-</div>
-
-
-
-<a id="height"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-        int
-      </span>
-        height
-    </h4>
-      <div class="api-level">
-        
-
-
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
-
-    
-    </div>
-</div>
-
-
-
-<a id="isOnlyAudio"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-        boolean
-      </span>
-        isOnlyAudio
-    </h4>
-      <div class="api-level">
-        
-
-
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
-
-    
-    </div>
-</div>
-
-
-
-<a id="isOnlyVideo"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-        boolean
-      </span>
-        isOnlyVideo
-    </h4>
-      <div class="api-level">
-        
-
-
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
-
-    
-    </div>
-</div>
-
-
-
-<a id="videoBitrate"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-        int
-      </span>
-        videoBitrate
-    </h4>
-      <div class="api-level">
-        
-
-
-        
-  
-
-      </div>
-    <div class="jd-details-descr">
-      
-  <div class="jd-tagdata jd-tagdescr"><p></p></div>
-
-    
-    </div>
-</div>
-
-
-
-<a id="width"></a>
-
-<div class="jd-details api apilevel-"> 
-    <h4 class="jd-details-title">
-      <span class="normal">
-        public 
-         
-         
-        int
-      </span>
-        width
+        mSrcPin
     </h4>
       <div class="api-level">
         
@@ -1157,7 +1184,7 @@ From class
 
 
 
-<a id="MediaInfo()"></a>
+<a id="VideoFrameCache(GLRender)"></a>
 
 <div class="jd-details api apilevel-"> 
     <h4 class="jd-details-title">
@@ -1169,8 +1196,8 @@ From class
          
         
       </span>
-      <span class="sympad">MediaInfo</span>
-      <span class="normal">()</span>
+      <span class="sympad">VideoFrameCache</span>
+      <span class="normal">(GLRender glRender)</span>
     </h4>
       <div class="api-level">
         <div>
@@ -1198,6 +1225,352 @@ From class
 
 <!-- ========= METHOD DETAIL ======== -->
 <!-- Public methdos -->
+
+<h2>Public Methods</h2>
+
+
+
+<a id="getCacheRanges()"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        <a href="../../../../../com/ksyun/media/shortvideo/utils/VideoFrameCache.CacheRanges.html">VideoFrameCache.CacheRanges</a>
+      </span>
+      <span class="sympad">getCacheRanges</span>
+      <span class="normal">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+<a id="getVideoFrame()"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">getVideoFrame</span>
+      <span class="normal">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+<a id="isCacheFull()"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        boolean
+      </span>
+      <span class="sympad">isCacheFull</span>
+      <span class="normal">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+<a id="isCachePrepared()"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        boolean
+      </span>
+      <span class="sympad">isCachePrepared</span>
+      <span class="normal">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+<a id="release()"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">release</span>
+      <span class="normal">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+<a id="reset()"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">reset</span>
+      <span class="normal">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+<a id="seekTo(long)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">seekTo</span>
+      <span class="normal">(long ms)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+<a id="setCacheListener(com.ksyun.media.shortvideo.utils.VideoFrameCache.CacheListener)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">setCacheListener</span>
+      <span class="normal">(<a href="../../../../../com/ksyun/media/shortvideo/utils/VideoFrameCache.CacheListener.html">VideoFrameCache.CacheListener</a> listener)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+<a id="setCacheMode(boolean)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">setCacheMode</span>
+      <span class="normal">(boolean cacheMode)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+<a id="setSeekStatus(long)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">setSeekStatus</span>
+      <span class="normal">(long seekTo)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+<a id="stop()"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">stop</span>
+      <span class="normal">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
 
 
 
