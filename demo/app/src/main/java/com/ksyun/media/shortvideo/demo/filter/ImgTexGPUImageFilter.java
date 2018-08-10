@@ -62,6 +62,11 @@ public class ImgTexGPUImageFilter extends ImgTexFilterBase {
         mGPUImageFilter.destroy();
         super.onRelease();
     }
+    @Override
+    protected void onDisconnect(boolean recursive){
+        super.onDisconnect(recursive);
+        mGPUImageFilter.destroy();
+    }
 
     protected FloatBuffer getTexCoords() {
         return TexTransformUtil.getTexCoordsBuf();
