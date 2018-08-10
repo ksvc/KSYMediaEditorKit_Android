@@ -1,14 +1,6 @@
 apply plugin: 'com.android.application'
 
 android {
-    signingConfigs {
-        release {
-            keyAlias 'ksymediaeditor'
-            keyPassword 'ksycloud'
-            storeFile file('../ksysv.jks')
-            storePassword 'ksycloud'
-        }
-    }
     compileSdkVersion 27
     buildToolsVersion '27.0.1'
     defaultConfig {
