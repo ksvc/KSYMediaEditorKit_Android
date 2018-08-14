@@ -42,8 +42,8 @@ dependencies {
     implementation 'com.facebook.fresco:animated-gif:1.4.0'
     implementation 'com.facebook.fresco:animated-webp:1.4.0'
     implementation 'com.lht:paintview:1.17'
-    compile 'com.ksyun.media:libksysv-java:2.2.3'
-    compile 'com.ksyun.media:libksysv-arm64:2.2.3'
-    compile 'com.ksyun.media:libksysv-armv7a:2.2.3'
-    compile 'com.ksyun.media:libksysv-x86:2.2.3'
+    compile 'com.ksyun.media:libksysv-java:2.2.4'
+    compile 'com.ksyun.media:libksysv-arm64:2.2.4'
+    compile 'com.ksyun.media:libksysv-armv7a:2.2.4'
+    compile 'com.ksyun.media:libksysv-x86:2.2.4'
 }
